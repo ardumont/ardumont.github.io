@@ -1,0 +1,912 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Practical TDD and acceptance TDD for java developer</title>
+<!-- 2014-12-01 Mon 23:44 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine Romain Dumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="../other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Practical TDD and acceptance TDD for java developer</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1"><span class="done DONE">DONE</span> Copyright</a></li>
+<li><a href="#sec-2"><span class="done DONE">DONE</span> Preface</a></li>
+<li><a href="#sec-3"><span class="done DONE">DONE</span> Acknowledgments</a></li>
+<li><a href="#sec-4"><span class="done DONE">DONE</span> About this Book</a></li>
+<li><a href="#sec-5"><span class="done DONE">DONE</span> About the Cover Illustration</a></li>
+<li><a href="#sec-6"><span class="todo TODO">TODO</span> Part 1: A TDD primer <code>[25%]</code></a>
+<ul>
+<li><a href="#sec-6-1"><span class="done DONE">DONE</span> 1. The big picture <code>[100%]</code></a>
+<ul>
+<li><a href="#sec-6-1-1"><span class="done DONE">DONE</span> Section 1.1. The challenge: solving the right problem right <code>[100%]</code></a></li>
+<li><a href="#sec-6-1-2"><span class="done DONE">DONE</span> Section 1.2. Solution: being test-driven <code>[100%]</code></a></li>
+<li><a href="#sec-6-1-3"><span class="done DONE">DONE</span> Section 1.3. Build it right <code>[100%]</code></a></li>
+<li><a href="#sec-6-1-4"><span class="done DONE">DONE</span> Section 1.4. Build the right thing: acceptance TDD <code>[100%]</code></a></li>
+<li><a href="#sec-6-1-5"><span class="done DONE">DONE</span> Section 1.5. Tools for test-driven development <code>[100%]</code></a></li>
+<li><a href="#sec-6-1-6"><span class="done DONE">DONE</span> Section 1.6. Summary</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-2"><span class="todo TODO">TODO</span> 2. Beginning TDD <code>[14%]</code></a>
+<ul>
+<li><a href="#sec-6-2-1"><span class="done DONE">DONE</span> Section 2.1. From requirements to tests <code>[100%]</code></a></li>
+<li><a href="#sec-6-2-2"><span class="todo TODO">TODO</span> Section 2.2. Choosing the first test <code>[%]</code></a></li>
+<li><a href="#sec-6-2-3"><span class="todo TODO">TODO</span> Section 2.3. Breadth-first, depth-first <code>[%]</code></a></li>
+<li><a href="#sec-6-2-4"><span class="todo TODO">TODO</span> Section 2.4. Let’s not forget to refactor <code>[%]</code></a></li>
+<li><a href="#sec-6-2-5"><span class="todo TODO">TODO</span> Section 2.5. Adding a bit of error handling <code>[%]</code></a></li>
+<li><a href="#sec-6-2-6"><span class="todo TODO">TODO</span> Section 2.6. Loose ends on the test list <code>[%]</code></a></li>
+<li><a href="#sec-6-2-7"><span class="todo TODO">TODO</span> Section 2.7. Summary</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-3"><span class="todo TODO">TODO</span> 3. Refactoring in small steps <code>[%]</code></a>
+<ul>
+<li><a href="#sec-6-3-1"><span class="todo TODO">TODO</span> Section 3.1. Exploring a potential solution <code>[%]</code></a></li>
+<li><a href="#sec-6-3-2"><span class="todo TODO">TODO</span> Section 3.2. Changing design in a controlled manner <code>[%]</code></a></li>
+<li><a href="#sec-6-3-3"><span class="todo TODO">TODO</span> Section 3.3. Taking the new design further <code>[%]</code></a></li>
+<li><a href="#sec-6-3-4"><span class="todo TODO">TODO</span> Section 3.4. Summary</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-4"><span class="todo TODO">TODO</span> 4. Concepts and patterns for TDD <code>[%]</code></a>
+<ul>
+<li><a href="#sec-6-4-1"><span class="todo TODO">TODO</span> Section 4.1. How to write tests and make them pass <code>[%]</code></a></li>
+<li><a href="#sec-6-4-2"><span class="todo TODO">TODO</span> Section 4.2. Essential testing concepts <code>[%]</code></a></li>
+<li><a href="#sec-6-4-3"><span class="todo TODO">TODO</span> Section 4.3. Closer look into test doubles <code>[%]</code></a></li>
+<li><a href="#sec-6-4-4"><span class="todo TODO">TODO</span> Section 4.4. Guidelines for testable designs <code>[%]</code></a></li>
+<li><a href="#sec-6-4-5"><span class="todo TODO">TODO</span> Section 4.5. Unit-testing patterns <code>[%]</code></a></li>
+<li><a href="#sec-6-4-6"><span class="todo TODO">TODO</span> Section 4.6. Working with legacy code <code>[%]</code></a></li>
+<li><a href="#sec-6-4-7"><span class="todo TODO">TODO</span> Section 4.7. Summary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-7"><span class="todo TODO">TODO</span> Part 2: Applying TDD to specific technologies <code>[%]</code></a>
+<ul>
+<li><a href="#sec-7-1"><span class="todo TODO">TODO</span> 5. Test-driving web components <code>[%]</code></a>
+<ul>
+<li><a href="#sec-7-1-1"><span class="todo TODO">TODO</span> Section 5.1. MVC in web applications in 60 seconds <code>[%]</code></a></li>
+<li><a href="#sec-7-1-2"><span class="todo TODO">TODO</span> Section 5.2. Taming the controller <code>[%]</code></a></li>
+<li><a href="#sec-7-1-3"><span class="todo TODO">TODO</span> Section 5.3. Creating the view test-first <code>[%]</code></a></li>
+<li><a href="#sec-7-1-4"><span class="todo TODO">TODO</span> Section 5.4. TDD with component-based web frameworks <code>[%]</code></a></li>
+<li><a href="#sec-7-1-5"><span class="todo TODO">TODO</span> Section 5.5. Summary</a></li>
+</ul>
+</li>
+<li><a href="#sec-7-2"><span class="todo TODO">TODO</span> 6. Test-driving data access <code>[%]</code></a>
+<ul>
+<li><a href="#sec-7-2-1"><span class="todo TODO">TODO</span> Section 6.1. Exploring the problem domain <code>[%]</code></a></li>
+<li><a href="#sec-7-2-2"><span class="todo TODO">TODO</span> Section 6.2. Driving data access with unit tests <code>[%]</code></a></li>
+<li><a href="#sec-7-2-3"><span class="todo TODO">TODO</span> Section 6.3. Writing integration tests before the code <code>[%]</code></a></li>
+<li><a href="#sec-7-2-4"><span class="todo TODO">TODO</span> Section 6.4. Integration tests in action <code>[%]</code></a></li>
+<li><a href="#sec-7-2-5"><span class="todo TODO">TODO</span> Section 6.5. Populating data for integration tests <code>[%]</code></a></li>
+<li><a href="#sec-7-2-6"><span class="todo TODO">TODO</span> Section 6.6. Should I drive with unit or integration tests? <code>[%]</code></a></li>
+<li><a href="#sec-7-2-7"><span class="todo TODO">TODO</span> Section 6.7. File-system access <code>[%]</code></a></li>
+<li><a href="#sec-7-2-8"><span class="todo TODO">TODO</span> Section 6.8. Summary</a></li>
+</ul>
+</li>
+<li><a href="#sec-7-3"><span class="todo TODO">TODO</span> 7. Test-driving the unpredictable <code>[%]</code></a>
+<ul>
+<li><a href="#sec-7-3-1"><span class="todo TODO">TODO</span> Section 7.1. Test-driving time-based functionality <code>[%]</code></a></li>
+<li><a href="#sec-7-3-2"><span class="todo TODO">TODO</span> Section 7.2. Test-driving multithreaded code <code>[%]</code></a></li>
+<li><a href="#sec-7-3-3"><span class="todo TODO">TODO</span> Section 7.3. Standard synchronization objects <code>[%]</code></a></li>
+<li><a href="#sec-7-3-4"><span class="todo TODO">TODO</span> Section 7.4. Summary</a></li>
+</ul>
+</li>
+<li><a href="#sec-7-4"><span class="todo TODO">TODO</span> 8. Test-driving Swing <code>[%]</code></a>
+<ul>
+<li><a href="#sec-7-4-1"><span class="todo TODO">TODO</span> Section 8.1. What to test in a Swing UI <code>[%]</code></a></li>
+<li><a href="#sec-7-4-2"><span class="todo TODO">TODO</span> Section 8.2. Patterns for testable UI code <code>[%]</code></a></li>
+<li><a href="#sec-7-4-3"><span class="todo TODO">TODO</span> Section 8.3. Tools for testing view components <code>[%]</code></a></li>
+<li><a href="#sec-7-4-4"><span class="todo TODO">TODO</span> Section 8.4. Test-driving a view component <code>[%]</code></a></li>
+<li><a href="#sec-7-4-5"><span class="todo TODO">TODO</span> Section 8.5. Summary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-8"><span class="todo TODO">TODO</span> Part 3: Building products with Acceptance TDD <code>[%]</code></a>
+<ul>
+<li><a href="#sec-8-1"><span class="todo TODO">TODO</span> 9. Acceptance TDD explained <code>[%]</code></a>
+<ul>
+<li><a href="#sec-8-1-1"><span class="todo TODO">TODO</span> Section 9.1. Introduction to user stories <code>[%]</code></a></li>
+<li><a href="#sec-8-1-2"><span class="todo TODO">TODO</span> Section 9.2. Acceptance tests <code>[%]</code></a></li>
+<li><a href="#sec-8-1-3"><span class="todo TODO">TODO</span> Section 9.3. Understanding the process <code>[%]</code></a></li>
+<li><a href="#sec-8-1-4"><span class="todo TODO">TODO</span> Section 9.4. Acceptance TDD as a team activity <code>[%]</code></a></li>
+<li><a href="#sec-8-1-5"><span class="todo TODO">TODO</span> Section 9.5. Benefits of acceptance TDD <code>[%]</code></a></li>
+<li><a href="#sec-8-1-6"><span class="todo TODO">TODO</span> Section 9.6. What are we testing, exactly? <code>[%]</code></a></li>
+<li><a href="#sec-8-1-7"><span class="todo TODO">TODO</span> Section 9.7. Brief overview of available tools <code>[%]</code></a></li>
+<li><a href="#sec-8-1-8"><span class="todo TODO">TODO</span> Section 9.8. Summary</a></li>
+</ul>
+</li>
+<li><a href="#sec-8-2"><span class="todo TODO">TODO</span> 10. Creating acceptance tests with Fit <code>[%]</code></a>
+<ul>
+<li><a href="#sec-8-2-1"><span class="todo TODO">TODO</span> Section 10.1. What’s Fit? <code>[%]</code></a></li>
+<li><a href="#sec-8-2-2"><span class="todo TODO">TODO</span> Section 10.2. Three built-in fixtures <code>[%]</code></a></li>
+<li><a href="#sec-8-2-3"><span class="todo TODO">TODO</span> Section 10.3. Beyond the built-ins with FitLibrary <code>[%]</code></a></li>
+<li><a href="#sec-8-2-4"><span class="todo TODO">TODO</span> Section 10.4. Executing Fit tests <code>[%]</code></a></li>
+<li><a href="#sec-8-2-5"><span class="todo TODO">TODO</span> Section 10.5. Summary</a></li>
+</ul>
+</li>
+<li><a href="#sec-8-3"><span class="todo TODO">TODO</span> 11. Strategies for implementing acceptance tests <code>[%]</code></a>
+<ul>
+<li><a href="#sec-8-3-1"><span class="todo TODO">TODO</span> Section 11.1. What should acceptance tests test? <code>[%]</code></a></li>
+<li><a href="#sec-8-3-2"><span class="todo TODO">TODO</span> Section 11.2. Implementation approaches <code>[%]</code></a></li>
+<li><a href="#sec-8-3-3"><span class="todo TODO">TODO</span> Section 11.3. Technology-specific considerations <code>[%]</code></a></li>
+<li><a href="#sec-8-3-4"><span class="todo TODO">TODO</span> Section 11.4. Tips for common problems <code>[%]</code></a></li>
+<li><a href="#sec-8-3-5"><span class="todo TODO">TODO</span> Section 11.5. Summary</a></li>
+</ul>
+</li>
+<li><a href="#sec-8-4"><span class="todo TODO">TODO</span> 12. Adopting TDD <code>[%]</code></a>
+<ul>
+<li><a href="#sec-8-4-1"><span class="todo TODO">TODO</span> Section 12.1. What it takes to adopt TDD <code>[%]</code></a></li>
+<li><a href="#sec-8-4-2"><span class="todo TODO">TODO</span> Section 12.2. Getting others aboard <code>[%]</code></a></li>
+<li><a href="#sec-8-4-3"><span class="todo TODO">TODO</span> Section 12.3. How to fight resistance <code>[%]</code></a></li>
+<li><a href="#sec-8-4-4"><span class="todo TODO">TODO</span> Section 12.4. How to facilitate adoption <code>[%]</code></a></li>
+<li><a href="#sec-8-4-5"><span class="todo TODO">TODO</span> Section 12.5. Summary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-9"><span class="todo TODO">TODO</span> A. Brief JUnit 4 tutorial</a></li>
+<li><a href="#sec-10"><span class="todo TODO">TODO</span> B. Brief JUnit 3.8 tutorial</a></li>
+<li><a href="#sec-11"><span class="todo TODO">TODO</span> C. Brief EasyMock tutorial</a></li>
+<li><a href="#sec-12"><span class="todo TODO">TODO</span> D. Running tests with Ant <code>[%]</code></a>
+<ul>
+<li><a href="#sec-12-1"><span class="todo TODO">TODO</span> Section D.1. Project directory structure</a></li>
+<li><a href="#sec-12-2"><span class="todo TODO">TODO</span> Section D.2. The basics: compiling all source code</a></li>
+<li><a href="#sec-12-3"><span class="todo TODO">TODO</span> Section D.3. Adding a target for running tests</a></li>
+<li><a href="#sec-12-4"><span class="todo TODO">TODO</span> Section D.4. Generating a human-readable report</a></li>
+</ul>
+</li>
+<li><a href="#sec-13"><span class="todo TODO">TODO</span> Resources <code>[%]</code></a>
+<ul>
+<li><a href="#sec-13-1"><span class="todo TODO">TODO</span> Works cited</a></li>
+<li><a href="#sec-13-2"><span class="todo TODO">TODO</span> Additional resources</a></li>
+<li><a href="#sec-13-3"><span class="todo TODO">TODO</span> Online resources</a></li>
+<li><a href="#sec-13-4"><span class="todo TODO">TODO</span> Index</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="done DONE">DONE</span> Copyright</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="done DONE">DONE</span> Preface</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="done DONE">DONE</span> Acknowledgments</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="done DONE">DONE</span> About this Book</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="done DONE">DONE</span> About the Cover Illustration</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="todo TODO">TODO</span> Part 1: A TDD primer <code>[25%]</code></h2>
+<div class="outline-text-2" id="text-6">
+</div><div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="done DONE">DONE</span> 1. The big picture <code>[100%]</code></h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+Only ever write code to fix a failing test.
+</p>
+</div>
+<div id="outline-container-sec-6-1-1" class="outline-4">
+<h4 id="sec-6-1-1"><span class="done DONE">DONE</span> Section 1.1. The challenge: solving the right problem right <code>[100%]</code></h4>
+<div class="outline-text-4" id="text-6-1-1">
+</div><ul class="org-ul"><li><a id="sec-6-1-1-1" name="sec-6-1-1-1"></a><span class="done DONE">DONE</span> 1.1.1 Creating poorly written code<br  /><div class="outline-text-5" id="text-6-1-1-1">
+<p>
+With the old ways, we got
+</p>
+<ul class="org-ul">
+<li>many defects that clutter the code
+</li>
+<li>this result in code difficult to maintain
+</li>
+<li>and slow to produce
+</li>
+</ul>
+</div>
+</li>
+<li><a id="sec-6-1-1-2" name="sec-6-1-1-2"></a><span class="done DONE">DONE</span> 1.1.2 Failing to meet actual needs<br  /><div class="outline-text-5" id="text-6-1-1-2">
+<p>
+Cycle to production too long -&gt; the finished product do no correspond
+to what the client really needs anymore
+</p>
+</div>
+</li></ul>
+</div>
+<div id="outline-container-sec-6-1-2" class="outline-4">
+<h4 id="sec-6-1-2"><span class="done DONE">DONE</span> Section 1.2. Solution: being test-driven <code>[100%]</code></h4>
+<div class="outline-text-4" id="text-6-1-2">
+<p>
+TDD &lt;=&gt; internal quality
+ATDD &lt;=&gt; external quality
+</p>
+</div>
+<ul class="org-ul"><li><a id="sec-6-1-2-1" name="sec-6-1-2-1"></a><span class="done DONE">DONE</span> 1.2.1 High quality with TDD <code>[100%]</code><br  /><div class="outline-text-5" id="text-6-1-2-1">
+<ul class="org-ul">
+<li>write small automated tests
+</li>
+<li>these small tests serves as alarm in our code.
+</li>
+<li>Design is what we do last.
+</li>
+<li>Refactoring after the tests are written
+</li>
+</ul>
+</div>
+<ul class="org-ul"><li><a id="sec-6-1-2-1-1" name="sec-6-1-2-1-1"></a><span class="done DONE">DONE</span> Quality comes in many flavours<br  /><div class="outline-text-6" id="text-6-1-2-1-1">
+<p>
+The quality is subjective (department quality, does the result is what
+the client needed, user-friendly?, etc&#x2026;).
+With tdd, we are concentrated on the interfaces and not the
+implementation.
+So, we can focus on how the client of the developer's code could use it.
+</p>
+</div>
+</li>
+<li><a id="sec-6-1-2-1-2" name="sec-6-1-2-1-2"></a><span class="done DONE">DONE</span> Less time spent on fixing defects<br  /><div class="outline-text-6" id="text-6-1-2-1-2">
+<ul class="org-ul">
+<li>The lesser the defects, the less money is lost.
+</li>
+<li>The goal of tdd is to avoid as many defects as possible.
+</li>
+<li>The more the tests, The less time we spent in the debugger
+</li>
+<li>We can see almost immediately where the trouble is.
+</li>
+</ul>
+</div>
+</li></ul>
+</li>
+<li><a id="sec-6-1-2-2" name="sec-6-1-2-2"></a><span class="done DONE">DONE</span> 1.2.2 Meeting needs with acceptance TDD<br  /><div class="outline-text-5" id="text-6-1-2-2">
+<p>
+TDD &lt;=&gt; contracts for objects
+ATDD &lt;=&gt; contracts for the code as a all, oriented features.
+The ATDD tools represents the bridge between programmers and
+customers.
+TDD and ATDD can work separately but together form a super tool to
+deliver the high quality product the client needs for him to be more efficient.
+</p>
+</div>
+</li>
+<li><a id="sec-6-1-2-3" name="sec-6-1-2-3"></a><span class="done DONE">DONE</span> 1.2.3 What's in it for me?<br  /><div class="outline-text-5" id="text-6-1-2-3">
+<ul class="org-ul">
+<li>No more long debugging sessions
+</li>
+<li>Confident in the quality of the code we produce
+</li>
+<li>More time for other stuff
+</li>
+</ul>
+<p>
+We will not be typing faster. It's a long-term vision.
+We will spent less hours at fixing bugs later on.
+</p>
+</div>
+</li></ul>
+</div>
+<div id="outline-container-sec-6-1-3" class="outline-4">
+<h4 id="sec-6-1-3"><span class="done DONE">DONE</span> Section 1.3. Build it right <code>[100%]</code></h4>
+<div class="outline-text-4" id="text-6-1-3">
+</div><ul class="org-ul"><li><a id="sec-6-1-3-1" name="sec-6-1-3-1"></a><span class="done DONE">DONE</span> 1.3.1 Test-code-refactor: the heartbeat <code>[100%]</code><br  /><div class="outline-text-5" id="text-6-1-3-1">
+<p>
+One simple rule: Only ever write code to fix a failing test
+Before: Design -&gt; Code -&gt; Test
+Now:    Test -&gt; Code -&gt; Refactoring (Design) Or Red - Green - Refactor
+</p>
+</div>
+<ul class="org-ul"><li><a id="sec-6-1-3-1-1" name="sec-6-1-3-1-1"></a><span class="done DONE">DONE</span> First we write a test<br  /><div class="outline-text-6" id="text-6-1-3-1-1">
+<p>
+By making the test first, we're starting the design by creating the
+API. 
+We only evaluate a design effectively and objectively if we are trying
+to use it. We can then have a direct feedback.
+</p>
+
+<p>
+Goal:
+</p>
+<ul class="org-ul">
+<li>easy to use api.
+</li>
+<li>Api with the strict needed thing -&gt; do not over engineer because it
+costs if there are problems in it.
+</li>
+</ul>
+</div>
+</li>
+<li><a id="sec-6-1-3-1-2" name="sec-6-1-3-1-2"></a><span class="done DONE">DONE</span> Then we write just enough code<br  /><div class="outline-text-6" id="text-6-1-3-1-2">
+<p>
+Just enough so that the test pass.
+</p>
+</div>
+</li>
+<li><a id="sec-6-1-3-1-3" name="sec-6-1-3-1-3"></a><span class="done DONE">DONE</span> And then, we refactor.<br  /><div class="outline-text-6" id="text-6-1-3-1-3">
+<p>
+We try a better code than the first one but it must do the same as the
+first one, in less ugly if it's possible.
+</p>
+</div>
+</li></ul>
+</li>
+<li><a id="sec-6-1-3-2" name="sec-6-1-3-2"></a><span class="done DONE">DONE</span> 1.3.2 Developing in small increments <code>[100%]</code><br  /><div class="outline-text-5" id="text-6-1-3-2">
+<p>
+Iterate to add new functionalities -&gt; Worst case scenario, the product comes to production with some missing
+functionality.
+With the old way, the worst case scenario is that the product do not
+arrive to production.
+</p>
+</div>
+<ul class="org-ul"><li><a id="sec-6-1-3-2-1" name="sec-6-1-3-2-1"></a><span class="done DONE">DONE</span> Small enought to fit our heads<br  /><div class="outline-text-6" id="text-6-1-3-2-1">
+<p>
+We cannot deal with too numerous concepts at the same time.
+So make this number less to consider it appropriately.
+</p>
+</div>
+</li>
+<li><a id="sec-6-1-3-2-2" name="sec-6-1-3-2-2"></a><span class="done DONE">DONE</span> Evolutionary design<br  /><div class="outline-text-6" id="text-6-1-3-2-2">
+<p>
+Let the need appear and try not to make everything up-front.
+</p>
+</div>
+</li>
+<li><a id="sec-6-1-3-2-3" name="sec-6-1-3-2-3"></a><span class="done DONE">DONE</span> Discipline required<br  /><div class="outline-text-6" id="text-6-1-3-2-3">
+<p>
+Discipline required from the developers to be able to build on top of
+stable code (tested code).
+</p>
+</div>
+</li></ul>
+</li>
+<li><a id="sec-6-1-3-3" name="sec-6-1-3-3"></a><span class="done DONE">DONE</span> 1.3.3 Keeping code healthy with refactoring <code>[100%]</code><br  /><div class="outline-text-5" id="text-6-1-3-3">
+<p>
+Changing the internal code to a more clean design without changing the external behaviour.
+</p>
+</div>
+<ul class="org-ul"><li><a id="sec-6-1-3-3-1" name="sec-6-1-3-3-1"></a><span class="done DONE">DONE</span> Refactoring is discipline<br  /></li>
+<li><a id="sec-6-1-3-3-2" name="sec-6-1-3-3-2"></a><span class="done DONE">DONE</span> Refactoring are transformations<br  /></li>
+<li><a id="sec-6-1-3-3-3" name="sec-6-1-3-3-3"></a><span class="done DONE">DONE</span> Refactoring alter internal structure<br  /><div class="outline-text-6" id="text-6-1-3-3-3">
+</div>
+</li>
+<li><a id="sec-6-1-3-3-4" name="sec-6-1-3-3-4"></a><span class="done DONE">DONE</span> Refactorings preserves behavior<br  /><div class="outline-text-6" id="text-6-1-3-3-4">
+</div>
+</li></ul>
+</li>
+<li><a id="sec-6-1-3-4" name="sec-6-1-3-4"></a><span class="done DONE">DONE</span> 1.3.4 Making sure the software still works <code>[100%]</code><br  /><div class="outline-text-5" id="text-6-1-3-4">
+</div>
+<ul class="org-ul"><li><a id="sec-6-1-3-4-1" name="sec-6-1-3-4-1"></a><span class="done DONE">DONE</span> Protection with automated tests<br  /><div class="outline-text-6" id="text-6-1-3-4-1">
+</div>
+</li>
+<li><a id="sec-6-1-3-4-2" name="sec-6-1-3-4-2"></a><span class="done DONE">DONE</span> Getting fast feedback<br  /><div class="outline-text-6" id="text-6-1-3-4-2">
+</div>
+</li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-6-1-4" class="outline-4">
+<h4 id="sec-6-1-4"><span class="done DONE">DONE</span> Section 1.4. Build the right thing: acceptance TDD <code>[100%]</code></h4>
+<div class="outline-text-4" id="text-6-1-4">
+</div>
+<ul class="org-ul"><li><a id="sec-6-1-4-1" name="sec-6-1-4-1"></a><span class="done DONE">DONE</span> 1.4.1 What's in a name<br  /><div class="outline-text-5" id="text-6-1-4-1">
+</div>
+</li>
+<li><a id="sec-6-1-4-2" name="sec-6-1-4-2"></a><span class="done DONE">DONE</span> 1.4.2 Close collaboration <code>[100%]</code><br  /><div class="outline-text-5" id="text-6-1-4-2">
+</div>
+<ul class="org-ul"><li><a id="sec-6-1-4-2-1" name="sec-6-1-4-2-1"></a><span class="done DONE">DONE</span> Seeing concrete, working software<br  /><div class="outline-text-6" id="text-6-1-4-2-1">
+</div>
+</li>
+<li><a id="sec-6-1-4-2-2" name="sec-6-1-4-2-2"></a><span class="done DONE">DONE</span> Building trust and confidence<br  /><div class="outline-text-6" id="text-6-1-4-2-2">
+</div>
+</li>
+<li><a id="sec-6-1-4-2-3" name="sec-6-1-4-2-3"></a><span class="done DONE">DONE</span> Customer in control<br  /><div class="outline-text-6" id="text-6-1-4-2-3">
+</div>
+</li>
+<li><a id="sec-6-1-4-2-4" name="sec-6-1-4-2-4"></a><span class="done DONE">DONE</span> Evolving a shared language<br  /><div class="outline-text-6" id="text-6-1-4-2-4">
+</div>
+</li></ul>
+</li>
+<li><a id="sec-6-1-4-3" name="sec-6-1-4-3"></a><span class="done DONE">DONE</span> 1.4.3 Tests as a shared language <code>[100%]</code><br  /><div class="outline-text-5" id="text-6-1-4-3">
+</div>
+<ul class="org-ul"><li><a id="sec-6-1-4-3-1" name="sec-6-1-4-3-1"></a><span class="done DONE">DONE</span> Tests as specification<br  /><div class="outline-text-6" id="text-6-1-4-3-1">
+</div>
+</li>
+<li><a id="sec-6-1-4-3-2" name="sec-6-1-4-3-2"></a><span class="done DONE">DONE</span> Specification by example<br  /><div class="outline-text-6" id="text-6-1-4-3-2">
+</div>
+</li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-6-1-5" class="outline-4">
+<h4 id="sec-6-1-5"><span class="done DONE">DONE</span> Section 1.5. Tools for test-driven development <code>[100%]</code></h4>
+<div class="outline-text-4" id="text-6-1-5">
+</div>
+<ul class="org-ul"><li><a id="sec-6-1-5-1" name="sec-6-1-5-1"></a><span class="done DONE">DONE</span> 1.5.1 Unit testing with xUnit<br  /><div class="outline-text-5" id="text-6-1-5-1">
+</div>
+</li>
+<li><a id="sec-6-1-5-2" name="sec-6-1-5-2"></a><span class="done DONE">DONE</span> 1.5.2 Test frameworks for acceptance TDD<br  /><div class="outline-text-5" id="text-6-1-5-2">
+</div>
+</li>
+<li><a id="sec-6-1-5-3" name="sec-6-1-5-3"></a><span class="done DONE">DONE</span> 1.5.3 Continous integration and builds <code>[100%]</code><br  /><div class="outline-text-5" id="text-6-1-5-3">
+</div>
+<ul class="org-ul"><li><a id="sec-6-1-5-3-1" name="sec-6-1-5-3-1"></a><span class="done DONE">DONE</span> Practical tradeoffs<br  /><div class="outline-text-6" id="text-6-1-5-3-1">
+</div>
+</li>
+<li><a id="sec-6-1-5-3-2" name="sec-6-1-5-3-2"></a><span class="done DONE">DONE</span> Build servers galore<br  /><div class="outline-text-6" id="text-6-1-5-3-2">
+</div>
+</li></ul>
+</li>
+<li><a id="sec-6-1-5-4" name="sec-6-1-5-4"></a><span class="done DONE">DONE</span> 1.5.4 Code coverage <code>[%]</code><br  /><div class="outline-text-5" id="text-6-1-5-4">
+</div>
+</li></ul>
+</div>
+
+<div id="outline-container-sec-6-1-6" class="outline-4">
+<h4 id="sec-6-1-6"><span class="done DONE">DONE</span> Section 1.6. Summary</h4>
+<div class="outline-text-4" id="text-6-1-6">
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6-2" class="outline-3">
+<h3 id="sec-6-2"><span class="todo TODO">TODO</span> 2. Beginning TDD <code>[14%]</code></h3>
+<div class="outline-text-3" id="text-6-2">
+</div><div id="outline-container-sec-6-2-1" class="outline-4">
+<h4 id="sec-6-2-1"><span class="done DONE">DONE</span> Section 2.1. From requirements to tests <code>[100%]</code></h4>
+<div class="outline-text-4" id="text-6-2-1">
+</div>
+<ul class="org-ul"><li><a id="sec-6-2-1-1" name="sec-6-2-1-1"></a><span class="done DONE">DONE</span> 2.1.1 Decomposing requirements<br  /><div class="outline-text-5" id="text-6-2-1-1">
+<p>
+Decomposing in tasks.
+Decomposing in tests is better suited.
+</p>
+</div>
+</li>
+<li><a id="sec-6-2-1-2" name="sec-6-2-1-2"></a><span class="done DONE">DONE</span> 2.1.2 What are good tests made of?<br  /><div class="outline-text-5" id="text-6-2-1-2">
+</div>
+<ul class="org-ul"><li><a id="sec-6-2-1-2-1" name="sec-6-2-1-2-1"></a>A good test is atomic<br  /></li>
+<li><a id="sec-6-2-1-2-2" name="sec-6-2-1-2-2"></a>A good test is isolated<br  /></li></ul>
+</li>
+<li><a id="sec-6-2-1-3" name="sec-6-2-1-3"></a><span class="done DONE">DONE</span> 2.1.3 Working from a test list<br  /><div class="outline-text-5" id="text-6-2-1-3">
+<p>
+We pick one test from a list
+We're completely focused on this one (the other one do not exist).
+</p>
+</div>
+</li>
+<li><a id="sec-6-2-1-4" name="sec-6-2-1-4"></a><span class="done DONE">DONE</span> 2.1.4 Programming by intention<br  /><div class="outline-text-5" id="text-6-2-1-4">
+<p>
+Code the test as if the production code exist. When it breaks, fix it.
+When it's green again, continue coding the test.
+</p>
+</div>
+</li></ul>
+</div>
+<div id="outline-container-sec-6-2-2" class="outline-4">
+<h4 id="sec-6-2-2"><span class="todo TODO">TODO</span> Section 2.2. Choosing the first test <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-6-2-3" class="outline-4">
+<h4 id="sec-6-2-3"><span class="todo TODO">TODO</span> Section 2.3. Breadth-first, depth-first <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-6-2-4" class="outline-4">
+<h4 id="sec-6-2-4"><span class="todo TODO">TODO</span> Section 2.4. Let’s not forget to refactor <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-6-2-5" class="outline-4">
+<h4 id="sec-6-2-5"><span class="todo TODO">TODO</span> Section 2.5. Adding a bit of error handling <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-6-2-6" class="outline-4">
+<h4 id="sec-6-2-6"><span class="todo TODO">TODO</span> Section 2.6. Loose ends on the test list <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-6-2-7" class="outline-4">
+<h4 id="sec-6-2-7"><span class="todo TODO">TODO</span> Section 2.7. Summary</h4>
+</div>
+</div>
+<div id="outline-container-sec-6-3" class="outline-3">
+<h3 id="sec-6-3"><span class="todo TODO">TODO</span> 3. Refactoring in small steps <code>[%]</code></h3>
+<div class="outline-text-3" id="text-6-3">
+</div><div id="outline-container-sec-6-3-1" class="outline-4">
+<h4 id="sec-6-3-1"><span class="todo TODO">TODO</span> Section 3.1. Exploring a potential solution <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-6-3-2" class="outline-4">
+<h4 id="sec-6-3-2"><span class="todo TODO">TODO</span> Section 3.2. Changing design in a controlled manner <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-6-3-3" class="outline-4">
+<h4 id="sec-6-3-3"><span class="todo TODO">TODO</span> Section 3.3. Taking the new design further <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-6-3-4" class="outline-4">
+<h4 id="sec-6-3-4"><span class="todo TODO">TODO</span> Section 3.4. Summary</h4>
+</div>
+</div>
+<div id="outline-container-sec-6-4" class="outline-3">
+<h3 id="sec-6-4"><span class="todo TODO">TODO</span> 4. Concepts and patterns for TDD <code>[%]</code></h3>
+<div class="outline-text-3" id="text-6-4">
+</div><div id="outline-container-sec-6-4-1" class="outline-4">
+<h4 id="sec-6-4-1"><span class="todo TODO">TODO</span> Section 4.1. How to write tests and make them pass <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-6-4-2" class="outline-4">
+<h4 id="sec-6-4-2"><span class="todo TODO">TODO</span> Section 4.2. Essential testing concepts <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-6-4-3" class="outline-4">
+<h4 id="sec-6-4-3"><span class="todo TODO">TODO</span> Section 4.3. Closer look into test doubles <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-6-4-4" class="outline-4">
+<h4 id="sec-6-4-4"><span class="todo TODO">TODO</span> Section 4.4. Guidelines for testable designs <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-6-4-5" class="outline-4">
+<h4 id="sec-6-4-5"><span class="todo TODO">TODO</span> Section 4.5. Unit-testing patterns <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-6-4-6" class="outline-4">
+<h4 id="sec-6-4-6"><span class="todo TODO">TODO</span> Section 4.6. Working with legacy code <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-6-4-7" class="outline-4">
+<h4 id="sec-6-4-7"><span class="todo TODO">TODO</span> Section 4.7. Summary</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="todo TODO">TODO</span> Part 2: Applying TDD to specific technologies <code>[%]</code></h2>
+<div class="outline-text-2" id="text-7">
+</div><div id="outline-container-sec-7-1" class="outline-3">
+<h3 id="sec-7-1"><span class="todo TODO">TODO</span> 5. Test-driving web components <code>[%]</code></h3>
+<div class="outline-text-3" id="text-7-1">
+</div><div id="outline-container-sec-7-1-1" class="outline-4">
+<h4 id="sec-7-1-1"><span class="todo TODO">TODO</span> Section 5.1. MVC in web applications in 60 seconds <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-1-2" class="outline-4">
+<h4 id="sec-7-1-2"><span class="todo TODO">TODO</span> Section 5.2. Taming the controller <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-1-3" class="outline-4">
+<h4 id="sec-7-1-3"><span class="todo TODO">TODO</span> Section 5.3. Creating the view test-first <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-1-4" class="outline-4">
+<h4 id="sec-7-1-4"><span class="todo TODO">TODO</span> Section 5.4. TDD with component-based web frameworks <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-1-5" class="outline-4">
+<h4 id="sec-7-1-5"><span class="todo TODO">TODO</span> Section 5.5. Summary</h4>
+</div>
+</div>
+<div id="outline-container-sec-7-2" class="outline-3">
+<h3 id="sec-7-2"><span class="todo TODO">TODO</span> 6. Test-driving data access <code>[%]</code></h3>
+<div class="outline-text-3" id="text-7-2">
+</div><div id="outline-container-sec-7-2-1" class="outline-4">
+<h4 id="sec-7-2-1"><span class="todo TODO">TODO</span> Section 6.1. Exploring the problem domain <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-2-2" class="outline-4">
+<h4 id="sec-7-2-2"><span class="todo TODO">TODO</span> Section 6.2. Driving data access with unit tests <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-2-3" class="outline-4">
+<h4 id="sec-7-2-3"><span class="todo TODO">TODO</span> Section 6.3. Writing integration tests before the code <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-2-4" class="outline-4">
+<h4 id="sec-7-2-4"><span class="todo TODO">TODO</span> Section 6.4. Integration tests in action <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-2-5" class="outline-4">
+<h4 id="sec-7-2-5"><span class="todo TODO">TODO</span> Section 6.5. Populating data for integration tests <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-2-6" class="outline-4">
+<h4 id="sec-7-2-6"><span class="todo TODO">TODO</span> Section 6.6. Should I drive with unit or integration tests? <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-2-7" class="outline-4">
+<h4 id="sec-7-2-7"><span class="todo TODO">TODO</span> Section 6.7. File-system access <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-2-8" class="outline-4">
+<h4 id="sec-7-2-8"><span class="todo TODO">TODO</span> Section 6.8. Summary</h4>
+</div>
+</div>
+<div id="outline-container-sec-7-3" class="outline-3">
+<h3 id="sec-7-3"><span class="todo TODO">TODO</span> 7. Test-driving the unpredictable <code>[%]</code></h3>
+<div class="outline-text-3" id="text-7-3">
+</div><div id="outline-container-sec-7-3-1" class="outline-4">
+<h4 id="sec-7-3-1"><span class="todo TODO">TODO</span> Section 7.1. Test-driving time-based functionality <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-3-2" class="outline-4">
+<h4 id="sec-7-3-2"><span class="todo TODO">TODO</span> Section 7.2. Test-driving multithreaded code <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-3-3" class="outline-4">
+<h4 id="sec-7-3-3"><span class="todo TODO">TODO</span> Section 7.3. Standard synchronization objects <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-3-4" class="outline-4">
+<h4 id="sec-7-3-4"><span class="todo TODO">TODO</span> Section 7.4. Summary</h4>
+</div>
+</div>
+<div id="outline-container-sec-7-4" class="outline-3">
+<h3 id="sec-7-4"><span class="todo TODO">TODO</span> 8. Test-driving Swing <code>[%]</code></h3>
+<div class="outline-text-3" id="text-7-4">
+</div><div id="outline-container-sec-7-4-1" class="outline-4">
+<h4 id="sec-7-4-1"><span class="todo TODO">TODO</span> Section 8.1. What to test in a Swing UI <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-4-2" class="outline-4">
+<h4 id="sec-7-4-2"><span class="todo TODO">TODO</span> Section 8.2. Patterns for testable UI code <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-4-3" class="outline-4">
+<h4 id="sec-7-4-3"><span class="todo TODO">TODO</span> Section 8.3. Tools for testing view components <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-4-4" class="outline-4">
+<h4 id="sec-7-4-4"><span class="todo TODO">TODO</span> Section 8.4. Test-driving a view component <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-7-4-5" class="outline-4">
+<h4 id="sec-7-4-5"><span class="todo TODO">TODO</span> Section 8.5. Summary</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="todo TODO">TODO</span> Part 3: Building products with Acceptance TDD <code>[%]</code></h2>
+<div class="outline-text-2" id="text-8">
+</div><div id="outline-container-sec-8-1" class="outline-3">
+<h3 id="sec-8-1"><span class="todo TODO">TODO</span> 9. Acceptance TDD explained <code>[%]</code></h3>
+<div class="outline-text-3" id="text-8-1">
+</div><div id="outline-container-sec-8-1-1" class="outline-4">
+<h4 id="sec-8-1-1"><span class="todo TODO">TODO</span> Section 9.1. Introduction to user stories <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-1-2" class="outline-4">
+<h4 id="sec-8-1-2"><span class="todo TODO">TODO</span> Section 9.2. Acceptance tests <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-1-3" class="outline-4">
+<h4 id="sec-8-1-3"><span class="todo TODO">TODO</span> Section 9.3. Understanding the process <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-1-4" class="outline-4">
+<h4 id="sec-8-1-4"><span class="todo TODO">TODO</span> Section 9.4. Acceptance TDD as a team activity <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-1-5" class="outline-4">
+<h4 id="sec-8-1-5"><span class="todo TODO">TODO</span> Section 9.5. Benefits of acceptance TDD <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-1-6" class="outline-4">
+<h4 id="sec-8-1-6"><span class="todo TODO">TODO</span> Section 9.6. What are we testing, exactly? <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-1-7" class="outline-4">
+<h4 id="sec-8-1-7"><span class="todo TODO">TODO</span> Section 9.7. Brief overview of available tools <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-1-8" class="outline-4">
+<h4 id="sec-8-1-8"><span class="todo TODO">TODO</span> Section 9.8. Summary</h4>
+</div>
+</div>
+<div id="outline-container-sec-8-2" class="outline-3">
+<h3 id="sec-8-2"><span class="todo TODO">TODO</span> 10. Creating acceptance tests with Fit <code>[%]</code></h3>
+<div class="outline-text-3" id="text-8-2">
+</div><div id="outline-container-sec-8-2-1" class="outline-4">
+<h4 id="sec-8-2-1"><span class="todo TODO">TODO</span> Section 10.1. What’s Fit? <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-2-2" class="outline-4">
+<h4 id="sec-8-2-2"><span class="todo TODO">TODO</span> Section 10.2. Three built-in fixtures <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-2-3" class="outline-4">
+<h4 id="sec-8-2-3"><span class="todo TODO">TODO</span> Section 10.3. Beyond the built-ins with FitLibrary <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-2-4" class="outline-4">
+<h4 id="sec-8-2-4"><span class="todo TODO">TODO</span> Section 10.4. Executing Fit tests <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-2-5" class="outline-4">
+<h4 id="sec-8-2-5"><span class="todo TODO">TODO</span> Section 10.5. Summary</h4>
+</div>
+</div>
+<div id="outline-container-sec-8-3" class="outline-3">
+<h3 id="sec-8-3"><span class="todo TODO">TODO</span> 11. Strategies for implementing acceptance tests <code>[%]</code></h3>
+<div class="outline-text-3" id="text-8-3">
+</div><div id="outline-container-sec-8-3-1" class="outline-4">
+<h4 id="sec-8-3-1"><span class="todo TODO">TODO</span> Section 11.1. What should acceptance tests test? <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-3-2" class="outline-4">
+<h4 id="sec-8-3-2"><span class="todo TODO">TODO</span> Section 11.2. Implementation approaches <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-3-3" class="outline-4">
+<h4 id="sec-8-3-3"><span class="todo TODO">TODO</span> Section 11.3. Technology-specific considerations <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-3-4" class="outline-4">
+<h4 id="sec-8-3-4"><span class="todo TODO">TODO</span> Section 11.4. Tips for common problems <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-3-5" class="outline-4">
+<h4 id="sec-8-3-5"><span class="todo TODO">TODO</span> Section 11.5. Summary</h4>
+</div>
+</div>
+<div id="outline-container-sec-8-4" class="outline-3">
+<h3 id="sec-8-4"><span class="todo TODO">TODO</span> 12. Adopting TDD <code>[%]</code></h3>
+<div class="outline-text-3" id="text-8-4">
+</div><div id="outline-container-sec-8-4-1" class="outline-4">
+<h4 id="sec-8-4-1"><span class="todo TODO">TODO</span> Section 12.1. What it takes to adopt TDD <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-4-2" class="outline-4">
+<h4 id="sec-8-4-2"><span class="todo TODO">TODO</span> Section 12.2. Getting others aboard <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-4-3" class="outline-4">
+<h4 id="sec-8-4-3"><span class="todo TODO">TODO</span> Section 12.3. How to fight resistance <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-4-4" class="outline-4">
+<h4 id="sec-8-4-4"><span class="todo TODO">TODO</span> Section 12.4. How to facilitate adoption <code>[%]</code></h4>
+</div>
+<div id="outline-container-sec-8-4-5" class="outline-4">
+<h4 id="sec-8-4-5"><span class="todo TODO">TODO</span> Section 12.5. Summary</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><span class="todo TODO">TODO</span> A. Brief JUnit 4 tutorial</h2>
+</div>
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10"><span class="todo TODO">TODO</span> B. Brief JUnit 3.8 tutorial</h2>
+</div>
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11"><span class="todo TODO">TODO</span> C. Brief EasyMock tutorial</h2>
+</div>
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12"><span class="todo TODO">TODO</span> D. Running tests with Ant <code>[%]</code></h2>
+<div class="outline-text-2" id="text-12">
+</div><div id="outline-container-sec-12-1" class="outline-3">
+<h3 id="sec-12-1"><span class="todo TODO">TODO</span> Section D.1. Project directory structure</h3>
+</div>
+<div id="outline-container-sec-12-2" class="outline-3">
+<h3 id="sec-12-2"><span class="todo TODO">TODO</span> Section D.2. The basics: compiling all source code</h3>
+</div>
+<div id="outline-container-sec-12-3" class="outline-3">
+<h3 id="sec-12-3"><span class="todo TODO">TODO</span> Section D.3. Adding a target for running tests</h3>
+</div>
+<div id="outline-container-sec-12-4" class="outline-3">
+<h3 id="sec-12-4"><span class="todo TODO">TODO</span> Section D.4. Generating a human-readable report</h3>
+</div>
+</div>
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13"><span class="todo TODO">TODO</span> Resources <code>[%]</code></h2>
+<div class="outline-text-2" id="text-13">
+</div><div id="outline-container-sec-13-1" class="outline-3">
+<h3 id="sec-13-1"><span class="todo TODO">TODO</span> Works cited</h3>
+</div>
+<div id="outline-container-sec-13-2" class="outline-3">
+<h3 id="sec-13-2"><span class="todo TODO">TODO</span> Additional resources</h3>
+</div>
+<div id="outline-container-sec-13-3" class="outline-3">
+<h3 id="sec-13-3"><span class="todo TODO">TODO</span> Online resources</h3>
+</div>
+<div id="outline-container-sec-13-4" class="outline-3">
+<h3 id="sec-13-4"><span class="todo TODO">TODO</span> Index</h3>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Antoine Romain Dumont</p>
+<p class="date">Created: 2014-12-01 Mon 23:44</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

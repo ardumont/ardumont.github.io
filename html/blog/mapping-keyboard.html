@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>A story of keyboard mapping 1/2</title>
+<!-- 2014-12-01 Mon 23:46 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="ardumont" />
+<meta  name="description" content="My customised keyboard mapping (based on QWERTY)"
+ />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="../other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">A story of keyboard mapping 1/2</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Language</a>
+<ul>
+<li><a href="#sec-1-1">Why</a></li>
+<li><a href="#sec-1-2">Install</a></li>
+<li><a href="#sec-1-3">Switch</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">Mapping</a>
+<ul>
+<li><a href="#sec-2-1">Limits</a></li>
+<li><a href="#sec-2-2">.Xmodmap</a></li>
+<li><a href="#sec-2-3">Install</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">Conclusion</a></li>
+</ul>
+</div>
+</div>
+<p>
+Since I started using emacs again for clojure development at first (now shell, org-mode, emacs-lisp, haskell, scala, etc&#x2026;), I completely rethink my input way.
+</p>
+
+<p>
+When Emacs proposed me between blue and red pill, I took the blue one :D.
+And it changed me&#x2026;
+</p>
+
+
+<p>
+In this blog entry, I will try to describe why I choose to change my keyboard mapping and how I did it.
+</p>
+
+
+<p>
+The things I understood for using emacs the right way:
+</p>
+<ul class="org-ul">
+<li><i>There is a function for that</i>
+</li>
+<li><i>There is binding for that function</i>
+</li>
+<li>But wait I can create a binding for that!!!
+</li>
+<li>Only a portion of the keyboard is necessary (all that remains, the arrow keys, the &lt;F*&gt; keys, the numeric keyboard pad, etc&#x2026; are too far away to use)
+</li>
+<li>Symmetry is beauty (hands position and use in a symmetrical way):
+</li>
+<li>AZERTY seriously? (In France, AZERTY keymap is default which makes absolutely no sense when developing&#x2026; and which is violently apparent when using emacs).
+</li>
+<li>AltGr?! No way, Alt all the way!
+</li>
+<li>The rodent (trackpad, mouse) is useless
+</li>
+<li>CapsLock is annoying
+</li>
+</ul>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Language</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+So first thing first, I ditched AZERTY for QWERTY (US).
+</p>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">Why</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>To code, you need some cute symbols like |,`,$,%,*,+,-,@ etc&#x2026;
+</li>
+</ul>
+<p>
+In AZERTY, to access this, you must do some difficult position with your right hand using the AltGr key.
+For non french people, it's the right Alt which does not permit the same actions as the left Alt.
+So this breaks your typing (even non dev people use @ for example).
+</p>
+
+<p>
+In QWERTY, you have access to these symbols with a SHIFT, this is so darn faster.
+</p>
+
+<ul class="org-ul">
+<li>Beauty is symmetry
+</li>
+</ul>
+<p>
+In QWERTY, for each binding, we can use both hand to do a binding.
+One hand to use the <b>modifier</b> key (<b>C</b> for Control, <b>M</b> for Meta, <b>S</b> for super, etc&#x2026;) and the other one for the alphabet letter.
+To select how to make a binding, I choose the one involving 2 hands and the more appart the keys composing the binding can be.
+</p>
+
+<p>
+For example:
+</p>
+
+<ul class="org-ul">
+<li><b>C-y</b> (yank)
+</li>
+</ul>
+
+<p>
+For this I use left <b>Control</b> (C) and the <b>y</b> with my right hand.
+On the other hand, right Control and y with the right hand is awkward when typing something.
+</p>
+
+<ul class="org-ul">
+<li><b>M-w</b> (kill)
+</li>
+</ul>
+
+<p>
+Right <b>Meta</b> (M) and <b>w</b> (left hand)
+This way, my hands move but a little and in harmony.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">Install</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+When installing a <a href="http://futurist.se/gldt/wp-content/uploads/12.10/gldt1210.png">GNU/Linux distribution</a>, select the default keyboard language as english US.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">Switch</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+To switch the keyboard layout
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo loadkeys us
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Mapping</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Limits</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Now here comes the glitch. QWERTY is not perfect.
+</p>
+
+<p>
+We still have the dreaded <b>CapsLock</b> key.
+</p>
+
+<p>
+I do not want to think about my lock because:
+</p>
+<ul class="org-ul">
+<li>I do not look at my keyboard, this moves my head (what can I say, I'm lazy! So I do not move it a lot to keep concentrated on what I do)
+</li>
+<li>I do not want to have to type a letter to know its case and remove it afterward.
+This is one command to type the letter and one binding to remove it.
+This is too much action that you need to repeat every time you are distracted and do not remember if it is locked or not.
+</li>
+</ul>
+
+<p>
+So the fastest way to avoid this is to not use it.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">.Xmodmap</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+I use <a href="http://linuxcommand.org/man_pages/xmodmap1.html">xmodmap</a> to remap my bindings under an X session.
+</p>
+
+<p>
+<b>.Xmodmap</b> file:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-txt">keysym Super_L = Num_Lock
+remove lock = Caps_Lock
+keysym Caps_Lock = Control_L
+add control = Control_L
+clear mod5
+add mod1 = Mode_switch
+</pre>
+</div>
+
+<p>
+run:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">xmodmap ~/.Xmodmap
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">Install</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Install the .Xmodmap in your $HOME and use your <b>~/.bashrc</b> or <b>~/.zshrc</b> to execute xmodmap at session opening.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">[ -f ~/.Xmodmap ] &amp;&amp; xmodmap ~/.Xmodmap
+</pre>
+</div>
+
+<p>
+<a href="https://github.com/ardumont/dot-files/blob/master/.shrc#14">Example</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Conclusion</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+In this entry post, I explained why and how I use xmodmap to remap my keyboard under an X session.
+</p>
+
+<p>
+But I also let appear a refusal to be distracted away from what I intend to do in the first place.
+This is the beginning of something I call the feedback loop that I'll explain in another blog entry.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2014-02-25 mar. 20:03]</span></span></p>
+<p class="author">Author: ardumont</p>
+<p class="date">Created: 2014-12-01 Mon 23:46</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

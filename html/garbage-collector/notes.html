@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Garbage collection notes</title>
+<!-- 2014-12-01 Mon 23:46 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="../other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Garbage collection notes</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Goal</a>
+<ul>
+<li><a href="#sec-1-1">Responsiveness</a></li>
+<li><a href="#sec-1-2">Throughput</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">Note</a>
+<ul>
+<li><a href="#sec-2-1">Some definition</a></li>
+<li><a href="#sec-2-2">Gargage collector run</a></li>
+<li><a href="#sec-2-3">Options</a>
+<ul>
+<li><a href="#sec-2-3-1">Serial GC</a></li>
+<li><a href="#sec-2-3-2">Parallel GC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Goal</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">Responsiveness</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Refers to how quickly an application or system responds with a requested piece of data.
+</p>
+
+<p>
+Examples include:
+</p>
+<ul class="org-ul">
+<li>How quickly a desktop UI responds to an event
+</li>
+<li>How fast a website returns a page
+</li>
+<li>How fast a database query is returned
+</li>
+</ul>
+
+<p>
+For applications that focus on responsiveness, large pause times are not acceptable.
+The focus is on responding in short periods of time.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">Throughput</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Focuses on maximizing the amount of work by an application in a specific period of time.
+</p>
+
+<p>
+Examples of how throughput might be measured include:
+</p>
+<ul class="org-ul">
+<li>The number of transactions completed in a given time.
+</li>
+<li>The number of jobs that a batch program can complete in an hour.
+</li>
+<li>The number of database queries that can be completed in an hour.
+</li>
+</ul>
+
+<p>
+High pause times are acceptable for applications that focus on throughput.
+Since high throughput applications focus on benchmarks over longer periods of time, quick response time is not a consideration.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Note</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Some definition</h3>
+<div class="outline-text-3" id="text-2-1">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">Name</th>
+<th scope="col" class="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">Heap</td>
+<td class="left">Structure where object data is stored.</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">Sliced in 5 pieces: Eden, Survivor0, Surivor1, Tenured, Permanent</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">Eden</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">Survivor 0</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">Survivor 1</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">Tenured</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">Perm Gen</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">Young generation</td>
+<td class="left">(+ Eden Survivor0 Survivor 0)</td>
+</tr>
+
+<tr>
+<td class="left">Old generation</td>
+<td class="left">Tenured</td>
+</tr>
+
+<tr>
+<td class="left">Permanent</td>
+<td class="left">Perm Gen</td>
+</tr>
+
+<tr>
+<td class="left">Survivor space</td>
+<td class="left">(+ Survivor0 Survivor1)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">Gargage collector run</h3>
+<div class="outline-text-3" id="text-2-2">
+<ol class="org-ol">
+<li>Young generation spaces empty
+</li>
+<li>Eden space fills up
+-&gt; minor garbage collection triggered
+</li>
+<li>Pass to count reference objects
+</li>
+<li>Clean Eden up
+<ul class="org-ul">
+<li>Referenced objects are moved to Survivor0
+</li>
+<li>Unreferenced objects are destroyed from the eden space
+</li>
+</ul>
+</li>
+<li>Eden space fills up
+-&gt; second minor garbage collection
+</li>
+<li>Pass to count reference objects
+</li>
+<li>Clean Eden and S0 up
+<ul class="org-ul">
+<li>Referenced objects from Eden are moved to S1
+</li>
+<li>Unreferenced objects are destroyed from the eden space
+</li>
+<li>S0 objects have their incremented by 1 and moved to S0
+</li>
+</ul>
+</li>
+<li>Eden space fills up
+-&gt; third minor garbage collection
+</li>
+<li>Pass to count referenced objects
+</li>
+<li>Clean Eden and S1 up
+<ul class="org-ul">
+<li>Referenced objects from Eden are moved to S0
+</li>
+<li>Unreferenced objects are destroyed from the eden space
+</li>
+<li>S1 objects have their age incremented by 1 and moved to S1
+</li>
+</ul>
+</li>
+</ol>
+
+<p>
+&#x2026;
+n. Given a certain age from the survivor objects. They are promoted to the Old/Tenured Generation.
+2n. Up until a major garbage collection which will clean the old generation up (+ compression of free space).
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">Options</h3>
+<div class="outline-text-3" id="text-2-3">
+</div><div id="outline-container-sec-2-3-1" class="outline-4">
+<h4 id="sec-2-3-1">Serial GC</h4>
+<div class="outline-text-4" id="text-2-3-1">
+<ul class="org-ul">
+<li>no low pause time requirement
+</li>
+<li>more client-style machines
+</li>
+</ul>
+
+<p>
+JVM Option:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">-XX:+UseSerialGC
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3-2" class="outline-4">
+<h4 id="sec-2-3-2">Parallel GC</h4>
+<div class="outline-text-4" id="text-2-3-2">
+<ul class="org-ul">
+<li>long pause acceptable GCs
+</li>
+</ul>
+
+<p>
+Option to add:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">-XX:ParallelGCThreads=&lt;desired number&gt;
+</pre>
+</div>
+</div>
+
+<ul class="org-ul"><li><a id="sec-2-3-2-1" name="sec-2-3-2-1"></a>Parallel GC<br  /><div class="outline-text-5" id="text-2-3-2-1">
+<ul class="org-ul">
+<li>multi-thread young generation collector
+</li>
+<li>single-threaded old generation collector
+</li>
+</ul>
+
+<p>
+JVM Option:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">-XX:+UseParallelGC
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="sec-2-3-2-2" name="sec-2-3-2-2"></a>Parallel Old GC<br  /><div class="outline-text-5" id="text-2-3-2-2">
+<ul class="org-ul">
+<li>multithreaded young generation collector
+</li>
+<li>multithreaded old generation collector
+</li>
+<li>multithreaded compacting collector (olg gen only)
+</li>
+</ul>
+
+<p>
+JVM Option:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">-XX:+UseParallelOldGC
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="sec-2-3-2-3" name="sec-2-3-2-3"></a>CMS<br  /><div class="outline-text-5" id="text-2-3-2-3">
+<p>
+Concurrent Mark and Sweep
+</p>
+<ul class="org-ul">
+<li>minimize the garbage pause
+</li>
+<li>compute concurrently with the application the tenured (old) gen.
+</li>
+<li>no compression (no moving live objects)
+</li>
+</ul>
+
+<p>
+JVM Option:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">-XX:+UseConcMarkSweepGC -XX:ParallelCMSThreads=&lt;n&gt;
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="sec-2-3-2-4" name="sec-2-3-2-4"></a>G1<br  /><div class="outline-text-5" id="text-2-3-2-4">
+<ul class="org-ul">
+<li>to replace CMS
+</li>
+<li>add the compression part
+</li>
+</ul>
+
+<p>
+JVM option:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">-XX:+UseG1GC
+</pre>
+</div>
+</div>
+</li></ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-01 Mon 23:46</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,5539 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Functional programming principles in Scala</title>
+<!-- 2014-12-01 Mon 23:44 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="../other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js"></script>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Functional programming principles in Scala</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1"><span class="done DONE">DONE</span> Tools Setup for linux</a></li>
+<li><a href="#sec-2"><span class="done DONE">DONE</span> Tutorial working on the programming assignments</a></li>
+<li><a href="#sec-3"><span class="done DONE">DONE</span> Programming paradigms</a></li>
+<li><a href="#sec-4"><span class="done DONE">DONE</span> Elements of programming</a></li>
+<li><a href="#sec-5"><span class="done DONE">DONE</span> Evaluation strategies and termination</a></li>
+<li><a href="#sec-6"><span class="done DONE">DONE</span> Conditionals and value definition</a>
+<ul>
+<li><a href="#sec-6-1">if-else</a></li>
+<li><a href="#sec-6-2">boolean expressions</a></li>
+<li><a href="#sec-6-3">value definitions</a></li>
+<li><a href="#sec-6-4">Exercise</a></li>
+</ul>
+</li>
+<li><a href="#sec-7"><span class="done DONE">DONE</span> Example square roots with Newton's method</a></li>
+<li><a href="#sec-8"><span class="done DONE">DONE</span> Blocks and lexical scope</a>
+<ul>
+<li><a href="#sec-8-1">nested functions</a></li>
+<li><a href="#sec-8-2">scope rules</a></li>
+</ul>
+</li>
+<li><a href="#sec-9"><span class="done DONE">DONE</span> Tail recursion</a></li>
+<li><a href="#sec-10"><span class="done DONE">DONE</span> Higher-order functions</a>
+<ul>
+<li><a href="#sec-10-1">definition</a></li>
+<li><a href="#sec-10-2">Examples</a></li>
+<li><a href="#sec-10-3">Factor out common patterns?</a></li>
+<li><a href="#sec-10-4">Anonymous function</a></li>
+<li><a href="#sec-10-5">define the tail recursive version of the sum function</a></li>
+</ul>
+</li>
+<li><a href="#sec-11"><span class="done DONE">DONE</span> Currying</a>
+<ul>
+<li><a href="#sec-11-1">Can we remove the redundant bounds parameters?</a></li>
+<li><a href="#sec-11-2">Can we remove the middlemen function?</a></li>
+<li><a href="#sec-11-3">Simplification over the definition of function that returns function</a></li>
+<li><a href="#sec-11-4">Exercises</a></li>
+</ul>
+</li>
+<li><a href="#sec-12"><span class="done DONE">DONE</span> Example finding fixed points</a></li>
+<li><a href="#sec-13"><span class="done DONE">DONE</span> Scala syntax summary</a>
+<ul>
+<li><a href="#sec-13-1">Language elements seen so far</a></li>
+<li><a href="#sec-13-2">Types</a></li>
+<li><a href="#sec-13-3">Expressions</a></li>
+<li><a href="#sec-13-4"><span class="todo TODO">TODO</span> Definitions</a></li>
+</ul>
+</li>
+<li><a href="#sec-14"><span class="done DONE">DONE</span> Functions and data</a>
+<ul>
+<li><a href="#sec-14-1">functions create and encapsulate data structure</a></li>
+<li><a href="#sec-14-2">Rational addition</a></li>
+<li><a href="#sec-14-3">Classes</a></li>
+<li><a href="#sec-14-4">Objects</a></li>
+<li><a href="#sec-14-5">Implementing</a></li>
+<li><a href="#sec-14-6">Exercises</a></li>
+</ul>
+</li>
+<li><a href="#sec-15"><span class="done DONE">DONE</span> More fun with rationals</a>
+<ul>
+<li><a href="#sec-15-1">private member or method</a></li>
+<li><a href="#sec-15-2">Requirement</a></li>
+<li><a href="#sec-15-3">Assertions</a></li>
+<li><a href="#sec-15-4">Constructor</a></li>
+<li><a href="#sec-15-5">Multiple constructor possible</a></li>
+<li><a href="#sec-15-6">Exercise</a></li>
+</ul>
+</li>
+<li><a href="#sec-16"><span class="done DONE">DONE</span> Evaluation and operators</a>
+<ul>
+<li><a href="#sec-16-1">Classes and substitutions</a></li>
+<li><a href="#sec-16-2">Operators</a></li>
+<li><a href="#sec-16-3">Precedence rules</a></li>
+<li><a href="#sec-16-4">Exercise</a></li>
+</ul>
+</li>
+<li><a href="#sec-17"><span class="done DONE">DONE</span> Class hierarchies</a>
+<ul>
+<li><a href="#sec-17-1">Abstract classes</a></li>
+<li><a href="#sec-17-2">IntSets</a></li>
+<li><a href="#sec-17-3">Base classes and subclasses</a></li>
+<li><a href="#sec-17-4">Implementations and Overriding</a></li>
+<li><a href="#sec-17-5">Exercise</a></li>
+</ul>
+</li>
+<li><a href="#sec-18"><span class="done DONE">DONE</span> How classes are organized</a>
+<ul>
+<li><a href="#sec-18-1">Packages</a></li>
+<li><a href="#sec-18-2">Import clauses</a></li>
+<li><a href="#sec-18-3">Automatic import</a></li>
+<li><a href="#sec-18-4">scaladoc</a></li>
+<li><a href="#sec-18-5">Traits</a></li>
+<li><a href="#sec-18-6">scala's class hierarchy</a></li>
+<li><a href="#sec-18-7">Top Types</a></li>
+<li><a href="#sec-18-8">Nothing</a></li>
+<li><a href="#sec-18-9">Exceptions</a></li>
+<li><a href="#sec-18-10">null</a></li>
+<li><a href="#sec-18-11">Exercise</a></li>
+</ul>
+</li>
+<li><a href="#sec-19"><span class="done DONE">DONE</span> Polymorphism</a>
+<ul>
+<li><a href="#sec-19-1">Cons-Lists</a></li>
+<li><a href="#sec-19-2">Cons-Lists in Scala</a></li>
+<li><a href="#sec-19-3">Polymorphism</a></li>
+<li><a href="#sec-19-4">Exercise</a></li>
+</ul>
+</li>
+<li><a href="#sec-20"><span class="done DONE">DONE</span> More functions on lists</a>
+<ul>
+<li><a href="#sec-20-1">Standard</a></li>
+<li><a href="#sec-20-2">Creating new list</a></li>
+<li><a href="#sec-20-3">Finding elements</a></li>
+<li><a href="#sec-20-4">Misc Implementation</a></li>
+</ul>
+</li>
+<li><a href="#sec-21"><span class="done DONE">DONE</span> Pairs and Tuples</a></li>
+<li><a href="#sec-22"><span class="done DONE">DONE</span> Implicit Parameters</a>
+<ul>
+<li><a href="#sec-22-1">Making msort more generalized</a></li>
+<li><a href="#sec-22-2">Parametrization with Ordered</a></li>
+<li><a href="#sec-22-3">Implicit parameters</a></li>
+</ul>
+</li>
+<li><a href="#sec-23"><span class="done DONE">DONE</span> Higher-Order List Functions</a>
+<ul>
+<li><a href="#sec-23-1">Recurring patterns for computations on Lists</a></li>
+<li><a href="#sec-23-2">Applying a function of elements of a list</a></li>
+<li><a href="#sec-23-3">Exercise</a></li>
+<li><a href="#sec-23-4">Filtering</a></li>
+<li><a href="#sec-23-5">Variations of filter</a></li>
+<li><a href="#sec-23-6">Exercise</a></li>
+<li><a href="#sec-23-7">Exercise</a></li>
+</ul>
+</li>
+<li><a href="#sec-24"><span class="done DONE">DONE</span> Reduction of Lists</a>
+<ul>
+<li><a href="#sec-24-1">ReduceLeft</a></li>
+<li><a href="#sec-24-2">FoldLeft</a></li>
+<li><a href="#sec-24-3">ReduceRight</a></li>
+<li><a href="#sec-24-4">FoldRight</a></li>
+<li><a href="#sec-24-5">Difference</a></li>
+</ul>
+</li>
+<li><a href="#sec-25"><span class="done DONE">DONE</span> Reasoning About Concat</a>
+<ul>
+<li><a href="#sec-25-1">Natural Induction</a></li>
+<li><a href="#sec-25-2">Referential transparency</a></li>
+<li><a href="#sec-25-3">Structural Induction</a></li>
+</ul>
+</li>
+<li><a href="#sec-26"><span class="done DONE">DONE</span> A Larger Equational Proof on Lists</a></li>
+<li><a href="#sec-27"><span class="done DONE">DONE</span> Functions as Objects</a>
+<ul>
+<li><a href="#sec-27-1">Function as object</a></li>
+<li><a href="#sec-27-2">Expansion of funtion values</a></li>
+<li><a href="#sec-27-3">Expansion of function calls</a></li>
+<li><a href="#sec-27-4">Functions and methods</a></li>
+</ul>
+</li>
+<li><a href="#sec-28"><span class="done DONE">DONE</span> Objects Everywhere</a>
+<ul>
+<li><a href="#sec-28-1">peano number</a></li>
+</ul>
+</li>
+<li><a href="#sec-29"><span class="done DONE">DONE</span> Subtyping and Generics</a>
+<ul>
+<li><a href="#sec-29-1">Polymorphism</a></li>
+<li><a href="#sec-29-2">Type bounds</a></li>
+<li><a href="#sec-29-3">Lower bound</a></li>
+<li><a href="#sec-29-4">Mixed bound</a></li>
+<li><a href="#sec-29-5">Covariance</a></li>
+<li><a href="#sec-29-6">Liskov substitution principle</a></li>
+</ul>
+</li>
+<li><a href="#sec-30"><span class="done DONE">DONE</span> Variance</a>
+<ul>
+<li><a href="#sec-30-1">Definition of Variance</a></li>
+<li><a href="#sec-30-2">Exercise</a></li>
+<li><a href="#sec-30-3">Typing rules for functions</a></li>
+<li><a href="#sec-30-4">Function trait declaration</a></li>
+<li><a href="#sec-30-5">Variance Checks</a></li>
+<li><a href="#sec-30-6">Variance and Lists</a></li>
+<li><a href="#sec-30-7">Making classes covariant</a></li>
+<li><a href="#sec-30-8">Exercise</a></li>
+<li><a href="#sec-30-9">Lower bounds</a></li>
+<li><a href="#sec-30-10">Exercise</a></li>
+</ul>
+</li>
+<li><a href="#sec-31"><span class="done DONE">DONE</span> Decomposition</a>
+<ul>
+<li><a href="#sec-31-1">Basic</a></li>
+<li><a href="#sec-31-2">No solution</a></li>
+<li><a href="#sec-31-3">Better solution</a>
+<ul>
+<li><a href="#sec-31-3-1">Object oriented Decomposition</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-32"><span class="done DONE">DONE</span> Pattern Matching</a>
+<ul>
+<li><a href="#sec-32-1">Pattern matching</a></li>
+<li><a href="#sec-32-2">Match syntax</a></li>
+<li><a href="#sec-32-3">Forms of Patterns</a></li>
+<li><a href="#sec-32-4">Pattern matching and Methods</a></li>
+<li><a href="#sec-32-5">Exercise</a></li>
+</ul>
+</li>
+<li><a href="#sec-33"><span class="done DONE">DONE</span> Lists</a>
+<ul>
+<li><a href="#sec-33-1">The List type</a></li>
+<li><a href="#sec-33-2">Operations on the List</a></li>
+<li><a href="#sec-33-3">List Pattern</a></li>
+<li><a href="#sec-33-4">Exercise</a></li>
+</ul>
+</li>
+<li><a href="#sec-34"><span class="done DONE">DONE</span> Other Collections/Sequences</a>
+<ul>
+<li><a href="#sec-34-1">List</a></li>
+<li><a href="#sec-34-2">Vector</a></li>
+<li><a href="#sec-34-3">Collection hierarchy</a></li>
+<li><a href="#sec-34-4">Ranges</a></li>
+<li><a href="#sec-34-5">Some more sequence operations</a></li>
+<li><a href="#sec-34-6">Example</a></li>
+<li><a href="#sec-34-7">Exercise</a></li>
+</ul>
+</li>
+<li><a href="#sec-35"><span class="done DONE">DONE</span> Combinatorial Search and For-Expressions</a>
+<ul>
+<li><a href="#sec-35-1">Exercise</a></li>
+</ul>
+</li>
+<li><a href="#sec-36"><span class="done DONE">DONE</span> Combinatorial Search Example</a>
+<ul>
+<li><a href="#sec-36-1">Sets</a></li>
+<li><a href="#sec-36-2">N-Queens</a></li>
+</ul>
+</li>
+<li><a href="#sec-37"><span class="done DONE">DONE</span> Queries with For</a></li>
+<li><a href="#sec-38"><span class="done DONE">DONE</span> Translation of For</a></li>
+<li><a href="#sec-39"><span class="done DONE">DONE</span> Maps</a></li>
+<li><a href="#sec-40"><span class="done DONE">DONE</span> Putting the Pieces Together</a></li>
+<li><a href="#sec-41"><span class="done DONE">DONE</span> Structural Induction on Trees</a></li>
+<li><a href="#sec-42"><span class="done DONE">DONE</span> Streams</a>
+<ul>
+<li><a href="#sec-42-1">Delayed evalutation</a></li>
+<li><a href="#sec-42-2">Defining Streams</a></li>
+<li><a href="#sec-42-3">Stream Ranges</a></li>
+<li><a href="#sec-42-4">Methods on streams</a></li>
+<li><a href="#sec-42-5">Stream cons operator</a></li>
+</ul>
+</li>
+<li><a href="#sec-43"><span class="done DONE">DONE</span> Lazy Evaluation</a>
+<ul>
+<li><a href="#sec-43-1">Evaluation by default in scala</a></li>
+</ul>
+</li>
+<li><a href="#sec-44"><span class="done DONE">DONE</span> Computing with Infinite Sequences</a>
+<ul>
+<li><a href="#sec-44-1">Infinite Stream of primes</a></li>
+<li><a href="#sec-44-2">Square roots</a></li>
+</ul>
+</li>
+<li><a href="#sec-45"><span class="done DONE">DONE</span> Case Study the Water Pouring Problem</a>
+<ul>
+<li><a href="#sec-45-1">Problem</a></li>
+<li><a href="#sec-45-2">Model</a></li>
+<li><a href="#sec-45-3">Solutions</a></li>
+</ul>
+</li>
+<li><a href="#sec-46"><span class="done DONE">DONE</span> Course Conclusion</a>
+<ul>
+<li><a href="#sec-46-1">Traits of functional programming</a></li>
+<li><a href="#sec-46-2">More materials</a></li>
+<li><a href="#sec-46-3">What remains to be covered</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="done DONE">DONE</span> Tools Setup for linux</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="done DONE">DONE</span> Tutorial working on the programming assignments</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="done DONE">DONE</span> Programming paradigms</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="done DONE">DONE</span> Elements of programming</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="done DONE">DONE</span> Evaluation strategies and termination</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Call By Name -&gt;
+Call By Value -&gt; evaluate first the parameters
+</p>
+
+<p>
+if CBV terminates then CBN terminates
+Not true for the other way around
+</p>
+
+<p>
+Scala defaults to CBV, you can force the evaluation strategy to CBN by adding =&gt;
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="done DONE">DONE</span> Conditionals and value definition</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1">if-else</h3>
+<div class="outline-text-3" id="text-6-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">def abs(x: Int) = if (x&gt;=0) x else -x
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6-2" class="outline-3">
+<h3 id="sec-6-2">boolean expressions</h3>
+<div class="outline-text-3" id="text-6-2">
+<div class="org-src-container">
+
+<pre class="src src-scala">true
+false
+!b
+b &amp;&amp; b
+b || b
+e &lt;= e
+...
+</pre>
+</div>
+
+<p>
+short-circuit evaluation (&amp;&amp; ||)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6-3" class="outline-3">
+<h3 id="sec-6-3">value definitions</h3>
+<div class="outline-text-3" id="text-6-3">
+<ul class="org-ul">
+<li>def function definition by name
+</li>
+<li>val/var variable/form definition by value
+</li>
+</ul>
+
+<p>
+Exemple:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def x = loop
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">val x = loop
+</pre>
+</div>
+<p>
+ko, will never render the hand
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-6-4" class="outline-3">
+<h3 id="sec-6-4">Exercise</h3>
+<div class="outline-text-3" id="text-6-4">
+<p>
+By value:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def and(x: Boolean, y: Boolean) = if x y else False
+</pre>
+</div>
+
+<p>
+But, this <code>and(x, loop)</code> will break as scala is by value by default.
+</p>
+
+<p>
+Redefining, by defining the y by name:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def and(x: Boolean, y: =&gt; Boolean) = if x y else False
+</pre>
+</div>
+
+<p>
+this will be ok and do not try to evaluate the loop expression.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="done DONE">DONE</span> Example square roots with Newton's method</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+Successive approximations
+</p>
+<ul class="org-ul">
+<li>Start with an initial estimate y (y = 1 for starter)
+</li>
+<li>Repeatedly improve the estimate by taking the mean of y and x/y
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+import math.abs
+
+object session {
+
+  def sqrtIter(guess: Double, x: Double): Double =
+    if (isGoodEnough(guess, x)) guess
+    else sqrtIter(improve(guess, x), x)
+
+  def isGoodEnough(guess: Double, x: Double) =
+    abs(guess * guess - x) / x &lt; 0.001
+
+  def improve(guess: Double, x: Double) =
+    (guess + x/guess) / 2
+
+  def sqrt(x: Double) = sqrtIter(1.0, x)
+
+  def main(args: Array[String]) = {
+    val values = List(2.0, 4.0, 1e-6, 0.001, 0.1e-20, 1.0e20/*, 1.0e50*/)
+
+    val squareValues = values.map(v =&gt; List(v, sqrt(v)))
+
+    squareValues.foreach(println)
+  }
+}
+
+// [info] Running coursera.session 4
+// List(2.0, 1.4142156862745097)
+// List(4.0, 2.0000000929222947)
+// List(1.0E-6, 0.031260655525445276)
+// List(0.001, 0.04124542607499115)
+// List(1.0E-21, 0.03125)
+// List(1.0E20, 1.0E10)
+// sqrt(1.0E20): 1.0E10
+// ^D^D  C-c C-c^C
+// Process sbt exited abnormally with code 130
+</pre>
+</div>
+
+<ol class="org-ol">
+<li>the <code>isGoodEnough</code> test is not very precise for small numbers and can lead to non-termination for very large numbers. Explain why.
+</li>
+
+<li>takes absolute difference
+</li>
+<li>small numbers: the threshold value 0.001 might be too huge
+</li>
+<li>large numbers: further apart than this absolute value (distance might be larger than the threshold)
+</li>
+<li>we can make test proportional to x
+</li>
+</ol>
+
+
+<ol class="org-ol">
+<li>Design a different version of <code>isGoodEnough</code> that does not have these problems.
+</li>
+
+<li>Test your version with some very very small and large numbers e.g.
+</li>
+</ol>
+<p>
+0.001
+0.1e-20
+1.0e20
+1.0e50
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+import math.abs
+
+object session {
+
+  def sqrtIter(guess: Double, x: Double): Double =
+    if (isGoodEnough(guess, x)) guess
+    else sqrtIter(improve(guess, x), x)
+
+  def isGoodEnough(guess: Double, x: Double) =
+    abs(guess * guess - x) / x &lt; 0.001
+
+  def improve(guess: Double, x: Double) =
+    (guess + x/guess) / 2
+
+  def sqrt(x: Double) = sqrtIter(1.0, x)
+
+  def main(args: Array[String]) = {
+    val values = List(2.0, 4.0, 1e-6, 0.001, 0.1e-20, 1.0e20, 1.0e50)
+
+    val squareValues = values.map(v =&gt; List(v, sqrt(v)))
+
+    squareValues.foreach(println)
+  }
+}
+
+// [info] Running coursera.session
+// List(2.0, 1.4142156862745097)
+// List(4.0, 2.000609756097561)
+// List(1.0E-6, 0.0010000001533016628)
+// List(0.001, 0.03162278245070105)
+// List(1.0E-21, 3.1633394544890125E-11)
+// List(1.0E20, 1.0000021484861237E10)
+// List(1.0E50, 1.0000003807575104E25)
+// [success] Total time: 1 s, completed 22 juil. 2013 11:43:47
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="done DONE">DONE</span> Blocks and lexical scope</h2>
+<div class="outline-text-2" id="text-8">
+</div>
+<div id="outline-container-sec-8-1" class="outline-3">
+<h3 id="sec-8-1">nested functions</h3>
+<div class="outline-text-3" id="text-8-1">
+<ul class="org-ul">
+<li>split up task into many small functions
+</li>
+<li>avoid namespace pollution
+</li>
+<li>to do this in scala, put those private functions into the main function
+</li>
+</ul>
+
+<p>
+For example, for the sqrt sample:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+import math.abs
+
+object session {
+
+  def sqrt(x: Double) = {
+    def sqrtIter(guess: Double, x: Double): Double =
+      if (isGoodEnough(guess, x)) guess
+      else sqrtIter(improve(guess, x), x)
+
+    def isGoodEnough(guess: Double, x: Double) =
+      abs(guess * guess - x) / x &lt; 0.001
+
+    def improve(guess: Double, x: Double) =
+      (guess + x/guess) / 2
+
+    sqrtIter(1.0, x)
+  }
+
+  def main(args: Array[String]) = {
+    val values = List(2.0, 4.0, 1e-6, 0.001, 0.1e-20, 1.0e20, 1.0e50)
+
+    val squareValues = values.map(v =&gt; List(v, sqrt(v)))
+
+    squareValues.foreach(println)
+  }
+}
+
+// [info] Running coursera.session
+// List(2.0, 1.4142156862745097)
+// List(4.0, 2.000609756097561)
+// List(1.0E-6, 0.0010000001533016628)
+// List(0.001, 0.03162278245070105)
+// List(1.0E-21, 3.1633394544890125E-11)
+// List(1.0E20, 1.0000021484861237E10)
+// List(1.0E50, 1.0000003807575104E25)
+// [success] Total time: 1 s, completed 22 juil. 2013 11:58:50
+</pre>
+</div>
+
+<p>
+For this, we use a block.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-8-2" class="outline-3">
+<h3 id="sec-8-2">scope rules</h3>
+<div class="outline-text-3" id="text-8-2">
+<p>
+Inside a block, as long as not shadowed, the function/variables defined are visibles inside nested blocks.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><span class="done DONE">DONE</span> Tail recursion</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+Application rewriting rule
+substitution of all occurences of parameters by their corresponding values
+</p>
+
+<p>
+Ex:
+</p>
+
+<p>
+Tail recursion:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def gcd(a: Int, b: Int): Int =
+  if (b == 0) a else gcd(b, a % b)
+</pre>
+</div>
+
+<p>
+No tail recursion as there exists some operations to be done after the recursion call.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def factorial(n: Int): Int =
+  if (n == 0) 1 else n * factorial (n-1)
+</pre>
+</div>
+
+<p>
+Tail recursion -&gt; if a function calls itself as its last action, the function's stack frame can be reused.
+</p>
+
+<p>
+Define a tail-recursive version of the factorial
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">...
+  def factorial(n: Int): Int = {
+    @tailrec
+    def fact(n: Int, r: Int): Int =
+      if (n == 0) r else fact(n-1, n*r)
+
+    fact(n, 1)
+  }
+...
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10"><span class="done DONE">DONE</span> Higher-order functions</h2>
+<div class="outline-text-2" id="text-10">
+</div>
+<div id="outline-container-sec-10-1" class="outline-3">
+<h3 id="sec-10-1">definition</h3>
+<div class="outline-text-3" id="text-10-1">
+<ul class="org-ul">
+<li>functions as first-class values:
+<ul class="org-ul">
+<li>functions can be passed as parameters to function
+</li>
+<li>functions can be returned as result of function
+</li>
+</ul>
+</li>
+<li>functions that takes functions as parameters are called Higher-order functions.
+</li>
+</ul>
+
+<p>
+Provides flexible way to compose programs
+</p>
+</div>
+</div>
+<div id="outline-container-sec-10-2" class="outline-3">
+<h3 id="sec-10-2">Examples</h3>
+<div class="outline-text-3" id="text-10-2">
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+object w3 {
+  // sum of the integers between a and b
+  def sumInts(a: Int, b: Int): Int =
+    if(a &gt; b) 0 else a + sumInts(a + 1, b)
+
+  def sumCubes(a: Int, b: Int) :Int = {
+    def cube(a: Int): Int = a * a * a
+
+    def sum(a: Int, b: Int): Int =
+      if(a &gt; b) 0 else cube(a) + sum(a + 1, b)
+
+    sum(a, b)
+  }
+
+  def sumFactorials(a: Int, b: Int): Int =
+    if(a &gt; b) 0 else w2.factorial(a) + sumFactorials(a + 1, b)
+
+  def main(args: Array[String]) = {
+    println(sumInts(1, 10))
+    println(sumCubes(1, 10))
+    println(sumFactorials(1, 10))
+  }
+}
+
+// [info] Running coursera.w3
+// 55
+// 3025
+// 4037913
+// [success] Total time: 0 s, completed 22 juil. 2013 15:08:24
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-10-3" class="outline-3">
+<h3 id="sec-10-3">Factor out common patterns?</h3>
+<div class="outline-text-3" id="text-10-3">
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+object w3 {
+  def sum(a: Int, b: Int, fn: Int =&gt; Int): Int =
+    if(a &gt; b) 0 else fn(a) + sum(a + 1, b, fn)
+
+  // sum of the integers between a and b
+  def sumInts(a: Int, b: Int): Int =
+    sum(a, b, identity)
+
+  def sumCubes(a: Int, b: Int) :Int = {
+    def cube(a: Int): Int = a * a * a
+
+    sum(a, b, cube)
+  }
+
+  def sumFactorials(a: Int, b: Int): Int =
+    sum(a, b, w2.factorial)
+
+  def main(args: Array[String]) = {
+    val values = List(Tuple2(1, 10),
+		      Tuple2(10, 20))
+
+    val functions : Map[String, (Int, Int) =&gt; Int] =
+      Map("sumInts"       -&gt; sumInts,
+	  "sumCubes"      -&gt; sumCubes,
+	  "sumFactorials" -&gt; sumFactorials)
+
+    def displayResult(fnName: String, a: Int, b: Int, r: Int): String =
+      fnName + "(" + a + ", " + b + ") = " + r
+
+    functions.foreach { case (fnName, fn) =&gt;
+      (for ((a, b) &lt;- values)
+	 println(displayResult(fnName, a, b, fn(a, b))))
+    }
+
+    w2.title("end")
+  }
+}
+
+// [info] Running coursera.w3
+// sumInts(1, 10) = 55
+// sumInts(10, 20) = 165
+// sumCubes(1, 10) = 3025
+// sumCubes(10, 20) = 42075
+// sumFactorials(1, 10) = 4037913
+// sumFactorials(10, 20) = 267631616
+
+// ######### end
+
+// [success] Total time: 2 s, completed 22 juil. 2013 15:38:09
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-10-4" class="outline-3">
+<h3 id="sec-10-4">Anonymous function</h3>
+<div class="outline-text-3" id="text-10-4">
+<p>
+syntactic sugar
+</p>
+
+<p>
+We can for example avoid 'def'ining the `cube` version:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def sumCubes(a: Int, b: Int) :Int =
+  sum(a, b, (x: Int) =&gt; x * x * x)
+</pre>
+</div>
+
+<p>
+We can also let the compiler infer the type
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def sumCubes(a: Int, b: Int) :Int =
+  sum(a, b, x =&gt; x * x * x)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-10-5" class="outline-3">
+<h3 id="sec-10-5">define the tail recursive version of the sum function</h3>
+<div class="outline-text-3" id="text-10-5">
+<div class="org-src-container">
+
+<pre class="src src-scala">def sum(a: Int, b: Int, fn: Int =&gt; Int): Int = {
+
+  @tailrec
+  def sumTR(x: Int, r: Int): Int =
+    if(x &gt; b) r else sumTR(x + 1, fn(x) + r)
+
+  sumTR(a, 0)
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11"><span class="done DONE">DONE</span> Currying</h2>
+<div class="outline-text-2" id="text-11">
+</div>
+
+<div id="outline-container-sec-11-1" class="outline-3">
+<h3 id="sec-11-1">Can we remove the redundant bounds parameters?</h3>
+<div class="outline-text-3" id="text-11-1">
+<p>
+Yes
+</p>
+
+<p>
+by redefining the `sum` function to return another function which takes the 2 bounds parameters:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def sum(fn: Int =&gt; Int): (Int, Int) =&gt; Int = {
+
+  @tailrec
+  def sumTR(a: Int, b: Int, r: Int): Int =
+    if(a &gt; b) r else sumTR(a + 1, b, fn(a) + r)
+
+  (a, b) =&gt; sumTR(a, b, 0)
+}
+</pre>
+</div>
+
+<p>
+Thus, this simplifies the definition of the functions that rely on `sum`:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def sumInts = sum(identity)
+def sumCubes = sum(x =&gt; x * x * x)
+def sumFactorials = sum(w2.factorial)
+</pre>
+</div>
+
+<p>
+Complete package:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+import scala.annotation.tailrec
+
+object w3 {
+  def sum(fn: Int =&gt; Int): (Int, Int) =&gt; Int = {
+
+    @tailrec
+    def sumTR(a: Int, b: Int, r: Int): Int =
+      if(a &gt; b) r else sumTR(a + 1, b, fn(a) + r)
+
+    (a, b) =&gt; sumTR(a, b, 0)
+  }
+
+  // sum of the integers between a and b
+  def sumInts = sum(identity)
+
+  def sumCubes = sum(x =&gt; x * x * x)
+
+  def sumFactorials = sum(w2.factorial)
+
+  def main(args: Array[String]) = {
+    val values = List(Tuple2(1, 10),
+		      Tuple2(10, 20))
+
+    val functions : Map[String, (Int, Int) =&gt; Int] =
+      Map("sumInts"       -&gt; sumInts,
+	  "sumCubes"      -&gt; sumCubes,
+	  "sumFactorials" -&gt; sumFactorials)
+
+    def displayResult(fnName: String, a: Int, b: Int, r: Int): String =
+      fnName + "(" + a + ", " + b + ") = " + r
+
+    functions.foreach { case (fnName, fn) =&gt;
+      (for ((a, b) &lt;- values)
+	 println(displayResult(fnName, a, b, fn(a, b))))
+    }
+
+    w2.title("end")
+  }
+}
+
+// [info] Running coursera.w3
+// sumInts(1, 10) = 55
+// sumInts(10, 20) = 165
+// sumCubes(1, 10) = 3025
+// sumCubes(10, 20) = 42075
+// sumFactorials(1, 10) = 4037913
+// sumFactorials(10, 20) = 267631616
+
+// ######### end
+
+// [success] Total time: 1 s, completed 22 juil. 2013 16:04:58
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-11-2" class="outline-3">
+<h3 id="sec-11-2">Can we remove the middlemen function?</h3>
+<div class="outline-text-3" id="text-11-2">
+<p>
+Yes!
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+import scala.annotation.tailrec
+
+object w3 {
+  def sum(fn: Int =&gt; Int): (Int, Int) =&gt; Int = {
+
+    @tailrec
+    def sumTR(a: Int, b: Int, r: Int): Int =
+      if(a &gt; b) r else sumTR(a + 1, b, fn(a) + r)
+
+    (a, b) =&gt; sumTR(a, b, 0)
+  }
+
+  def main(args: Array[String]) = {
+    val values = List(Tuple2(1, 10),
+		      Tuple2(10, 20))
+
+    val functions : Map[String, (Int, Int) =&gt; Int] =
+      Map("sumInts"       -&gt; sum(identity),
+	  "sumCubes"      -&gt; sum(x =&gt; x * x * x),
+	  "sumFactorials" -&gt; sum(w2.factorial))
+
+    def displayResult(fnName: String, a: Int, b: Int, r: Int): String =
+      fnName + "(" + a + ", " + b + ") = " + r
+
+    functions.foreach { case (fnName, fn) =&gt;
+      (for ((a, b) &lt;- values)
+	 println(displayResult(fnName, a, b, fn(a, b))))
+    }
+
+    w2.title("end")
+  }
+}
+
+// [info] Running coursera.w3
+// sumInts(1, 10) = 55
+// sumInts(10, 20) = 165
+// sumCubes(1, 10) = 3025
+// sumCubes(10, 20) = 42075
+// sumFactorials(1, 10) = 4037913
+// sumFactorials(10, 20) = 267631616
+
+// ######### end
+
+// [success] Total time: 0 s, completed 22 juil. 2013 16:10:28
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-11-3" class="outline-3">
+<h3 id="sec-11-3">Simplification over the definition of function that returns function</h3>
+<div class="outline-text-3" id="text-11-3">
+<div class="org-src-container">
+
+<pre class="src src-scala">def sum(fn: Int =&gt; Int) (a: Int, b: Int): Int = {
+
+  @tailrec
+  def sumTR(a: Int, r: Int): Int =
+    if(a &gt; b) r else sumTR(a + 1, fn(a) + r)
+
+  sumTR(a, 0)
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-11-4" class="outline-3">
+<h3 id="sec-11-4">Exercises</h3>
+<div class="outline-text-3" id="text-11-4">
+<ol class="org-ol">
+<li>Write a product function `pdt` that calculates the product of the values of a function for the points on a given interval
+</li>
+</ol>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def pdt(fn: Int =&gt; Int) (a: Int, b: Int): Int = {
+  @tailrec
+  def loop(a: Int, r: Int): Int =
+    if(a &gt; b) r else loop(a + 1, fn(a) * r)
+
+  loop(a, 1)
+}
+</pre>
+</div>
+
+<ol class="org-ol">
+<li>Write factorial in terms of `pdt`
+</li>
+</ol>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def factorial(n: Int) = pdt(identity)(1, n)
+</pre>
+</div>
+
+<ol class="org-ol">
+<li>Can you write a more general function, which generalizes both `sum` and `pdt`?
+</li>
+</ol>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+import scala.annotation.tailrec
+
+object w3 {
+  def fold(fn: Int =&gt; Int, op: (Int, Int) =&gt; Int, initial: Int)(a: Int, b: Int): Int = {
+    @tailrec
+    def loop(a: Int, r: Int): Int =
+      if(a &gt; b) r else loop(a + 1, op(fn(a), r))
+
+    loop(a, initial)
+  }
+
+  def sum(fn: Int =&gt; Int) (a: Int, b: Int): Int = fold(fn, (x, y) =&gt; x + y, 0)(a, b)
+  def pdt(fn: Int =&gt; Int) (a: Int, b: Int): Int = fold(fn, (x, y) =&gt; x * y, 1)(a, b)
+
+  def factorial(n: Int) = pdt(identity)(1, n)
+
+  def main(args: Array[String]) = {
+    w2.title("sum of a function values (cube, factorial, etc...)")
+
+    val values = List(Tuple2(1, 10),
+		      Tuple2(10, 20))
+
+    val functions : Map[String, (Int, Int) =&gt; Int] =
+      Map("sumInts"       -&gt; sum(identity),
+	  "sumCubes"      -&gt; sum(x =&gt; x * x * x),
+	  "sumFactorials" -&gt; sum(factorial))
+
+    def displayResult(fnName: String, a: Int, b: Int, r: Int): String =
+      fnName + "(" + a + ", " + b + ") = " + r
+
+    functions.foreach { case (fnName, fn) =&gt;
+      (for ((a, b) &lt;- values)
+	 println(displayResult(fnName, a, b, fn(a, b))))
+    }
+
+    w2.title("factorial")
+
+    val fvalues = List(1,2,3,4,5,6,7,8,9)
+
+    fvalues.map(factorial).map(println)
+
+    w2.title("end")
+  }
+}
+
+// ######### sum of a function values (cube, factorial, etc...)
+
+// sumInts(1, 10) = 55
+// sumInts(10, 20) = 165
+// sumCubes(1, 10) = 3025
+// sumCubes(10, 20) = 42075
+// sumFactorials(1, 10) = 4037913
+// sumFactorials(10, 20) = 267631616
+
+// ######### factorial
+
+// 1
+// 2
+// 6
+// 24
+// 120
+// 720
+// 5040
+// 40320
+// 362880
+
+// ######### end
+
+// [success] Total time: 1 s, completed 22 juil. 2013 18:19:56
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12"><span class="done DONE">DONE</span> Example finding fixed points</h2>
+<div class="outline-text-2" id="text-12">
+<p>
+a number x is called a fixed point of a function if f(x) = x
+</p>
+
+<p>
+for some functions f, we can locate the fixed points by starting with an initial estimate and then by applying f in a repetitive way: iterate f x
+</p>
+
+<p>
+until the value does not vary anymore (or the changes is sufficiently small)
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+import math.abs
+
+object w32 {
+  val tolerance = 0.0001
+
+  def isCloseEnough(x: Double, y: Double): Boolean =
+    abs((x - y) / x) / x &lt; tolerance
+
+  def fixedPoint(f: Double =&gt; Double) (firstGuess: Double) = {
+    def iterate(guess: Double): Double = {
+      val next = averageDamp(f)(guess)
+      if(isCloseEnough(guess, next)) next else iterate(next)
+    }
+    iterate(firstGuess)
+  }
+
+  def averageDamp(f: Double =&gt; Double)(x: Double) :Double =
+    (x + f(x)) / 2
+
+  def main(args: Array[String]) = {
+    println(fixedPoint(x =&gt; 1 + x/2)(1))
+  }
+}
+
+// [info] Running coursera.w32
+// 1.999755859375
+// [success] Total time: 3 s, completed 22 juil. 2013 18:44:11
+</pre>
+</div>
+
+<p>
+Revisiting the square root:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+import math.abs
+
+object w1 {
+
+  def sqrt(x: Double) = w32.fixedPoint(y =&gt; x/y)(1.0)
+
+  def main(args: Array[String]) = {
+    val values = List(2.0, 4.0, 1e-6, 0.001, 0.1e-20, 1.0e20, 1.0e50)
+
+    val squareValues = values.map(v =&gt; List(v, sqrt(v)))
+
+    squareValues.foreach(println)
+  }
+}
+
+// [info] Running coursera.w1
+// List(2.0, 1.4142135623746899)
+// List(4.0, 2.000000000000002)
+// List(1.0E-6, 0.001)
+// List(0.001, 0.03162277660168433)
+// List(1.0E-21, 3.162277660168379E-11)
+// List(1.0E20, 2.5E19)
+// List(1.0E50, 2.5E49)
+// [success] Total time: 2 s, completed 22 juil. 2013 18:52:31
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13"><span class="done DONE">DONE</span> Scala syntax summary</h2>
+<div class="outline-text-2" id="text-13">
+<p>
+Review the language constructs we have seen so far
+</p>
+</div>
+<div id="outline-container-sec-13-1" class="outline-3">
+<h3 id="sec-13-1">Language elements seen so far</h3>
+<div class="outline-text-3" id="text-13-1">
+<p>
+Context-free syntax in Extended Backus-Naur form (EBNF)
+</p>
+
+<p>
+Syntax:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">alternative</td>
+</tr>
+</tbody>
+</table>
+<p>
+[&#x2026;] option (0 or 1)
+{&#x2026;} repetition (0 or more)
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-13-2" class="outline-3">
+<h3 id="sec-13-2">Types</h3>
+<div class="outline-text-3" id="text-13-2">
+<div class="org-src-container">
+
+<pre class="src src-grammar">Type         = SimpleType | FunctionType
+FunctionType = SimpleType '=&gt;' Type
+	    | '(' [Types] ')' ' =&gt;' Type
+SimpleType  = Ident
+Types       = Type {',' Type}
+</pre>
+</div>
+
+<p>
+type:
+</p>
+<ul class="org-ul">
+<li>numeric type: Int, Double, Byte, Short, Char, Long, Float
+</li>
+<li>Boolean
+</li>
+<li>String
+</li>
+</ul>
+
+<p>
+function type example: Int =&gt; Int, (Int, Int) =&gt; Int
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-sec-13-3" class="outline-3">
+<h3 id="sec-13-3">Expressions</h3>
+<div class="outline-text-3" id="text-13-3">
+<div class="org-src-container">
+
+<pre class="src src-grammar">Expr         = InfixExpr | FunctionExpr | if '(' Expr ')' Expr else Expr
+InfixExpr    = PrefixExpr | InfixExpr Operator InfixExpr
+Operator     = Ident
+PrefixExpr   = ['+' | '-' | '!' | '~'] SimpleExpr
+SimpleExpr   = Ident | literal | SimpleExpr '.' ident | Block
+FunctionExpr = Bindings '=&gt;' Expr
+Bindings     = ident [':' SimpleType] | '(' [Binding {',' Binding}] ')'
+Binding      = ident [':' Type]
+Block        = '{' {Def ';'}' Expr '}'
+</pre>
+</div>
+
+<p>
+expression examples:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">identifier</td>
+<td class="left">isGoodEnough</td>
+</tr>
+
+<tr>
+<td class="left">literal</td>
+<td class="left">0, 1.0, "abc"</td>
+</tr>
+
+<tr>
+<td class="left">function application</td>
+<td class="left">sqrt(x)</td>
+</tr>
+
+<tr>
+<td class="left">operator application</td>
+<td class="left">-x, y + x</td>
+</tr>
+
+<tr>
+<td class="left">selection</td>
+<td class="left">math.abs</td>
+</tr>
+
+<tr>
+<td class="left">conditional expression</td>
+<td class="left">if (x &lt; 0) -x else x</td>
+</tr>
+
+<tr>
+<td class="left">block</td>
+<td class="left">{ val x = math.abs(y); x * 2 }</td>
+</tr>
+
+<tr>
+<td class="left">anonymous function</td>
+<td class="left">x =&gt; x + 1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-13-4" class="outline-3">
+<h3 id="sec-13-4"><span class="todo TODO">TODO</span> Definitions</h3>
+<div class="outline-text-3" id="text-13-4">
+<div class="org-src-container">
+
+<pre class="src src-grammar">Def        = FunDef | ValDef
+FunDef     = def ident { '(' [Parameters] ')' } [':' Type] '=' Expr
+ValDef     = val ident [':' Type] '=' Expr
+Parameter  = ident ':' [ '=&gt;' ] Type
+Parameters = Parameter {',' Parameter }
+</pre>
+</div>
+
+<p>
+a definition can be:
+</p>
+<ul class="org-ul">
+<li>a function definition:
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">def square(x: Int) = x * x
+</pre>
+</div>
+<ul class="org-ul">
+<li>a value definition:
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">val y = square(2)
+</pre>
+</div>
+
+<p>
+a parameter can be:
+</p>
+<ul class="org-ul">
+<li>a CBV parameter: <code>(x: Int)</code>
+</li>
+<li>a CBN parameter: <code>(x: =&gt; Int)</code>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-14" class="outline-2">
+<h2 id="sec-14"><span class="done DONE">DONE</span> Functions and data</h2>
+<div class="outline-text-2" id="text-14">
+<p>
+We've seen functions so far, first-class functions, HOF, currying, etc&#x2026;
+</p>
+
+<p>
+data: introducing objects and classes&#x2026; WTF!!!
+</p>
+</div>
+
+<div id="outline-container-sec-14-1" class="outline-3">
+<h3 id="sec-14-1">functions create and encapsulate data structure</h3>
+<div class="outline-text-3" id="text-14-1">
+<p>
+Example:
+Rational Numbers.
+</p>
+
+<p>
+Problematic: Design a package for doing rational arithmetic.
+</p>
+
+<p>
+Definition: A rational number is defined such as: \( \frac{x}{y}, x,y ∈ \mathbf{N}^2 \)
+x is the numerator, y is the denominator
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-14-2" class="outline-3">
+<h3 id="sec-14-2">Rational addition</h3>
+<div class="outline-text-3" id="text-14-2">
+<p>
+Odersky's Claim:
+</p>
+<ul class="org-ul">
+<li>difficult to manage the parameters numerator, denominator for each function definition
+</li>
+<li>better choice to combine the numerator and denominator in a data structure (by this he means class!!!)
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-14-3" class="outline-3">
+<h3 id="sec-14-3">Classes</h3>
+<div class="outline-text-3" id="text-14-3">
+<div class="org-src-container">
+
+<pre class="src src-scala">class Rational(x: Int, y: Int) {
+  def numer = x
+  def denom = y
+}
+</pre>
+</div>
+
+<p>
+introduces:
+</p>
+<ul class="org-ul">
+<li>a new type Rational
+</li>
+<li>a constructor Rational to create elements of this type
+</li>
+</ul>
+
+<p>
+Separation in namespaces between names of types and values (so no conflict between the type and the constructor)
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-14-4" class="outline-3">
+<h3 id="sec-14-4">Objects</h3>
+<div class="outline-text-3" id="text-14-4">
+<p>
+Objects: elements of a class type
+</p>
+
+<p>
+Creation: using the keyword `new`
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">new Rational(1, 2)
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-14-5" class="outline-3">
+<h3 id="sec-14-5">Implementing</h3>
+<div class="outline-text-3" id="text-14-5">
+<p>
+Using a function addRational:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+class Rational(x: Int, y: Int) {
+  def numer = x
+  def denom = y
+
+  def addRational(r: Rational, s: Rational): Rational =
+    new Rational(r.numer * s.denom + s.numer * r.denom, r.denom * s.denom)
+
+  def makeString(r: Rational): String = r.numer + "/" + r.denom
+
+  override def toString(): String = makeString(this)
+}
+
+object Rational {
+  def main(args: Array[String]) = {
+    val r0 = new Rational(1, 2)
+    val r1 = new Rational(2, 3)
+
+    println(r0.addRational(r0, r1))
+  }
+}
+
+// [info] Running coursera.Rational
+// 7/6
+// [success] Total time: 2 s, completed 23 juil. 2013 09:46:35
+</pre>
+</div>
+
+<p>
+Defining a method in the Rational class:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+class Rational(x: Int, y: Int) {
+  def numer = x
+  def denom = y
+
+  def add(r: Rational): Rational =
+    new Rational(r.numer * denom + numer * r.denom, r.denom * denom)
+
+  override def toString(): String = numer + "/" + denom
+}
+
+object Rational {
+  def main(args: Array[String]) = {
+    val r0 = new Rational(1, 2)
+    val r1 = new Rational(2, 3)
+
+    println(r0.add(r1))
+  }
+}
+
+// [info] Running coursera.Rational
+// 7/6
+// [success] Total time: 2 s, completed 23 juil. 2013 09:52:37
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-14-6" class="outline-3">
+<h3 id="sec-14-6">Exercises</h3>
+<div class="outline-text-3" id="text-14-6">
+<ol class="org-ol">
+<li>add a method neg to class Rational used like this: x.neg
+</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-scala">def neg(): Rational = new Rational(-numer, denom)
+</pre>
+</div>
+
+<ol class="org-ol">
+<li>Add a method sub to substract two rational numbers
+</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-scala">def sub(r: Rational): Rational = add(r.neg)
+</pre>
+</div>
+
+<ol class="org-ol">
+<li>With the values of x, y, z as given in the previous slide, what is the result of <code>x - y - z</code> ?
+</li>
+</ol>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">println(x.sub(y).sub(z))
+</pre>
+</div>
+
+<p>
+-79/4
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-15" class="outline-2">
+<h2 id="sec-15"><span class="done DONE">DONE</span> More fun with rationals</h2>
+<div class="outline-text-2" id="text-15">
+<p>
+Rational are not in their simple form, here is the adaptation code:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+import scala.annotation.tailrec
+
+class Rational(x: Int, y: Int) {
+  private val g = w2.gcd(x, y)
+
+  def numer = x / g
+  def denom = y / g
+
+  def add(r: Rational): Rational =
+    new Rational(r.numer * denom + numer * r.denom, r.denom * denom)
+
+  def neg(): Rational = new Rational(-numer, denom)
+
+  def sub(r: Rational): Rational = add(r.neg)
+
+  override def toString(): String = numer + "/" + denom
+}
+
+object Rational {
+  def main(args: Array[String]) = {
+    val x = new Rational(1, 3)
+    val y = new Rational(5, 7)
+    val z = new Rational(3, 2)
+
+    println(x.add(y))
+    println(y.neg)
+    println(x.sub(x))
+    println(x.sub(y).sub(z))
+    println(y.add(y))
+  }
+}
+
+// [info] Running coursera.Rational
+// 22/21
+// 5/-7
+// 0/1
+// -79/42
+// 10/7
+// [success] Total time: 1 s, completed 23 juil. 2013 10:23:26
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-15-1" class="outline-3">
+<h3 id="sec-15-1">private member or method</h3>
+<div class="outline-text-3" id="text-15-1">
+<p>
+Private member or methods are defined using the `private` keyword.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-15-2" class="outline-3">
+<h3 id="sec-15-2">Requirement</h3>
+<div class="outline-text-3" id="text-15-2">
+<p>
+Requirement are tests runned at class construction time, e.g:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">class Rational(x: Int, y: Int) {
+  require(y != 0, "denominator must be non zero")
+...
+</pre>
+</div>
+
+<p>
+If requirement is not respected, this will throw an IllegalArgumentException with the message setuped:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">[error] (run-main) java.lang.IllegalArgumentException: requirement failed: denominator must be non zero
+java.lang.IllegalArgumentException: requirement failed: denominator must be non zero
+	at scala.Predef$.require(Predef.scala:214)
+	at coursera.Rational.&lt;init&gt;(Rational.scala:6)
+	at coursera.Rational$.main(Rational.scala:42)
+	at coursera.Rational.main(Rational.scala)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+[trace] Stack trace suppressed: run last compile:run for the full output.
+java.lang.RuntimeException: Nonzero exit code: 1
+	at scala.sys.package$.error(package.scala:27)
+[trace] Stack trace suppressed: run last compile:run for the full output.
+[error] (compile:run) Nonzero exit code: 1
+</pre>
+</div>
+
+<p>
+Require is used to enforce a precondition on the caller of a function.
+</p>
+
+<p>
+To sum up, if a requirement fails, it's not the function/method's fault, there has been a problem when calling the function/method.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-15-3" class="outline-3">
+<h3 id="sec-15-3">Assertions</h3>
+<div class="outline-text-3" id="text-15-3">
+<p>
+assert is used to check the code of the function itself.
+If not respected, this will throw AssertionError.
+</p>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">val x = sqrt(y)
+assert(x &gt;= 0)
+</pre>
+</div>
+
+<p>
+To sum up, if an assertion fails, it's not the caller's fault. There has been trouble in the function/method itself.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-15-4" class="outline-3">
+<h3 id="sec-15-4">Constructor</h3>
+<div class="outline-text-3" id="text-15-4">
+<p>
+a class implicitely introduces a constructor. This one is called the primary constructor.
+it:
+</p>
+<ul class="org-ul">
+<li>takes the parameters of the class
+</li>
+<li>executes all statements in the class body (require, form assigment, etc&#x2026;)
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-15-5" class="outline-3">
+<h3 id="sec-15-5">Multiple constructor possible</h3>
+<div class="outline-text-3" id="text-15-5">
+<p>
+We can extend the class by adding other constructors:
+For example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">class Rational(x: Int, y: Int) {
+  require(y != 0, "denominator must be non zero")
+
+  def this(x: Int) = this(x, 1)
+...
+</pre>
+</div>
+
+<p>
+Thus the calling:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">val a = new Rational(2)
+println(a)
+</pre>
+</div>
+
+<p>
+renders:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">2/1
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-15-6" class="outline-3">
+<h3 id="sec-15-6">Exercise</h3>
+<div class="outline-text-3" id="text-15-6">
+<p>
+Modify the rational class so that rational numbers are kept unsimplified internally, but the simplification is applied when numbers are converted to strings.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">override def toString(): String = {
+  val g = w2.gcd(numer, denom)
+  numer / g + "/" + denom / g
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-16" class="outline-2">
+<h2 id="sec-16"><span class="done DONE">DONE</span> Evaluation and operators</h2>
+<div class="outline-text-2" id="text-16">
+</div>
+
+<div id="outline-container-sec-16-1" class="outline-3">
+<h3 id="sec-16-1">Classes and substitutions</h3>
+<div class="outline-text-3" id="text-16-1">
+<ul class="org-ul">
+<li>Instantiation of the class new C(e<sub>1</sub>, &#x2026;, e<sub>m</sub>) is evaluated like the arguments of a normal function.
+</li>
+<li>new C(e<sub>1</sub>, &#x2026;, e<sub>m</sub>).f(w<sub>1</sub>, &#x2026;, w<sub>n</sub>) Instantiation?
+</li>
+</ul>
+<p>
+3 substitutions:
+</p>
+<ul class="org-ul">
+<li>first the formal parameters w<sub>1</sub>, &#x2026;, w<sub>n</sub> of the function are replaced by the arguments w<sub>1</sub>, etc&#x2026;
+</li>
+<li>second the parameters of the constructor
+</li>
+<li>lastly the eventual 'this' is replaced by the instance (value) of the class in the body definition
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-16-2" class="outline-3">
+<h3 id="sec-16-2">Operators</h3>
+<div class="outline-text-3" id="text-16-2">
+<ul class="org-ul">
+<li>infix notation: any method with a parameter can be used like an infix operator
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">object Rational {
+  def main(args: Array[String]) = {
+    val x = new Rational(1, 3)
+    val y = new Rational(5, 7)
+    val z = new Rational(3, 2)
+
+    println(x add y)
+    println(y neg)
+    println(x sub x)
+    println(x sub y sub z)
+    println(y add y)
+    println(x less y)
+    println(y less x)
+    println(x max y)
+    println(y max x)
+
+    val a = new Rational(2)
+    println(a)
+  }
+}
+
+// [info] Running coursera.Rational
+// 22/21
+// 5/-7
+// 0/1
+// -79/42
+// 10/7
+// true
+// false
+// 5/7
+// 5/7
+// 2/1
+// [success] Total time: 0 s, completed 23 juil. 2013 11:20:56
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Operators can be used as identifiers
+<ul class="org-ul">
+<li>alphanum
+</li>
+<li>symbolic (starting with an operator symbol, followed by other operator symbols)
+</li>
+<li>_ counts as a letter
+</li>
+<li>alphanumeric identifiers can also end in an underscore followed by some operator symbols
+</li>
+</ul>
+</li>
+</ul>
+<p>
+Examples:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">x1
+*,
++?%&amp;,
+vector_++
+counter_=
+</pre>
+</div>
+
+<p>
+Simplifying the Rational class:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+import scala.annotation.tailrec
+
+class Rational(x: Int, y: Int) {
+  require(y != 0, "denominator must be non zero")
+
+  def this(x: Int) = this(x, 1)
+
+  val numer = x
+  val denom = y
+
+  def +(r: Rational): Rational =
+    new Rational(r.numer * denom + numer * r.denom, r.denom * denom)
+
+  def unary_-(): Rational = new Rational(-numer, denom)
+
+  def -(r: Rational): Rational = this + -r
+
+  def &lt; (r: Rational): Boolean = numer * r.denom &lt; r.numer * denom
+
+  def max(r: Rational): Rational = if (this &lt; r) r else this
+
+  override def toString(): String = {
+    val g = w2.gcd(numer, denom)
+    numer / g + "/" + denom / g
+  }
+}
+
+object Rational {
+  def main(args: Array[String]) = {
+    val x = new Rational(1, 3)
+    val y = new Rational(5, 7)
+    val z = new Rational(3, 2)
+
+    println(x + y)
+    println(-y)
+    println(x + x)
+    println(x - y - z)
+    println(y + y)
+    println(x &lt; y)
+    println(y &lt; x)
+    println(x max y)
+    println(y max x)
+
+    val a = new Rational(2)
+    println(a)
+  }
+}
+
+// [info] Running coursera.Rational
+// 22/21
+// 5/-7
+// 2/3
+// -79/42
+// 10/7
+// true
+// false
+// 5/7
+// 5/7
+// 2/1
+// [success] Total time: 1 s, completed 23 juil. 2013 11:30:15
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-16-3" class="outline-3">
+<h3 id="sec-16-3">Precedence rules</h3>
+<div class="outline-text-3" id="text-16-3">
+<p>
+determined by its first character.
+following table lists the characters in increasing order of priority precedence:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">(all letters)</td>
+</tr>
+
+<tr>
+<td class="left">pipe \</td>
+</tr>
+
+<tr>
+<td class="left">^</td>
+</tr>
+
+<tr>
+<td class="left">&amp;</td>
+</tr>
+
+<tr>
+<td class="left">&lt; &gt;</td>
+</tr>
+
+<tr>
+<td class="left">\= !</td>
+</tr>
+
+<tr>
+<td class="left">:</td>
+</tr>
+
+<tr>
+<td class="left">+ -</td>
+</tr>
+
+<tr>
+<td class="left">* / %</td>
+</tr>
+
+<tr>
+<td class="left">(all other special characters)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-16-4" class="outline-3">
+<h3 id="sec-16-4">Exercise</h3>
+<div class="outline-text-3" id="text-16-4">
+<p>
+Provide a fully parenthesized version of:
+a + b ^? c ?^ d less a ==&gt; b | c
+(binary operation be put in parentheses)
+</p>
+
+<p>
+((a + b) ^? (c ?^ d)) less ((a ==&gt; b) | c)
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-17" class="outline-2">
+<h2 id="sec-17"><span class="done DONE">DONE</span> Class hierarchies</h2>
+<div class="outline-text-2" id="text-17">
+</div>
+
+<div id="outline-container-sec-17-1" class="outline-3">
+<h3 id="sec-17-1">Abstract classes</h3>
+<div class="outline-text-3" id="text-17-1">
+<ul class="org-ul">
+<li>can contain members which are missing an implementation
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">abstract class IntSet {
+  def incl(x: Int): IntSet
+  def contains(x: Int): Boolean
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>consequently no instances of an abstract class can be created with the operator new.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-17-2" class="outline-3">
+<h3 id="sec-17-2">IntSets</h3>
+<div class="outline-text-3" id="text-17-2">
+<p>
+Implementing sets as binary trees:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+abstract class IntSet {
+  /**
+    * to include an element in the set
+    */
+  def incl(x: Int): IntSet
+  /**
+    * is the element contains in the set
+    */
+  def contains(x: Int): Boolean
+}
+
+class Empty extends IntSet {
+  def contains(x: Int): Boolean = false
+  def incl(x: Int): IntSet = new Leaf(x, new Empty, new Empty)
+
+  override def toString = "."
+}
+
+class Leaf(elem: Int, l: IntSet, r: IntSet) extends IntSet {
+
+  def contains(x: Int): Boolean =
+    if      (x &lt; elem) l contains x
+    else if (elem &lt; x) r contains x
+    else true
+
+  def incl(x: Int): IntSet =
+    if      (x &lt; elem) new Leaf(elem, l incl x, r)
+    else if (elem &lt; x) new Leaf(elem, l,        r incl x)
+    else this
+
+  override def toString = "{" + l + elem + r + "}"
+}
+
+object IntSet {
+  def main(args: Array[String]) = {
+    val t1 = new Leaf(7,
+		      new Leaf(5, new Empty, new Empty),
+		      new Leaf(8, new Empty, new Empty))
+
+    println(t1)
+  }
+}
+
+// [info] Running coursera.IntSet
+// {{.5.}7{.8.}}
+// [success] Total time: 1 s, completed 23 juil. 2013 12:01:16
+</pre>
+</div>
+
+<p>
+persistent data structure
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-sec-17-3" class="outline-3">
+<h3 id="sec-17-3">Base classes and subclasses</h3>
+<div class="outline-text-3" id="text-17-3">
+<ul class="org-ul">
+<li>IntSet -&gt; superclass Empty and Leaf
+</li>
+<li>Empty, Leaf -&gt; subclasses of IntSet
+</li>
+<li>no superclass is given, the standard java.lang.Object java class is assumed
+</li>
+<li>direct or indirect superclasses are called base classes
+</li>
+<li>base classes of Empty and Leaf are Object and IntSet
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-17-4" class="outline-3">
+<h3 id="sec-17-4">Implementations and Overriding</h3>
+<div class="outline-text-3" id="text-17-4">
+<p>
+singleton
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+abstract class IntSet {
+  /**
+    * to include an element in the set
+    */
+  def incl(x: Int): IntSet
+  /**
+    * is the element contains in the set
+    */
+  def contains(x: Int): Boolean
+}
+
+object Empty extends IntSet {
+  def contains(x: Int): Boolean = false
+  def incl(x: Int): IntSet = new Leaf(x, Empty, Empty)
+
+  override def toString = "."
+}
+
+class Leaf(elem: Int, l: IntSet, r: IntSet) extends IntSet {
+
+  def contains(x: Int): Boolean =
+    if      (x &lt; elem) l contains x
+    else if (elem &lt; x) r contains x
+    else true
+
+  def incl(x: Int): IntSet =
+    if      (x &lt; elem) new Leaf(elem, l incl x, r)
+    else if (elem &lt; x) new Leaf(elem, l,        r incl x)
+    else this
+
+  override def toString = "{" + l + elem + r + "}"
+}
+
+object IntSet {
+  def main(args: Array[String]) = {
+    val t1 = new Leaf(7,
+		      new Leaf(5, Empty, Empty),
+		      new Leaf(8, Empty, Empty))
+
+    println(t1)
+  }
+}
+
+// [info] Running coursera.IntSet
+// {{.5.}7{.8.}}
+// [success] Total time: 4 s, completed 23 juil. 2013 12:13:08
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-17-5" class="outline-3">
+<h3 id="sec-17-5">Exercise</h3>
+<div class="outline-text-3" id="text-17-5">
+<p>
+Write a method union for forming the union of two sets. You should implement the following abstract class
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">abstract class IntSet {
+  def incl(x: Int): IntSet
+  def contains(x: Int): Boolean
+  def union(other: IntSet): IntSet
+}
+</pre>
+</div>
+
+<p>
+solution:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+abstract class IntSet {
+  /**
+    * to include an element in the set
+    */
+  def incl(x: Int): IntSet
+  /**
+    * is the element contains in the set
+    */
+  def contains(x: Int): Boolean
+  /**
+    * Union of 2 sets
+    */
+  def union(other: IntSet): IntSet
+}
+
+object Empty extends IntSet {
+  def contains(x: Int): Boolean = false
+  def incl(x: Int): IntSet = new Leaf(x, Empty, Empty)
+  def union(other: IntSet): IntSet = other
+  override def toString = "."
+}
+
+class Leaf(elem: Int, l: IntSet, r: IntSet) extends IntSet {
+
+  def contains(x: Int): Boolean =
+    if      (x &lt; elem) l contains x
+    else if (elem &lt; x) r contains x
+    else true
+
+  def incl(x: Int): IntSet =
+    if      (x &lt; elem) new Leaf(elem, l incl x, r)
+    else if (elem &lt; x) new Leaf(elem, l,        r incl x)
+    else this
+
+  def union(other: IntSet): IntSet =
+    ((l union r) union other) incl elem
+
+  override def toString = "{" + l + elem + r + "}"
+}
+
+object IntSet {
+  def main(args: Array[String]) = {
+    val t1 = new Leaf(7,
+		      new Leaf(5, Empty, Empty),
+		      new Leaf(8, Empty, Empty))
+
+    println(t1)
+    println(t1 union t1)
+
+    val t2 = new Leaf(12,
+		      new Leaf(5, Empty, Empty),
+		      Empty)
+
+    println(t1 union t2)
+  }
+}
+
+// [info] Running coursera.IntSet
+// {{.5.}7{.8.}}
+// {{.5.}7{.8.}}
+// {{.5{{.7.}8.}}12.}
+// [success] Total time: 3 s, completed 23 juil. 2013 12:31:03
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-18" class="outline-2">
+<h2 id="sec-18"><span class="done DONE">DONE</span> How classes are organized</h2>
+<div class="outline-text-2" id="text-18">
+</div>
+<div id="outline-container-sec-18-1" class="outline-3">
+<h3 id="sec-18-1">Packages</h3>
+<div class="outline-text-3" id="text-18-1">
+<p>
+Classes and objects are organized in packages
+To place a class or object inside a package, use a package clause at the top of your source file
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">package progfun.examples
+object Hello {...}
+</pre>
+</div>
+
+<p>
+Fully qualified name: progfun.examples.Hello
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">scala progfun.examples.Hello
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-18-2" class="outline-3">
+<h3 id="sec-18-2">Import clauses</h3>
+<div class="outline-text-3" id="text-18-2">
+<div class="org-src-container">
+
+<pre class="src src-scala">import week3.Rational           // named import
+import week3.{Rational, Hello}  // named import
+import week3._                  // wildcard import
+</pre>
+</div>
+
+<p>
+Import from either a package or an object.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-18-3" class="outline-3">
+<h3 id="sec-18-3">Automatic import</h3>
+<div class="outline-text-3" id="text-18-3">
+<ul class="org-ul">
+<li>package scala
+</li>
+<li>package java.lang
+</li>
+<li>all members of the singleton object scala.Predef.
+</li>
+<li>FQN:
+<ul class="org-ul">
+<li>scala.Int
+</li>
+<li>scala.Boolean
+</li>
+<li>java.lang.Object
+</li>
+<li>scala.Predef.require
+</li>
+<li>scala.Predef.assert
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-18-4" class="outline-3">
+<h3 id="sec-18-4">scaladoc</h3>
+<div class="outline-text-3" id="text-18-4">
+<p>
+<a href="http://www.scala-lang.org/api/current/index.html#package">http://www.scala-lang.org/api/current/index.html#package</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-18-5" class="outline-3">
+<h3 id="sec-18-5">Traits</h3>
+<div class="outline-text-3" id="text-18-5">
+<ul class="org-ul">
+<li>scala, java -&gt; one superclass (single inheritance)
+</li>
+<li>what if class has multiple natural supertypes?
+</li>
+</ul>
+<p>
+=&gt; here comes traits, declared like abstract class
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">trait Planar {
+  def height: Int
+  def width: Int
+  def surface = height * width
+}
+</pre>
+</div>
+
+<p>
+Classes, objects can inherit from at most one class
+but can inherit from many Traits
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">class Square extends Shape with Planar
+			   with Movable...
+</pre>
+</div>
+
+<p>
+java interface &lt;&lt;~ trait
+trait can contain:
+</p>
+<ul class="org-ul">
+<li>fields
+</li>
+<li>concrete methods
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-18-6" class="outline-3">
+<h3 id="sec-18-6">scala's class hierarchy</h3>
+<div class="outline-text-3" id="text-18-6">
+
+<div class="figure">
+<p><img src="./scala-class-hierarchy.png" alt="scala-class-hierarchy.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-18-7" class="outline-3">
+<h3 id="sec-18-7">Top Types</h3>
+<div class="outline-text-3" id="text-18-7">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">Type</th>
+<th scope="col" class="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">Any</td>
+<td class="left">base type of all types</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">\==, !=, equals, hashCode, toString</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">AnyRef</td>
+<td class="left">base type of all reference Types</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">alias of java.lang.Object</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">AnyVal</td>
+<td class="left">base type of all primitive Types</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-18-8" class="outline-3">
+<h3 id="sec-18-8">Nothing</h3>
+<div class="outline-text-3" id="text-18-8">
+<ul class="org-ul">
+<li>subtype of every other type
+</li>
+<li>no value of type Nothing
+</li>
+<li>to signal abnormal termination
+</li>
+<li>element type of empty collection
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-18-9" class="outline-3">
+<h3 id="sec-18-9">Exceptions</h3>
+<div class="outline-text-3" id="text-18-9">
+<p>
+same as java
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">throw Exc
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-18-10" class="outline-3">
+<h3 id="sec-18-10">null</h3>
+<div class="outline-text-3" id="text-18-10">
+<ul class="org-ul">
+<li>Every reference class type also has null as a value
+</li>
+<li>Null is a subtype of every class that inherits from Object; it is incompatible with subtypes of AnyVal
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-18-11" class="outline-3">
+<h3 id="sec-18-11">Exercise</h3>
+<div class="outline-text-3" id="text-18-11">
+<p>
+What is the type of <code>if (true) 1 else false</code>? AnyVal
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-19" class="outline-2">
+<h2 id="sec-19"><span class="done DONE">DONE</span> Polymorphism</h2>
+<div class="outline-text-2" id="text-19">
+</div>
+
+<div id="outline-container-sec-19-1" class="outline-3">
+<h3 id="sec-19-1">Cons-Lists</h3>
+<div class="outline-text-3" id="text-19-1">
+<p>
+immutable linked-list formed of 2 blocks:
+</p>
+<ul class="org-ul">
+<li>Nil - the empty list
+</li>
+<li>Cons - a cell containing and element and the remainder of the list (pointer)
+</li>
+</ul>
+
+<p>
+Examples:
+List(1, 2, 3)
+List(List(true, false), List(3))
+</p>
+</div>
+</div>
+<div id="outline-container-sec-19-2" class="outline-3">
+<h3 id="sec-19-2">Cons-Lists in Scala</h3>
+<div class="outline-text-3" id="text-19-2">
+<p>
+Beginning:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">trait IntList {}
+class Nil extends IntList {}
+class Cons(val head: Int, val tail: IntList) extends IntList {}
+</pre>
+</div>
+
+<p>
+This will do but for each primitive type, we'd need to declare it again and again.
+Instead, we will use generic type:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">trait List[T] {}
+class Nil[T] extends List[T] {}
+class Cons[T](val head: T, val tail: List[T]) extends List[T] {}
+</pre>
+</div>
+
+<p>
+Implementation:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+trait List[T] {
+  def isEmpty: Boolean
+  def head: T
+  def tail: List[T]
+}
+
+class Nil[T] extends List[T] {
+  def isEmpty = true
+  def head = throw new NoSuchElementException("Nil.head")
+  def tail = throw new NoSuchElementException("Nil.tail")
+}
+
+class Cons[T](val head: T, val tail: List[T]) extends List[T] {
+  def isEmpty = false
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-19-3" class="outline-3">
+<h3 id="sec-19-3">Polymorphism</h3>
+<div class="outline-text-3" id="text-19-3">
+<p>
+a function type comes "in many forms".
+In programming:
+</p>
+<ul class="org-ul">
+<li>function can be applied to arguments of many Types
+</li>
+<li>the type can have instances of many types
+</li>
+</ul>
+
+<p>
+2 principals forms of Polymorphism:
+</p>
+<ul class="org-ul">
+<li>Subtyping: instances of a subclass can be passed to a base class
+</li>
+<li>generics: instances of a function or class are created by type parameterization
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-19-4" class="outline-3">
+<h3 id="sec-19-4">Exercise</h3>
+<div class="outline-text-3" id="text-19-4">
+<p>
+Write a function nth that takes an integer n and a list and selects the nth elements of the lists.
+Elements are numbered from 0.
+If index is outside the range from 0 up to the length of the list minus one, an IndexOutOfBoundsException should be thrown.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+trait List[T] {
+  def isEmpty: Boolean
+  def head: T
+  def tail: List[T]
+
+  def toString: String
+}
+
+class Nil[T] extends List[T] {
+  def isEmpty: Boolean = true
+  def head: Nothing = throw new NoSuchElementException("Nil.head")
+  def tail: Nothing = throw new NoSuchElementException("Nil.tail")
+
+  override def toString: String = "."
+}
+
+class Cons[T](val head: T, val tail: List[T]) extends List[T] {
+  def isEmpty: Boolean = false
+
+  override def toString: String = "(" + head + ", " + tail.toString + ")"
+}
+
+object ConsListSession {
+  def main(args: Array[String]) = {
+    def singleton[T](elem: T) = new Cons[T](elem, new Nil[T])
+
+    def nth[T](n: Int, l: List[T]): T =
+      if (n &lt; 0 || l.isEmpty) throw new IndexOutOfBoundsException("Out of range")
+      else if (n == 0) l.head
+      else nth(n-1, l.tail)
+
+    def catchAndPrint[T](index: Int, l: List[T]) =
+      try {
+	nth(index, l)
+      } catch {
+	case e: IndexOutOfBoundsException =&gt; println("exception caught as expected: " + e)
+      }
+
+    println(singleton[Int](1))
+    println(singleton[Boolean](true))
+
+    val listTypes = new Cons[Int](1, new Cons[Int](2, new Nil[Int]))
+    println(listTypes)
+
+    println(nth(0, listTypes))
+    println(nth(1, listTypes))
+
+    catchAndPrint[Int](-1, listTypes)
+    catchAndPrint[Int](3, listTypes)
+
+    println("end")
+  }
+}
+
+// [info] Running coursera.ConsListSession
+// (1, .)
+// (true, .)
+// (1, (2, .))
+// 1
+// 2
+// exception caught as expected: java.lang.IndexOutOfBoundsException: Out of range
+// exception caught as expected: java.lang.IndexOutOfBoundsException: Out of range
+// end
+// [success] Total time: 2 s, completed 23 juil. 2013 15:15:15
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-20" class="outline-2">
+<h2 id="sec-20"><span class="done DONE">DONE</span> More functions on lists</h2>
+<div class="outline-text-2" id="text-20">
+</div>
+
+<div id="outline-container-sec-20-1" class="outline-3">
+<h3 id="sec-20-1">Standard</h3>
+<div class="outline-text-3" id="text-20-1">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">xs.length</td>
+<td class="left">length of the list</td>
+</tr>
+
+<tr>
+<td class="left">xs.last</td>
+<td class="left">last element of the list</td>
+</tr>
+
+<tr>
+<td class="left">xs.init</td>
+<td class="left">all elements except the last one</td>
+</tr>
+
+<tr>
+<td class="left">xs take n</td>
+<td class="left">first n elements of the list</td>
+</tr>
+
+<tr>
+<td class="left">xs drop n</td>
+<td class="left">xs minus the first n elements of the list</td>
+</tr>
+
+<tr>
+<td class="left">xs(n)</td>
+<td class="left">xs !! n</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-20-2" class="outline-3">
+<h3 id="sec-20-2">Creating new list</h3>
+<div class="outline-text-3" id="text-20-2">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">xs ++ ys</td>
+<td class="left">new list consisting of xs elements followed by the ys elements</td>
+</tr>
+
+<tr>
+<td class="left">xs.reverse</td>
+<td class="left">reverse the current xs list</td>
+</tr>
+
+<tr>
+<td class="left">xs updated (n, x)</td>
+<td class="left">update the nth element in xs with x</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-20-3" class="outline-3">
+<h3 id="sec-20-3">Finding elements</h3>
+<div class="outline-text-3" id="text-20-3">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">xs indexOf x</td>
+<td class="left">index of the first element in xs which is equal to x or -1 if x not found</td>
+</tr>
+
+<tr>
+<td class="left">xs contains x</td>
+<td class="left">does xs contain x?</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div id="outline-container-sec-20-4" class="outline-3">
+<h3 id="sec-20-4">Misc Implementation</h3>
+<div class="outline-text-3" id="text-20-4">
+<div class="org-src-container">
+
+<pre class="src src-scala">def last[T](xs: List[T]): T = xs match {
+    case List()  =&gt; throw new Error("last of empty list")
+    case List(x) =&gt; x
+    case y :: ys =&gt; last(ys)
+  }
+
+ def init[T](xs: List[T]): T = xs match {
+    case List()  =&gt; throw new Error("init of empty list")
+    case List(x) =&gt; List()
+    case y :: ys =&gt; y :: init(ys)
+  }
+
+def concat[T](xs: List[T], ys: List[T]) = xs match {
+    case List() =&gt; ys
+    case x :: zs =&gt; x :: concat(zs, ys)
+  }
+
+def reverse[T](xs: List[T]): List[T] = xs match {
+    case List() =&gt; xs
+    case y :: ys =&gt; reverse(ys) ++ List(y)
+  }
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-21" class="outline-2">
+<h2 id="sec-21"><span class="done DONE">DONE</span> Pairs and Tuples</h2>
+<div class="outline-text-2" id="text-21">
+<p>
+Merge sort Exercise:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">//import scala.util._
+
+object sessionPairTuple {
+  def msort(xs: List[Int]): List[Int] = {
+    val n = xs.length / 2
+      if (n == 0) xs
+      else {
+	def merge(xs: List[Int], ys: List[Int]): List[Int] = (xs, ys) match {
+	    case (Nil, ys) =&gt; ys
+	    case (xs, Nil) =&gt; xs
+	    case (x :: xss, y :: yss) =&gt; if (x &lt; y) x :: merge(xss, ys)
+					 else       y :: merge(xs, yss)
+	}
+	val (f, s) = xs splitAt n
+	merge(msort(f), msort(s))
+      }
+  }
+
+  def main(args: Array[String]) = {
+    val elems = List(10, 8 , 3, 1, 20)
+
+    println(msort(elems))
+  }
+}
+
+// [info] Running sessionPairTuple
+// List(1, 3, 8, 10, 20)
+// [success] Total time: 6 s, completed 24 juil. 2013 09:24:51
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-22" class="outline-2">
+<h2 id="sec-22"><span class="done DONE">DONE</span> Implicit Parameters</h2>
+<div class="outline-text-2" id="text-22">
+</div>
+<div id="outline-container-sec-22-1" class="outline-3">
+<h3 id="sec-22-1">Making msort more generalized</h3>
+<div class="outline-text-3" id="text-22-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">object sessionPairTuple {
+  def msort[T](xs: List[T])(lt: (T, T) =&gt; Boolean): List[T] = {
+    val n = xs.length / 2
+      if (n == 0) xs
+      else {
+	def merge(xs: List[T], ys: List[T]): List[T] = (xs, ys) match {
+	    case (Nil, ys) =&gt; ys
+	    case (xs, Nil) =&gt; xs
+	    case (x :: xss, y :: yss) =&gt; if (lt(x,y)) x :: merge(xss, ys)
+					 else         y :: merge(xs, yss)
+	}
+	val (f, s) = xs splitAt n
+	merge(msort(f)(lt), msort(s)(lt))
+      }
+  }
+
+  def main(args: Array[String]) = {
+    val elems = List(10, 8 , 3, 1, 20)
+    println(msort(elems)((x,y) =&gt; x &lt; y))
+
+    val fruits = List("apple", "pineapple", "orange", "banana")
+    println(msort(fruits)((x,y) =&gt; x.compareTo(y) &lt; 0))
+  }
+}
+
+// [info] Running sessionPairTuple
+// List(1, 3, 8, 10, 20)
+// List(apple, banana, orange, pineapple)
+// [success] Total time: 5 s, completed 24 juil. 2013 09:51:49
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-22-2" class="outline-3">
+<h3 id="sec-22-2">Parametrization with Ordered</h3>
+<div class="outline-text-3" id="text-22-2">
+<div class="org-src-container">
+
+<pre class="src src-scala">import math.Ordering
+
+object sessionPairTuple {
+  def msort[T](xs: List[T])(ord: Ordering[T]): List[T] = {
+    val n = xs.length / 2
+      if (n == 0) xs
+      else {
+	def merge(xs: List[T], ys: List[T]): List[T] = (xs, ys) match {
+	    case (Nil, ys) =&gt; ys
+	    case (xs, Nil) =&gt; xs
+	    case (x :: xss, y :: yss) =&gt; if (ord.lt(x,y)) x :: merge(xss, ys)
+					 else         y :: merge(xs, yss)
+	}
+	val (f, s) = xs splitAt n
+	merge(msort(f)(ord), msort(s)(ord))
+      }
+  }
+
+  def main(args: Array[String]) = {
+    val elems = List(10, 8 , 3, 1, 20)
+    println(msort(elems)(Ordering.Int))
+
+    val fruits = List("apple", "pineapple", "orange", "banana")
+    println(msort(fruits)(Ordering.String))
+  }
+}
+
+// [info] Running sessionPairTuple
+// List(1, 3, 8, 10, 20)
+// List(apple, banana, orange, pineapple)
+// [success] Total time: 5 s, completed 24 juil. 2013 10:36:47
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-22-3" class="outline-3">
+<h3 id="sec-22-3">Implicit parameters</h3>
+<div class="outline-text-3" id="text-22-3">
+<div class="org-src-container">
+
+<pre class="src src-scala">import math.Ordering
+
+object sessionPairTuple {
+  def msort[T](xs: List[T])(implicit ord: Ordering[T]): List[T] = {
+    val n = xs.length / 2
+      if (n == 0) xs
+      else {
+	def merge(xs: List[T], ys: List[T]): List[T] = (xs, ys) match {
+	    case (Nil, ys) =&gt; ys
+	    case (xs, Nil) =&gt; xs
+	    case (x :: xss, y :: yss) =&gt; if (ord.lt(x,y)) x :: merge(xss, ys)
+					 else         y :: merge(xs, yss)
+	}
+	val (f, s) = xs splitAt n
+	merge(msort(f), msort(s))
+      }
+  }
+
+  def main(args: Array[String]) = {
+    val elems = List(10, 8 , 3, 1, 20)
+    println(msort(elems))
+
+    val fruits = List("apple", "pineapple", "orange", "banana")
+    println(msort(fruits))
+  }
+}
+
+// [info] Running sessionPairTuple
+// List(1, 3, 8, 10, 20)
+// List(apple, banana, orange, pineapple)
+// [success] Total time: 5 s, completed 24 juil. 2013 11:07:52
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-23" class="outline-2">
+<h2 id="sec-23"><span class="done DONE">DONE</span> Higher-Order List Functions</h2>
+<div class="outline-text-2" id="text-23">
+</div>
+<div id="outline-container-sec-23-1" class="outline-3">
+<h3 id="sec-23-1">Recurring patterns for computations on Lists</h3>
+<div class="outline-text-3" id="text-23-1">
+<ul class="org-ul">
+<li>transforming each elt in a list in a certain way         -&gt; map
+</li>
+<li>retrieving a list of all elements satisfying a criterion -&gt; filter
+</li>
+<li>combining the elements of a list using an operator       -&gt; fold/reduce
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-23-2" class="outline-3">
+<h3 id="sec-23-2">Applying a function of elements of a list</h3>
+<div class="outline-text-3" id="text-23-2">
+<p>
+map
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">object sessionHOFList {
+  def main(args: Array[String]) = {
+    val elems = List(1.0, 1.5, 2.9, 4.5)
+    val elemsMap = elems map (x =&gt; x * 0.5)
+
+    println(elemsMap)
+  }
+}
+
+// [info] Running sessionHOFList
+// List(0.5, 0.75, 1.45, 2.25)
+// [success] Total time: 6 s, completed 24 juil. 2013 11:22:39
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-23-3" class="outline-3">
+<h3 id="sec-23-3">Exercise</h3>
+<div class="outline-text-3" id="text-23-3">
+<p>
+Consider a function to square each element of a list, and return the result.
+Complete the 2 following equivalent definitions of squareList:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def squareList(xs: List[Int]): List[Int] = xs match {
+  case Nil     =&gt; xs
+  case y :: ys =&gt; y * y :: squareList(ys)
+}
+
+def mapSquare(xs: List[Int]): List[Int] = xs map (x =&gt; x * x)
+</pre>
+</div>
+
+<p>
+Output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">// [info] Running sessionHOFList
+// List(0.5, 0.75, 1.45, 2.25)
+// List(1, 9, 25, 49)
+// List(1, 9, 25, 49)
+// [success] Total time: 3 s, completed 24 juil. 2013 11:26:25
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-23-4" class="outline-3">
+<h3 id="sec-23-4">Filtering</h3>
+<div class="outline-text-3" id="text-23-4">
+<p>
+Select elements that satisfy a predicate
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">    val nlems = List(-1, 1, 10, -2, 45)
+    println(nlems filter (x =&gt; x &gt; 0))
+
+// List(1, 10, 45)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-23-5" class="outline-3">
+<h3 id="sec-23-5">Variations of filter</h3>
+<div class="outline-text-3" id="text-23-5">
+<ul class="org-ul">
+<li>filterNot
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">    val nlems = List(-1, 1, 10, -2, 45)
+    println(nlems filter    (x =&gt; x &gt; 0))
+    println(nlems filterNot (x =&gt; x &gt; 0))
+
+// List(1, 10, 45)
+// List(-1, -2)
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>partition
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">    println(nlems partition (x =&gt; x &gt; 0))
+
+// (List(1, 10, 45),List(-1, -2))
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>takeWhile
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">    println(nlems takeWhile (x =&gt; x &lt; 0))
+
+// List(-1)
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>dropWhile
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">    println(nlems dropWhile (x =&gt; x &lt; 0))
+
+// List(1, 10, -2, 45)
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>span
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">    println(nlems span      (x =&gt; x &lt; 0))
+
+// (List(-1),List(1, 10, -2, 45))
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-23-6" class="outline-3">
+<h3 id="sec-23-6">Exercise</h3>
+<div class="outline-text-3" id="text-23-6">
+<p>
+Write a function pack that packs consecutive duplicates of list elements into sublists. For instance:
+<code>pack(List("a", "a", "a", "b", "c", "c", "a"))</code>
+</p>
+
+<p>
+should give:
+<code>List(List("a", "a", "a"), List("b"), List("c", "c"), List("a"))</code>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">    def pack[T](xs: List[T]): List[List[T]] = xs match {
+	case Nil     =&gt; Nil
+	case y :: ys =&gt; {
+	  val (yss, rss) = xs span (x =&gt; x == y)
+	  yss :: pack(rss)
+	}
+      }
+
+    val listToPack = List("a", "a", "a", "b", "c", "c", "a")
+    println(pack(listToPack))
+
+// List(List(a, a, a), List(b), List(c, c), List(a))
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-23-7" class="outline-3">
+<h3 id="sec-23-7">Exercise</h3>
+<div class="outline-text-3" id="text-23-7">
+<p>
+Using pack, write a function encode that produces the run-length encoding a list.
+The idea is to encode n consecutive duplicates of an element x as a pair (x, n).
+For instance,
+<code>encode(List("a", "a", "a", "b", "c", "c", "a"))</code>
+should give
+<code>List(("a", 3), ("b", 1), ("c", 2), ("a", 1))</code>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">    def encode[T](xs: List[T]): List[(T, Int)] = pack(xs) map (x =&gt; (x.head, x.length))
+    println(encode(listToPack))
+
+// List((a,3), (b,1), (c,2), (a,1))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-24" class="outline-2">
+<h2 id="sec-24"><span class="done DONE">DONE</span> Reduction of Lists</h2>
+<div class="outline-text-2" id="text-24">
+<p>
+Another common operation on list is to combine the elements of a list using a given operator -&gt; fold/reduce
+</p>
+</div>
+<div id="outline-container-sec-24-1" class="outline-3">
+<h3 id="sec-24-1">ReduceLeft</h3>
+<div class="outline-text-3" id="text-24-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">object sessionReduceList {
+  def main(args: Array[String]) = {
+    def sum(xs: List[Int]): Int = (0 :: xs) reduceLeft (_ + _)
+    def pdt(xs: List[Int]): Int = (1 :: xs) reduceLeft (_ * _)
+
+    val elems = List(1, 3, 5, 7)
+    println(sum(elems))
+    println(pdt(elems))
+  }
+}
+
+// [info] Running sessionReduceList
+// 16
+// 105
+// [success] Total time: 0 s, completed 24 juil. 2013 12:29:44
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-24-2" class="outline-3">
+<h3 id="sec-24-2">FoldLeft</h3>
+<div class="outline-text-3" id="text-24-2">
+<div class="org-src-container">
+
+<pre class="src src-scala">object sessionReduceList {
+  def main(args: Array[String]) = {
+    def sum(xs: List[Int]): Int = (xs foldLeft 0) (_ + _)
+    def pdt(xs: List[Int]): Int = (xs foldLeft 1) (_ * _)
+
+    val elems = List(1, 3, 5, 7)
+    println(sum(elems))
+    println(pdt(elems))
+  }
+}
+
+// [info] Running sessionReduceList
+// 16
+// 105
+// [success] Total time: 1 s, completed 24 juil. 2013 12:31:35
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-24-3" class="outline-3">
+<h3 id="sec-24-3">ReduceRight</h3>
+</div>
+<div id="outline-container-sec-24-4" class="outline-3">
+<h3 id="sec-24-4">FoldRight</h3>
+</div>
+<div id="outline-container-sec-24-5" class="outline-3">
+<h3 id="sec-24-5">Difference</h3>
+<div class="outline-text-3" id="text-24-5">
+<p>
+for operators that are associative or commutative, left and right reduce are equivalent (even with performance difference).
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-25" class="outline-2">
+<h2 id="sec-25"><span class="done DONE">DONE</span> Reasoning About Concat</h2>
+<div class="outline-text-2" id="text-25">
+</div>
+<div id="outline-container-sec-25-1" class="outline-3">
+<h3 id="sec-25-1">Natural Induction</h3>
+</div>
+<div id="outline-container-sec-25-2" class="outline-3">
+<h3 id="sec-25-2">Referential transparency</h3>
+</div>
+<div id="outline-container-sec-25-3" class="outline-3">
+<h3 id="sec-25-3">Structural Induction</h3>
+</div>
+</div>
+<div id="outline-container-sec-26" class="outline-2">
+<h2 id="sec-26"><span class="done DONE">DONE</span> A Larger Equational Proof on Lists</h2>
+<div class="outline-text-2" id="text-26">
+</div>
+</div>
+
+<div id="outline-container-sec-27" class="outline-2">
+<h2 id="sec-27"><span class="done DONE">DONE</span> Functions as Objects</h2>
+<div class="outline-text-2" id="text-27">
+</div>
+<div id="outline-container-sec-27-1" class="outline-3">
+<h3 id="sec-27-1">Function as object</h3>
+<div class="outline-text-3" id="text-27-1">
+<p>
+Function type A =&gt; B is an abbreviation for the class scala.Function1[A, B]
+</p>
+
+<p>
+This is translated:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">package scala
+
+trait Function1[A, B] {
+  def apply(x: A): B
+}
+</pre>
+</div>
+
+<p>
+So functions are objects with method apply.
+</p>
+
+<p>
+There are Function2, Function3, etc&#x2026; up until Function22 depending on the number of parameters.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-27-2" class="outline-3">
+<h3 id="sec-27-2">Expansion of funtion values</h3>
+<div class="outline-text-3" id="text-27-2">
+<div class="org-src-container">
+
+<pre class="src src-scala">(x: Int) =&gt; x * x
+</pre>
+</div>
+
+<p>
+expands to
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">{ class AnonFun extends Function1[Int, Int] {
+    def apply(x: Int) = x * x
+  }
+  new AnonFun
+}
+</pre>
+</div>
+
+<p>
+or, shorter one, using anonymous class syntax:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">new Function1[Int, Int] {
+  def apply(x: Int) = x * x
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-27-3" class="outline-3">
+<h3 id="sec-27-3">Expansion of function calls</h3>
+<div class="outline-text-3" id="text-27-3">
+<p>
+<code>f(a, b)</code> is expanded to <code>f.apply(a, b)</code>
+</p>
+
+<p>
+So:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">val f = (x: Int) =&gt; x * x
+</pre>
+</div>
+
+<p>
+expands to
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">val f = new Function1[Int, Int] {
+  def apply(x: Int) = x * x
+}
+f.apply(a, b)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-27-4" class="outline-3">
+<h3 id="sec-27-4">Functions and methods</h3>
+<div class="outline-text-3" id="text-27-4">
+<p>
+eta-expansion
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-28" class="outline-2">
+<h2 id="sec-28"><span class="done DONE">DONE</span> Objects Everywhere</h2>
+<div class="outline-text-2" id="text-28">
+</div>
+<div id="outline-container-sec-28-1" class="outline-3">
+<h3 id="sec-28-1">peano number</h3>
+<div class="outline-text-3" id="text-28-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">abstract class Nat {
+  def isZero: Boolean
+  def predecessor: Nat
+  def successor: Nat = new Succ(this)
+  def +(that: Nat): Nat
+  def -(that: Nat): Nat
+}
+
+object Zero ext.....Nat {
+  def isZero = true
+  def predecessor = throw new Error("zero has no predecessor")
+  def +(that: Nat) = that
+  def -(that: Nat) = if (that.isZero) this else throw new Error("negative number")
+}
+
+class Succ(n: Nat) extends Nat {
+  def isZero = false
+  def predecessor = n
+  def +(that: Nat) = new Succ(n + that)
+  def -(that: Nat) = if (that.isZero) this else n - that.predecessor
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-29" class="outline-2">
+<h2 id="sec-29"><span class="done DONE">DONE</span> Subtyping and Generics</h2>
+<div class="outline-text-2" id="text-29">
+</div>
+<div id="outline-container-sec-29-1" class="outline-3">
+<h3 id="sec-29-1">Polymorphism</h3>
+<div class="outline-text-3" id="text-29-1">
+<ul class="org-ul">
+<li>Subtyping
+</li>
+<li>Generics
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-29-2" class="outline-3">
+<h3 id="sec-29-2">Type bounds</h3>
+<div class="outline-text-3" id="text-29-2">
+<ul class="org-ul">
+<li>S &lt;: T -&gt; S is a subtype of T
+</li>
+<li>S &gt;: T -&gt; S is a supertype of T (or T is a subtype of S)
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-29-3" class="outline-3">
+<h3 id="sec-29-3">Lower bound</h3>
+<div class="outline-text-3" id="text-29-3">
+<p>
+for a type variable
+</p>
+
+<p>
+for example:
+[S :&gt; NonEmpty] =&gt; introduces a type parameter S that can range only over supertypes of NonEmpty, Here S can be of NonEmpty, IntSet, AnyRef or Any
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-29-4" class="outline-3">
+<h3 id="sec-29-4">Mixed bound</h3>
+<div class="outline-text-3" id="text-29-4">
+<p>
+mix lower and upper bound
+</p>
+
+<p>
+For example:
+[ S &gt;: NonEmpty &lt;: IntSet ] =&gt; Here S is bound to the interval NonEmpty and IntSet (but it could be more)
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-29-5" class="outline-3">
+<h3 id="sec-29-5">Covariance</h3>
+<div class="outline-text-3" id="text-29-5">
+<p>
+What is applicable for A is applicable for AnyType[A].
+</p>
+
+<p>
+We call types for which the relashionship holds covariant because their subtyping relationship varies with the type parameter.
+</p>
+
+<p>
+<b>Note</b>
+</p>
+<ul class="org-ul">
+<li>java Array are covariant.
+</li>
+<li>scala Array are not.
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-29-6" class="outline-3">
+<h3 id="sec-29-6">Liskov substitution principle</h3>
+<div class="outline-text-3" id="text-29-6">
+<p>
+~if A &lt;: B then everything one can do to with a value of type B, one should also be able to do with a value of type A.
+</p>
+
+<p>
+Let q(x) be a property provable about objects x of type B. Then q(y) should be provable for objects y of type A where A &lt;: B.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-30" class="outline-2">
+<h2 id="sec-30"><span class="done DONE">DONE</span> Variance</h2>
+<div class="outline-text-2" id="text-30">
+<p>
+Roughly:
+</p>
+<ul class="org-ul">
+<li>a type that accepts mutations of its elements should not be covariant.
+</li>
+<li>immutable types can be covariant (depending on some conditions)
+</li>
+</ul>
+</div>
+
+<div id="outline-container-sec-30-1" class="outline-3">
+<h3 id="sec-30-1">Definition of Variance</h3>
+<div class="outline-text-3" id="text-30-1">
+<p>
+C[T] is a parameterized type and A, B are types such as A &lt;: B
+3 possible relationships between C[A] and C[B]:
+</p>
+<ul class="org-ul">
+<li>C[A] &lt;: C[B]                                    =&gt; C is covariant
+</li>
+<li>C[A] &gt;: C[B]                                    =&gt; C is contravariant
+</li>
+<li>neither C[A] nor C[B] is a subtype of the other =&gt; C is nonvariant
+</li>
+</ul>
+
+<p>
+In scala:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">class C[+A] ... // covariant
+class C[-A] ... // contravariant
+class C[A]  ... // nonvariant (default)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-30-2" class="outline-3">
+<h3 id="sec-30-2">Exercise</h3>
+<div class="outline-text-3" id="text-30-2">
+<p>
+2 function types:
+type A = IntSet =&gt; NonEmpty
+type B = NonEmpty =&gt; IntSet
+</p>
+
+<p>
+According to the Liskov Substitution Principle, A &lt;: B.
+</p>
+<ul class="org-ul">
+<li>A satisfies the same contract as B.
+</li>
+<li>NonEmpty &lt;: IntSet
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-30-3" class="outline-3">
+<h3 id="sec-30-3">Typing rules for functions</h3>
+<div class="outline-text-3" id="text-30-3">
+<p>
+if A2 &lt;: A1 and B1 &lt;: B2 then A1 =&gt; B1 &lt;: A2 =&gt; B2
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-30-4" class="outline-3">
+<h3 id="sec-30-4">Function trait declaration</h3>
+<div class="outline-text-3" id="text-30-4">
+<p>
+function are:
+</p>
+<ul class="org-ul">
+<li>contravariant in their argument types
+</li>
+<li>covariant in their result type
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">trait Function1[-T, +U] {
+  def apply(x: T): U
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-30-5" class="outline-3">
+<h3 id="sec-30-5">Variance Checks</h3>
+<div class="outline-text-3" id="text-30-5">
+<p>
+scala compiler roughly does checks:
+</p>
+<ul class="org-ul">
+<li>covariant type parameters can only appear in method results
+</li>
+<li>contravariant types parameters can only appear in method parameters
+</li>
+<li>invariant type parameters can appear anywhere
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-30-6" class="outline-3">
+<h3 id="sec-30-6">Variance and Lists</h3>
+<div class="outline-text-3" id="text-30-6">
+<p>
+Making Nil1 an object instead of a class
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+trait List1[+T] {
+  def isEmpty: Boolean
+  def head: T
+  def tail: List1[T]
+  def toString: String
+}
+
+case object Nil1 extends List1[Nothing] {
+  def isEmpty: Boolean = true
+  def head: Nothing = throw new NoSuchElementException("Nil.head")
+  def tail: Nothing = throw new NoSuchElementException("Nil.tail")
+  override def toString: String = "."
+}
+
+case class Cons1[T](val head: T, val tail: List1[T]) extends List1[T] {
+  def isEmpty: Boolean = false
+
+  override def toString: String = "(" + head + ", " + tail.toString + ")"
+}
+
+object ConsListSession {
+
+  def main(args: Array[String]) = {
+    def singleton[T](elem: T) = new Cons1[T](elem, Nil1)
+
+    def nth[T](n: Int, l: List1[T]): T =
+      if (n &lt; 0 || l.isEmpty) throw new IndexOutOfBoundsException("Out of range")
+      else if (n == 0) l.head
+      else nth(n-1, l.tail)
+
+    def last[T](xs: List1[T]): T = xs match {
+	case Nil1           =&gt; throw new Error("last of empty list")
+	case Cons1(x, Nil1) =&gt; x
+	case Cons1(y,ys)      =&gt; last(ys)
+      }
+
+    //  def init[T](xs: List[T]): T = xs match {
+    //     case List()  =&gt; throw new Error("init of empty list")
+    //     case List(x) =&gt; List()
+    //     case y :: ys =&gt; y :: init(ys)
+    //   }
+
+    // def concat[T](xs: List[T], ys: List[T]) = xs match {
+    //     case List() =&gt; ys
+    //     case x :: zs =&gt; x :: concat(zs, ys)
+    //   }
+
+    // def reverse[T](xs: List[T]): List[T] = xs match {
+    //     case List() =&gt; xs
+    //     case y :: ys =&gt; reverse(ys) ++ List(y)
+    //   }
+
+    def catchAndPrint[T](index: Int, l: List1[T]) =
+      try {
+	nth(index, l)
+      } catch {
+	case e: IndexOutOfBoundsException =&gt; println("exception caught as expected: " + e)
+      }
+
+    println(singleton[Int](1))
+    println(singleton[Boolean](true))
+
+    val listTypes = new Cons1[Int](1, new Cons1[Int](2, Nil1))
+    println(listTypes)
+
+    println(nth(0, listTypes))
+    println(nth(1, listTypes))
+
+    catchAndPrint[Int](-1, listTypes)
+    catchAndPrint[Int](3, listTypes)
+
+    println(last(listTypes))
+    println("end")
+  }
+}
+
+// [info] Running coursera.ConsListSession
+// (1, .)
+// (true, .)
+// (1, (2, .))
+// 1
+// 2
+// exception caught as expected: java.lang.IndexOutOfBoundsException: Out of range
+// exception caught as expected: java.lang.IndexOutOfBoundsException: Out of range
+// 2
+// end
+// [success] Total time: 5 s, completed 25 juil. 2013 09:46:49
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-30-7" class="outline-3">
+<h3 id="sec-30-7">Making classes covariant</h3>
+</div>
+
+<div id="outline-container-sec-30-8" class="outline-3">
+<h3 id="sec-30-8">Exercise</h3>
+<div class="outline-text-3" id="text-30-8">
+<p>
+Why does the following code not type check?
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def prepend(elem: T): List1[T] = new Cons1(elem, this)
+</pre>
+</div>
+
+<p>
+Here's the compiler's result:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">[info] Compiling 1 Scala source to /home/tony/repositories/perso/scala-lab/target/scala-2.9.2/classes...
+[error] /home/tony/repositories/perso/scala-lab/src/main/scala/coursera/ConsList.scala:7: covariant type T occurs in contravariant position in type T of value elem
+[error]   def prepend(elem: T): List1[T] = new Cons1(elem, this)
+[error]               ^
+[error] one error found
+[error] (compile:compile) Compilation failed
+[error] Total time: 1 s, completed 25 juil. 2013 09:50:43
+</pre>
+</div>
+
+<p>
+And indeed, in the definition, we pass the type T (which is covariant) in the method parameter (which is the contravariant position).
+So prepend fails the variance checking.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-30-9" class="outline-3">
+<h3 id="sec-30-9">Lower bounds</h3>
+<div class="outline-text-3" id="text-30-9">
+<p>
+How to make the variance correct on the prepend definition?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def ::[U &gt;: T](elem: U): List1[U] = new Cons1(elem, this)
+</pre>
+</div>
+
+<p>
+This passes variance checks because:
+</p>
+<ul class="org-ul">
+<li>covariant type parameters may appear in lower bounds of method type parameters
+</li>
+<li>contravariant type parameters may appear in upper bounds of method
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-30-10" class="outline-3">
+<h3 id="sec-30-10">Exercise</h3>
+<div class="outline-text-3" id="text-30-10">
+<p>
+Given the definition of ::
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def ::[U &gt;: T](elem: U): List1[U] = new Cons1(elem, this)
+</pre>
+</div>
+
+<p>
+What is the result type of this function?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def f(xs: List1[Leaf], x: Empty) = xs :: x
+</pre>
+</div>
+
+<p>
+Empty &lt;: IntSet
+NonEmpty &lt;: IntSet
+</p>
+
+<p>
+As List1 is covariant
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">trait List1[+T] {
+</pre>
+</div>
+
+<p>
+List1[NonEmpty] &lt;: List1[IntSet]
+</p>
+
+<p>
+So the result type is List1[IntSet].
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-31" class="outline-2">
+<h2 id="sec-31"><span class="done DONE">DONE</span> Decomposition</h2>
+<div class="outline-text-2" id="text-31">
+<p>
+Problem: Write a small interpreter for arithmetic expressions.
+</p>
+</div>
+<div id="outline-container-sec-31-1" class="outline-3">
+<h3 id="sec-31-1">Basic</h3>
+<div class="outline-text-3" id="text-31-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+trait Expr {
+  def isNumber: Boolean
+  def isSum: Boolean
+  def numValue: Int
+  def leftOp: Expr
+  def rightOp: Expr
+}
+
+class Number(n: Int) extends Expr {
+  def isNumber: Boolean = true
+  def isSum: Boolean = false
+  def numValue: Int = n
+  def leftOp: Expr = throw new Error("Number.leftOp")
+  def rightOp: Expr = throw new Error("Number.rightOp")
+}
+
+class Sum(e1: Expr, e2: Expr) extends Expr {
+  def isNumber: Boolean = false
+  def isSum: Boolean = true
+  def numValue: Int = throw new Error("Sum.numValue")
+  def leftOp: Expr = e1
+  def rightOp: Expr = e2
+}
+
+object sessionExpressions {
+  def main(args: Array[String]) = {
+    def eval(e: Expr): Int = {
+      if(e.isNumber) e.numValue
+      else if(e.isSum) eval(e.leftOp) + eval(e.rightOp)
+      else throw new Error("Unknown Expression " + e)
+    }
+
+    println(eval(new Sum(new Number(10), new Number(-5))))
+  }
+
+}
+
+// [info] Running coursera.sessionExpressions
+// 5
+// [success] Total time: 6 s, completed 25 juil. 2013 11:45:39
+</pre>
+</div>
+<p>
+Adding new Expr becomes problematic as the number of methods to add grows quadratically.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-31-2" class="outline-3">
+<h3 id="sec-31-2">No solution</h3>
+<div class="outline-text-3" id="text-31-2">
+<ul class="org-ul">
+<li>isInstanceOf[T]
+</li>
+<li>asInstanceOf[T]
+</li>
+</ul>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">Pros</th>
+<th scope="col" class="left">Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">No need for classification method, access methods only for classes where values is defined</td>
+<td class="left">Low level and potentially unsafe</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+So no go
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-31-3" class="outline-3">
+<h3 id="sec-31-3">Better solution</h3>
+<div class="outline-text-3" id="text-31-3">
+</div><div id="outline-container-sec-31-3-1" class="outline-4">
+<h4 id="sec-31-3-1">Object oriented Decomposition</h4>
+<div class="outline-text-4" id="text-31-3-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+trait Expr {
+  def eval: Int
+}
+
+class Number(n: Int) extends Expr {
+  def eval: Int = n
+}
+
+class Sum(e1: Expr, e2: Expr) extends Expr {
+  def eval: Int = e1.eval + e2.eval
+}
+
+class Pdt(e1: Expr, e2: Expr) extends Expr {
+  def eval: Int = e1.eval * e2.eval
+}
+
+object sessionExpressions {
+  def main(args: Array[String]) = {
+    println(new Sum(new Number(10), new Number(-5)).eval)
+    println(new Pdt(new Sum(new Number(10), new Number(-5)), new Number(2)).eval)
+  }
+
+}
+
+// [info] Running coursera.sessionExpressions
+// 5
+// 10
+// [success] Total time: 2 s, completed 25 juil. 2013 12:00:08
+</pre>
+</div>
+
+<p>
+Limitations:
+</p>
+<ul class="org-ul">
+<li>adding a method will impact every expression
+</li>
+<li>what if you want to simplify the expressions?
+</li>
+</ul>
+<p>
+For example, using the rule: a*b+a*c -&gt; a*(b+c)
+</p>
+
+<p>
+this is a non local simplification. It cannot be encapsulated in the method of a single object.
+=&gt; Back to square one, need to test and access methods for all the different subclasses
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-32" class="outline-2">
+<h2 id="sec-32"><span class="done DONE">DONE</span> Pattern Matching</h2>
+<div class="outline-text-2" id="text-32">
+<p>
+Task to solve: find a general and convenient way to access objects in a extensible class hierarchy.
+</p>
+</div>
+
+<div id="outline-container-sec-32-1" class="outline-3">
+<h3 id="sec-32-1">Pattern matching</h3>
+<div class="outline-text-3" id="text-32-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+trait Expr
+
+case class Number(n: Int) extends Expr
+case class Sum(e1: Expr, e2: Expr) extends Expr
+case class Pdt(e1: Expr, e2: Expr) extends Expr
+
+object sessionExpressions {
+
+  def eval(e: Expr): Int = e match {
+      case Number(n)   =&gt; n
+      case Sum(e1, e2) =&gt; eval(e1) + eval(e2)
+      case Pdt(e1, e2) =&gt; eval(e1) * eval(e2)
+  }
+
+  def main(args: Array[String]) = {
+    println(eval(new Sum(new Number(10), new Number(-5))))
+    println(eval(new Pdt(new Sum(new Number(10), new Number(-5)), new Number(2))))
+  }
+
+}
+
+// [info] Running coursera.sessionExpressions
+// 5
+// 10
+// [success] Total time: 2 s, completed 25 juil. 2013 12:09:00
+</pre>
+</div>
+
+<p>
+Using the companion object implicitely created by the case class, we can either simplify the instanciation of Expr like this:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  def main(args: Array[String]) = {
+    println(eval(Sum(Number(10), Number(-5))))
+    println(eval(Pdt(Sum(Number(10), Number(-5)), Number(2))))
+  }
+
+// [info] Running coursera.sessionExpressions
+// 5
+// 10
+// [success] Total time: 2 s, completed 25 juil. 2013 12:13:08
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-32-2" class="outline-3">
+<h3 id="sec-32-2">Match syntax</h3>
+<div class="outline-text-3" id="text-32-2">
+<ul class="org-ul">
+<li>match is followed by a sequence of cases, pat =&gt; expr
+</li>
+<li>each case associates an expression expr with a pattern pat
+</li>
+<li>MatchError exception is thrown if no pattern matches the value of the selector
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-32-3" class="outline-3">
+<h3 id="sec-32-3">Forms of Patterns</h3>
+<div class="outline-text-3" id="text-32-3">
+<p>
+Patterns are constructed from:
+</p>
+<ul class="org-ul">
+<li>constructors, e.g. Number, Sum, etc&#x2026;
+</li>
+<li>variables, e.g. n, e1, e2
+</li>
+<li>wildcard patterns _
+</li>
+<li>constants, e.g. 1, true, etc&#x2026;
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-32-4" class="outline-3">
+<h3 id="sec-32-4">Pattern matching and Methods</h3>
+<div class="outline-text-3" id="text-32-4">
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+trait Expr {
+  def eval: Int = this match {
+      case Number(n)   =&gt; n
+      case Sum(e1, e2) =&gt; e1.eval + e2.eval
+      case Pdt(e1, e2) =&gt; e1.eval * e2.eval
+  }
+}
+
+case class Number(n: Int) extends Expr
+case class Sum(e1: Expr, e2: Expr) extends Expr
+case class Pdt(e1: Expr, e2: Expr) extends Expr
+
+object sessionExpressions {
+
+  def main(args: Array[String]) = {
+    println(Sum(Number(10), Number(-5)).eval)
+    println(Pdt(Sum(Number(10), Number(-5)), Number(2)).eval)
+  }
+
+}
+
+// [info] Running coursera.sessionExpressions
+// 5
+// 10
+// [success] Total time: 3 s, completed 25 juil. 2013 12:52:17
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-32-5" class="outline-3">
+<h3 id="sec-32-5">Exercise</h3>
+<div class="outline-text-3" id="text-32-5">
+<ol class="org-ol">
+<li>Write a function show that uses pattern matching to return the representation of a given expression as a String.
+</li>
+</ol>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def show(e: Expr): String
+</pre>
+</div>
+
+<p>
+Solution:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+trait Expr {
+  def eval: Int = this match {
+      case Number(n)   =&gt; n
+      case Sum(e1, e2) =&gt; e1.eval + e2.eval
+      case Pdt(e1, e2) =&gt; e1.eval * e2.eval
+  }
+
+  def show: String = this match {
+      case Number(n)   =&gt; n.toString
+      case Sum(e1, e2) =&gt; "(" + e1.show + " + " + e2.show + ")"
+      case Pdt(e1, e2) =&gt; "(" + e1.show + " * " + e2.show + ")"
+    }
+}
+
+case class Number(n: Int) extends Expr
+case class Sum(e1: Expr, e2: Expr) extends Expr
+case class Pdt(e1: Expr, e2: Expr) extends Expr
+
+object sessionExpressions {
+
+  def main(args: Array[String]) = {
+    val e1 = Sum(Number(10), Number(-5))
+    val e2 = Pdt(Sum(Number(10), Number(-5)), Number(2))
+
+    println(e1.show + ": " + e1.eval)
+    println(e2.show + ": " + e2.eval)
+  }
+
+}
+
+// [info] Running coursera.sessionExpressions
+// (10 + -5): 5
+// ((10 + -5) * 2): 10
+// [success] Total time: 1 s, completed 25 juil. 2013 13:02:15
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-33" class="outline-2">
+<h2 id="sec-33"><span class="done DONE">DONE</span> Lists</h2>
+<div class="outline-text-2" id="text-33">
+<p>
+fundamental data structure in functional programming
+Examples:
+val fruit = List("apple", "oranges", "pears")
+</p>
+
+<p>
+2 important differences between lists and arrays
+</p>
+<ul class="org-ul">
+<li>lists are immutable (elements of the list cannot be changed)
+</li>
+<li>and recursive (while arrays are flat)
+</li>
+</ul>
+</div>
+<div id="outline-container-sec-33-1" class="outline-3">
+<h3 id="sec-33-1">The List type</h3>
+<div class="outline-text-3" id="text-33-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+object sessionListManipulation {
+  def main(args: Array[String]) = {
+    val fruits = List("apples", "oranges", "pears")
+      println(fruits)
+
+    val fruits2 = "apples" :: ("oranges" :: ("pears" :: Nil))
+      println(fruits2)
+  }
+}
+
+// [info] Running coursera.sessionListManipulation
+// List(apples, oranges, pears)
+// List(apples, oranges, pears)
+// [success] Total time: 4 s, completed 25 juil. 2013 13:22:05
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-33-2" class="outline-3">
+<h3 id="sec-33-2">Operations on the List</h3>
+<div class="outline-text-3" id="text-33-2">
+<ul class="org-ul">
+<li>head (NoSuchElementException when trying to take the head of the empty list)
+</li>
+<li>tail
+</li>
+<li>isEmpty
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-33-3" class="outline-3">
+<h3 id="sec-33-3">List Pattern</h3>
+<div class="outline-text-3" id="text-33-3">
+<ul class="org-ul">
+<li>Nil
+</li>
+<li id="x">xs
+</li>
+<li id="x :: y">ys
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-33-4" class="outline-3">
+<h3 id="sec-33-4">Exercise</h3>
+<div class="outline-text-3" id="text-33-4">
+<p>
+Insertion sort
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+object sessionListManipulation {
+
+  def main(args: Array[String]) = {
+    def insert(x: Int, xs: List[Int]): List[Int] = xs match {
+	case Nil =&gt; x :: Nil
+	case y :: ys =&gt; if (x &lt; y) x :: insert(y, ys)
+			else       y :: insert(x, ys)
+      }
+
+    def isort(xs: List[Int]): List[Int] = xs match {
+	case Nil =&gt; Nil
+	case y :: ys =&gt; insert(y, isort(ys))
+      }
+
+    val fruits = List("apples", "oranges", "pears")
+      println(fruits)
+
+    val fruits2 = "apples" :: "oranges" :: "pears" :: Nil
+      println(fruits2)
+
+    val listToSort = List(10, 8, 100, 0)
+      println(isort(listToSort))
+  }
+}
+
+// [info] Running coursera.sessionListManipulation
+// List(apples, oranges, pears)
+// List(apples, oranges, pears)
+// List(0, 8, 10, 100)
+// [success] Total time: 1 s, completed 25 juil. 2013 13:34:48
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-34" class="outline-2">
+<h2 id="sec-34"><span class="done DONE">DONE</span> Other Collections/Sequences</h2>
+<div class="outline-text-2" id="text-34">
+</div>
+<div id="outline-container-sec-34-1" class="outline-3">
+<h3 id="sec-34-1">List</h3>
+<div class="outline-text-3" id="text-34-1">
+<ul class="org-ul">
+<li>immutable
+</li>
+<li>Lists are linear.
+</li>
+<li>Access to the first element is much faster than access to the middle or the end of the list.
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-34-2" class="outline-3">
+<h3 id="sec-34-2">Vector</h3>
+<div class="outline-text-3" id="text-34-2">
+<ul class="org-ul">
+<li>immutable
+</li>
+<li>Representend are "very very shallow trees"
+</li>
+<li>More evenly balanced access patterns.
+</li>
+<li>proportional to the depth of the vector (log<sub>32</sub>(n) with n the size of the vector)
+</li>
+<li>very good for bulk operations (chunk of 32 adjacent entries)
+</li>
+<li>operations are the same as list except for cons (::)
+</li>
+<li>insertion log<sub>32</sub>(n) with n the number of creation
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-34-3" class="outline-3">
+<h3 id="sec-34-3">Collection hierarchy</h3>
+<div class="outline-text-3" id="text-34-3">
+<p>
+Array, String, List, Vector, Range &lt;: Seq &lt;: Iterable
+Set &lt;: Iterable
+Map &lt;: Iterable
+</p>
+</div>
+</div>
+<div id="outline-container-sec-34-4" class="outline-3">
+<h3 id="sec-34-4">Ranges</h3>
+<div class="outline-text-3" id="text-34-4">
+<p>
+sequence of evenly spaced integers.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+object sessionSequence {
+  def main(args: Array[String]) = {
+    println(1 until 5)
+    println(1 to 5)
+    println(1 to 10 by 3)
+    println(6 to 1 by -2)
+  }
+
+}
+
+// [info] Running coursera.sessionSequence
+// Range(1, 2, 3, 4)
+// Range(1, 2, 3, 4, 5)
+// Range(1, 4, 7, 10)
+// Range(6, 4, 2)
+// [success] Total time: 6 s, completed 25 juil. 2013 14:29:56
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-34-5" class="outline-3">
+<h3 id="sec-34-5">Some more sequence operations</h3>
+<div class="outline-text-3" id="text-34-5">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">function</th>
+<th scope="col" class="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">xs exists p</td>
+<td class="left">true if there is an element x of xs such that p(x) holds, false otherwise</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">xs forall p</td>
+<td class="left">true if all the elements of xs holds, false otherwise</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">xs zip ys</td>
+<td class="left">A sequence of pairs drawn from corresponding elements of sequence xs and ys</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">xs unzip ys</td>
+<td class="left">Splits a sequence of pairs xs into 2 sequences consisting of the first, respectively</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">second halves of all pairs</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">xs flatmap f</td>
+<td class="left">Applies collection-valued function f to all elements of xs and concatenates the result</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">xs.sum</td>
+<td class="left">sum of all elements</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">xs.product</td>
+<td class="left">product of all elements</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">xs.max</td>
+<td class="left">max of all elements in xs</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">xs.max</td>
+<td class="left">min of all elements in xs</td>
+</tr>
+</tbody>
+</table>
+<ul class="org-ul">
+<li></li>
+<li>xs forall p
+</li>
+<li>xs zip ys
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-34-6" class="outline-3">
+<h3 id="sec-34-6">Example</h3>
+<div class="outline-text-3" id="text-34-6">
+<ul class="org-ul">
+<li>Combinations
+</li>
+</ul>
+<p>
+To list all combinations of numbers x and y where x is drawn from 1..M and y is drawn from 1..N
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  def main(args: Array[String]) = {
+    def combi(m: Int, n: Int) = {
+      (1 to m) flatMap (x =&gt; (1 to n) map (y =&gt; (x, y)))
+    }
+
+// Vector((1,1), (1,2), (1,3), (1,4), (1,5), (1,6), (1,7), (1,8), (1,9), (1,10), (2,1), (2,2), (2,3), (2,4), (2,5), (2,6), (2,7), (2,8), (2,9), (2,10))
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>scalar product
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+object sessionVectorManipulation {
+
+  def main(args: Array[String]) = {
+    def combi(m: Int, n: Int) = {
+      (1 to m) flatMap (x =&gt; (1 to n) map (y =&gt; (x, y)))
+    }
+
+    def scalarPdt(xs: Vector[Int], ys: Vector[Int]): Int =
+//    (xs zip ys) map (xy =&gt; xy._1 * xy._2) sum
+      (xs zip ys) map { case (x, y) =&gt; x * y } sum
+
+    val nums = Vector(1, 2, 3, -88)
+    val names = Vector("one", "two", "three", "minus eighty eight")
+
+    val nums2 = Vector(2, 3, 4, 0)
+
+    println(nums)
+    println(names)
+    println(names zip nums)
+    println(combi(2, 10))
+
+    println(scalarPdt(nums, nums2))
+  }
+
+}
+
+// [info] Running coursera.sessionVectorManipulation
+// Vector(1, 2, 3, -88)
+// Vector(one, two, three, minus eighty eight)
+// Vector((one,1), (two,2), (three,3), (minus eighty eight,-88))
+// Vector((1,1), (1,2), (1,3), (1,4), (1,5), (1,6), (1,7), (1,8), (1,9), (1,10), (2,1), (2,2), (2,3), (2,4), (2,5), (2,6), (2,7), (2,8), (2,9), (2,10))
+// 20
+// [success] Total time: 1 s, completed 25 juil. 2013 14:47:56
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-34-7" class="outline-3">
+<h3 id="sec-34-7">Exercise</h3>
+<div class="outline-text-3" id="text-34-7">
+<p>
+A number n is prime if the only divisors of n are 1 and n itself.
+Test primality of a number (value conciseness over efficiency)?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+object sessionVectorManipulation {
+
+  def main(args: Array[String]) = {
+    def combi(m: Int, n: Int) = {
+      (1 to m) flatMap (x =&gt; (1 to n) map (y =&gt; (x, y)))
+    }
+
+    def scalarPdt(xs: Vector[Int], ys: Vector[Int]): Int =
+      (xs zip ys) map { case (x, y) =&gt; x * y } sum
+
+    def isPrime(n: Int): Boolean =
+      (2 until n) forall (x =&gt; n % x != 0)
+
+    val nums = Vector(1, 2, 3, -88)
+    val names = Vector("one", "two", "three", "minus eighty eight")
+
+    val nums2 = Vector(2, 3, 4, 0)
+
+    println(nums)
+    println(names)
+    println(names zip nums)
+    println(combi(2, 10))
+
+    println(scalarPdt(nums, nums2))
+
+    println((2 to 100) filter isPrime)
+  }
+
+}
+
+// [info] Running coursera.sessionVectorManipulation
+// Vector(1, 2, 3, -88)
+// Vector(one, two, three, minus eighty eight)
+// Vector((one,1), (two,2), (three,3), (minus eighty eight,-88))
+// Vector((1,1), (1,2), (1,3), (1,4), (1,5), (1,6), (1,7), (1,8), (1,9), (1,10), (2,1), (2,2), (2,3), (2,4), (2,5), (2,6), (2,7), (2,8), (2,9), (2,10))
+// 20
+// Vector(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97)
+// [success] Total time: 1 s, completed 25 juil. 2013 14:58:20
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-35" class="outline-2">
+<h2 id="sec-35"><span class="done DONE">DONE</span> Combinatorial Search and For-Expressions</h2>
+<div class="outline-text-2" id="text-35">
+<p>
+Given a positive integer n, find all pairs of positive integers i and j, with 1 &lt;= j &lt; i &lt; n such that i + j is prime.
+</p>
+
+<p>
+List comprehension:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def pairsPrime(n: Int) = {
+  for { i &lt;- 1 until n
+	j &lt;- 1 until i
+	if isPrime(i + j)
+  } yield (i, j)
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-35-1" class="outline-3">
+<h3 id="sec-35-1">Exercise</h3>
+<div class="outline-text-3" id="text-35-1">
+<p>
+Rewrite the scalarPdt function using the list comprehension.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def scalarPdt(xs: Vector[Int], ys: Vector[Int]): Int =
+  (for ((x, y) &lt;- (xs zip ys)) yield (x * y)) sum
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-36" class="outline-2">
+<h2 id="sec-36"><span class="done DONE">DONE</span> Combinatorial Search Example</h2>
+<div class="outline-text-2" id="text-36">
+</div>
+<div id="outline-container-sec-36-1" class="outline-3">
+<h3 id="sec-36-1">Sets</h3>
+<div class="outline-text-3" id="text-36-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">val fruit = Set("apple", "banana", "pear")
+val s = (1 to 6).toSet
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Sets are unordered
+</li>
+<li>no duplicate elements
+</li>
+<li>fundamental operation on sets is contains
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-36-2" class="outline-3">
+<h3 id="sec-36-2">N-Queens</h3>
+<div class="outline-text-3" id="text-36-2">
+<p>
+The 8 queens problem is to place 8 queens on a chessboard so that no queen is threatened by another.
+In other words, there can't be 2 queens in the same row, column or diagonal.
+</p>
+
+<p>
+Problem must work for chessboard of any size.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+object sessionNQueens {
+  def main(args: Array[String]) = {
+
+    def queens(n: Int): Set[List[Int]] = {
+
+      def isSafe(col: Int, queens: List[Int]): Boolean = {
+	val row = queens.length
+	val queensWithRow = (row - 1 to 0 by -1) zip queens
+	queensWithRow forall {
+	  case (r, c) =&gt; col != c &amp;&amp; math.abs(col - c) != row - r
+	}
+      }
+
+      def placeQueens(k: Int): Set[List[Int]] =
+	if (k == 0) Set(Nil)
+	else
+	  for {
+	    queens &lt;- placeQueens(k - 1)
+	    col &lt;- 0 until n
+	    if isSafe(col, queens)
+	  } yield col :: queens
+
+      placeQueens(n)
+    }
+
+    def show(queens: List[Int]) = {
+      val lines = for (col &lt;- queens.reverse)
+		  yield Vector.fill(queens.length)("* ").updated(col, "X "). mkString
+      "\n" + (lines mkString "\n")
+    }
+
+    println(queens(4) map show mkString "\n")
+  }
+}
+
+// [info] Running coursera.sessionNQueens
+
+// * * X *
+// X * * *
+// * * * X
+// * X * *
+
+// * X * *
+// * * * X
+// X * * *
+// * * X *
+// [success] Total time: 1 s, completed 25 juil. 2013 15:42:20
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-37" class="outline-2">
+<h2 id="sec-37"><span class="done DONE">DONE</span> Queries with For</h2>
+<div class="outline-text-2" id="text-37">
+</div>
+</div>
+<div id="outline-container-sec-38" class="outline-2">
+<h2 id="sec-38"><span class="done DONE">DONE</span> Translation of For</h2>
+<div class="outline-text-2" id="text-38">
+<p>
+syntax of for (list comprehension) is closely related to the HOF map, flatMap and filter.
+In reality, it's the for writing which is translated in terms of map, flatMap and lazy version of filter.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-39" class="outline-2">
+<h2 id="sec-39"><span class="done DONE">DONE</span> Maps</h2>
+<div class="outline-text-2" id="text-39">
+</div>
+</div>
+<div id="outline-container-sec-40" class="outline-2">
+<h2 id="sec-40"><span class="done DONE">DONE</span> Putting the Pieces Together</h2>
+<div class="outline-text-2" id="text-40">
+</div>
+</div>
+<div id="outline-container-sec-41" class="outline-2">
+<h2 id="sec-41"><span class="done DONE">DONE</span> Structural Induction on Trees</h2>
+<div class="outline-text-2" id="text-41">
+<p>
+not limited to list.
+To prove a property P(t) for all trees t of a certain type:
+</p>
+<ul class="org-ul">
+<li>show that P(l) holds for all leaves l of a tree
+</li>
+<li>for each type of internal node t with subtrees s1, &#x2026;, sn, show that P(s<sub>1</sub>) &amp;&amp; P(s<sub>2</sub>) &amp;&amp; &#x2026; &amp;&amp; P(s<sub>n</sub>) implies P(t)
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-42" class="outline-2">
+<h2 id="sec-42"><span class="done DONE">DONE</span> Streams</h2>
+<div class="outline-text-2" id="text-42">
+</div>
+<div id="outline-container-sec-42-1" class="outline-3">
+<h3 id="sec-42-1">Delayed evalutation</h3>
+<div class="outline-text-3" id="text-42-1">
+<p>
+Avoid computing the tail of a sequence until it is needed for the evaluation result (which might be never)
+</p>
+
+<p>
+class Stream
+Streams are like list but their tail are evaluated on demand.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-42-2" class="outline-3">
+<h3 id="sec-42-2">Defining Streams</h3>
+<div class="outline-text-3" id="text-42-2">
+<p>
+Stream.empty
+Stream.cons
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-42-3" class="outline-3">
+<h3 id="sec-42-3">Stream Ranges</h3>
+<div class="outline-text-3" id="text-42-3">
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+object sessionStream {
+  def main(args: Array[String]) = {
+    def streamRange(lo: Int, hi: Int): Stream[Int] =
+	if (lo &gt;= hi) Stream.empty
+	else Stream.cons(lo, streamRange(lo + 1, hi))
+
+    def listRange(lo: Int, hi: Int): List[Int] =
+	if (lo &gt;= hi) Nil
+	else lo :: listRange(lo + 1, hi)
+
+    val xs = Stream.cons(1, Stream.cons(2, Stream.empty))
+    val ys = Stream(10, 20, 30)
+
+    println("Tail not consumed: " + xs)
+    println("Tail not consumed: " + ys)
+
+    val xxs = xs map (_ + 1)
+    println("Tail not consumed    : " +  xxs)
+
+    println("stream: " + streamRange(0, 10))
+    println("list: " + listRange(0, 10))
+  }
+}
+
+// [info] Running coursera.sessionStream
+// Tail not consumed: Stream(1, ?)
+// Tail not consumed: Stream(10, ?)
+// Tail not consumed    : Stream(2, ?)
+// stream: Stream(0, ?)
+// list: List(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+// [success] Total time: 1 s, completed 26 juil. 2013 09:47:32
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-42-4" class="outline-3">
+<h3 id="sec-42-4">Methods on streams</h3>
+<div class="outline-text-3" id="text-42-4">
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+object sessionStream {
+  def main(args: Array[String]) = {
+    def streamRange(lo: Int, hi: Int): Stream[Int] =
+	if (lo &gt;= hi) Stream.empty
+	else Stream.cons(lo, streamRange(lo + 1, hi))
+
+    def listRange(lo: Int, hi: Int): List[Int] =
+	if (lo &gt;= hi) Nil
+	else lo :: listRange(lo + 1, hi)
+
+    val xs = Stream.cons(1, Stream.cons(2, Stream.empty))
+    val ys = Stream(10, 20, 30)
+
+    println("Tail not consumed: " + xs)
+    println("Tail not consumed: " + ys)
+
+    val xxs = xs map (_ + 1)
+    println("Tail not consumed    : " +  xxs)
+
+    println("stream: " + streamRange(0, 10))
+    println("list: " + listRange(0, 10))
+
+    val secondprimeWithList = ((1000 to 10000) filter Prime.isPrime)(1)
+    val secondprimeWithStream = ((1000 to 10000).toStream filter Prime.isPrime)(1)
+
+    println("second prime number between [1000,10000] - list: " + secondprimeWithList)
+    println("second prime number between [1000,10000] - list: " + secondprimeWithStream)
+  }
+}
+
+// [info] Running coursera.sessionStream
+// Tail not consumed: Stream(1, ?)
+// Tail not consumed: Stream(10, ?)
+// Tail not consumed    : Stream(2, ?)
+// stream: Stream(0, ?)
+// list: List(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+// second prime number between [1000,10000] - list: 1013
+// second prime number between [1000,10000] - list: 1013
+// [success] Total time: 1 s, completed 26 juil. 2013 09:58:20
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-42-5" class="outline-3">
+<h3 id="sec-42-5">Stream cons operator</h3>
+<div class="outline-text-3" id="text-42-5">
+<p>
+:: is for List, not Stream
+#:: for Stream
+</p>
+
+<p>
+for example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def streamRange(lo: Int, hi: Int): Stream[Int] =
+    if (lo &gt;= hi) Stream.empty
+    else lo #:: streamRange(lo + 1, hi)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-43" class="outline-2">
+<h2 id="sec-43"><span class="done DONE">DONE</span> Lazy Evaluation</h2>
+<div class="outline-text-2" id="text-43">
+<ul class="org-ul">
+<li>by value (or strict): parameters of function first
+</li>
+<li>by-name: computation of parameters is delayed and the function definition is first folded. In this case, every computation of parameters is delayed and gets recomputed each time they appear
+</li>
+<li>lazy: computed once and by referential transparency, we keep the value for the other reference. This improve the by-name evaluation
+</li>
+</ul>
+</div>
+<div id="outline-container-sec-43-1" class="outline-3">
+<h3 id="sec-43-1">Evaluation by default in scala</h3>
+<div class="outline-text-3" id="text-43-1">
+<p>
+strict evaluation
+Can use the lazy evaluation using the keyword: lazy
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-44" class="outline-2">
+<h2 id="sec-44"><span class="done DONE">DONE</span> Computing with Infinite Sequences</h2>
+<div class="outline-text-2" id="text-44">
+</div>
+<div id="outline-container-sec-44-1" class="outline-3">
+<h3 id="sec-44-1">Infinite Stream of primes</h3>
+<div class="outline-text-3" id="text-44-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+object Prime {
+  def from(n: Int): Stream[Int] = n #:: from(n+1)
+
+  def isPrime(n: Int): Boolean =
+    (2 until n) forall (x =&gt; n % x != 0)
+
+  def sieve(s: Stream[Int]): Stream[Int] =
+    s.head #:: sieve(s.tail filter (_ % s.head != 0))
+
+  def primes(n: Int): Stream[Int] = sieve(from(2)) take n
+
+  // haskell version
+  // sieve :: [Int] -&gt; [Int]
+  // sieve (p:ps) = p : sieve [n | n &lt;- ps, n `mod` p /= 0]
+
+  def main(args: Array[String]) = {
+    println(primes(100) toList)
+  }
+
+}
+
+// [info] Running coursera.Prime
+// List(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541)
+// [success] Total time: 2 s, completed 26 juil. 2013 10:39:37
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-44-2" class="outline-3">
+<h3 id="sec-44-2">Square roots</h3>
+<div class="outline-text-3" id="text-44-2">
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+import math.abs
+
+object sessionSqrt {
+
+  def sqrtStream(x: Double): Stream[Double] = {
+    def improve(guess: Double) = (guess + x / guess) / 2
+    lazy val guesses: Stream[Double] = 1 #:: (guesses map improve)
+    guesses
+  }
+
+  def isGoodEnough(guess: Double, x: Double): Boolean =
+    abs((guess * guess - x) / x) &lt; 0.0001
+
+  def sqrt(x: Double) = FixedPointCompute.fixedPoint(y =&gt; x/y)(1.0)
+
+  def main(args: Array[String]) = {
+    val values = List(2.0, 4.0, 1e-6, 0.001, 0.1e-20, 1.0e20, 1.0e50)
+
+    val squareValues = values.map(v =&gt; List(v, sqrt(v)))
+
+    squareValues.foreach(println)
+
+    println(sqrtStream(4) take(10) toList)
+    println(sqrtStream(4) filter(isGoodEnough(_, 4)) take(10) toList)
+  }
+}
+
+// [info] Running coursera.sessionSqrt
+// List(2.0, 1.4142135623746899)
+// List(4.0, 2.000000000000002)
+// List(1.0E-6, 0.001)
+// List(0.001, 0.03162277660168433)
+// List(1.0E-21, 3.162277660168379E-11)
+// List(1.0E20, 2.5E19)
+// List(1.0E50, 2.5E49)
+// List(1.0, 2.5, 2.05, 2.000609756097561, 2.0000000929222947, 2.000000000000002, 2.0, 2.0, 2.0, 2.0)
+// List(2.0000000929222947, 2.000000000000002, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0)
+// [success] Total time: 1 s, completed 26 juil. 2013 10:53:15
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-45" class="outline-2">
+<h2 id="sec-45"><span class="done DONE">DONE</span> Case Study the Water Pouring Problem</h2>
+<div class="outline-text-2" id="text-45">
+</div>
+<div id="outline-container-sec-45-1" class="outline-3">
+<h3 id="sec-45-1">Problem</h3>
+<div class="outline-text-3" id="text-45-1">
+<p>
+n glasses with no markings of different volumes (for example: 4dl, 9dl)
+1 sink with unlimited water
+Moves possible:
+</p>
+<ul class="org-ul">
+<li>empty a glass
+</li>
+<li>fill a glass completely
+</li>
+<li>pour from one glass to another empty glass
+</li>
+</ul>
+
+<p>
+problem: How do you fill a glass with a certain quantity q?
+</p>
+</div>
+</div>
+<div id="outline-container-sec-45-2" class="outline-3">
+<h3 id="sec-45-2">Model</h3>
+<div class="outline-text-3" id="text-45-2">
+<p>
+Glass: Int
+State: Vector[Int] (one entry per glass)
+Moves:
+    Empty(glass)
+    Fill(glass)
+    Pour(from, to)
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-45-3" class="outline-3">
+<h3 id="sec-45-3">Solutions</h3>
+<div class="outline-text-3" id="text-45-3">
+<div class="org-src-container">
+
+<pre class="src src-scala">package coursera
+
+// Glass: Int
+// State: Vector[Int] (one entry per glass)
+// Moves:
+//     Empty(glass)
+//     Fill(glass)
+//     Pour(from, to)
+
+class Pouring(capacity: Vector[Int]) {
+// states
+
+  type State = Vector[Int]
+
+  val initialState = capacity map (x =&gt; 0)
+
+// moves
+
+  trait Move {
+    def change(state: State): State
+  }
+
+  case class Empty(glass: Int) extends Move {
+    def change(state: State) = state updated (glass, 0)
+  }
+
+  case class Fill(glass: Int)  extends Move {
+    def change(state: State) = state updated (glass, capacity(glass))
+
+  }
+
+  case class Pour(from: Int, to: Int) extends Move {
+    def change(state: State) = {
+      val freeVolumeInTo =  capacity(to) - state(to)
+      val amount =  state(from) min freeVolumeInTo
+      state updated (from, state(from) - amount)
+      state updated (to, state(to) + amount)
+      state
+    }
+  }
+
+  val glasses = 0 until capacity.length
+
+  val moves =
+    (for (g &lt;- glasses) yield Empty(g)) ++
+      (for (g &lt;- glasses) yield Fill(g)) ++
+      (for (from &lt;- glasses; to &lt;- glasses) yield Pour(from, to))
+
+// Paths
+
+    class Path(history: List[Move], val endState: State) {
+      def extend(move: Move) = new Path(move :: history, move change endState)
+
+      override def toString = (history.reverse mkString " ") + " --&gt; " + endState
+     }
+
+    val initialPath = new Path(Nil, initialState)
+
+    def from(paths: Set[Path], explored: Set[State]): Stream[Set[Path]] =
+	if (paths.isEmpty) Stream.empty
+	else {
+	  val more = for {
+	      path &lt;- paths
+	      next &lt;- moves map path.extend
+	      if !(explored contains next.endState)
+	    } yield next
+	  paths #:: from(more, explored ++ (more map (_.endState)))
+	}
+
+  val pathSets = from(Set(initialPath), Set(initialState))
+
+  def solutions(target: Int): Stream[Path] =
+      for {
+	pathSet &lt;- pathSets
+	path &lt;- pathSet
+	if path.endState contains target
+      } yield path
+
+}
+
+object WaterPouringProblem {
+  def main(args: Array[String]) = {
+    val problem = new Pouring(Vector(4, 7, 19))
+
+    println(problem.moves)
+    println(problem.pathSets.take(3).toList)
+    println(problem.solutions(17))
+  }
+}
+
+// [info] Running coursera.WaterPouringProblem
+// Vector(Empty(0), Empty(1), Fill(0), Fill(1), Pour(0,0), Pour(0,1), Pour(1,0), Pour(1,1))
+// List(Set( --&gt; Vector(0, 0)), Set(Pour(1,1) --&gt; Vector(0, 0), Empty(0) --&gt; Vector(0, 0), Fill(1) --&gt; Vector(0, 7), Pour(0,1) --&gt; Vector(0, 0), Fill(0) --&gt; Vector(4, 0), Pour(0,0) --&gt; Vector(0, 0), Pour(1,0) --&gt; Vector(0, 0), Empty(1) --&gt; Vector(0, 0)), Set(Fill(0) Empty(0) --&gt; Vector(0, 0), Fill(1) Pour(0,0) --&gt; Vector(0, 7), Pour(0,1) Empty(1) --&gt; Vector(0, 0), Pour(1,1) Empty(1) --&gt; Vector(0, 0), Empty(0) Empty(1) --&gt; Vector(0, 0), Pour(1,1) Fill(1) --&gt; Vector(0, 7), Empty(1) Empty(0) --&gt; Vector(0, 0), Pour(1,1) Pour(1,0) --&gt; Vector(0, 0), Empty(0) Pour(0,0) --&gt; Vector(0, 0), Pour(0,0) Empty(0) --&gt; Vector(0, 0), Empty(1) Empty(1) --&gt; Vector(0, 0), Pour(0,1) Pour(0,0) --&gt; Vector(0, 0), Empty(0) Pour(1,1) --&gt; Vector(0, 0), Pour(1,0) Pour(1,0) --&gt; Vector(0, 0), Pour(1,1) Pour(0,0) --&gt; Vector(0, 0), Pour(0,0) Fill(0) --&gt; Vector(4, 0), Fill(0) Empty(1) --&gt; Vector(4, 0), Fill(1) Pour(1,1) --&gt; Vector(0, 7), Empty(0) Fill(0) --&gt; Vector(4, 0), Fill(0) Pour(0,1) --&gt; Vector(4, 0), Pour(0,0) Fill(1) --&gt; Vector(0, 7), Fill(0) Fill(0) --&gt; Vector(4, 0), Empty(0) Pour(0,1) --&gt; Vector(0, 0), Pour(1,0) Empty(1) --&gt; Vector(0, 0), Pour(0,1) Fill(1) --&gt; Vector(0, 7), Empty(0) Pour(1,0) --&gt; Vector(0, 0), Pour(0,0) Pour(1,0) --&gt; Vector(0, 0), Pour(0,0) Pour(1,1) --&gt; Vector(0, 0), Fill(1) Empty(0) --&gt; Vector(0, 7), Pour(0,1) Empty(0) --&gt; Vector(0, 0), Pour(0,1) Pour(0,1) --&gt; Vector(0, 0), Pour(1,1) Empty(0) --&gt; Vector(0, 0), Pour(0,1) Pour(1,1) --&gt; Vector(0, 0), Pour(0,0) Empty(1) --&gt; Vector(0, 0), Pour(1,0) Pour(0,0) --&gt; Vector(0, 0), Empty(1) Pour(1,1) --&gt; Vector(0, 0), Pour(0,0) Pour(0,0) --&gt; Vector(0, 0), Empty(1) Pour(1,0) --&gt; Vector(0, 0), Fill(0) Pour(0,0) --&gt; Vector(4, 0), Fill(1) Empty(1) --&gt; Vector(0, 0), Pour(1,1) Fill(0) --&gt; Vector(4, 0), Empty(0) Empty(0) --&gt; Vector(0, 0), Fill(0) Pour(1,0) --&gt; Vector(4, 0), Fill(1) Pour(0,1) --&gt; Vector(0, 7), Pour(1,1) Pour(0,1) --&gt; Vector(0, 0), Pour(1,0) Pour(0,1) --&gt; Vector(0, 0), Empty(0) Fill(1) --&gt; Vector(0, 7), Fill(1) Pour(1,0) --&gt; Vector(0, 7), Pour(0,0) Pour(0,1) --&gt; Vector(0, 0), Empty(1) Fill(0) --&gt; Vector(4, 0), Empty(1) Fill(1) --&gt; Vector(0, 7), Fill(0) Pour(1,1) --&gt; Vector(4, 0), Pour(1,0) Pour(1,1) --&gt; Vector(0, 0), Fill(1) Fill(0) --&gt; Vector(4, 7), Empty(1) Pour(0,0) --&gt; Vector(0, 0), Pour(0,1) Fill(0) --&gt; Vector(4, 0), Fill(0) Fill(1) --&gt; Vector(4, 7), Fill(1) Fill(1) --&gt; Vector(0, 7), Empty(1) Pour(0,1) --&gt; Vector(0, 0), Pour(1,1) Pour(1,1) --&gt; Vector(0, 0), Pour(1,0) Fill(1) --&gt; Vector(0, 7), Pour(0,1) Pour(1,0) --&gt; Vector(0, 0), Pour(1,0) Fill(0) --&gt; Vector(4, 0), Pour(1,0) Empty(0) --&gt; Vector(0, 0)))
+// [success] Total time: 2 s, completed 26 juil. 2013 11:37:54
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-46" class="outline-2">
+<h2 id="sec-46"><span class="done DONE">DONE</span> Course Conclusion</h2>
+<div class="outline-text-2" id="text-46">
+</div>
+<div id="outline-container-sec-46-1" class="outline-3">
+<h3 id="sec-46-1">Traits of functional programming</h3>
+<div class="outline-text-3" id="text-46-1">
+<ul class="org-ul">
+<li>HOF
+</li>
+<li>case classes and pattern matching
+</li>
+<li>immutable collections
+</li>
+<li>absence of mutable state
+</li>
+<li>flexible evaluation strategies: strict/lazy/by name
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-46-2" class="outline-3">
+<h3 id="sec-46-2">More materials</h3>
+<div class="outline-text-3" id="text-46-2">
+<ul class="org-ul">
+<li>scala ref card
+</li>
+<li><a href="http://twitter.github.io/scala_school/">scala school</a>
+</li>
+<li>programming in scala book
+</li>
+<li>scala meetup
+</li>
+<li>typesafe
+</li>
+<li>akka, play
+</li>
+<li>cakesolutions blog
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-46-3" class="outline-3">
+<h3 id="sec-46-3">What remains to be covered</h3>
+<div class="outline-text-3" id="text-46-3">
+<ul class="org-ul">
+<li>functional programming and state (mutable state? &#x2026;)
+</li>
+<li>parallelism (exploit immutability for parallel execution)
+</li>
+<li>Domain Specific languages  (high-level libraries as embedded DSLs, interpretation techniques for external DSLs)
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-01 Mon 23:44</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

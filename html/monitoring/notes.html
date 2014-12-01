@@ -1,0 +1,771 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Monitoring through Graphite - Olivier Bazoud</title>
+<!-- 2014-12-01 Mon 23:44 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="../other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Monitoring through Graphite - Olivier Bazoud</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Principals 1/</a></li>
+<li><a href="#sec-2">Principals 2/</a></li>
+<li><a href="#sec-3">Principals 3/</a></li>
+<li><a href="#sec-4">Principals</a></li>
+<li><a href="#sec-5">Towards&#x2026;</a></li>
+<li><a href="#sec-6">Graphite</a>
+<ul>
+<li><a href="#sec-6-1">Definition</a></li>
+<li><a href="#sec-6-2">Mode</a></li>
+<li><a href="#sec-6-3">Composed of</a></li>
+<li><a href="#sec-6-4">Flow</a></li>
+<li><a href="#sec-6-5">Carbon</a>
+<ul>
+<li><a href="#sec-6-5-1">Communication Protocols</a></li>
+<li><a href="#sec-6-5-2">Carbon cache</a></li>
+<li><a href="#sec-6-5-3">Aggregation</a></li>
+<li><a href="#sec-6-5-4">Carbon relay</a></li>
+<li><a href="#sec-6-5-5">Carbon set-up</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-6">Whisper</a>
+<ul>
+<li><a href="#sec-6-6-1">Retention switch change</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-7">Graphite web</a>
+<ul>
+<li><a href="#sec-6-7-1">Underneath</a></li>
+<li><a href="#sec-6-7-2">Interests</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-8">Functions</a>
+<ul>
+<li><a href="#sec-6-8-1">Samples</a></li>
+<li><a href="#sec-6-8-2">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-7">Metric monitoring</a>
+<ul>
+<li><a href="#sec-7-1">Collectd</a></li>
+<li><a href="#sec-7-2">JMXTrans</a></li>
+<li><a href="#sec-7-3">Metrics</a></li>
+<li><a href="#sec-7-4">Statsd</a></li>
+<li><a href="#sec-7-5">Logster</a></li>
+</ul>
+</li>
+<li><a href="#sec-8">alerting</a>
+<ul>
+<li><a href="#sec-8-1">Nagios</a></li>
+<li><a href="#sec-8-2">Seyren</a></li>
+<li><a href="#sec-8-3">Skyline</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+<a href="https://graphite.readthedocs.org/en/latest/overview.html">Graphite</a> is a monitoring tool that does not measure metrics.
+</p>
+
+<p>
+<a href="https://graphite.readthedocs.org/en/latest/tools.html">Metric Measuring tools that works great with Graphite.</a>
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Principals 1/</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>monitoring
+</li>
+<li>dashboard
+</li>
+<li>alerting
+</li>
+<li>&#x2026;
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Principals 2/</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>application runtime behavior
+</li>
+<li>problem analysis
+</li>
+<li>pre-prod/prod platform behavior comparison
+</li>
+<li>anticipation on "capacity planning" platform
+</li>
+<li>platform (infrastructure) and software (applicative process, etc&#x2026;) concerns
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Principals 3/</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+KPI
+</p>
+
+<ul class="org-ul">
+<li>business
+</li>
+</ul>
+<p>
+transaction, connections, workflows, etc&#x2026;
+</p>
+
+<ul class="org-ul">
+<li>application
+</li>
+</ul>
+<p>
+memory load, time load
+</p>
+
+<ul class="org-ul">
+<li>system
+</li>
+</ul>
+<p>
+load, swap, network interface
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Principals</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>SHARE the informations
+</li>
+</ul>
+<p>
+dev/Ops/PO/Run
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Towards&#x2026;</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li>"If it ain't monitored, no production!"
+</li>
+</ul>
+
+<p>
+because:
+</p>
+
+<ul class="org-ul">
+<li>"If it ain't monitored, how to improve it?"
+</li>
+
+<li>Metric Driven Development
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Graphite</h2>
+<div class="outline-text-2" id="text-6">
+</div><div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1">Definition</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+It's an open-source (Apache 2.0 license) enterprise-scale monitoring tool that runs well on cheap hardware which:
+</p>
+
+<ul class="org-ul">
+<li>store numeric time-series
+</li>
+
+<li>visualize graphs
+</li>
+
+<li>It does not collect data.
+</li>
+
+<li>Auto-monitoring
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-6-2" class="outline-3">
+<h3 id="sec-6-2">Mode</h3>
+<div class="outline-text-3" id="text-6-2">
+<ul class="org-ul">
+<li>Push
+</li>
+
+<li>File storage
+</li>
+
+<li>URL API: graphs, json, csv
+</li>
+
+<li>Functions -&gt; MATHS!
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-6-3" class="outline-3">
+<h3 id="sec-6-3">Composed of</h3>
+<div class="outline-text-3" id="text-6-3">
+<ul class="org-ul">
+<li>shisper
+</li>
+
+<li>carbon
+</li>
+
+<li>graphite-web
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-6-4" class="outline-3">
+<h3 id="sec-6-4">Flow</h3>
+<div class="outline-text-3" id="text-6-4">
+<p>
+collectors -&gt; metric -&gt; | carbon -&gt; whisper |  -&gt; write -&gt; fs
+                          (cache)
+                                                           fs  &lt;- | whisper -&gt; graphite-web |
+</p>
+
+
+<p>
+carbon -&gt; cache                   &lt;- graphite-web
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-6-5" class="outline-3">
+<h3 id="sec-6-5">Carbon</h3>
+<div class="outline-text-3" id="text-6-5">
+</div><div id="outline-container-sec-6-5-1" class="outline-4">
+<h4 id="sec-6-5-1">Communication Protocols</h4>
+<div class="outline-text-4" id="text-6-5-1">
+<p>
+TCP/UDP (preferred way)
+</p>
+
+<ul class="org-ul">
+<li>the "plaintext protocol"
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh">echo "local.my.metric 123.45 `date "%s`" | nc location 2003
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>the "pickle protocol"
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh">[(path, (timestamp, value)), ...]
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Advanced Message Queue Protocol
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-6-5-2" class="outline-4">
+<h4 id="sec-6-5-2">Carbon cache</h4>
+<div class="outline-text-4" id="text-6-5-2">
+<p>
+memory storage&#x2026;
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-6-5-3" class="outline-4">
+<h4 id="sec-6-5-3">Aggregation</h4>
+<div class="outline-text-4" id="text-6-5-3">
+<p>
+Aggregation computations
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-6-5-4" class="outline-4">
+<h4 id="sec-6-5-4">Carbon relay</h4>
+<div class="outline-text-4" id="text-6-5-4">
+<ul class="org-ul">
+<li>Replication based on rules
+</li>
+
+<li>Sharding -&gt; consistent hashing, etc&#x2026;
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-6-5-5" class="outline-4">
+<h4 id="sec-6-5-5">Carbon set-up</h4>
+<div class="outline-text-4" id="text-6-5-5">
+<ul class="org-ul">
+<li>MAX<sub>CACHE</sub><sub>SIZE</sub>
+</li>
+</ul>
+<p>
+cache Size
+</p>
+
+<ul class="org-ul">
+<li>MAX<sub>XREATES</sub><sub>PER</sub><sub>MINUTE</sub>
+</li>
+</ul>
+<p>
+I/O reduction
+</p>
+
+<ul class="org-ul">
+<li>MAX<sub>UPDATES</sub><sub>PER</sub><sub>SECOND</sub> -&gt; Buffer cache
+</li>
+</ul>
+<p>
+I/O reduction
+</p>
+
+<p>
+<b>*</b>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6-6" class="outline-3">
+<h3 id="sec-6-6">Whisper</h3>
+<div class="outline-text-3" id="text-6-6">
+<p>
+Fixed-size database
+fast reliable storage
+</p>
+
+<ul class="org-ul">
+<li>1 metric = 1 file
+</li>
+
+<li>structure
+</li>
+</ul>
+
+<p>
+Samples of setup file:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-carbon">[carbon]
+pattern = ^load\.
+retentions = 10s:1d,1m:7d,4m30d
+</pre>
+</div>
+<p>
+-&gt; 346k
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-carbon">[carbon]
+pattern = ^load\.
+retentions = 10s:15d,30s:180d,1m3y
+</pre>
+</div>
+<p>
+-&gt; 26 Mb
+1 point every 10s for 15 days
+1 point every 30s for 180 days
+&#x2026;
+</p>
+</div>
+
+<div id="outline-container-sec-6-6-1" class="outline-4">
+<h4 id="sec-6-6-1">Retention switch change</h4>
+<div class="outline-text-4" id="text-6-6-1">
+<p>
+min, max, sum, avg
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6-7" class="outline-3">
+<h3 id="sec-6-7">Graphite web</h3>
+<div class="outline-text-3" id="text-6-7">
+</div><div id="outline-container-sec-6-7-1" class="outline-4">
+<h4 id="sec-6-7-1">Underneath</h4>
+<div class="outline-text-4" id="text-6-7-1">
+<p>
+apache/django
+sqlite/mysql
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6-7-2" class="outline-4">
+<h4 id="sec-6-7-2">Interests</h4>
+<div class="outline-text-4" id="text-6-7-2">
+<ul class="org-ul">
+<li>graph composition
+</li>
+<li>url api: png, json, csv
+</li>
+<li>aggregation function
+</li>
+<li>blacklist/whitelist/rewrite
+</li>
+<li>dashboard
+</li>
+<li>graph template
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6-8" class="outline-3">
+<h3 id="sec-6-8">Functions</h3>
+<div class="outline-text-3" id="text-6-8">
+<p>
+That permits:
+</p>
+<ul class="org-ul">
+<li>Transform
+</li>
+<li>Combine
+</li>
+<li>Compute
+</li>
+</ul>
+
+<p>
+Through URI!
+</p>
+</div>
+
+<div id="outline-container-sec-6-8-1" class="outline-4">
+<h4 id="sec-6-8-1">Samples</h4>
+<div class="outline-text-4" id="text-6-8-1">
+<div class="org-src-container">
+
+<pre class="src src-function">/render/?target=&lt;function-name&gt;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6-8-2" class="outline-4">
+<h4 id="sec-6-8-2">Functions</h4>
+<div class="outline-text-4" id="text-6-8-2">
+<p>
+derivative
+integral
+summarize
+sumSeries
+drawAsInfinite
+alias
+scale
+nonNegativeDerivative
+nPercentile
+etc&#x2026;
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">Metric monitoring</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
+<li>System
+</li>
+</ul>
+<p>
+collectd
+</p>
+
+<ul class="org-ul">
+<li>Application
+</li>
+</ul>
+<p>
+JMXTrans
+</p>
+</div>
+
+<div id="outline-container-sec-7-1" class="outline-3">
+<h3 id="sec-7-1">Collectd</h3>
+<div class="outline-text-3" id="text-7-1">
+<p>
+<a href="http://collectd.org/">http://collectd.org/</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-7-2" class="outline-3">
+<h3 id="sec-7-2">JMXTrans</h3>
+<div class="outline-text-3" id="text-7-2">
+<p>
+<a href="http://www.jmxtrans.org/">http://www.jmxtrans.org/</a>
+<a href="https://github.com/jmxtrans/jmxtrans">https://github.com/jmxtrans/jmxtrans</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-7-3" class="outline-3">
+<h3 id="sec-7-3">Metrics</h3>
+<div class="outline-text-3" id="text-7-3">
+<p>
+<a href="https://github.com/codahale/metrics">https://github.com/codahale/metrics</a>
+<a href="http://metrics.codahale.com/">http://metrics.codahale.com/</a>
+"Capturing JVM- and application-level metrics. So you know what's going on."
+</p>
+
+<p>
+Java library:
+</p>
+<ul class="org-ul">
+<li>gauges, counters, meters, histogram, timers, etc..
+</li>
+<li>etc&#x2026;
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-7-4" class="outline-3">
+<h3 id="sec-7-4">Statsd</h3>
+</div>
+
+<div id="outline-container-sec-7-5" class="outline-3">
+<h3 id="sec-7-5">Logster</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8">alerting</h2>
+<div class="outline-text-2" id="text-8">
+</div><div id="outline-container-sec-8-1" class="outline-3">
+<h3 id="sec-8-1">Nagios</h3>
+<div class="outline-text-3" id="text-8-1">
+<p>
+<a href="http://www.nagios.org/">http://www.nagios.org/</a>
+</p>
+
+<p>
+Can define nagios rules to trigger notification when alerts are raised.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">check_graphite_multi --help
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-8-2" class="outline-3">
+<h3 id="sec-8-2">Seyren</h3>
+<div class="outline-text-3" id="text-8-2">
+<p>
+<a href="https://github.com/scobal/seyren">https://github.com/scobal/seyren</a>
+Alerting dashboard for Graphite
+</p>
+
+<ul class="org-ul">
+<li>Java
+</li>
+<li>pull http
+</li>
+<li>alerts
+<ul class="org-ul">
+<li>email, pagerDuty
+</li>
+<li>hipChat, hubot, flowdock, IRCCat
+</li>
+<li>etc&#x2026;
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-8-3" class="outline-3">
+<h3 id="sec-8-3">Skyline</h3>
+<div class="outline-text-3" id="text-8-3">
+<p>
+Real-time anomaly detection system
+<a href="https://github.com/etsy/skyline">https://github.com/etsy/skyline</a>
+</p>
+
+<p>
+"part of the Kale stack"
+<a href="http://codeascraft.com/2013/06/11/introducing-kale/">http://codeascraft.com/2013/06/11/introducing-kale/</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-01 Mon 23:44</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

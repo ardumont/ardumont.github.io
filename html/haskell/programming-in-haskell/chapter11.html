@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>PIH - ch11 - The countdown problem - exercises</title>
+<!-- 2014-12-01 Mon 23:46 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<meta  name="description" content="The countdown problem (from 'Des chiffres et des Lettres')"
+ />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="../other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">PIH - ch11 - The countdown problem - exercises</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">choices</a></li>
+<li><a href="#sec-2">isChoice</a></li>
+<li><a href="#sec-3">split</a></li>
+<li><a href="#sec-4">Checks</a></li>
+<li><a href="#sec-5">Checks 2</a></li>
+<li><a href="#sec-6">Modifications</a></li>
+<li><a href="#sec-7">QuickCheck</a></li>
+<li><a href="#sec-8">Source</a></li>
+</ul>
+</div>
+</div>
+<p>
+It has been a while since I read some <a href="http://www.cs.nott.ac.uk/~gmh/book.htm">programming in haskell book</a> (<a href="http://blog.pinboard.in/2013/04/the_matasano_crypto_challenges/">matasano challenges</a>, <a href="http://projecteuler.net/">euler problems</a>, <a href="http://www.4clojure.com/">4clojure problems</a>, and so on kept me busy :D).
+So here it goes, the chapter 11 exercises was about the countdown problem.
+</p>
+
+<p>
+Given a list of numbers and a result, find the possible operations which, when evaluated, renders such result.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">choices</h2>
+<div class="outline-text-2" id="text-1">
+<blockquote>
+<p>
+Redefine the combinatorial function <code>choices</code> using a list comprehension rather than the library functions <code>concat</code> and <code>map</code>.
+</p>
+</blockquote>
+
+<p>
+My first point-free implementation:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">choices :: [a] -&gt; [[a]]
+choices = (concatMap perms) . subs
+</pre>
+</div>
+
+<p>
+Using list comprehension:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">choices :: [a] -&gt; [[a]]
+choices xs = [ p | s &lt;- subs xs, p &lt;- perms s]
+
+*Problem&gt; choices [1,2,3]
+[[],[3],[2],[2,3],[3,2],[1],[1,3],[3,1],[1,2],[2,1],[1,2,3],[2,1,3],[2,3,1],[1,3,2],[3,1,2],[3,2,1]]
+*Problem&gt; choices [1,2,3,4]
+[[],[4],[3],[3,4],[4,3],[2],[2,4],[4,2],[2,3],[3,2],[2,3,4],[3,2,4],[3,4,2],[2,4,3],[4,2,3],[4,3,2],[1],[1,4],[4,1],[1,3],[3,1],[1,3,4],[3,1,4],[3,4,1],[1,4,3],[4,1,3],[4,3,1],[1,2],[2,1],[1,2,4],[2,1,4],[2,4,1],[1,4,2],[4,1,2],[4,2,1],[1,2,3],[2,1,3],[2,3,1],[1,3,2],[3,1,2],[3,2,1],[1,2,3,4],[2,1,3,4],[2,3,1,4],[2,3,4,1],[1,3,2,4],[3,1,2,4],[3,2,1,4],[3,2,4,1],[1,3,4,2],[3,1,4,2],[3,4,1,2],[3,4,2,1],[1,2,4,3],[2,1,4,3],[2,4,1,3],[2,4,3,1],[1,4,2,3],[4,1,2,3],[4,2,1,3],[4,2,3,1],[1,4,3,2],[4,1,3,2],[4,3,1,2],[4,3,2,1]]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">isChoice</h2>
+<div class="outline-text-2" id="text-2">
+<blockquote>
+<p>
+Define a recursive function <code>isChoice :: Eq a ⇒ [a] → [a] → Bool</code> that decides if one list is chosen from another, without using the combinatorial functions <code>perms</code> and <code>subs</code>.
+</p>
+
+<p>
+<span class="underline">Hint:</span> start by defining a function that removes the first occurrence of a value from a list.
+</p>
+</blockquote>
+
+<p>
+We'll follow the hint and implement the function <code>remove1</code>:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">remove1 :: Eq a =&gt; a -&gt; [a] -&gt; [a]
+remove1 _ [] = []
+remove1 x (y:ys)
+  | x == y = ys
+  | otherwise = y:remove1 x ys
+
+*Problem&gt; remove1 1 [3,2..1]
+[3,2]
+*Problem&gt; remove1 1 [9,8..1]
+[9,8,7,6,5,4,3,2]
+*Problem&gt; remove1 1 [9,8..0]
+[9,8,7,6,5,4,3,2,0]
+*Problem&gt; remove1 1 [9,8..0] ++ [1]
+[9,8,7,6,5,4,3,2,0,1]
+</pre>
+</div>
+
+<p>
+Now, we can use it to help us implement the <code>isChoice</code> function
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">isChoice :: Eq a =&gt; [a] -&gt; [a] -&gt; Bool
+isChoice [] _     = True
+isChoice _ []     = False
+isChoice (x:xs) l = elem x l &amp;&amp; isChoice xs (remove1 x l)
+
+*problem&gt; isChoice [11] [1..10]
+False
+*Problem&gt; isChoice [2..3] [1..10]
+True
+*Problem&gt; isChoice [] [1..10]
+True
+*Problem&gt; isChoice [] []
+True
+*Problem&gt; isChoice [1..2] []
+False
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">split</h2>
+<div class="outline-text-2" id="text-3">
+<blockquote>
+<p>
+What effect would generalising the function <code>split</code> to also return pairs containing the empty list have on the behaviour of solutions?
+</p>
+</blockquote>
+
+<p>
+Here is the <code>split</code> function:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">split :: [a] -&gt; [([a], [a])]
+split []     = []
+split [_]    = []
+split (x:xs) = ([x], xs) : [(x: ls, rs) | (ls, rs) &lt;- split xs]
+
+*Problem&gt; split [1,3,7,10,25,50]
+[([1],[3,7,10,25,50]),([1,3],[7,10,25,50]),([1,3,7],[10,25,50]),([1,3,7,10],[25,50]),([1,3,7,10,25],[50])]
+</pre>
+</div>
+
+<p>
+And the client call:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">exprs :: [Int] -&gt; [Expr]
+exprs []  = []
+exprs [x] = [Val x]
+exprs xs  = [ x | (ls, rs) &lt;- split xs,
+		  l        &lt;- exprs ls,
+		  r        &lt;- exprs rs,
+		  x        &lt;- combine l r]
+
+Problem&gt; exprs [1, 10]
+[App Mul (Val 1) (Val 10),App Add (Val 1) (Val 10),App Sub (Val 1) (Val 10),App Div (Val 1) (Val 10)]
+</pre>
+</div>
+
+<p>
+Adding the empty pairs to the existing result, <code>[[], l], [l, []]</code> (l is the initial list), would result in <code>exprs</code> to never reduce the size of the list when calling recursively <code>exprs</code>.
+Thus breaking.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Checks</h2>
+<div class="outline-text-2" id="text-4">
+<blockquote>
+<p>
+Using <code>choices</code>, <code>exprs</code>, and <code>eval</code>, verify that there are 33665406 possible expressions over the numbers 1, 3, 7, 10, 25, 50, and that only 4672540 of these expressions evaluate successfully.
+</p>
+</blockquote>
+
+<p>
+Computing all possible expressions from all possible choices from the list [1, 3, 7, 10, 25, 50] renders:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Problem&gt; length [ es | cs &lt;- choices [1,3,7,10,25,50], es &lt;- exprs cs]
+33665406
+</pre>
+</div>
+
+<p>
+With the current definition of a valid expression:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">valid :: Op -&gt; Int -&gt; Int -&gt; Bool
+valid Add x y = x &lt;= y
+valid Sub x y = x &gt; y
+valid Mul x y = x &lt;= y &amp;&amp; x /= 1 &amp;&amp; y /= 1
+valid Div x y = y /= 1 &amp;&amp; x `mod` y == 0
+</pre>
+</div>
+
+<p>
+Evaluating those valid expressions renders:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Problem&gt; length [ es | cs &lt;- choices [1,3,7,10,25,50], es &lt;- exprs cs, eval es /= []]
+245644
+</pre>
+</div>
+
+<p>
+which differs from the problem.
+</p>
+
+<p>
+Using the basic implementation for <code>valid</code>, we obtain indeed the same number.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">valid :: Op -&gt; Int -&gt; Int -&gt; Bool
+valid Add _ _ = True
+valid Sub x y = x &gt; y
+valid Mul _ _ = True
+valid Div x y = y /= 0 &amp;&amp; x `mod` y == 0
+
+*Problem&gt; length [ es | cs &lt;- choices [1,3,7,10,25,50], es &lt;- exprs cs, eval es /= []]
+4672540
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Checks 2</h2>
+<div class="outline-text-2" id="text-5">
+<blockquote>
+<p>
+Similarly, verify that the number of expressions that evaluate successfully increases to 10839369 if the numeric domain is generalised to arbitrary integers.
+</p>
+
+<p>
+<span class="underline">Hint:</span> modify the definition of valid.
+</p>
+</blockquote>
+
+<p>
+Now modifying the signature of valid to permit no particular filter on those numbers:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">valid :: Op -&gt; Int -&gt; Int -&gt; Bool
+valid Add _ _ = True
+valid Sub _ _ = True
+valid Mul _ _ = True
+valid Div x y = y /= 0 &amp;&amp; x `mod` y == 0
+</pre>
+</div>
+
+<p>
+We obtain:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Problem&gt; length [ es | cs &lt;- choices [1,3,7,10,25,50], es &lt;- exprs cs, eval es /= []]
+10839369
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Modifications</h2>
+<div class="outline-text-2" id="text-6">
+<blockquote>
+<p>
+Modify the final program to:
+</p>
+<ul class="org-ul">
+<li>allow the use of exponentiation in expressions;
+</li>
+<li>produce the nearest solutions if no exact solution is possible;
+</li>
+<li>order the solutions using a suitable measure of simplicity.
+</li>
+</ul>
+</blockquote>
+
+<p>
+We first need to add the exp operation in the data Op:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">-- operation
+data Op = Add | Sub | Mul | Div | Exp deriving (Show)
+</pre>
+</div>
+
+<p>
+Then update the definition of valid expression.
+We will follow the same guideline, that is no negative exponent and as <code>a ^ 1 =</code> a=, we will refuse any exponent 1.
+Thus the following definition:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">valid :: Op -&gt; Int -&gt; Int -&gt; Bool
+valid Add x y = x &lt;= y
+valid Sub x y = x &gt; y
+valid Mul x y = x &lt;= y &amp;&amp; x /= 1 &amp;&amp; y /= 1
+valid Div x y = y &gt; 1 &amp;&amp; x `mod` y == 0
+valid Exp _ y = y == 0 || y &gt; 1
+
+*Problem&gt; valid Exp 10 2
+True
+*Problem&gt; valid Exp 10 (-1)
+False
+*Problem&gt; valid Exp 10 1
+False
+</pre>
+</div>
+
+<p>
+Then updating the <code>apply</code> function to add the evaluation part of the Exp operation:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">apply :: Op -&gt; Int -&gt; Int -&gt; Int
+apply Add x y = x + y
+apply Sub x y = x - y
+apply Mul x y = x * y
+apply Div x y = x `div` y
+apply Exp x y = x ^ y
+
+*Problem&gt; apply Exp 10 2
+100
+</pre>
+</div>
+
+<p>
+At last, updating the ops function to add Exp to the possible operations:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">ops :: [Op]
+ops = [Mul, Add, Sub, Div, Exp]
+</pre>
+</div>
+
+<p>
+Now everything is good to be able to compute possible expressions.
+For example, with 1, 2, 10, and a solution 100, we only have the expression 10 ^ 2:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Problem&gt; solutions' [1,2,10] 100
+[App Exp (Val 10) (Val 2)]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">QuickCheck</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+We will use a little bit of quickCheck to ensure everything is still ok.
+</p>
+
+<p>
+First we need to deal with the property we want to ensure is ok.
+This property is the fact that every expression generated from the list [1, 3, 7, 10, 25, 50], for a given n, when evaluated, indeed renders [n].
+</p>
+
+<p>
+For this, we will need a generator of not too big interval [1..1000] seems good.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">prop_solution = forAll (elements [1..1000]) $ \n -&gt; all (\x -&gt; eval x == [n]) (solutions' [1, 3, 7, 10, 25, 50] n)
+</pre>
+</div>
+
+<p>
+Then, as this treatment is heavy (the number of expressions can be quite huge), we will limit ourselves to only 2 passing tests (feel free to increase).
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">deepCheck :: Testable prop =&gt; prop -&gt; IO ()
+deepCheck p = verboseCheckWith stdArgs { maxSuccess = 2 } p
+</pre>
+</div>
+
+<p>
+Now we can run the tests.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">test :: IO ()
+test = do
+  deepCheck prop_solution
+
+*Problem&gt; test
+Passed:
+852
+Passed:
+332
++++ OK, passed 2 tests.
+</pre>
+</div>
+
+<p>
+QuickCheck gave us the number it elected, for the curious, we can see those results:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Problem&gt; solutions' [1, 3, 7, 10, 25, 50] 852
+[App Sub (App Mul (App Sub (Val 25) (Val 10)) (App Add (Val 7) (Val 50))) (Val 3),App Add (App Sub (Val 3) (Val 1)) (App Mul (App Add (Val 7) (Val 10)) (Val 50)),App Add (Val 3) (App Sub (App Mul (App Add (Val 7) (Val 10)) (Val 50)) (Val 1)),App Sub (App Add (Val 3) (App Mul (App Add (Val 7) (Val 10)) (Val 50))) (Val 1),App Sub (App Mul (App Add (Val 1) (Val 10)) (App Add (Val 7) (App Mul (Val 3) (Val 25)))) (Val 50),App Add (App Sub (Val 3) (App Exp (Val 1) (Val 25))) (App Mul (App Add (Val 7) (Val 10)) (Val 50)),App Sub (App Mul (App Sub (Val 25) (Val 7)) (App Sub (Val 50) (Val 1))) (App Mul (Val 3) (Val 10)),App Add (Val 3) (App Sub (App Mul (App Add (Val 7) (Val 10)) (Val 50)) (App Exp (Val 1) (Val 25))),App Sub (App Add (Val 3) (App Mul (App Add (Val 7) (Val 10)) (Val 50))) (App Exp (Val 1) (Val 25))]
+*Problem&gt; length $ solutions' [1, 3, 7, 10, 25, 50] 852
+9
+*Problem&gt; length $ solutions' [1, 3, 7, 10, 25, 50] 332
+145
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8">Source</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+<a href="https://github.com/ardumont/haskell-lab/blob/master/src/countdown/problem.hs">countdown/problem.hs</a>
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2013-05-26 dim. 01:39]</span></span></p>
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-01 Mon 23:46</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

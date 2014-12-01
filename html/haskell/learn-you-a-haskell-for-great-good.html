@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Learn you a Haskell for great good!</title>
+<!-- 2014-12-01 Mon 23:46 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="../other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Learn you a Haskell for great good!</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1"><span class="done DONE">DONE</span> Introduction</a></li>
+<li><a href="#sec-2">Starting out</a></li>
+<li><a href="#sec-3"><span class="done DONE">DONE</span> Types and TypeClasses</a></li>
+<li><a href="#sec-4">Syntax in functions</a></li>
+<li><a href="#sec-5">Recursion</a></li>
+<li><a href="#sec-6">Higher Order Functions</a></li>
+<li><a href="#sec-7">Modules</a></li>
+<li><a href="#sec-8">Making our own types and typeclasses</a>
+<ul>
+<li><a href="#sec-8-1">Functor</a></li>
+</ul>
+</li>
+<li><a href="#sec-9">Input and Output</a></li>
+<li><a href="#sec-10">Functionally solving problems</a></li>
+<li><a href="#sec-11">Functors, Applicative functors and monoids</a></li>
+<li><a href="#sec-12">a fistful of monads</a></li>
+<li><a href="#sec-13">For a few monads more</a></li>
+<li><a href="#sec-14">Zippers</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="done DONE">DONE</span> <a href="http://learnyouahaskell.com/introduction">Introduction</a></h2>
+<div class="outline-text-2" id="text-1">
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><a href="http://learnyouahaskell.com/starting-out">Starting out</a></h2>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="done DONE">DONE</span> <a href="http://learnyouahaskell.com/types-and-typeclasses">Types and TypeClasses</a></h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>Everything in haskell has types
+</li>
+<li>Haskell has type inference
+</li>
+</ul>
+<p>
+Haskell can infer types alone
+It is not mandatory to provide informations about it (good convention to do it anyway)
+</p>
+<ul class="org-ul">
+<li>:: "has type of"
+</li>
+<li>a is a type variable
+</li>
+<li>functions using type variable are "polymorphic functions"
+</li>
+</ul>
+<p>
+Ex:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">head :: [a] -&gt; a
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>A typeclass is a sort of interface defining some behavior
+</li>
+</ul>
+<p>
+if a type 'a is a part of a typeclass, that means that the type 'a implements the behavior of such typeclass
+</p>
+
+<ul class="org-ul">
+<li>class constraint
+</li>
+</ul>
+<p>
+Everything before =&gt; is a class constraint
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Prelude&gt; :t (==)
+(==) :: Eq a =&gt; a -&gt; a -&gt; Bool
+</pre>
+</div>
+
+<dl class="org-dl">
+<dt> type annotations </dt><dd>to explicitely give the expected type
+</dd>
+
+<dt> (no term) </dt><dd>`Eq` for equality testing type
+</dd>
+</dl>
+<p>
+The functions its members implement are `==` and `/=`.
+</p>
+
+<ul class="org-ul">
+<li>`Ord` if for ordering types
+</li>
+</ul>
+<p>
+covers the functions such as &gt;, &lt;, &lt;=, &gt;=
+</p>
+
+<ul class="org-ul">
+<li>`Ordering` is type that can be GT, LT, EQ
+</li>
+
+<li>`Enum` members are sequentially ordered types (['a'..'z'], Succ 'a', etc&#x2026;)
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><a href="http://learnyouahaskell.com/syntax-in-functions">Syntax in functions</a></h2>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><a href="http://learnyouahaskell.com/recursion">Recursion</a></h2>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><a href="http://learnyouahaskell.com/higher-order-functions">Higher Order Functions</a></h2>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><a href="http://learnyouahaskell.com/modules">Modules</a></h2>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><a href="http://learnyouahaskell.com/making-our-own-types-and-typeclasses">Making our own types and typeclasses</a></h2>
+<div class="outline-text-2" id="text-8">
+</div><div id="outline-container-sec-8-1" class="outline-3">
+<h3 id="sec-8-1"><a href="http://learnyouahaskell.com/making-our-own-types-and-typeclasses#the-functor-typeclass">Functor</a></h3>
+<div class="outline-text-3" id="text-8-1">
+<p>
+Typeclass to map over something:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-Haskell">class Functor f where
+    fmap :: (a -&gt; b) -&gt; f a -&gt; f b
+</pre>
+</div>
+<p>
+f is a type constructor.
+</p>
+
+<p>
+Ex:
+</p>
+<ul class="org-ul">
+<li>map is a functor specific for list:
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-haskell">map :: (a -&gt; b) -&gt; [a] -&gt; [b]
+</pre>
+</div>
+
+<p>
+[] is the list constructor and here is the map definition of the functor:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">instance Functor [] where
+  fmap = map
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Maybe
+</li>
+</ul>
+
+<p>
+instance Function Maybe where
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">fmap (Just a) = Just (f a)
+fmap Nothing = Nothing
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><a href="http://learnyouahaskell.com/input-and-output">Input and Output</a></h2>
+</div>
+
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10"><a href="http://learnyouahaskell.com/functionally-solving-problems">Functionally solving problems</a></h2>
+</div>
+
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11"><a href="http://learnyouahaskell.com/functors-applicative-functors-and-monoids">Functors, Applicative functors and monoids</a></h2>
+</div>
+
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12"><a href="http://learnyouahaskell.com/a-fistful-of-monads">a fistful of monads</a></h2>
+</div>
+
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13"><a href="http://learnyouahaskell.com/for-a-few-monads-more">For a few monads more</a></h2>
+</div>
+
+<div id="outline-container-sec-14" class="outline-2">
+<h2 id="sec-14"><a href="http://learnyouahaskell.com/zippers">Zippers</a></h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-01 Mon 23:46</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

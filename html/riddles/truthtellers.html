@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>truthtellers</title>
+<!-- 2014-12-01 Mon 23:44 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="../other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">truthtellers</h1>
+<div class="org-src-container">
+
+<pre class="src src-hs">import Data.Set (Set)
+import qualified Data.Set as Set
+
+{-- BONUS! ----------------------------------------------------------------
+
+So Dr. Smullyan is quite the playful sort and wrote quite the few of these
+paradoxen, encodifying them into a calculus of paradox. This is NOT from
+his Scherazade book, but from the Mensa quiz-a-day book, and you'd think,
+it coming from a Mensa book, it'd be harder, but it's not. So here's the
+problem statement:
+
+Lost on Liars' and TruthTellers' Town, you are in real trouble! You need to
+ask directions from a TruthTeller, but how can you tell who is a TruthTeller?
+You stop a group of three [ed: Why is it always three people in these
+scenarii?] women and ask if they are TruthTellers. The first says: "Two of
+us are TruthTellers." The second says: "Only one of us is a TruthTeller." And
+the third one chimes in: "The last woman who spoke is a TruthTeller." Well,
+who was or who were TruthTellers?
+
+--}
+
+data Person = Liar | TruthTeller
+   deriving (Eq, Ord, Show, Read)
+data Speaker = First | Second | Third
+   deriving (Eq, Ord, Show, Read)
+data Woman = W Speaker -- their ID is who spoke in which turn
+   deriving (Eq, Ord, Show, Read)
+
+data Statement = Truth | Falsehood
+   deriving (Eq, Ord, Show, Read)
+
+truthTellers :: [Woman] -&gt; Set (Woman, Person) -- or something like that
+truthTellers women = undefined
+
+{--
+
+Smullyan has a whole book of these kinds of puzzled called the Riddle of
+Scheherazade: and Other Amazing Puzzles in which via these puzzles he
+develops a new kind of logic, known as coercive logic. I'm excited in
+exploring this field, as I run into this occasionally at work and do
+frame logics? ontologies? dependent types? all of the above? neatly address
+the issues I face? Does grappling with these kinds of problems open up new
+ways to solve hard problems or even open up the possibility of tackling
+problems just not addressed as they are labeled as 'too hard'?
+
+I'll see. I'll learn. I'm intrigued. Yes, by riddles that are as old as
+story-telling, itself. The knights and knaves riddle is as old as the hills.
+
+--}
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="right" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="right">Woman</td>
+<td class="left">Statement</td>
+</tr>
+
+<tr>
+<td class="right">1</td>
+<td class="left">2 of us are TruthTellers.</td>
+</tr>
+
+<tr>
+<td class="right">2</td>
+<td class="left">Only one of us is a TruthTeller.</td>
+</tr>
+
+<tr>
+<td class="right">3</td>
+<td class="left">The last woman who spoke is a TruthTeller.</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="org-ul">
+<li>Hypothesis: Woman 1 is a TruthTeller. Then 2 and 3 lied! Thus rendering the 1 statement false. Absurd! 1 is a liar.
+</li>
+<li>Hypothesis: Woman 1 is a liar.
+</li>
+</ul>
+<p>
+&#x2026;
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">1</td>
+<td class="left">2</td>
+<td class="left">3</td>
+<td class="left">Result</td>
+</tr>
+
+<tr>
+<td class="left">L</td>
+<td class="left">L</td>
+<td class="left">L</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-01 Mon 23:44</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Activate/Deactivate touchpad from the shell</title>
+<!-- 2014-12-01 Mon 23:46 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<meta  name="description" content="Show how to activate/deactivate touchpad depending on the soft you use"
+ />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="../other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Activate/Deactivate touchpad from the shell</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Pre-requisites</a></li>
+<li><a href="#sec-2">Manual</a>
+<ul>
+<li><a href="#sec-2-1">code</a></li>
+<li><a href="#sec-2-2">use</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">Auto</a>
+<ul>
+<li><a href="#sec-3-1">code</a></li>
+<li><a href="#sec-3-2">use</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">Example</a></li>
+<li><a href="#sec-5">Conclusion</a></li>
+</ul>
+</div>
+</div>
+<p>
+A new need has come for me.
+I want to activate or deactivate the touchpad from the shell.
+</p>
+
+<p>
+In this post, I will concentrate on how to trigger on/off the touchpad from the shell.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Pre-requisites</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+The package <b>xinput</b>.
+It should already be installed.
+</p>
+
+<p>
+Just in case:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo aptitude install xinput
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Manual</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Here is the script to manually toggle it on/off.
+</p>
+
+<p>
+Actions:
+</p>
+<ul class="org-ul">
+<li>It first retrieves the status the script is given.
+</li>
+<li>If empty, it does set the <b>1</b> which means, activate it.
+</li>
+<li>Then retrieve the id of the touchpad.
+</li>
+<li>At last, trigger the on/off status depending on the status.
+</li>
+</ul>
+</div>
+
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">code</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+
+<pre class="src src-sh">#!/usr/bin/env bash
+
+# Use: $0 &lt;STATUS&gt;
+# By default the touchpad is activated!
+# $0 1: To activate the touchpad with id &lt;ID&gt;
+# $0 0: To deactivate the touchpad with id &lt;ID&gt;
+
+TOUCHPAD_STATUS=${1-:"1"}
+
+TOUCHPAD_ID=$(xinput list\
+		    | grep -i touchpad \
+		    | grep -o "id=[0-9]*" \
+		    | cut -f 2 -d'=')
+
+# activate or deactivate?
+[ $TOUCHPAD_STATUS = "1" ] &amp;&amp; ACTION="--enable" || ACTION="--disable"
+
+# commit the actions
+xinput $ACTION $TOUCHPAD_ID
+</pre>
+</div>
+<p>
+src: <a href="https://github.com/ardumont/sh/blob/master/stumpwm/toggle-touchpad-manual.sh">toggle-touchpad-manual.sh</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">use</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Activate the touchpad
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">toggle-touchpad-manual.sh 1
+</pre>
+</div>
+
+<p>
+Deactivate the touchpad
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">toggle-touchpad-manual.sh 0
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Auto</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Toggle automatically on/off the touchpad.
+</p>
+</div>
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">code</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+It's almost the same script as before.
+But this one does request the current status of the touchpad and then inverse the status.
+For doing so, it calls the previous script one with the new status as parameter.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">#!/usr/bin/env bash
+
+# Use: $0
+# Toggle automatically on/off the touchpad depending its state
+
+WDIR=$(readlink -f $(dirname $0))
+
+# Find the identifier of the touchpad
+TOUCHPAD_ID=$(xinput list \
+		    | grep -i touchpad \
+		    | grep -o "id=[0-9]*" \
+		    | cut -f 2 -d'=')
+
+TOUCHPAD_STATUS=$(xinput --list-props $TOUCHPAD_ID \
+			| grep "Device Enabled " \
+			| cut -d':' -f 2)
+
+[ $TOUCHPAD_STATUS = "0" ] &amp;&amp; NEW_STATUS="1" || NEW_STATUS="0"
+
+$WDIR/toggle-touchpad-manual.sh $NEW_STATUS
+</pre>
+</div>
+<p>
+src: <a href="https://github.com/ardumont/sh/blob/master/stumpwm/toggle-touchpad.sh">toggle-touchpad.sh</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2">use</h3>
+<div class="outline-text-3" id="text-3-2">
+<div class="org-src-container">
+
+<pre class="src src-sh">~/bin/stumpwm/toggle-touchpad.sh
+</pre>
+</div>
+
+<p>
+If enabled, the touchpad will be disabled, else it will be enabled.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Example</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+This works on my:
+</p>
+<ul class="org-ul">
+<li>personal asus zenbook - ubuntu 12.10
+</li>
+<li>pro hp elitebook - ubuntu 12.10
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Conclusion</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+In this post, I presented how to activate/deactivate the touchpad from the shell.
+</p>
+
+<p>
+In <a href="http://adumont.fr/blog/stumpwm-activatedeactivate-touchpad/">another post</a>, I'll present a possible orchestration using those scripts as a basic brick.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2012-12-29 sam. 13:49]</span></span></p>
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-01 Mon 23:46</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

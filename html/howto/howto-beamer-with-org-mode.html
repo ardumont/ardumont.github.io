@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Howto beamer with org-mode</title>
+<!-- 2014-12-01 Mon 23:46 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<meta  name="description" content="howto make presentation using org-mode and beamer"
+ />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="../other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Howto beamer with org-mode</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Pre-requisites</a>
+<ul>
+<li><a href="#sec-1-1">emacs</a></li>
+<li><a href="#sec-1-2">with org-mode</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">Install the other pre-requisites</a></li>
+<li><a href="#sec-3">Init a org file</a>
+<ul>
+<li><a href="#sec-3-1">Add some particular headers</a></li>
+<li><a href="#sec-3-2">Example of org-code and the output</a></li>
+<li><a href="#sec-3-3">There is automatically a front-page</a></li>
+<li><a href="#sec-3-4">And a outline page</a></li>
+<li><a href="#sec-3-5">Frame 1</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">Some group of frames</a>
+<ul>
+<li><a href="#sec-4-1">frame11</a></li>
+<li><a href="#sec-4-2">some stuff</a></li>
+<li><a href="#sec-4-3">to tell</a></li>
+<li><a href="#sec-4-4">in list elements</a></li>
+<li><a href="#sec-4-5">Frame 2</a></li>
+<li><a href="#sec-4-6">frame12</a></li>
+<li><a href="#sec-4-7">what do you know!</a></li>
+<li><a href="#sec-4-8">nice or what?</a></li>
+<li><a href="#sec-4-9">A frame about clojure in another group</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">Awsomeness!</a>
+<ul>
+<li><a href="#sec-5-1">Clojure</a></li>
+<li><a href="#sec-5-2">code clojure</a></li>
+<li><a href="#sec-5-3"><i>Midje</i>, unit testing fwk is pretty awesome!</a></li>
+<li><a href="#sec-5-4">About emacs</a></li>
+<li><a href="#sec-5-5">Emacs</a></li>
+<li><a href="#sec-5-6">It's pretty cool too!</a></li>
+<li><a href="#sec-5-7">Org</a></li>
+<li><a href="#sec-5-8">Org-mode with beamer</a></li>
+<li><a href="#sec-5-9">rocks as we can present&#xa0;&#xa0;&#xa0;<span class="tag"><span class="BMCOL">BMCOL</span></span></a></li>
+<li><a href="#sec-5-10">in columns</a></li>
+<li><a href="#sec-5-11">and as always</a></li>
+<li><a href="#sec-5-12">include images</a>
+<ul>
+<li><a href="#sec-5-12-1"><code>Wait!</code> What's with the syntax?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-6">Launch the export</a></li>
+<li><a href="#sec-7">And that's it</a></li>
+<li><a href="#sec-8">Pros/Cons</a></li>
+<li><a href="#sec-9">Source</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Pre-requisites</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">emacs</h3>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">with org-mode</h3>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Install the other pre-requisites</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo aptitude install latex latex-beamer \
+  texlive-latex-extra texlive-fonts-recommended ttf-marvosym
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Init a org file</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">Add some particular headers</h3>
+<div class="outline-text-3" id="text-3-1">
+<div class="org-src-container">
+
+<pre class="src src-org">\#+TITLE:     your-title
+\#+AUTHOR:    your-name
+\#+EMAIL:     your-email
+\#+DATE:      bootstrap-date
+\#+DESCRIPTION: some-description
+\#+KEYWORDS: some-keywords
+\#+LANGUAGE:  en
+\#+OPTIONS:   H:3 num:t toc:t \n:nil @:t ::t |:t ^:t -:t f:t *:t &lt;:t
+\#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+\#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+\#+EXPORT_SELECT_TAGS: export
+\#+EXPORT_EXCLUDE_TAGS: noexport
+\#+LINK_UP:
+\#+LINK_HOME:
+
+\#+startup: beamer
+\#+LaTeX_CLASS: beamer
+\#+LaTeX_CLASS_OPTIONS: [bigger]
+
+\#+BEAMER_FRAME_LEVEL: 2
+</pre>
+</div>
+<p>
+They are escaped here (\#) otherwise, it's evaluated by org-mode.
+For real, replace the \# by #.
+</p>
+</div>
+</div>
+
+
+
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2">Example of org-code and the output</h3>
+<div class="outline-text-3" id="text-3-2">
+</div><div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3">There is automatically a front-page</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+The informations comes from the previous blocks.
+</p>
+
+
+<div class="figure">
+<p><img src="../org-beamer-examples/front-page.png" alt="front-page.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4">And a outline page</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+This will come from the content of the other frames below.
+</p>
+
+
+<div class="figure">
+<p><img src="../org-beamer-examples/outline.png" alt="outline.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-5" class="outline-3">
+<h3 id="sec-3-5">Frame 1</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+#+BEGIN<sub>SRC</sub> txt
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Some group of frames</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1">frame11</h3>
+<div class="outline-text-3" id="text-4-1">
+</div><div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2">some stuff</h3>
+</div>
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3">to tell</h3>
+</div>
+<div id="outline-container-sec-4-4" class="outline-3">
+<h3 id="sec-4-4">in list elements</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+#+END<sub>SRC</sub>
+</p>
+
+
+<div class="figure">
+<p><img src="../org-beamer-examples/frame-11.png" alt="frame-11.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-5" class="outline-3">
+<h3 id="sec-4-5">Frame 2</h3>
+<div class="outline-text-3" id="text-4-5">
+<p>
+#+BEGIN<sub>SRC</sub> txt
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4-6" class="outline-3">
+<h3 id="sec-4-6">frame12</h3>
+<div class="outline-text-3" id="text-4-6">
+</div><div id="outline-container-sec-4-7" class="outline-3">
+<h3 id="sec-4-7">what do you know!</h3>
+</div>
+<div id="outline-container-sec-4-8" class="outline-3">
+<h3 id="sec-4-8">nice or what?</h3>
+<div class="outline-text-3" id="text-4-8">
+<p>
+#+END<sub>SRC</sub>
+</p>
+
+
+<div class="figure">
+<p><img src="../org-beamer-examples/frame-12.png" alt="frame-12.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-9" class="outline-3">
+<h3 id="sec-4-9">A frame about clojure in another group</h3>
+<div class="outline-text-3" id="text-4-9">
+<p>
+#+BEGIN<sub>SRC</sub> txt
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Awsomeness!</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1">Clojure</h3>
+<div class="outline-text-3" id="text-5-1">
+</div><div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2">code clojure</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+\#+BEGIN<sub>SRC</sub> clj
+(fact (+ 1 1) =&gt; 2)
+\#+END<sub>SRC</sub>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-5-3" class="outline-3">
+<h3 id="sec-5-3"><i>Midje</i>, unit testing fwk is pretty awesome!</h3>
+<div class="outline-text-3" id="text-5-3">
+<p>
+#+END<sub>SRC</sub>
+As we can see here, we can embedded some block of code from any language as org-mode usually permits.
+</p>
+
+
+<div class="figure">
+<p><img src="../org-beamer-examples/frame-clojure.png" alt="frame-clojure.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-5-4" class="outline-3">
+<h3 id="sec-5-4">About emacs</h3>
+<div class="outline-text-3" id="text-5-4">
+<p>
+#+BEGIN<sub>SRC</sub> txt
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-5-5" class="outline-3">
+<h3 id="sec-5-5">Emacs</h3>
+<div class="outline-text-3" id="text-5-5">
+</div><div id="outline-container-sec-5-6" class="outline-3">
+<h3 id="sec-5-6">It's pretty cool too!</h3>
+<div class="outline-text-3" id="text-5-6">
+<p>
+#+END<sub>SRC</sub>
+</p>
+
+
+<div class="figure">
+<p><img src="../org-beamer-examples/frame-emacs.png" alt="frame-emacs.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5-7" class="outline-3">
+<h3 id="sec-5-7">Org</h3>
+<div class="outline-text-3" id="text-5-7">
+<p>
+#+BEGIN<sub>SRC</sub> txt
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-5-8" class="outline-3">
+<h3 id="sec-5-8">Org-mode with beamer</h3>
+<div class="outline-text-3" id="text-5-8">
+</div><div id="outline-container-sec-5-9" class="outline-3">
+<h3 id="sec-5-9">rocks as we can present&#xa0;&#xa0;&#xa0;<span class="tag"><span class="BMCOL">BMCOL</span></span></h3>
+<div class="outline-text-3" id="text-5-9">
+</div>
+</div>
+<div id="outline-container-sec-5-10" class="outline-3">
+<h3 id="sec-5-10">in columns</h3>
+</div>
+<div id="outline-container-sec-5-11" class="outline-3">
+<h3 id="sec-5-11">and as always</h3>
+<div class="outline-text-3" id="text-5-11">
+
+<div class="figure">
+<p><img src="./clj-pink.png" alt="clj-pink.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-5-12" class="outline-3">
+<h3 id="sec-5-12">include images</h3>
+<div class="outline-text-3" id="text-5-12">
+<p>
+#+END<sub>SRC</sub>
+</p>
+
+
+<div class="figure">
+<p><img src="../org-beamer-examples/frame-org.png" alt="frame-org.png" />
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5-12-1" class="outline-4">
+<h4 id="sec-5-12-1"><code>Wait!</code> What's with the syntax?</h4>
+<div class="outline-text-4" id="text-5-12-1">
+<p>
+It's a binding that does that for us.
+Selection the item that you want in columns then <code>C-c C-b |</code>, this will ask you for the size of the column (ratio
+between 0 and 1). Give, for example, 0.4 then hit enter. Do the same all the other columns.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Launch the export</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+C-c C-e will launch a buffer with the options for exporting in the format you want!
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">C-c C-e d</td>
+<td class="left">compile in latex, then export to pdf and open it.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">And that's it</h2>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8">Pros/Cons</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+Here's only what i think of, feel free to think otherwise.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">Pros</th>
+<th scope="col" class="left">Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">Simple</td>
+<td class="left">Not editable in browser (as in google docs)</td>
+</tr>
+
+<tr>
+<td class="left">Portability - Plain text</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">Versionable (you choose your DVCS)</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">Share easy</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">Free as in free beer!</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9">Source</h2>
+<div class="outline-text-2" id="text-9">
+<ul class="org-ul">
+<li><a href="https://github.com/ardumont/my-org-files/blob/master/howto-beamer-with-org-mode.org">The example org source code</a>
+</li>
+<li><a href="https://github.com/ardumont/my-org-files/blob/master/org-beamer-example/example0.pdf">The example pdf</a>
+</li>
+<li><a href="http://orgmode.org/worg/org-tutorials/org-beamer/tutorial.html">Writing Beamer presentations in org-mode</a>
+</li>
+</ul>
+
+<p>
+#+../org-beamer-examples/outline.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-outline.png" alt="wpid-outline.png" />
+#+../org-beamer-examples/frame-11.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-frame-11.png" alt="wpid-frame-11.png" />
+#+../org-beamer-examples/frame-12.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-frame-12.png" alt="wpid-frame-12.png" />
+#+../org-beamer-examples/frame-clojure.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-frame-clojure.png" alt="wpid-frame-clojure.png" />
+#+../org-beamer-examples/frame-emacs.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-frame-emacs.png" alt="wpid-frame-emacs.png" />
+#+../org-beamer-examples/frame-org.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-frame-org.png" alt="wpid-frame-org.png" />
+</p>
+
+<p>
+#+../org-beamer-examples/front-page.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-front-page.png" alt="wpid-front-page.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2012-12-22 Sat 14:20]</span></span></p>
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-01 Mon 23:46</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

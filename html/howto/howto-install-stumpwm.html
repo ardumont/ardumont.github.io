@@ -1,0 +1,917 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Howto install stumpwm and little more</title>
+<!-- 2014-12-01 Mon 23:46 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<meta  name="description" content="howto install/setup/use stumpwm + my stumpwm configuration"
+ />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="../other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Howto install stumpwm and little more</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Introduction</a>
+<ul>
+<li><a href="#sec-1-1">For just install, skip the intro</a></li>
+<li><a href="#sec-1-2">What is stumpwm?</a></li>
+<li><a href="#sec-1-3">Why?</a></li>
+<li><a href="#sec-1-4">How do i use it?</a></li>
+<li><a href="#sec-1-5">Goal of the article</a></li>
+<li><a href="#sec-1-6">Limits of the article</a></li>
+<li><a href="#sec-1-7">Targeted platform</a></li>
+<li><a href="#sec-1-8">Targeted audience</a></li>
+<li><a href="#sec-1-9">What is stumpwm in details.</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">How to install</a>
+<ul>
+<li><a href="#sec-2-1">Install stumpwm from CLI</a></li>
+<li><a href="#sec-2-2">Add a new entry to gdm</a></li>
+<li><a href="#sec-2-3">Logout from gdm</a></li>
+<li><a href="#sec-2-4">Stumpwm starts</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">How to improve itb</a>
+<ul>
+<li><a href="#sec-3-1">Some simple commands</a></li>
+<li><a href="#sec-3-2">Syntax</a>
+<ul>
+<li><a href="#sec-3-2-1">C for Control</a></li>
+<li><a href="#sec-3-2-2">&lt;l&gt; for a letter</a></li>
+<li><a href="#sec-3-2-3">combination C-t for Control + t pressed together</a></li>
+<li><a href="#sec-3-2-4">C-t x for Control+t pressed together followed by a pressure on x.</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-3">C-t ?</a></li>
+<li><a href="#sec-3-4">C-t c</a></li>
+<li><a href="#sec-3-5">C-t e</a></li>
+<li><a href="#sec-3-6">C-t t</a></li>
+<li><a href="#sec-3-7">C-t s</a></li>
+<li><a href="#sec-3-8">C-t Q</a></li>
+<li><a href="#sec-3-9">C-t k</a></li>
+<li><a href="#sec-3-10">C-t !</a></li>
+<li><a href="#sec-3-11">etc&#x2026;</a></li>
+<li><a href="#sec-3-12">Stumpwm is really cool</a></li>
+<li><a href="#sec-3-13">My setup</a></li>
+<li><a href="#sec-3-14">C-t f</a></li>
+<li><a href="#sec-3-15">C-t b</a></li>
+<li><a href="#sec-3-16">C-t i</a></li>
+<li><a href="#sec-3-17">C-t x</a></li>
+<li><a href="#sec-3-18">C-t o</a></li>
+<li><a href="#sec-3-19">C-t C-e</a></li>
+<li><a href="#sec-3-20">C-t I</a></li>
+<li><a href="#sec-3-21">C-t H</a></li>
+<li><a href="#sec-3-22">C-t B</a></li>
+<li><a href="#sec-3-23">C-t K</a></li>
+<li><a href="#sec-3-24">C-t A</a></li>
+<li><a href="#sec-3-25">C-t C-o</a></li>
+<li><a href="#sec-3-26">C-t n</a></li>
+<li><a href="#sec-3-27">C-t C-s</a></li>
+<li><a href="#sec-3-28">etc&#x2026;</a></li>
+<li><a href="#sec-3-29">~/.stumpwmrc</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">Last points</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Introduction</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">For just install, skip the intro</h3>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">What is stumpwm?</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+A tiling, keyboard driven X11 window manager.
+Simply put, it permits you to choose what you do at any given time with key-bindings.
+Another simple way to sum up: Less is more :d.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">Why?</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+I was lost with all the shining catch-eyes effects everywhere.
+</p>
+
+<p>
+With a friend, <a href="https://twitter.com/#!/denislab">Denis Labaye</a>, we search for simpler.
+We found stumpwm and it was mind blowing.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">How do i use it?</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+Personally, i choose to work with only one window at a time and ask for the one i want when i want it.
+It's my way of seeing it but stumpwm does not limit you in this way.
+</p>
+
+<p>
+For me, stump empowers you with the choice of doing anything you want your way.
+</p>
+
+<p>
+The small price to pay is learning key-bindings.
+Small price because you can override them so the sky is really the limit.
+</p>
+
+<p>
+It's the computer that adapts to you and not the other way around.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5">Goal of the article</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+This howto explains how to install stumpwm and the little things you have to do to login with it in the gnome display manager.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6">Limits of the article</h3>
+<div class="outline-text-3" id="text-1-6">
+</div><div id="outline-container-sec-1-7" class="outline-3">
+<h3 id="sec-1-7">Targeted platform</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+This article is clearly oriented for a debian based distribution using a gnome display manager as the login manager.
+You may use some part with other distribution but i do not know how because i didn't have the problem to solve.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-8" class="outline-3">
+<h3 id="sec-1-8">Targeted audience</h3>
+<div class="outline-text-3" id="text-1-8">
+<p>
+Geeky/Nerdy people who likes to make computer adapts to them and not the other way around.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-9" class="outline-3">
+<h3 id="sec-1-9">What is stumpwm in details.</h3>
+<div class="outline-text-3" id="text-1-9">
+<p>
+<a href="http://www.nongnu.org/stumpwm/">What is it?</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">How to install</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Install stumpwm from CLI</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo apt-get install stumpwm
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">Add a new entry to gdm</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+We need to add an entry menu to gdm for stumpwm so that we can log in with it.
+</p>
+
+<p>
+For this we add the file /usr/share/xsessions/stumpwm.desktop
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo emacs -nw /usr/share/xsessions/stumpwm.desktop
+</pre>
+</div>
+
+<p>
+Content of the file:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-txt">[Desktop Entry]
+	Exec=stumpwm
+	TryExec=stumpwm
+	Name=stumpwm
+	Comment=The Mouseless Window Manager!
+</pre>
+</div>
+
+<p>
+Here is a simple script to do that in one shot (feel free to patch):
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">#!/usr/bin/env bash
+
+$(dirname $0)/deploy-wm.sh stumpwm
+</pre>
+</div>
+
+<p>
+src: <a href="https://github.com/ardumont/sh/blob/master/deploy/deploy-stumpwm.sh">deploy-stumpwm.sh</a>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">Logout from gdm</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Gdm will reload.
+At next login, when you'll choose your user to log in, you will be proposed a new entry "stumpwm" at the bottom of the screen (it may depend on your theme).
+Choose it and log in.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4">Stumpwm starts</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+At the top right corner, you'll only see a help message inviting you to type "CTRL-t ?" (Control and t pressed at the same time followed by a pressure on 't') for a presentation of all the simple commands you need to start.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">How to improve itb</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">Some simple commands</h3>
+<div class="outline-text-3" id="text-3-1">
+</div><div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2">Syntax</h3>
+<div class="outline-text-3" id="text-3-2">
+</div><div id="outline-container-sec-3-2-1" class="outline-4">
+<h4 id="sec-3-2-1">C for Control</h4>
+</div>
+<div id="outline-container-sec-3-2-2" class="outline-4">
+<h4 id="sec-3-2-2">&lt;l&gt; for a letter</h4>
+</div>
+<div id="outline-container-sec-3-2-3" class="outline-4">
+<h4 id="sec-3-2-3">combination C-t for Control + t pressed together</h4>
+</div>
+<div id="outline-container-sec-3-2-4" class="outline-4">
+<h4 id="sec-3-2-4">C-t x for Control+t pressed together followed by a pressure on x.</h4>
+</div>
+</div>
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3">C-t ?</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+List the basic commands
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4">C-t c</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+To launch a terminal instance (xterm or gnome-terminal)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-5" class="outline-3">
+<h3 id="sec-3-5">C-t e</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+To launch emacs or if it is already launched, call it to display before every other window.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-6" class="outline-3">
+<h3 id="sec-3-6">C-t t</h3>
+<div class="outline-text-3" id="text-3-6">
+<p>
+To make the window behind the current one pass before and vice-versa
+Inside the browser, you need to escape the t to add a tab (i gives a C-t t t).
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-7" class="outline-3">
+<h3 id="sec-3-7">C-t s</h3>
+<div class="outline-text-3" id="text-3-7">
+<p>
+Split the screen horizontally in two frames of equal size (emacs way).
+You can move the window inside each frame the same way that when you have only one frame.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-8" class="outline-3">
+<h3 id="sec-3-8">C-t Q</h3>
+<div class="outline-text-3" id="text-3-8">
+<p>
+Cancel all the split screen.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-9" class="outline-3">
+<h3 id="sec-3-9">C-t k</h3>
+<div class="outline-text-3" id="text-3-9">
+<p>
+To kill a window not responding
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-10" class="outline-3">
+<h3 id="sec-3-10">C-t !</h3>
+<div class="outline-text-3" id="text-3-10">
+<p>
+To launch a shell command not mapped yet on any binding.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-11" class="outline-3">
+<h3 id="sec-3-11">etc&#x2026;</h3>
+<div class="outline-text-3" id="text-3-11">
+<p>
+cf. C-t ?
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-12" class="outline-3">
+<h3 id="sec-3-12">Stumpwm is really cool</h3>
+<div class="outline-text-3" id="text-3-12">
+<p>
+You can override commands simply by putting a '.stumpwmrc' at the root of your home.
+</p>
+
+<p>
+Granted, the file is in lisp.
+But you can understand it anyway.
+</p>
+
+<p>
+Plus you can search the web for solution to your problems.
+You will find some geek who already has the answer.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-13" class="outline-3">
+<h3 id="sec-3-13">My setup</h3>
+<div class="outline-text-3" id="text-3-13">
+<p>
+The run or raise means that it only turns with one instance which is sufficient.
+</p>
+</div>
+<div id="outline-container-sec-3-14" class="outline-3">
+<h3 id="sec-3-14">C-t f</h3>
+<div class="outline-text-3" id="text-3-14">
+<p>
+Run or raise (only one instance at a time) firefox (f stands for firefox).
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-15" class="outline-3">
+<h3 id="sec-3-15">C-t b</h3>
+<div class="outline-text-3" id="text-3-15">
+<p>
+Run or raise chromium (b stands for browser).
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-16" class="outline-3">
+<h3 id="sec-3-16">C-t i</h3>
+<div class="outline-text-3" id="text-3-16">
+<p>
+Run or raise eclipse (i for ide)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-17" class="outline-3">
+<h3 id="sec-3-17">C-t x</h3>
+<div class="outline-text-3" id="text-3-17">
+<p>
+Run or raise gnome-terminal (x stands for xterm or any x terminal)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-18" class="outline-3">
+<h3 id="sec-3-18">C-t o</h3>
+<div class="outline-text-3" id="text-3-18">
+<p>
+To add a label (a letter) to each frame to move directly to this frame by typing the letter
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-19" class="outline-3">
+<h3 id="sec-3-19">C-t C-e</h3>
+<div class="outline-text-3" id="text-3-19">
+<p>
+Launch the pdf reader (evince here)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-20" class="outline-3">
+<h3 id="sec-3-20">C-t I</h3>
+<div class="outline-text-3" id="text-3-20">
+<p>
+Display <b>ifconfig</b> result and display it inside a small window
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-21" class="outline-3">
+<h3 id="sec-3-21">C-t H</h3>
+<div class="outline-text-3" id="text-3-21">
+<p>
+Display the content of <b>/etc/hosts</b> inside a small window
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-22" class="outline-3">
+<h3 id="sec-3-22">C-t B</h3>
+<div class="outline-text-3" id="text-3-22">
+<p>
+Display the content of <b>acpi -b</b>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-23" class="outline-3">
+<h3 id="sec-3-23">C-t K</h3>
+<div class="outline-text-3" id="text-3-23">
+<p>
+Display the keys the ssh-agents holds.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-24" class="outline-3">
+<h3 id="sec-3-24">C-t A</h3>
+<div class="outline-text-3" id="text-3-24">
+<p>
+Launch the scripts <b>ssh-add-identities</b> that adds the keys i work with to the ssh-agent
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-25" class="outline-3">
+<h3 id="sec-3-25">C-t C-o</h3>
+<div class="outline-text-3" id="text-3-25">
+<p>
+Launch the image reader (here <b>eog</b>)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-26" class="outline-3">
+<h3 id="sec-3-26">C-t n</h3>
+<div class="outline-text-3" id="text-3-26">
+<p>
+Launch nautilus
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-27" class="outline-3">
+<h3 id="sec-3-27">C-t C-s</h3>
+<div class="outline-text-3" id="text-3-27">
+<p>
+Launch a window screenshot.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-28" class="outline-3">
+<h3 id="sec-3-28">etc&#x2026;</h3>
+</div>
+</div>
+<div id="outline-container-sec-3-29" class="outline-3">
+<h3 id="sec-3-29">~/.stumpwmrc</h3>
+<div class="outline-text-3" id="text-3-29">
+<p>
+Here is my setup:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">;; -*- stumpwm -*-
+
+;; ========================== Loading dependency libraries
+
+(load "~/quicklisp/setup.lisp")
+
+;; ========================== Debugging properties (uncomment first)
+
+;; (ql:quickload :swank)
+;; (ql:quickload :clx)
+;; (ql:quickload :clx-truetype)
+;; (ql:quickload :cl-ppcre)
+;; (ql:quickload :cl-xembed)
+;; (ql:quickload :stumpwm)
+
+;; (defun swank ()
+;;   (setf *top-level-error-action* :break)
+;;   (swank:create-server :port 4005
+;;                        :style swank:*communication-style*
+;;                        :dont-close t)
+;;   (echo-string (current-screen)
+;;                "Starting swank. M-x slime-connect RET RET, then (in-package stumpwm)."))
+
+;;(swank)
+
+;; ========================== Beginning setup of stumpwm
+
+(in-package :stumpwm)
+(use-package :ql-clj)
+(load "~/.stumpwm-functions.lisp")
+(set-prefix-key (kbd "C-;"))
+
+(setf *contrib-dir* "~/repo/perso/stumpwm/contrib/")
+
+;; load a few modules
+;; (mapcar #'load-module '("cpu"
+;;                         "mem"
+;;                         "battery-portable"
+;;                         "net"
+;;                         "wifi"
+;;                         "disk"))
+
+;; up the debug level (see ~/.xsession-errors)
+;; (setf stumpwm::*debug-level* 0)
+
+;; set the font for the message bar and input bar
+;; (set-font "-*-FreeMono-medium-r-*-*-6*")
+;; (set-font "-adobe-helvetica-medium-r-normal--1*")
+;; (set-font "-xos4-terminus-medium-r-normal--14-140-72-72-c-80-iso8859-7")
+;; (set-font "-xos4-terminus-medium-r-normal--0-0-72-72-c-0-iso8859-7")
+;; (set-font "-*-dina-medium-r-normal-*-*-*-*-*-*-*-*-*")
+;; (set-font "-lispm-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*")
+;; (set-font "-artwiz-smoothansi-medium-r-normal--13-130-75-75-m-60-iso8859-1")
+(set-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-16-*-*-*-m-0-iso10646-1")
+
+(set-normal-gravity :bottom)
+(setf *message-window-gravity* :bottom-left)
+(setf *input-window-gravity* :bottom-left)
+
+(setf *frame-number-map* "abcdefghijklmnopqrst")
+
+(setf *window-format* "%m%n%s nm=%50t cl=%c id=%i")
+
+;;; Window Appearance
+;; The width in pixels given to the borders of regular windows.
+(setf *normal-border-width* 0)
+;; The width in pixels given to the borders of windows with maxsize or ratio hints.
+(setf *maxsize-border-width* 0)
+;; The width in pixels given to the borders of transient or pop-up windows.
+(setf *transient-border-width* 0)
+
+;;(run-commands "restore-from-file ~/.stumpwm.screendump")
+
+;;Set the mouse focus policy to ignore the mouse
+(setf *mouse-focus-policy* :click) ;; :click, :ignore, :sloppy
+
+(defun key-seq-msg (key key-seq cmd)
+  "Show a message with current incomplete key sequence."
+  (declare (ignore key))
+  (or (eq *top-map* *resize-map*)
+      (stringp cmd)
+      (let ((*message-window-gravity* :bottom-right))
+	(message "~A" (print-key-seq (reverse key-seq))))))
+
+(add-hook *key-press-hook* 'key-seq-msg)
+
+;; ========================== setup
+
+;; xenity - shell command with output inside a zenity popup window
+(zenity-category
+ ((ssh-add-list         "List the keys the user-agent holds"      "ssh-add -l"           "K")
+  (cat-etc-environment  "Display the content of /etc/environment" "cat /etc/environment" "E")
+  (cat-etc-hosts        "Display the content of /etc/hosts"       "cat /etc/hosts"       "H")
+  (sbin-ifconfig        "/sbin/ifconfig"                          "/sbin/ifconfig"       "I")
+  (acpi-cmd             "Display battery"                         "/usr/bin/acpi -b"     "B")))
+
+;; run-or-raise application based on the class name of the window + deactivating the touchpad
+(ror-tpd-off-category
+ ((terminal             "terminal" "gnome-terminal --hide-menubar -x tmux -2" "Gnome-terminal" "x")
+  (myemacs              "emacs"    "~/bin/emacs/emacs.sh"                     "Emacs"          "e")
+  (conkeror             "conkeror" "conkeror"                                 "Conkeror"       "c")))
+
+;; run-or-raise application based on the class name of the window + activating the touchpad
+(ror-tpd-on-category
+ ((firefox              "firefox"                 "firefox"                                                 "Firefox"                     "f")
+;;(gnome-control-center "gnome-control-center"    "gnome-control-center"                                    "Gnome-Control-Center"        ",")
+;;(control-center       "cinnamon-control-center" "cinnamon-control-center"                                 "Cinnamon-control-Center"     ",")
+  (settings             "cinnamon-settings"       "cinnamon-settings"                                       "Cinnamon-settings.py"        ",")
+  (video-player         "totem"                   "totem"                                                   "Totem"                       ".")
+  (evince               "evince"                  "evince"                                                  "Evince"                      "C-e")
+  (eog                  "eog"                     "eog"                                                     "Eog"                         "C-i")
+  (pinta                "pinta"                   "pinta"                                                   "Pinta"                       "d")
+  (gimp                 "gimp"                    "gimp"                                                    "Gimp"                        "I")
+  (audacious            "audacious"               "/usr/bin/audacious"                                      "Audacious"                   "C-a")
+  (jconsole             "jconsole"                "/usr/bin/jconsole"                                       "sun-tools-jconsole-JConsole" "C-j")
+  (jvisualvm            "visualvm"                "~/applications/visualvm/bin/visualvm"                    "java-lang-Thread"            "j")
+  (arduino              "arduino ide"             "arduino"                                                 "processing-appBase"          "C-c")
+;;(intellij-idea        "intellij-idea"           "~/bin/ide/idea.sh"                                       "jetbrains-idea-ce"           "j")
+;;(eclipse              "eclipse ide"             "~/bin/ide/eclipse.sh"                                    "Eclipse"                     "i")
+  ))
+
+;; run-or-raise application based on the instance of the window + activating the touchpad
+(ror-id-tpd-on-category
+ ((xephyr-gnome         "xephyr - gnome"  "~/bin/xephyr/xephyr.sh gnome"         "Xephyr"                 "C-x")
+  (xephyr-xmonad        "xephyr - xmonad" "~/bin/xephyr/xephyr.sh xmonad"        "Xephyr"                 "C-X")
+  (wireshark            "wireshark"        "gksudo wireshark"                     "wireshark"              "C-w")
+  ;; (nautilus             "nautilus"         "nautilus"                             "nautilus"               "n")
+  (nemo                 "nemo"             "nemo"                                 "nemo"                   "n")
+  (thunar               "thunar"           "thunar"                               "thunar"                 "N")
+  (yEd                  "yed"              "~/bin/app/yed.sh"                     "sun-awt-X11-XFramePeer" "y")
+  (filezilla            "filezilla"        "/usr/bin/filezilla"                   "filezilla"              "C-f")
+  (virtualbox           "virtualbox"       "virtualbox"                           "Qt-subapplication"      "C-v")
+  (unetbootin           "unetbootin"       "unetbootin"                           "unetbootin"             "u")
+  (transmission         "transmission-gtk" "/usr/bin/transmission-gtk"            "transmission-gtk"       "/")
+  (gparted              "gparted"          "gksudo /usr/sbin/gparted"             "gpartedbin"             "G")
+  (file-progress        "file progress"    ""                                     "file_progress"          "F")
+  (xosview              "xosview"          "xosview"                              "xosview"                "X")
+  (baobab               "baobab"           "baobab"                               "baobab"                 "b")
+  (gitk                 "gitk"             "gitk"                                 "gitk"                   "z")
+  (fbreader             "fbreader"         "fbreader"                             "fbreader"               "C-f")
+  (lighttable           "LightTable"       "~/applications/LightTable/LightTable" "ltbin"                  "C")
+  (tux-guitar           "TuxGuitar"        "/usr/bin/tuxguitar"                   "TuxGuitar"              "M-t")
+  (skype                "skype"            "/usr/bin/skype"                       "skype"                  "C-c")))
+
+;; run shell command - Simply execute shell command
+(run-shell-command-category
+ ((suspend              "Suspend"                              "gksudo pm-suspend"                                                                   "C-S")
+  (hibernate            "Hibernate"                            "gksudo pm-hibernate"                                                                 "C-H")
+  (ssh-add-identities   "Load ssh identities in ssh-agent"     "~/bin/ssh/ssh-add.sh"                                                                "A")
+  (switch-to-proxy      "Switch to proxy."                     "gksudo ~/bin/proxy/proxy.sh on &amp;&amp; ~/bin/wifi/nm-applet.sh stop"                      "p")
+  (switch-to-no-proxy   "Switch to no proxy."                  "gksudo ~/bin/proxy/proxy.sh off &amp;&amp; ~/bin/wifi/nm-applet.sh stop"                     "P")
+  (dec-brightness       "Brightness decrement"                 "~/bin/brightness/dec-brightness.sh 5"                                                "C-b")
+  (inc-brightness       "Brightness increment"                 "~/bin/brightness/inc-brightness.sh 5"                                                "C-f")
+  (min-brightness       "Minimum screen brightness"            "~/bin/brightness/min-brightness.sh"                                                  "m")
+  (half-brightness      "Half screen brightness"               "~/bin/brightness/half-brightness.sh"                                                 "C-M")
+  (max-brightness       "Maximum screen brightness"            "~/bin/brightness/max-brightness.sh"                                                  "M")
+  (inc-sound            "Increase sound"                       "exec amixer set Master 5%+"                                                          "M-f")
+  (dec-sound            "Decrease sound"                       "exec amixer set Master 5%-"                                                          "M-b")
+  (toggle-sound         "Toggle sound"                         "exec amixer set Master toggle"                                                       "M-m")
+  (wifi-off             "wifi off"                             "~/bin/wifi/wifi-off.sh"                                                              "C-o")
+  (wifi-on              "wifi on"                              "~/bin/wifi/wifi-on.sh"                                                               "O")
+  (lock-session         "Lock the session"                     "~/bin/session/lock.sh"                                                               "C-M-l")
+  (evince-haskell-prog  "read functional approach in haskell"  "evince ~/books/haskell/algorithms-a-functional-programming-haskell-approach.pdf"      "'")))
+
+;; shell command - Simply execute shell command and possibly output the result in the screen
+(shell-command-category
+ ((top              "Display a single 'top' frame."             "top -b -n 1 -c -d 1"                                                                                              "^")
+  (screenshot       "Take a screenshot for the current window." "/usr/bin/scrot -u $HOME/Pictures/screenshot_$(date +%F_%H-%M-%S).png"                                             "C-s")
+  (screenshot-mouse "Take a screenshot with mouse selection."   "~/bin/touchpad/toggle-touchpad-manual.sh 1; /usr/bin/scrot -s $HOME/Pictures/screenshot_$(date +%F_%H-%M-%S).png" "M-s")))
+
+;; ========================== simple binding
+
+(define-key *root-map* (kbd "o") "fselect")
+
+(define-key *root-map* (kbd "M-r") "exec")
+(define-key *root-map* (kbd "Q")   "loadrc")
+(define-key *root-map* (kbd "M-q") "quit")
+
+(define-key *root-map* (kbd "C-u") "move-window up")
+(define-key *root-map* (kbd "C-r") "move-window right")
+(define-key *root-map* (kbd "C-d") "move-window down")
+(define-key *root-map* (kbd "C-l") "move-window left")
+
+(define-key *root-map* (kbd "-") "vsplit")
+(define-key *root-map* (kbd "|") "hsplit")
+
+(define-key *root-map* (kbd "M-x") "colon")
+
+(define-key *input-map* (kbd "C-h")   'input-delete-backward-char)
+(define-key *input-map* (kbd "C-M-h") 'input-backward-kill-word)
+(define-key *input-map* (kbd "C-j")   'input-submit)
+(define-key *input-map* (kbd "C-m")   'input-submit)
+(define-key *input-map* (kbd "C-i")   'input-complete-forward)
+
+(define-key *input-map* (kbd "M-p")   'input-history-back)
+(define-key *input-map* (kbd "M-n")   'input-history-forward)
+
+(defcommand scroll-forward-browser () ()
+  "Scroll forward in firefox"
+  (play-commands "firefox" (kbd "C-v") "myemacs"))
+(define-key *root-map* (kbd "C-M-]") "scroll-forward-browser")
+
+(defcommand scroll-backward-browser () ()
+  "Scroll backward in firefox"
+  (play-commands "firefox" (kbd "M-v") "myemacs"))
+(define-key *root-map* (kbd "C-M-[") "scroll-backward-browser")
+
+;; ========================== Help
+
+(setf *help-map*
+      (let ((m (make-sparse-keymap)))
+	(define-key m (kbd "m") "man")
+	(define-key m (kbd "i") "info")
+	(define-key m (kbd "v") "describe-variable")
+	(define-key m (kbd "f") "describe-function")
+	(define-key m (kbd "k") "describe-key")
+	(define-key m (kbd "w") "where-is")
+	m))
+
+;; gimp
+
+(define-frame-preference "gimp"
+  (1 t t :create "gimp-dump" :class "Gimp" :title nil :role nil)
+  (0 t t :create "gimp-dump" :class "Gimp" :title nil :role "gimp-toolbox")
+  (2 t t :create "gimp-dump" :class "Gimp" :title nil :role "gimp-dock")
+  (1 t t :create "gimp-dump" :class "Gimp" :title nil :role "gimp-image-window"))
+
+;; courtesy of Peter Seibel
+;; (defmacro with-gensyms ((&amp;rest names) &amp;body body)
+;;   `(let ,(loop for n in names collect `(,n (gensym)))
+;;      ,@body))
+
+;; (defmacro program-with-layout (name &amp;key (command (string-downcase (string name)))
+;;                                     (props `'(:class ,(string-capitalize command))))
+;;   (with-gensyms (s w h files-path layout rules)
+;;                 `(defcommand ,name () ()
+;;                    (let* ((,s (current-screen))
+;;                           (,w (prin1-to-string (screen-width ,s)))
+;;                           (,h (prin1-to-string (screen-height ,s)))
+;;                           (,files-path "/home/tony/.gimp")
+;;                           (,layout (concat ,files-path ,command "-layout-" ,w "x" ,h))
+;;                           (,rules (concat ,files-path ,command "-rules")))
+;;                      (gnew ,command)
+;;                      (restore-from-file ,layout)
+;;                      (restore-window-placement-rules ,rules)
+;;                      (run-or-raise ,command ,props)
+;;                      (place-existing-windows)))))
+
+;; (program-with-layout gimp)
+
+(defun hostname () (run-shell-command "/bin/hostname" t))
+
+;; ========================== cursor - https://github.com/stumpwm/stumpwm/wiki/GrabbedPointer
+
+(setf *grab-pointer-foreground* (xlib:make-color :red 0.1 :green 0.25 :blue 0.5))
+(setf *grab-pointer-background* (lookup-color (current-screen) "DeepSkyBlue"))
+(setf *grab-pointer-character* 88)
+(setf *grab-pointer-character-mask* 88)
+(setf *grab-pointer-font* "fixed")
+</pre>
+</div>
+<p>
+src: <a href="https://github.com/ardumont/dot-files/blob/master/.stumpwmrc">.stumpwmrc</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Last points</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+It's "emacs compatible". The prefix key is C-t whereas the prefix key of emacs is mostly C-x.
+They work well together and they have a lot in common in their usability.
+</p>
+
+<p>
+Here is a <a href="http://www.archive.org/details/TheStumpWMExperience">screencast</a> which presents rapidly how to use it.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2012-12-22 Sat 14:20]</span></span></p>
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-01 Mon 23:46</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
