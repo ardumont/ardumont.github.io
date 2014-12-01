@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Stumpwm - Activate/Deactivate touchpad</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<meta  name="description" content="Show how to activate/deactivate touchpad depending on the soft you use"
+ />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Stumpwm - Activate/Deactivate touchpad</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Manually</a>
+<ul>
+<li><a href="#sec-1-1">Why?</a></li>
+<li><a href="#sec-1-2">code</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">Automatic</a>
+<ul>
+<li><a href="#sec-2-1">Definition</a></li>
+<li><a href="#sec-2-2">Example off</a></li>
+<li><a href="#sec-2-3">Example on</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">Setup</a></li>
+<li><a href="#sec-4">Conclusion</a></li>
+</ul>
+</div>
+</div>
+<p>
+As I recently changed my hardware, I got a new portable with a <b>HUGE</b> touchpad (at least for me).
+Thus, when I type with my keyboard, it gets in the way.
+</p>
+
+<p>
+So a new need came up, Shell/Stumpwm power to the rescue:
+</p>
+<ul class="org-ul">
+<li><a href="http://adumont.fr/blog/activatedeactivate-touchpad-from-the-shell/">I want to be able to disable/enable my touchpad</a> DONE!
+</li>
+<li>When switching to emacs or a terminal, I want it to be disabled!
+</li>
+<li>When switching back to the browsers or other mouse-needed software, I want to enable it back.
+</li>
+</ul>
+
+<p>
+As I <a href="http://adumont.fr/blog/activatedeactivate-touchpad-from-the-shell/">recently posted on how to activate/deactivate the touchpad from the shell command</a>, in this post, I will use those bricks to improve my condition using <a href="http://www.nongnu.org/stumpwm/">stumpwm</a>.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Manually</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">Why?</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+There will be times or I will need to toggle on/off the touchpad manually.
+</p>
+
+<p>
+I'm aware that there already exists a native binding (<code>fn F9</code> on my keyboard) but it breaks my hands positions.
+So a more natural binding would be for example <code>C-t T</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">code</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Helper function:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp">(defun run-shl (&amp;rest cmd)
+  "A simpler command to run-shell-command with multiple params"
+  (run-shell-command (apply #'concatenate 'string cmd)))
+</pre>
+</div>
+
+<p>
+The main code whose only concern is to:
+</p>
+<ul class="org-ul">
+<li>reuse the script <a href="http://adumont.fr/blog/activatedeactivate-touchpad-from-the-shell/">toggle-touchpad.sh described here</a>:
+</li>
+<li>banish the mouse from the screen (the mouse is positionned at the bottom right of the screen)
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">(defcommand toggle-touchpad-auto () ()
+  "Activate/Deactivate automatically the touchpad depending on the current status."
+  (run-shl "~/bin/touchpad/toggle-touchpad.sh")
+  (stumpwm::banish))
+</pre>
+</div>
+
+<p>
+Then the binding:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp">(define-key *root-map* (kbd "T") "toggle-touchpad-auto")
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Automatic</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Definition</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+The main subject was how to to make the switch automatic regarding the software.
+</p>
+
+<p>
+As we have already the hand on the command to call, we have to modify the call.
+</p>
+
+<p>
+I declared common-lisp macros <b>roraise-and-touchpad-on</b>, <b>roraise-and-touchpad-off</b> that takes the :
+</p>
+<ul class="org-ul">
+<li><b>command</b> shell to run or raise (if the instance does not run, we start it, else we raise it, that is we give it the main focus)
+</li>
+<li>and <b>class</b> they belong to.
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">(defmacro roraise-and-touchpad-off (command class)
+  "Wrap a call to the run-or-raise command but before toggle off the touchpad."
+  `(progn
+     (toggle-touchpad-manual "0")
+     (run-or-raise ,command '(:class ,class))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">Example off</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Then for example, the <code>defcommand</code> (which is a macro) <b>emacs</b>, in its definition, instead of calling directly <b>run-or-raise</b>, calls <b>roraise-and-touchpad-off</b>.
+</p>
+
+<p>
+This way, we pass from this:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">(defcommand myemacs () ()
+  "Run an xterm instance or if already running, switch to it."
+  ;; raise emacs
+  (run-or-raise "emacsclient -c" "Emacs24"))
+</pre>
+</div>
+
+<p>
+#+end<sub>src</sub>
+</p>
+
+<p>
+to this:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">(defcommand myemacs () ()
+  "Run an xterm instance or if already running, switch to it."
+  ;; raise emacs
+  (roraise-and-touchpad-off "emacsclient -c" "Emacs24"))
+</pre>
+</div>
+
+<p>
+The binding does not change:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">(define-key *root-map* (kbd "e") "myemacs")
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">Example on</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Here we want to reactivate the touchpad when switching back to the browser.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">(defcommand chromium-browser () ()
+  "Run a chromium instance or if already running, switch to it."
+  (roraise-and-touchpad-on "chromium-browser" "Chromium-browser"))
+</pre>
+</div>
+
+<p>
+The binding has always does not change.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp">(define-key *root-map* (kbd "b") "chromium-browser")
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Setup</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+As usual, here is a snapshot of my actual setup.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">;; -*- stumpwm -*-
+
+;; ========================== Loading dependency libraries
+
+(load "~/quicklisp/setup.lisp")
+
+;; ========================== Debugging properties (uncomment first)
+
+;; (ql:quickload :swank)
+;; (ql:quickload :clx)
+;; (ql:quickload :clx-truetype)
+;; (ql:quickload :cl-ppcre)
+;; (ql:quickload :cl-xembed)
+;; (ql:quickload :stumpwm)
+
+;; (defun swank ()
+;;   (setf *top-level-error-action* :break)
+;;   (swank:create-server :port 4005
+;;                        :style swank:*communication-style*
+;;                        :dont-close t)
+;;   (echo-string (current-screen)
+;;                "Starting swank. M-x slime-connect RET RET, then (in-package stumpwm)."))
+
+;;(swank)
+
+;; ========================== Beginning setup of stumpwm
+
+(in-package :stumpwm)
+(use-package :ql-clj)
+(load "~/.stumpwm-functions.lisp")
+(set-prefix-key (kbd "C-;"))
+
+(setf *contrib-dir* "~/repo/perso/stumpwm/contrib/")
+
+;; load a few modules
+;; (mapcar #'load-module '("cpu"
+;;                         "mem"
+;;                         "battery-portable"
+;;                         "net"
+;;                         "wifi"
+;;                         "disk"))
+
+;; up the debug level (see ~/.xsession-errors)
+;; (setf stumpwm::*debug-level* 0)
+
+;; set the font for the message bar and input bar
+;; (set-font "-*-FreeMono-medium-r-*-*-6*")
+;; (set-font "-adobe-helvetica-medium-r-normal--1*")
+;; (set-font "-xos4-terminus-medium-r-normal--14-140-72-72-c-80-iso8859-7")
+;; (set-font "-xos4-terminus-medium-r-normal--0-0-72-72-c-0-iso8859-7")
+;; (set-font "-*-dina-medium-r-normal-*-*-*-*-*-*-*-*-*")
+;; (set-font "-lispm-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*")
+;; (set-font "-artwiz-smoothansi-medium-r-normal--13-130-75-75-m-60-iso8859-1")
+(set-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-16-*-*-*-m-0-iso10646-1")
+
+(set-normal-gravity :bottom)
+(setf *message-window-gravity* :bottom-left)
+(setf *input-window-gravity* :bottom-left)
+
+(setf *frame-number-map* "abcdefghijklmnopqrst")
+
+(setf *window-format* "%m%n%s nm=%50t cl=%c id=%i")
+
+;;; Window Appearance
+;; The width in pixels given to the borders of regular windows.
+(setf *normal-border-width* 0)
+;; The width in pixels given to the borders of windows with maxsize or ratio hints.
+(setf *maxsize-border-width* 0)
+;; The width in pixels given to the borders of transient or pop-up windows.
+(setf *transient-border-width* 0)
+
+;;(run-commands "restore-from-file ~/.stumpwm.screendump")
+
+;;Set the mouse focus policy to ignore the mouse
+(setf *mouse-focus-policy* :click) ;; :click, :ignore, :sloppy
+
+(defun key-seq-msg (key key-seq cmd)
+  "Show a message with current incomplete key sequence."
+  (declare (ignore key))
+  (or (eq *top-map* *resize-map*)
+      (stringp cmd)
+      (let ((*message-window-gravity* :bottom-right))
+	(message "~A" (print-key-seq (reverse key-seq))))))
+
+(add-hook *key-press-hook* 'key-seq-msg)
+
+;; ========================== setup
+
+;; xenity - shell command with output inside a zenity popup window
+(zenity-category
+ ((ssh-add-list         "List the keys the user-agent holds"      "ssh-add -l"           "K")
+  (cat-etc-environment  "Display the content of /etc/environment" "cat /etc/environment" "E")
+  (cat-etc-hosts        "Display the content of /etc/hosts"       "cat /etc/hosts"       "H")
+  (sbin-ifconfig        "/sbin/ifconfig"                          "/sbin/ifconfig"       "I")
+  (acpi-cmd             "Display battery"                         "/usr/bin/acpi -b"     "B")))
+
+;; run-or-raise application based on the class name of the window + deactivating the touchpad
+(ror-tpd-off-category
+ ((terminal             "terminal" "gnome-terminal --hide-menubar -x tmux -2" "Gnome-terminal" "x")
+  (myemacs              "emacs"    "~/bin/emacs/emacs.sh"                     "Emacs"          "e")
+  (conkeror             "conkeror" "conkeror"                                 "Conkeror"       "c")))
+
+;; run-or-raise application based on the class name of the window + activating the touchpad
+(ror-tpd-on-category
+ ((firefox              "firefox"                 "firefox"                                                 "Firefox"                     "f")
+;;(gnome-control-center "gnome-control-center"    "gnome-control-center"                                    "Gnome-Control-Center"        ",")
+;;(control-center       "cinnamon-control-center" "cinnamon-control-center"                                 "Cinnamon-control-Center"     ",")
+  (settings             "cinnamon-settings"       "cinnamon-settings"                                       "Cinnamon-settings.py"        ",")
+  (video-player         "totem"                   "totem"                                                   "Totem"                       ".")
+  (evince               "evince"                  "evince"                                                  "Evince"                      "C-e")
+  (eog                  "eog"                     "eog"                                                     "Eog"                         "C-i")
+  (pinta                "pinta"                   "pinta"                                                   "Pinta"                       "d")
+  (gimp                 "gimp"                    "gimp"                                                    "Gimp"                        "I")
+  (audacious            "audacious"               "/usr/bin/audacious"                                      "Audacious"                   "C-a")
+  (jconsole             "jconsole"                "/usr/bin/jconsole"                                       "sun-tools-jconsole-JConsole" "C-j")
+  (jvisualvm            "visualvm"                "~/applications/visualvm/bin/visualvm"                    "java-lang-Thread"            "j")
+  (arduino              "arduino ide"             "arduino"                                                 "processing-appBase"          "C-c")
+;;(intellij-idea        "intellij-idea"           "~/bin/ide/idea.sh"                                       "jetbrains-idea-ce"           "j")
+;;(eclipse              "eclipse ide"             "~/bin/ide/eclipse.sh"                                    "Eclipse"                     "i")
+  ))
+
+;; run-or-raise application based on the instance of the window + activating the touchpad
+(ror-id-tpd-on-category
+ ((xephyr-gnome         "xephyr - gnome"  "~/bin/xephyr/xephyr.sh gnome"         "Xephyr"                 "C-x")
+  (xephyr-xmonad        "xephyr - xmonad" "~/bin/xephyr/xephyr.sh xmonad"        "Xephyr"                 "C-X")
+  (wireshark            "wireshark"        "gksudo wireshark"                     "wireshark"              "C-w")
+  ;; (nautilus             "nautilus"         "nautilus"                             "nautilus"               "n")
+  (nemo                 "nemo"             "nemo"                                 "nemo"                   "n")
+  (thunar               "thunar"           "thunar"                               "thunar"                 "N")
+  (yEd                  "yed"              "~/bin/app/yed.sh"                     "sun-awt-X11-XFramePeer" "y")
+  (filezilla            "filezilla"        "/usr/bin/filezilla"                   "filezilla"              "C-f")
+  (virtualbox           "virtualbox"       "virtualbox"                           "Qt-subapplication"      "C-v")
+  (unetbootin           "unetbootin"       "unetbootin"                           "unetbootin"             "u")
+  (transmission         "transmission-gtk" "/usr/bin/transmission-gtk"            "transmission-gtk"       "/")
+  (gparted              "gparted"          "gksudo /usr/sbin/gparted"             "gpartedbin"             "G")
+  (file-progress        "file progress"    ""                                     "file_progress"          "F")
+  (xosview              "xosview"          "xosview"                              "xosview"                "X")
+  (baobab               "baobab"           "baobab"                               "baobab"                 "b")
+  (gitk                 "gitk"             "gitk"                                 "gitk"                   "z")
+  (fbreader             "fbreader"         "fbreader"                             "fbreader"               "C-f")
+  (lighttable           "LightTable"       "~/applications/LightTable/LightTable" "ltbin"                  "C")
+  (tux-guitar           "TuxGuitar"        "/usr/bin/tuxguitar"                   "TuxGuitar"              "M-t")
+  (skype                "skype"            "/usr/bin/skype"                       "skype"                  "C-c")))
+
+;; run shell command - Simply execute shell command
+(run-shell-command-category
+ ((suspend              "Suspend"                              "gksudo pm-suspend"                                                                   "C-S")
+  (hibernate            "Hibernate"                            "gksudo pm-hibernate"                                                                 "C-H")
+  (ssh-add-identities   "Load ssh identities in ssh-agent"     "~/bin/ssh/ssh-add.sh"                                                                "A")
+  (switch-to-proxy      "Switch to proxy."                     "gksudo ~/bin/proxy/proxy.sh on &amp;&amp; ~/bin/wifi/nm-applet.sh stop"                      "p")
+  (switch-to-no-proxy   "Switch to no proxy."                  "gksudo ~/bin/proxy/proxy.sh off &amp;&amp; ~/bin/wifi/nm-applet.sh stop"                     "P")
+  (dec-brightness       "Brightness decrement"                 "~/bin/brightness/dec-brightness.sh 5"                                                "C-b")
+  (inc-brightness       "Brightness increment"                 "~/bin/brightness/inc-brightness.sh 5"                                                "C-f")
+  (min-brightness       "Minimum screen brightness"            "~/bin/brightness/min-brightness.sh"                                                  "m")
+  (half-brightness      "Half screen brightness"               "~/bin/brightness/half-brightness.sh"                                                 "C-M")
+  (max-brightness       "Maximum screen brightness"            "~/bin/brightness/max-brightness.sh"                                                  "M")
+  (inc-sound            "Increase sound"                       "exec amixer set Master 5%+"                                                          "M-f")
+  (dec-sound            "Decrease sound"                       "exec amixer set Master 5%-"                                                          "M-b")
+  (toggle-sound         "Toggle sound"                         "exec amixer set Master toggle"                                                       "M-m")
+  (wifi-off             "wifi off"                             "~/bin/wifi/wifi-off.sh"                                                              "C-o")
+  (wifi-on              "wifi on"                              "~/bin/wifi/wifi-on.sh"                                                               "O")
+  (lock-session         "Lock the session"                     "~/bin/session/lock.sh"                                                               "C-M-l")
+  (evince-haskell-prog  "read functional approach in haskell"  "evince ~/books/haskell/algorithms-a-functional-programming-haskell-approach.pdf"      "'")))
+
+;; shell command - Simply execute shell command and possibly output the result in the screen
+(shell-command-category
+ ((top              "Display a single 'top' frame."             "top -b -n 1 -c -d 1"                                                                                              "^")
+  (screenshot       "Take a screenshot for the current window." "/usr/bin/scrot -u $HOME/Pictures/screenshot_$(date +%F_%H-%M-%S).png"                                             "C-s")
+  (screenshot-mouse "Take a screenshot with mouse selection."   "~/bin/touchpad/toggle-touchpad-manual.sh 1; /usr/bin/scrot -s $HOME/Pictures/screenshot_$(date +%F_%H-%M-%S).png" "M-s")))
+
+;; ========================== simple binding
+
+(define-key *root-map* (kbd "o") "fselect")
+
+(define-key *root-map* (kbd "M-r") "exec")
+(define-key *root-map* (kbd "Q")   "loadrc")
+(define-key *root-map* (kbd "M-q") "quit")
+
+(define-key *root-map* (kbd "C-u") "move-window up")
+(define-key *root-map* (kbd "C-r") "move-window right")
+(define-key *root-map* (kbd "C-d") "move-window down")
+(define-key *root-map* (kbd "C-l") "move-window left")
+
+(define-key *root-map* (kbd "-") "vsplit")
+(define-key *root-map* (kbd "|") "hsplit")
+
+(define-key *root-map* (kbd "M-x") "colon")
+
+(define-key *input-map* (kbd "C-h")   'input-delete-backward-char)
+(define-key *input-map* (kbd "C-M-h") 'input-backward-kill-word)
+(define-key *input-map* (kbd "C-j")   'input-submit)
+(define-key *input-map* (kbd "C-m")   'input-submit)
+(define-key *input-map* (kbd "C-i")   'input-complete-forward)
+
+(define-key *input-map* (kbd "M-p")   'input-history-back)
+(define-key *input-map* (kbd "M-n")   'input-history-forward)
+
+(defcommand scroll-forward-browser () ()
+  "Scroll forward in firefox"
+  (play-commands "firefox" (kbd "C-v") "myemacs"))
+(define-key *root-map* (kbd "C-M-]") "scroll-forward-browser")
+
+(defcommand scroll-backward-browser () ()
+  "Scroll backward in firefox"
+  (play-commands "firefox" (kbd "M-v") "myemacs"))
+(define-key *root-map* (kbd "C-M-[") "scroll-backward-browser")
+
+;; ========================== Help
+
+(setf *help-map*
+      (let ((m (make-sparse-keymap)))
+	(define-key m (kbd "m") "man")
+	(define-key m (kbd "i") "info")
+	(define-key m (kbd "v") "describe-variable")
+	(define-key m (kbd "f") "describe-function")
+	(define-key m (kbd "k") "describe-key")
+	(define-key m (kbd "w") "where-is")
+	m))
+
+;; gimp
+
+(define-frame-preference "gimp"
+  (1 t t :create "gimp-dump" :class "Gimp" :title nil :role nil)
+  (0 t t :create "gimp-dump" :class "Gimp" :title nil :role "gimp-toolbox")
+  (2 t t :create "gimp-dump" :class "Gimp" :title nil :role "gimp-dock")
+  (1 t t :create "gimp-dump" :class "Gimp" :title nil :role "gimp-image-window"))
+
+;; courtesy of Peter Seibel
+;; (defmacro with-gensyms ((&amp;rest names) &amp;body body)
+;;   `(let ,(loop for n in names collect `(,n (gensym)))
+;;      ,@body))
+
+;; (defmacro program-with-layout (name &amp;key (command (string-downcase (string name)))
+;;                                     (props `'(:class ,(string-capitalize command))))
+;;   (with-gensyms (s w h files-path layout rules)
+;;                 `(defcommand ,name () ()
+;;                    (let* ((,s (current-screen))
+;;                           (,w (prin1-to-string (screen-width ,s)))
+;;                           (,h (prin1-to-string (screen-height ,s)))
+;;                           (,files-path "/home/tony/.gimp")
+;;                           (,layout (concat ,files-path ,command "-layout-" ,w "x" ,h))
+;;                           (,rules (concat ,files-path ,command "-rules")))
+;;                      (gnew ,command)
+;;                      (restore-from-file ,layout)
+;;                      (restore-window-placement-rules ,rules)
+;;                      (run-or-raise ,command ,props)
+;;                      (place-existing-windows)))))
+
+;; (program-with-layout gimp)
+
+(defun hostname () (run-shell-command "/bin/hostname" t))
+
+;; ========================== cursor - https://github.com/stumpwm/stumpwm/wiki/GrabbedPointer
+
+(setf *grab-pointer-foreground* (xlib:make-color :red 0.1 :green 0.25 :blue 0.5))
+(setf *grab-pointer-background* (lookup-color (current-screen) "DeepSkyBlue"))
+(setf *grab-pointer-character* 88)
+(setf *grab-pointer-character-mask* 88)
+(setf *grab-pointer-font* "fixed")
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Conclusion</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+A great way to know if a tool is a good tool or not is to know if it is extendable or not.
+To sum up, good tools provides you the means to extend them.
+</p>
+
+<p>
+In this way, Stumpwm rocks at least as much as emacs!
+Indeed, much like emacs, you do not have to get used to it, you shape it along the route according to your needs!
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2012-12-29 sam. 15:43]</span></span></p>
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

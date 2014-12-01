@@ -1,0 +1,2200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Learning Lily</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine Romain Dumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Learning Lily</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1"><span class="todo TODO">TODO</span> Read Lily documentation <code>[5/12]</code></a>
+<ul>
+<li><a href="#sec-1-1"><span class="done DONE">DONE</span> Home</a>
+<ul>
+<li><a href="#sec-1-1-1">Synthesis : Scalable content repository. Glue between hbase, solr, zookeeper, etc&#x2026;</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2"><span class="done DONE">DONE</span> Running Lily <code>[3/3]</code></a>
+<ul>
+<li><a href="#sec-1-2-1"><span class="done DONE">DONE</span> HBase, Hadoop, ZooKeeper and Solr</a></li>
+<li><a href="#sec-1-2-2"><span class="done DONE">DONE</span> Java Service Wrapper</a></li>
+<li><a href="#sec-1-2-3"><span class="done DONE">DONE</span> Upgrade from Lily 0.3 - useless</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-3"><span class="done DONE">DONE</span> Architecture <code>[8/8]</code></a>
+<ul>
+<li><a href="#sec-1-3-1"><span class="done DONE">DONE</span> HBase</a></li>
+<li><a href="#sec-1-3-2"><span class="done DONE">DONE</span> HDFS</a></li>
+<li><a href="#sec-1-3-3"><span class="done DONE">DONE</span> Lily Repository</a></li>
+<li><a href="#sec-1-3-4"><span class="done DONE">DONE</span> Write-Ahead Log</a></li>
+<li><a href="#sec-1-3-5"><span class="done DONE">DONE</span> Message queue</a></li>
+<li><a href="#sec-1-3-6"><span class="done DONE">DONE</span> Indexer</a></li>
+<li><a href="#sec-1-3-7"><span class="done DONE">DONE</span> Solr</a></li>
+<li><a href="#sec-1-3-8"><span class="done DONE">DONE</span> ZooKeeper</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-4"><span class="done DONE">DONE</span> Repository <code>[3/3]</code></a>
+<ul>
+<li><a href="#sec-1-4-1"><span class="done DONE">DONE</span> Repository Model <code>[10/10]</code></a></li>
+<li><a href="#sec-1-4-2"><span class="done DONE">DONE</span> How To Create A Schema <code>[3/3]</code></a></li>
+<li><a href="#sec-1-4-3"><span class="done DONE">DONE</span> How To Create Records</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-5"><span class="done DONE">DONE</span> Indexer <code>[4/7]</code></a>
+<ul>
+<li><a href="#sec-1-5-1"><span class="done DONE">DONE</span> Indexer Tutorial</a></li>
+<li><a href="#sec-1-5-2"><span class="done DONE">DONE</span> Managing Indexes <code>[9/9]</code></a></li>
+<li><a href="#sec-1-5-3"><span class="done DONE">DONE</span> Indexer Architecture <code>[6/6]</code></a></li>
+<li><a href="#sec-1-5-4"><span class="done DONE">DONE</span> Indexer Configuration <code>[8/8]</code></a></li>
+<li><a href="#sec-1-5-5"><span class="todo TODO">TODO</span> Index Sharding <code>[0/3]</code></a></li>
+<li><a href="#sec-1-5-6"><span class="todo TODO">TODO</span> Solr Versions <code>[/]</code></a></li>
+<li><a href="#sec-1-5-7"><span class="todo TODO">TODO</span> Indexer Error Handling <code>[/]</code></a></li>
+</ul>
+</li>
+<li><a href="#sec-1-6"><span class="todo TODO">TODO</span> Tools <code>[2/4]</code></a>
+<ul>
+<li><a href="#sec-1-6-1"><span class="done DONE">DONE</span> Import Tool</a></li>
+<li><a href="#sec-1-6-2"><span class="todo TODO">TODO</span> mbox Import Tool <code>[/]</code></a></li>
+<li><a href="#sec-1-6-3"><span class="todo TODO">TODO</span> Tester Tool <code>[/]</code></a></li>
+</ul>
+</li>
+<li><a href="#sec-1-7"><span class="todo TODO">TODO</span> Programming Interfaces <code>[0/2]</code></a>
+<ul>
+<li><a href="#sec-1-7-1"><span class="todo TODO">TODO</span> Java <code>[0/2]</code></a></li>
+<li><a href="#sec-1-7-2"><span class="todo TODO">TODO</span> REST (HTTP+JSON) <code>[1/2]</code></a></li>
+</ul>
+</li>
+<li><a href="#sec-1-8"><span class="todo TODO">TODO</span> Bulk Imports <code>[/]</code></a></li>
+<li><a href="#sec-1-9"><span class="todo TODO">TODO</span> ZooKeeper Connectionloss And Session Expiration Behavior <code>[/]</code></a></li>
+<li><a href="#sec-1-10"><span class="todo TODO">TODO</span> Metrics <code>[/]</code></a></li>
+<li><a href="#sec-1-11"><span class="todo TODO">TODO</span> Table creation settings <code>[/]</code></a></li>
+<li><a href="#sec-1-12"><span class="todo TODO">TODO</span> Lily Hackers <code>[0/6]</code></a>
+<ul>
+<li><a href="#sec-1-12-1"><span class="todo TODO">TODO</span> Getting Started <code>[0/3]</code></a></li>
+<li><a href="#sec-1-12-2"><span class="todo TODO">TODO</span> Lily Source Code <code>[/]</code></a></li>
+<li><a href="#sec-1-12-3"><span class="todo TODO">TODO</span> Repository Model To HBase Mapping <code>[/]</code></a></li>
+<li><a href="#sec-1-12-4"><span class="todo TODO">TODO</span> Blobstore <code>[/]</code></a></li>
+<li><a href="#sec-1-12-5"><span class="todo TODO">TODO</span> Releasing <code>[0/3]</code></a></li>
+<li><a href="#sec-1-12-6"><span class="todo TODO">TODO</span> Building A Lily Release <code>[/]</code></a></li>
+<li><a href="#sec-1-12-7"><span class="todo TODO">TODO</span> Publishing The Lily Maven Site (javadocs) <code>[/]</code></a></li>
+<li><a href="#sec-1-12-8"><span class="todo TODO">TODO</span> Branching the docs <code>[/]</code></a></li>
+<li><a href="#sec-1-12-9"><span class="todo TODO">TODO</span> Guidelines <code>[0/2]</code></a></li>
+<li><a href="#sec-1-12-10"><span class="todo TODO">TODO</span> Code Style <code>[/]</code></a></li>
+<li><a href="#sec-1-12-11"><span class="todo TODO">TODO</span> Programming Guidelines <code>[/]</code></a></li>
+<li><a href="#sec-1-12-12"><span class="todo TODO">TODO</span> Lily Maven Repository Access <code>[/]</code></a></li>
+<li><a href="#sec-1-12-13"><span class="todo TODO">TODO</span> Incompatible changes (by commit) <code>[/]</code></a></li>
+<li><a href="#sec-1-12-14"><span class="todo TODO">TODO</span> Creating Snapshots Of 3d Party Projects <code>[0/4]</code></a></li>
+<li><a href="#sec-1-12-15"><span class="todo TODO">TODO</span> Building HBase Snapshot <code>[/]</code></a></li>
+<li><a href="#sec-1-12-16"><span class="todo TODO">TODO</span> Building Kauri Snapshot <code>[/]</code></a></li>
+<li><a href="#sec-1-12-17"><span class="todo TODO">TODO</span> Building Avro Plugin Snapshot <code>[/]</code></a></li>
+<li><a href="#sec-1-12-18"><span class="todo TODO">TODO</span> Deploying Solr war To Maven <code>[/]</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-2"><span class="todo TODO">TODO</span> Read Lily enterprise documentation - Howto to setup a cluster environment with Lily <code>[0/4]</code></a>
+<ul>
+<li><a href="#sec-2-1"><span class="todo TODO">TODO</span> Lily Enterprise Documentation (v1)</a></li>
+<li><a href="#sec-2-2"><span class="todo TODO">TODO</span> Lily Cluster Installation Guide <code>[0/18]</code></a>
+<ul>
+<li><a href="#sec-2-2-1"><span class="todo TODO">TODO</span> Assumptions</a></li>
+<li><a href="#sec-2-2-2"><span class="todo TODO">TODO</span> Passwordless sudo Access</a></li>
+<li><a href="#sec-2-2-3"><span class="todo TODO">TODO</span> Used Port Numbers</a></li>
+<li><a href="#sec-2-2-4"><span class="todo TODO">TODO</span> Data Safety</a></li>
+<li><a href="#sec-2-2-5"><span class="todo TODO">TODO</span> Hardware Usage</a></li>
+<li><a href="#sec-2-2-6"><span class="todo TODO">TODO</span> Setup The Provisioning Master Node</a></li>
+<li><a href="#sec-2-2-7"><span class="todo TODO">TODO</span> Configure Node Roles</a></li>
+<li><a href="#sec-2-2-8"><span class="todo TODO">TODO</span> Software Installation <code>[0/4]</code></a></li>
+<li><a href="#sec-2-2-9"><span class="todo TODO">TODO</span> Check Hostnames</a></li>
+<li><a href="#sec-2-2-10"><span class="todo TODO">TODO</span> Configuration Overview <code>[0/7]</code></a></li>
+<li><a href="#sec-2-2-11"><span class="todo TODO">TODO</span> Creating The Data Directories</a></li>
+<li><a href="#sec-2-2-12"><span class="todo TODO">TODO</span> Installing Daemon Packages</a></li>
+<li><a href="#sec-2-2-13"><span class="todo TODO">TODO</span> Starting Up The Cluster</a></li>
+<li><a href="#sec-2-2-14"><span class="todo TODO">TODO</span> Changing Configuration And Restarting Processes</a></li>
+<li><a href="#sec-2-2-15"><span class="todo TODO">TODO</span> Testing The Cluster</a></li>
+<li><a href="#sec-2-2-16"><span class="todo TODO">TODO</span> Emptying The Cluster</a></li>
+<li><a href="#sec-2-2-17"><span class="todo TODO">TODO</span> Ganglia Setup</a></li>
+<li><a href="#sec-2-2-18"><span class="todo TODO">TODO</span> Maintenance</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-3"><span class="todo TODO">TODO</span> Lily Administration Application <code>[0/2]</code></a>
+<ul>
+<li><a href="#sec-2-3-1"><span class="todo TODO">TODO</span> Setting Up the Lily Admin App</a></li>
+<li><a href="#sec-2-3-2"><span class="todo TODO">TODO</span> Using the Lily Admin App</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-4"><span class="todo TODO">TODO</span> Summary Tables</a></li>
+</ul>
+</li>
+<li><a href="#sec-3"><span class="done DONE">DONE</span> Lily Course &#x2013;  Lundi 18/07/2011 - Mardi 19/07/2011</a>
+<ul>
+<li><a href="#sec-3-1">Lily introduction : Architecture and feature</a>
+<ul>
+<li><a href="#sec-3-1-1">Lily core concepts:</a></li>
+<li><a href="#sec-3-1-2">Lily Architecture</a></li>
+<li><a href="#sec-3-1-3">Hadoop</a></li>
+<li><a href="#sec-3-1-4">Lily and Hadoop</a></li>
+<li><a href="#sec-3-1-5">Hbase</a></li>
+<li><a href="#sec-3-1-6">Lily and Hbase</a></li>
+<li><a href="#sec-3-1-7">ZooKeeper</a></li>
+<li><a href="#sec-3-1-8">Lily and ZooKeeper</a></li>
+<li><a href="#sec-3-1-9">Solr (cf. chubby paper)</a></li>
+<li><a href="#sec-3-1-10">Lily and Solr</a></li>
+<li><a href="#sec-3-1-11">Lily Architecture</a></li>
+<li><a href="#sec-3-1-12">Lily Storage Model</a></li>
+<li><a href="#sec-3-1-13">Flexible content model</a></li>
+<li><a href="#sec-3-1-14">Repository model</a></li>
+<li><a href="#sec-3-1-15">Mixins</a></li>
+<li><a href="#sec-3-1-16">Sample Schema json</a></li>
+<li><a href="#sec-3-1-17">Sample Schema Overview</a></li>
+<li><a href="#sec-3-1-18">Schema API</a></li>
+<li><a href="#sec-3-1-19">API for getting access</a></li>
+<li><a href="#sec-3-1-20">Schema API Reading</a></li>
+<li><a href="#sec-3-1-21">Schema API Writing</a></li>
+<li><a href="#sec-3-1-22">Lily versioning</a></li>
+<li><a href="#sec-3-1-23">Record API Reading</a></li>
+<li><a href="#sec-3-1-24">ID</a></li>
+<li><a href="#sec-3-1-25">Record API creation</a></li>
+<li><a href="#sec-3-1-26">Blobs</a></li>
+<li><a href="#sec-3-1-27">Blobs API Reading</a></li>
+<li><a href="#sec-3-1-28">Lily Schema flexibility</a></li>
+<li><a href="#sec-3-1-29">Lily versioning</a></li>
+<li><a href="#sec-3-1-30">Relation to vtag</a></li>
+<li><a href="#sec-3-1-31">Variants</a></li>
+<li><a href="#sec-3-1-32">Variants API Snippet</a></li>
+<li><a href="#sec-3-1-33">REST API</a></li>
+<li><a href="#sec-3-1-34">REST classic: method tunneling</a></li>
+<li><a href="#sec-3-1-35">REST API Representations</a></li>
+<li><a href="#sec-3-1-36">REST API More Representations</a></li>
+<li><a href="#sec-3-1-37">REST API for Schema</a></li>
+<li><a href="#sec-3-1-38">REST API for Records</a></li>
+<li><a href="#sec-3-1-39">REST API for Blobs</a></li>
+<li><a href="#sec-3-1-40">Search</a></li>
+<li><a href="#sec-3-1-41">Index</a></li>
+<li><a href="#sec-3-1-42">Lily Indexer</a></li>
+<li><a href="#sec-3-1-43">Lily indexer 2</a></li>
+<li><a href="#sec-3-1-44">Hbase rowlog library</a></li>
+<li><a href="#sec-3-1-45">Hbase rowlog library 2</a></li>
+<li><a href="#sec-3-1-46">Hbase rowlog library</a></li>
+<li><a href="#sec-3-1-47">Indexer feature</a></li>
+<li><a href="#sec-3-1-48">Lily indexer howto</a></li>
+<li><a href="#sec-3-1-49">Indexer configuration @SOLR</a></li>
+<li><a href="#sec-3-1-50">Lily system fields in solr</a></li>
+<li><a href="#sec-3-1-51">Terminology</a></li>
+<li><a href="#sec-3-1-52">Indexer configuration @Lily</a></li>
+<li><a href="#sec-3-1-53">Why Lily indexing conf ?</a></li>
+<li><a href="#sec-3-1-54">Lily index principles</a></li>
+<li><a href="#sec-3-1-55">Lily Index syntax</a></li>
+<li><a href="#sec-3-1-56">Lily index record matching</a></li>
+<li><a href="#sec-3-1-57">Lily indexing patterns</a></li>
+<li><a href="#sec-3-1-58">Grouping patterns</a></li>
+<li><a href="#sec-3-1-59">Working with blobs</a></li>
+<li><a href="#sec-3-1-60">Indexing lily system information</a></li>
+<li><a href="#sec-3-1-61">Dynamic index fields</a></li>
+<li><a href="#sec-3-1-62">Dynamic index fields 2</a></li>
+<li><a href="#sec-3-1-63">Dynamic index fields examples</a></li>
+<li><a href="#sec-3-1-64">Sample full dynamic index</a></li>
+<li><a href="#sec-3-1-65">Lily Advanced Indexing: Formatters</a></li>
+<li><a href="#sec-3-1-66">Managing indexes</a></li>
+<li><a href="#sec-3-1-67">Managing indexes</a></li>
+<li><a href="#sec-3-1-68">Search?</a></li>
+<li><a href="#sec-3-1-69">Not yet: recap. how did we get here ?</a></li>
+<li><a href="#sec-3-1-70">Cool, no we can get to&#x2026;</a></li>
+<li><a href="#sec-3-1-71">SOLR Commit</a></li>
+<li><a href="#sec-3-1-72">Querying solr</a></li>
+<li><a href="#sec-3-1-73">SOLR Queries</a></li>
+<li><a href="#sec-3-1-74">SOLR Queries - Request params</a></li>
+<li><a href="#sec-3-1-75">SOLR API</a></li>
+<li><a href="#sec-3-1-76">Solrj facets samples</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-2">Lily training course</a>
+<ul>
+<li><a href="#sec-3-2-1">Agenda</a></li>
+<li><a href="#sec-3-2-2">Development support (testing context)</a></li>
+<li><a href="#sec-3-2-3">Dynamic links</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="todo TODO">TODO</span> <a href="http://docs.outerthought.org/lily-docs-current/ext/toc/">Read Lily documentation</a> <code>[5/12]</code></h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="done DONE">DONE</span> Home</h3>
+<div class="outline-text-3" id="text-1-1">
+</div><div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1">Synthesis : Scalable content repository. Glue between hbase, solr, zookeeper, etc&#x2026;</h4>
+</div>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="done DONE">DONE</span> Running Lily <code>[3/3]</code></h3>
+<div class="outline-text-3" id="text-1-2">
+</div><div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1"><span class="done DONE">DONE</span> HBase, Hadoop, ZooKeeper and Solr</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+Set of commands to manipulate the start of the different layers used
+by Lily
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-2-2" class="outline-4">
+<h4 id="sec-1-2-2"><span class="done DONE">DONE</span> Java Service Wrapper</h4>
+</div>
+<div id="outline-container-sec-1-2-3" class="outline-4">
+<h4 id="sec-1-2-3"><span class="done DONE">DONE</span> Upgrade from Lily 0.3 - useless</h4>
+</div>
+</div>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="done DONE">DONE</span> Architecture <code>[8/8]</code></h3>
+<div class="outline-text-3" id="text-1-3">
+</div><div id="outline-container-sec-1-3-1" class="outline-4">
+<h4 id="sec-1-3-1"><span class="done DONE">DONE</span> HBase</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+Sparse, distributed, persistent multidimensional sorted map -&gt; store everything in bytes in hdfs
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-3-2" class="outline-4">
+<h4 id="sec-1-3-2"><span class="done DONE">DONE</span> HDFS</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<p>
+Hadoop Distributed File System - one file is written multiple times in different nodes for security failure
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-3-3" class="outline-4">
+<h4 id="sec-1-3-3"><span class="done DONE">DONE</span> Lily Repository</h4>
+<div class="outline-text-4" id="text-1-3-3">
+<p>
+CRUD operations with fine grained (read or update only what is needed)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-3-4" class="outline-4">
+<h4 id="sec-1-3-4"><span class="done DONE">DONE</span> Write-Ahead Log</h4>
+<div class="outline-text-4" id="text-1-3-4">
+<p>
+Guarantee that the secondary actions have been done - No
+transaction and no rollback.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-3-5" class="outline-4">
+<h4 id="sec-1-3-5"><span class="done DONE">DONE</span> Message queue</h4>
+<div class="outline-text-4" id="text-1-3-5">
+<p>
+Post messages for the indexing
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-3-6" class="outline-4">
+<h4 id="sec-1-3-6"><span class="done DONE">DONE</span> Indexer</h4>
+<div class="outline-text-4" id="text-1-3-6">
+<p>
+Listens to the message queue and update the index depending on
+messages
+Rely on configuration file
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-3-7" class="outline-4">
+<h4 id="sec-1-3-7"><span class="done DONE">DONE</span> Solr</h4>
+<div class="outline-text-4" id="text-1-3-7">
+<p>
+Full text search
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-3-8" class="outline-4">
+<h4 id="sec-1-3-8"><span class="done DONE">DONE</span> ZooKeeper</h4>
+<div class="outline-text-4" id="text-1-3-8">
+<p>
+Coordination between distributed applications (Lily, Hbase)
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="done DONE">DONE</span> Repository <code>[3/3]</code></h3>
+<div class="outline-text-3" id="text-1-4">
+</div><div id="outline-container-sec-1-4-1" class="outline-4">
+<h4 id="sec-1-4-1"><span class="done DONE">DONE</span> Repository Model <code>[10/10]</code></h4>
+<div class="outline-text-4" id="text-1-4-1">
+</div><ul class="org-ul"><li><a id="sec-1-4-1-1" name="sec-1-4-1-1"></a><span class="done DONE">DONE</span> BASIC CONCEPTS AND TERMINOLOGY<br  /></li>
+<li><a id="sec-1-4-1-2" name="sec-1-4-1-2"></a><span class="done DONE">DONE</span> NO HIERARCHY<br  /></li>
+<li><a id="sec-1-4-1-3" name="sec-1-4-1-3"></a><span class="done DONE">DONE</span> RECORD IDENTIFICATION<br  /></li>
+<li><a id="sec-1-4-1-4" name="sec-1-4-1-4"></a><span class="done DONE">DONE</span> RECORDS, FIELD SCOPES, VERSIONS <code>[2/2]</code><br  /><ul class="org-ul"><li><a id="sec-1-4-1-4-1" name="sec-1-4-1-4-1"></a><span class="done DONE">DONE</span> Records<br  /><div class="outline-text-6" id="text-1-4-1-4-1">
+<p>
+Set of fields, associated to a record type.
+</p>
+</div>
+</li>
+<li><a id="sec-1-4-1-4-2" name="sec-1-4-1-4-2"></a><span class="done DONE">DONE</span> Fields scope &amp; versions<br  /></li></ul>
+</li>
+<li><a id="sec-1-4-1-5" name="sec-1-4-1-5"></a><span class="done DONE">DONE</span> FIELD TYPES<br  /><div class="outline-text-5" id="text-1-4-1-5">
+<p>
+metadata of fields (version, namespace, etc&#x2026;)
+</p>
+</div>
+</li>
+<li><a id="sec-1-4-1-6" name="sec-1-4-1-6"></a><span class="done DONE">DONE</span> RECORD TYPES <code>[2/2]</code><br  /><div class="outline-text-5" id="text-1-4-1-6">
+<ul class="org-ul">
+<li>Set of fields types
+</li>
+<li>Metadata of records
+</li>
+<li>Linked to mixins
+</li>
+</ul>
+</div>
+<ul class="org-ul"><li><a id="sec-1-4-1-6-1" name="sec-1-4-1-6-1"></a><span class="done DONE">DONE</span> Record type versioning<br  /></li>
+<li><a id="sec-1-4-1-6-2" name="sec-1-4-1-6-2"></a><span class="done DONE">DONE</span> Mixins<br  /></li></ul>
+</li>
+<li><a id="sec-1-4-1-7" name="sec-1-4-1-7"></a><span class="done DONE">DONE</span> THE RECORD – RECORD TYPE RELATIONSHIP<br  /></li>
+<li><a id="sec-1-4-1-8" name="sec-1-4-1-8"></a><span class="done DONE">DONE</span> Record type as a guide rather than a straightjacket<br  /></li>
+<li><a id="sec-1-4-1-9" name="sec-1-4-1-9"></a><span class="done DONE">DONE</span> Variants<br  /></li>
+<li><a id="sec-1-4-1-10" name="sec-1-4-1-10"></a><span class="done DONE">DONE</span> Operations<br  /></li></ul>
+</div>
+<div id="outline-container-sec-1-4-2" class="outline-4">
+<h4 id="sec-1-4-2"><span class="done DONE">DONE</span> How To Create A Schema <code>[3/3]</code></h4>
+<div class="outline-text-4" id="text-1-4-2">
+</div><ul class="org-ul"><li><a id="sec-1-4-2-1" name="sec-1-4-2-1"></a><span class="done DONE">DONE</span> <a href="http://docs.outerthought.org/lily-docs-current/g3/g1/390-lily.html">Java API</a><br  /></li>
+<li><a id="sec-1-4-2-2" name="sec-1-4-2-2"></a><span class="done DONE">DONE</span> <a href="http://docs.outerthought.org/lily-docs-current/g3/g2/427-lily.html">Rest API</a> <code>[5/5]</code><br  /><ul class="org-ul"><li><a id="sec-1-4-2-2-1" name="sec-1-4-2-2-1"></a><span class="done DONE">DONE</span> Abstract<br  /></li>
+<li><a id="sec-1-4-2-2-2" name="sec-1-4-2-2-2"></a><span class="done DONE">DONE</span> Creating a schema <code>[3/3]</code><br  /><ul class="org-ul"><li><a id="sec-1-4-2-2-2-1" name="sec-1-4-2-2-2-1"></a><span class="done DONE">DONE</span> Creating the name field type<br  /><div class="outline-text-7" id="text-1-4-2-2-2-1">
+<p>
+Create a field type sample via POST :
+curl -XPOST localhost:12060/repository/schema/fieldType -H 'Content-Type: application/json' -d '
+{
+  action: "create",
+  fieldType: {
+    name: "n$name",
+    valueType: { primitive: "STRING" },
+    scope: "versioned",
+    namespaces: { "my.demo": "n" }
+  }
+}' -D -
+</p>
+
+<p>
+GET
+<a href="http://localhost:12060/repository/schema/fieldType/n\$name?ns.n=my.demo">http://localhost:12060/repository/schema/fieldType/n\$name?ns.n=my.demo</a>
+Retrieve the resource created by its namespace
+</p>
+
+<p>
+GET <a href="http://localhost:12060/repository/schema/fieldTypeById/{uuid">http://localhost:12060/repository/schema/fieldTypeById/{uuid</a>}
+Retrieve the resource created by its id (ouch!)
+</p>
+</div>
+</li>
+<li><a id="sec-1-4-2-2-2-2" name="sec-1-4-2-2-2-2"></a><span class="done DONE">DONE</span> Creating the price field type<br  /><div class="outline-text-7" id="text-1-4-2-2-2-2">
+<p>
+Via PUT
+curl -XPUT localhost:12060/repository/schema/fieldType/n\$price?ns.n=my.demo -H 'Content-Type: application/json' -d '
+{
+  name: "n$price",
+  valueType: { primitive: "DECIMAL" },
+  scope: "versioned",
+  namespaces: { "my.demo": "n" }
+}' -D -
+</p>
+</div>
+</li>
+<li><a id="sec-1-4-2-2-2-3" name="sec-1-4-2-2-2-3"></a><span class="done DONE">DONE</span> Creating the product record type<br  /><div class="outline-text-7" id="text-1-4-2-2-2-3">
+<p>
+Retrieve the record type
+<a href="http://localhost:12060/repository/schema/recordTypeById/{UUID">http://localhost:12060/repository/schema/recordTypeById/{UUID</a>}
+</p>
+
+<p>
+Retrieve the record till the version
+curl -XGET
+<a href="http://localhost:12060/repository/schema/recordTypeById/{UUID}/version/1">http://localhost:12060/repository/schema/recordTypeById/{UUID}/version/1</a>
+</p>
+</div>
+</li></ul>
+</li>
+
+<li><a id="sec-1-4-2-2-3" name="sec-1-4-2-2-3"></a><span class="done DONE">DONE</span> Creating records <code>[2/2]</code><br  /><ul class="org-ul"><li><a id="sec-1-4-2-2-3-1" name="sec-1-4-2-2-3-1"></a><span class="done DONE">DONE</span> Create record using POST, server assigns record Id<br  /><div class="outline-text-7" id="text-1-4-2-2-3-1">
+<p>
+Create a record via post :
+curl -XPOST localhost:12060/repository/record -H 'Content-Type: application/json' -d '
+{
+  action : "create",
+  record: {
+    type: "n$product",
+    fields: {
+      n$name: "Bread",
+      n$price: 2.11
+    },
+    namespaces: { "my.demo": "n" }
+  }
+}' -D -
+</p>
+</div>
+</li>
+<li><a id="sec-1-4-2-2-3-2" name="sec-1-4-2-2-3-2"></a><span class="done DONE">DONE</span> Creating a record using PUT, assigning the record ID yourself<br  /><div class="outline-text-7" id="text-1-4-2-2-3-2">
+<p>
+Generate a uuid
+uuidgen -r
+</p>
+
+<p>
+Use this uuid and pass it to the resource to create
+curl -XPUT localhost:12060/repository/record/UUID.a7166289-eb7a-4715-8c8e-3c997d752926 -H 'Content-Type: application/json' -d '
+{
+  type: "n$product",
+  fields: {
+    n$name: "Butter",
+    n$price: 4.25
+  },
+  namespaces: { "my.demo": "n" }
+}' -D -
+</p>
+</div>
+</li></ul>
+</li>
+<li><a id="sec-1-4-2-2-4" name="sec-1-4-2-2-4"></a><span class="done DONE">DONE</span> Reading records<br  /><div class="outline-text-6" id="text-1-4-2-2-4">
+<p>
+Get the record by its id
+curl <a href="http://localhost:12060/repository/record/UUID.a7166289-eb7a-4715-8c8e-3c997d752926">http://localhost:12060/repository/record/UUID.a7166289-eb7a-4715-8c8e-3c997d752926</a> | json<sub>reformat</sub>
+</p>
+
+<p>
+Subset of fields of the record :
+curl 'http://localhost:12060/repository/record/UUID.a7166289-eb7a-4715-8c8e-3c997d752926?fields=n$name&amp;ns.n=my.demo' | json<sub>reformat</sub>
+</p>
+</div>
+</li>
+<li><a id="sec-1-4-2-2-5" name="sec-1-4-2-2-5"></a><span class="done DONE">DONE</span> Creating a record with a blob f<br  /></li></ul>
+</li>
+<li><a id="sec-1-4-2-3" name="sec-1-4-2-3"></a><span class="done DONE">DONE</span> <a href="http://docs.outerthought.org/lily-docs-current/g2/435-lily.html">Import json tool</a><br  /><div class="outline-text-5" id="text-1-4-2-3">
+<p>
+command : lily-import t-h
+Json is structured and the order is important for performance's sake
+</p>
+</div>
+<ul class="org-ul"><li><a id="sec-1-4-2-3-1" name="sec-1-4-2-3-1"></a>The import JSON format<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-1-4-3" class="outline-4">
+<h4 id="sec-1-4-3"><span class="done DONE">DONE</span> How To Create Records</h4>
+</div>
+</div>
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5"><span class="done DONE">DONE</span> <a href="http://docs.outerthought.org/lily-docs-current/415-lily/440-lily.html?action=addToBasket">Indexer</a> <code>[4/7]</code></h3>
+<div class="outline-text-3" id="text-1-5">
+</div><div id="outline-container-sec-1-5-1" class="outline-4">
+<h4 id="sec-1-5-1"><span class="done DONE">DONE</span> Indexer Tutorial</h4>
+<div class="outline-text-4" id="text-1-5-1">
+</div><ul class="org-ul"><li><a id="sec-1-5-1-1" name="sec-1-5-1-1"></a><span class="done DONE">DONE</span> Overview<br  /></li>
+<li><a id="sec-1-5-1-2" name="sec-1-5-1-2"></a><span class="done DONE">DONE</span> The Lily schema<br  /></li>
+<li><a id="sec-1-5-1-3" name="sec-1-5-1-3"></a><span class="done DONE">DONE</span> Version Tags <code>[1/1]</code><br  /></li>
+<li><a id="sec-1-5-1-4" name="sec-1-5-1-4"></a><span class="done DONE">DONE</span> The vtag 'last'<br  /></li>
+<li><a id="sec-1-5-1-5" name="sec-1-5-1-5"></a><span class="done DONE">DONE</span> Indexer configuration sample <code>[4/4]</code><br  /></li>
+<li><a id="sec-1-5-1-6" name="sec-1-5-1-6"></a><span class="done DONE">DONE</span> Records<br  /></li>
+<li><a id="sec-1-5-1-7" name="sec-1-5-1-7"></a><span class="done DONE">DONE</span> Fields<br  /></li>
+<li><a id="sec-1-5-1-8" name="sec-1-5-1-8"></a><span class="done DONE">DONE</span> Record type indexing<br  /></li>
+<li><a id="sec-1-5-1-9" name="sec-1-5-1-9"></a><span class="done DONE">DONE</span> Dynamic field mappings<br  /><div class="outline-text-5" id="text-1-5-1-9">
+<p>
+&lt;?xml version="1.0"?&gt;
+&lt;indexer xmlns:b="org.lilyproject.bookssample"
+         xmlns:sys="org.lilyproject.system"&gt;
+</p>
+
+<p>
+&lt;records&gt;
+  &lt;record matchNamespace="b" matchName="Book"   vtags="last"/&gt;
+  &lt;record matchNamespace="b" matchName="Author" vtags="last"/&gt;
+&lt;/records&gt;
+</p>
+
+<p>
+&lt;fields&gt;
+  &lt;field name="title"      value="b:title"/&gt;
+  &lt;field name="authors"    value="b:authors=&gt;b:name"/&gt;
+  &lt;field name="name"       value="b:name"/&gt;
+  &lt;field name="recordType" value="sys:recordType"/&gt;
+&lt;/fields&gt;
+</p>
+
+<p>
+&lt;/indexer&gt;
+</p>
+</div>
+</li>
+<li><a id="sec-1-5-1-10" name="sec-1-5-1-10"></a><span class="done DONE">DONE</span> Solr configuration sample<br  /></li>
+<li><a id="sec-1-5-1-11" name="sec-1-5-1-11"></a><span class="done DONE">DONE</span> Declaring an index<br  /><div class="outline-text-5" id="text-1-5-1-11">
+<p>
+lily-add-index \
+  -n indexName
+  -c indexerconf.xml \
+  -s shard1:<a href="http://localhost:8983/solr">http://localhost:8983/solr</a> \
+  -z zookeeperhost
+</p>
+</div>
+</li>
+<li><a id="sec-1-5-1-12" name="sec-1-5-1-12"></a><span class="done DONE">DONE</span> Triggering indexing<br  /><div class="outline-text-5" id="text-1-5-1-12">
+<p>
+Index is triggered automatically
+We can make it in batch processing
+</p>
+
+<p>
+curl <a href="http://localhost:8983/solr/update">http://localhost:8983/solr/update</a> -H 'Content-type:text/xml' &#x2013;data-binary '&lt;commit/&gt;'
+</p>
+</div>
+</li>
+
+<li><a id="sec-1-5-1-13" name="sec-1-5-1-13"></a><span class="done DONE">DONE</span> Committing the index<br  /><div class="outline-text-5" id="text-1-5-1-13">
+<p>
+curl <a href="http://localhost:8983/solr/update">http://localhost:8983/solr/update</a> -H 'Content-type:text/xml'
+&#x2013;data-binary '&lt;commit/&gt;'
+</p>
+</div>
+</li>
+
+<li><a id="sec-1-5-1-14" name="sec-1-5-1-14"></a><span class="done DONE">DONE</span> Querying<br  /></li>
+<li><a id="sec-1-5-1-15" name="sec-1-5-1-15"></a><span class="done DONE">DONE</span> Debugging indexing<br  /></li>
+<li><a id="sec-1-5-1-16" name="sec-1-5-1-16"></a><span class="done DONE">DONE</span> Further information<br  /></li></ul>
+</div>
+<div id="outline-container-sec-1-5-2" class="outline-4">
+<h4 id="sec-1-5-2"><span class="done DONE">DONE</span> Managing Indexes <code>[9/9]</code></h4>
+<div class="outline-text-4" id="text-1-5-2">
+</div><ul class="org-ul"><li><a id="sec-1-5-2-1" name="sec-1-5-2-1"></a><span class="done DONE">DONE</span> About multiple indexes <code>[1/1]</code><br  /><ul class="org-ul"><li><a id="sec-1-5-2-1-1" name="sec-1-5-2-1-1"></a><span class="done DONE">DONE</span> Index states <code>[3/3]</code><br  /><ul class="org-ul"><li><a id="sec-1-5-2-1-1-1" name="sec-1-5-2-1-1-1"></a><span class="done DONE">DONE</span> The general state<br  /></li>
+<li><a id="sec-1-5-2-1-1-2" name="sec-1-5-2-1-1-2"></a><span class="done DONE">DONE</span> The update state<br  /></li>
+<li><a id="sec-1-5-2-1-1-3" name="sec-1-5-2-1-1-3"></a><span class="done DONE">DONE</span> The batch build state<br  /></li></ul>
+</li></ul>
+</li>
+<li><a id="sec-1-5-2-2" name="sec-1-5-2-2"></a><span class="done DONE">DONE</span> Performing common index actions <code>[5/5]</code><br  /><ul class="org-ul"><li><a id="sec-1-5-2-2-1" name="sec-1-5-2-2-1"></a><span class="done DONE">DONE</span> General notes<br  /></li>
+<li><a id="sec-1-5-2-2-2" name="sec-1-5-2-2-2"></a><span class="done DONE">DONE</span> Command line clients and programmatic access<br  /></li>
+<li><a id="sec-1-5-2-2-3" name="sec-1-5-2-2-3"></a><span class="done DONE">DONE</span> ZooKeeper connect string<br  /></li>
+<li><a id="sec-1-5-2-2-4" name="sec-1-5-2-2-4"></a><span class="done DONE">DONE</span> Getting help<br  /></li>
+<li><a id="sec-1-5-2-2-5" name="sec-1-5-2-2-5"></a><span class="done DONE">DONE</span> Forgot the name of an index<br  /></li></ul>
+</li>
+<li><a id="sec-1-5-2-3" name="sec-1-5-2-3"></a><span class="done DONE">DONE</span> Knowing what indexes exist<br  /></li>
+<li><a id="sec-1-5-2-4" name="sec-1-5-2-4"></a><span class="done DONE">DONE</span> Creating an index <code>[2/2]</code><br  /><ul class="org-ul"><li><a id="sec-1-5-2-4-1" name="sec-1-5-2-4-1"></a><span class="done DONE">DONE</span> Incremental indexing is enabled by default<br  /></li>
+<li><a id="sec-1-5-2-4-2" name="sec-1-5-2-4-2"></a><span class="done DONE">DONE</span> Using multiple shards<br  /></li></ul>
+</li>
+<li><a id="sec-1-5-2-5" name="sec-1-5-2-5"></a><span class="done DONE">DONE</span> Updating the indexer configuration of an index<br  /></li>
+<li><a id="sec-1-5-2-6" name="sec-1-5-2-6"></a><span class="done DONE">DONE</span> Updating other index properties<br  /></li>
+<li><a id="sec-1-5-2-7" name="sec-1-5-2-7"></a><span class="done DONE">DONE</span> Deleting an index<br  /></li>
+<li><a id="sec-1-5-2-8" name="sec-1-5-2-8"></a><span class="done DONE">DONE</span> Performing a batch build (rebuilding an index)<br  /></li>
+<li><a id="sec-1-5-2-9" name="sec-1-5-2-9"></a><span class="done DONE">DONE</span> Interrupting a batch build<br  /></li></ul>
+</div>
+<div id="outline-container-sec-1-5-3" class="outline-4">
+<h4 id="sec-1-5-3"><span class="done DONE">DONE</span> Indexer Architecture <code>[6/6]</code></h4>
+<div class="outline-text-4" id="text-1-5-3">
+</div><ul class="org-ul"><li><a id="sec-1-5-3-1" name="sec-1-5-3-1"></a><span class="done DONE">DONE</span> The indexer mode<br  /></li>
+<li><a id="sec-1-5-3-2" name="sec-1-5-3-2"></a><span class="done DONE">DONE</span> The indexer engine<br  /><div class="outline-text-5" id="text-1-5-3-2">
+<p>
+Maps the lily records to Solr documentations through indexerconf.xml
+</p>
+</div>
+</li>
+
+<li><a id="sec-1-5-3-3" name="sec-1-5-3-3"></a><span class="done DONE">DONE</span> The indexer worker<br  /><div class="outline-text-5" id="text-1-5-3-3">
+<ul class="org-ul">
+<li>on each node
+</li>
+<li>registers one or more message queue listeners for index with
+incremental indexing
+</li>
+</ul>
+</div>
+</li>
+<li><a id="sec-1-5-3-4" name="sec-1-5-3-4"></a><span class="done DONE">DONE</span> The indexer master<br  /><div class="outline-text-5" id="text-1-5-3-4">
+<ul class="org-ul">
+<li>only on one node elected by zookeeper
+</li>
+<li>manages the message queue subscription of indexes in function of
+their states (BUILD<sub>REQUESTED</sub>, etc&#x2026;)
+</li>
+<li>starts jobs if needed and not being already started
+</li>
+<li>stops job indexing started if the state of a job pass at DELETE<sub>REQUESTED</sub>
+</li>
+</ul>
+</div>
+</li>
+<li><a id="sec-1-5-3-5" name="sec-1-5-3-5"></a><span class="done DONE">DONE</span> The batch build MapReduce job<br  /></li>
+<li><a id="sec-1-5-3-6" name="sec-1-5-3-6"></a><span class="done DONE">DONE</span> The link index<br  /></li></ul>
+</div>
+<div id="outline-container-sec-1-5-4" class="outline-4">
+<h4 id="sec-1-5-4"><span class="done DONE">DONE</span> Indexer Configuration <code>[8/8]</code></h4>
+<div class="outline-text-4" id="text-1-5-4">
+</div><ul class="org-ul"><li><a id="sec-1-5-4-1" name="sec-1-5-4-1"></a><span class="done DONE">DONE</span> Intro <code>[10/10]</code><br  /><ul class="org-ul"><li><a id="sec-1-5-4-1-1" name="sec-1-5-4-1-1"></a><span class="done DONE">DONE</span> Rationale<br  /></li>
+<li><a id="sec-1-5-4-1-2" name="sec-1-5-4-1-2"></a><span class="done DONE">DONE</span> Core ideas<br  /></li>
+<li><a id="sec-1-5-4-1-3" name="sec-1-5-4-1-3"></a><span class="done DONE">DONE</span> Version tag based views <code>[3/3]</code><br  /><ul class="org-ul"><li><a id="sec-1-5-4-1-3-1" name="sec-1-5-4-1-3-1"></a><span class="done DONE">DONE</span> The built-in version tag: last<br  /></li>
+<li><a id="sec-1-5-4-1-3-2" name="sec-1-5-4-1-3-2"></a><span class="done DONE">DONE</span> Version tags &amp; denormalization<br  /></li>
+<li><a id="sec-1-5-4-1-3-3" name="sec-1-5-4-1-3-3"></a><span class="done DONE">DONE</span> Non-versioned fields &amp; version tags<br  /></li></ul>
+</li>
+<li><a id="sec-1-5-4-1-4" name="sec-1-5-4-1-4"></a><span class="done DONE">DONE</span> The indexerconf<br  /></li></ul>
+</li>
+<li><a id="sec-1-5-4-2" name="sec-1-5-4-2"></a><span class="done DONE">DONE</span> Records <code>[6/6]</code><br  /><ul class="org-ul"><li><a id="sec-1-5-4-2-1" name="sec-1-5-4-2-1"></a><span class="done DONE">DONE</span> Evaluation of the record rules<br  /></li>
+<li><a id="sec-1-5-4-2-2" name="sec-1-5-4-2-2"></a><span class="done DONE">DONE</span> matchVariant expression<br  /></li>
+<li><a id="sec-1-5-4-2-3" name="sec-1-5-4-2-3"></a><span class="done DONE">DONE</span> Version tags<br  /></li></ul>
+</li>
+<li><a id="sec-1-5-4-3" name="sec-1-5-4-3"></a><span class="done DONE">DONE</span> Formatters <code>[1/1]</code><br  /><ul class="org-ul"><li><a id="sec-1-5-4-3-1" name="sec-1-5-4-3-1"></a><span class="done DONE">DONE</span> Built-in formatter<br  /></li></ul>
+</li>
+<li><a id="sec-1-5-4-4" name="sec-1-5-4-4"></a><span class="done DONE">DONE</span> Fields <code>[8/8]</code><br  /><ul class="org-ul"><li><a id="sec-1-5-4-4-1" name="sec-1-5-4-4-1"></a><span class="done DONE">DONE</span> Index field name<br  /></li>
+<li><a id="sec-1-5-4-4-2" name="sec-1-5-4-4-2"></a><span class="done DONE">DONE</span> Order is important<br  /></li>
+<li><a id="sec-1-5-4-4-3" name="sec-1-5-4-4-3"></a><span class="done DONE">DONE</span> Determining the relevant indexFields for an input record<br  /></li>
+<li><a id="sec-1-5-4-4-4" name="sec-1-5-4-4-4"></a><span class="done DONE">DONE</span> Content extraction<br  /></li>
+<li><a id="sec-1-5-4-4-5" name="sec-1-5-4-4-5"></a><span class="done DONE">DONE</span> Index fields that use a value from the current record<br  /></li>
+<li><a id="sec-1-5-4-4-6" name="sec-1-5-4-4-6"></a><span class="done DONE">DONE</span> Index fields that dereference links towards other records<br  /></li>
+<li><a id="sec-1-5-4-4-7" name="sec-1-5-4-4-7"></a><span class="done DONE">DONE</span> Index fields that dereference towards less-scoped variants of the same record<br  /></li>
+<li><a id="sec-1-5-4-4-8" name="sec-1-5-4-4-8"></a><span class="done DONE">DONE</span> Denormalized information and index updating<br  /></li></ul>
+</li>
+<li><a id="sec-1-5-4-5" name="sec-1-5-4-5"></a><span class="done DONE">DONE</span> Dynamic index fields<br  /></li>
+<li><a id="sec-1-5-4-6" name="sec-1-5-4-6"></a><span class="done DONE">DONE</span> The built-in fields<br  /></li>
+<li><a id="sec-1-5-4-7" name="sec-1-5-4-7"></a><span class="done DONE">DONE</span> Indexing record type information<br  /></li>
+<li><a id="sec-1-5-4-8" name="sec-1-5-4-8"></a><span class="done DONE">DONE</span> Full dynamic indexer configuration<br  /></li></ul>
+</div>
+<div id="outline-container-sec-1-5-5" class="outline-4">
+<h4 id="sec-1-5-5"><span class="todo TODO">TODO</span> Index Sharding <code>[0/3]</code></h4>
+<div class="outline-text-4" id="text-1-5-5">
+</div><ul class="org-ul"><li><a id="sec-1-5-5-1" name="sec-1-5-5-1"></a><span class="todo TODO">TODO</span> Introduction<br  /></li>
+<li><a id="sec-1-5-5-2" name="sec-1-5-5-2"></a><span class="todo TODO">TODO</span> Shard selection <code>[0/1]</code><br  /><ul class="org-ul"><li><a id="sec-1-5-5-2-1" name="sec-1-5-5-2-1"></a><span class="todo TODO">TODO</span> Sharding configuration (shard selection configuration)<br  /></li></ul>
+</li>
+<li><a id="sec-1-5-5-3" name="sec-1-5-5-3"></a><span class="todo TODO">TODO</span> Example usage<br  /></li></ul>
+</div>
+<div id="outline-container-sec-1-5-6" class="outline-4">
+<h4 id="sec-1-5-6"><span class="todo TODO">TODO</span> Solr Versions <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-5-7" class="outline-4">
+<h4 id="sec-1-5-7"><span class="todo TODO">TODO</span> Indexer Error Handling <code>[/]</code></h4>
+</div>
+</div>
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6"><span class="todo TODO">TODO</span> Tools <code>[2/4]</code></h3>
+<div class="outline-text-3" id="text-1-6">
+</div><div id="outline-container-sec-1-6-1" class="outline-4">
+<h4 id="sec-1-6-1"><span class="done DONE">DONE</span> Import Tool</h4>
+<div class="outline-text-4" id="text-1-6-1">
+<p>
+command : lily-import t-h
+Json is structured and the order is important for performance's sake
+</p>
+</div>
+<ul class="org-ul"><li><a id="sec-1-6-1-1" name="sec-1-6-1-1"></a>The import JSON format<br  /></li></ul>
+</div>
+<div id="outline-container-sec-1-6-2" class="outline-4">
+<h4 id="sec-1-6-2"><span class="todo TODO">TODO</span> mbox Import Tool <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-6-3" class="outline-4">
+<h4 id="sec-1-6-3"><span class="todo TODO">TODO</span> Tester Tool <code>[/]</code></h4>
+</div>
+</div>
+<div id="outline-container-sec-1-7" class="outline-3">
+<h3 id="sec-1-7"><span class="todo TODO">TODO</span> Programming Interfaces <code>[0/2]</code></h3>
+<div class="outline-text-3" id="text-1-7">
+</div><div id="outline-container-sec-1-7-1" class="outline-4">
+<h4 id="sec-1-7-1"><span class="todo TODO">TODO</span> Java <code>[0/2]</code></h4>
+<div class="outline-text-4" id="text-1-7-1">
+</div><ul class="org-ul"><li><a id="sec-1-7-1-1" name="sec-1-7-1-1"></a><span class="done DONE">DONE</span> Repository API Interface <a href="http://docs.outerthought.org/lily-docs-current/g3/g1/390-lily.html">Java API</a> <code>[5/5]</code><br  /><ul class="org-ul"><li><a id="sec-1-7-1-1-1" name="sec-1-7-1-1-1"></a><span class="done DONE">DONE</span> Before reading this<br  /></li>
+<li><a id="sec-1-7-1-1-2" name="sec-1-7-1-1-2"></a><span class="done DONE">DONE</span> API design<br  /></li>
+<li><a id="sec-1-7-1-1-3" name="sec-1-7-1-1-3"></a><span class="done DONE">DONE</span> API tutorial code<br  /></li>
+<li><a id="sec-1-7-1-1-4" name="sec-1-7-1-1-4"></a><span class="done DONE">DONE</span> API reference<br  /></li>
+<li><a id="sec-1-7-1-1-5" name="sec-1-7-1-1-5"></a><span class="done DONE">DONE</span> API RUN-THROUGH <code>[14/14]</code><br  /><ul class="org-ul"><li><a id="sec-1-7-1-1-5-1" name="sec-1-7-1-1-5-1"></a><span class="done DONE">DONE</span> Project setup<br  /></li>
+<li><a id="sec-1-7-1-1-5-2" name="sec-1-7-1-1-5-2"></a><span class="done DONE">DONE</span> Connecting to Lily<br  /></li>
+<li><a id="sec-1-7-1-1-5-3" name="sec-1-7-1-1-5-3"></a><span class="done DONE">DONE</span> Pre-requisites<br  /></li>
+<li><a id="sec-1-7-1-1-5-4" name="sec-1-7-1-1-5-4"></a><span class="done DONE">DONE</span> Creating a record type<br  /></li>
+<li><a id="sec-1-7-1-1-5-5" name="sec-1-7-1-1-5-5"></a><span class="done DONE">DONE</span> updating a record type<br  /></li>
+<li><a id="sec-1-7-1-1-5-6" name="sec-1-7-1-1-5-6"></a><span class="done DONE">DONE</span> Creating a record<br  /></li>
+<li><a id="sec-1-7-1-1-5-7" name="sec-1-7-1-1-5-7"></a><span class="done DONE">DONE</span> Creating a record with a user-specified id<br  /></li>
+<li><a id="sec-1-7-1-1-5-8" name="sec-1-7-1-1-5-8"></a><span class="done DONE">DONE</span> Updating a record<br  /></li>
+<li><a id="sec-1-7-1-1-5-9" name="sec-1-7-1-1-5-9"></a><span class="done DONE">DONE</span> Updating a record via read<br  /></li>
+<li><a id="sec-1-7-1-1-5-10" name="sec-1-7-1-1-5-10"></a><span class="done DONE">DONE</span> Updating versioned-mutable fields<br  /></li>
+<li><a id="sec-1-7-1-1-5-11" name="sec-1-7-1-1-5-11"></a><span class="done DONE">DONE</span> Reading a record<br  /></li>
+<li><a id="sec-1-7-1-1-5-12" name="sec-1-7-1-1-5-12"></a><span class="done DONE">DONE</span> Working with blob fields<br  /></li>
+<li><a id="sec-1-7-1-1-5-13" name="sec-1-7-1-1-5-13"></a><span class="done DONE">DONE</span> Creating variants<br  /></li>
+<li><a id="sec-1-7-1-1-5-14" name="sec-1-7-1-1-5-14"></a><span class="done DONE">DONE</span> Link fields<br  /></li></ul>
+</li></ul>
+</li>
+<li><a id="sec-1-7-1-2" name="sec-1-7-1-2"></a><span class="todo TODO">TODO</span> Javadoc <code>[/]</code><br  /></li></ul>
+</div>
+<div id="outline-container-sec-1-7-2" class="outline-4">
+<h4 id="sec-1-7-2"><span class="todo TODO">TODO</span> REST (HTTP+JSON) <code>[1/2]</code></h4>
+<div class="outline-text-4" id="text-1-7-2">
+</div><ul class="org-ul"><li><a id="sec-1-7-2-1" name="sec-1-7-2-1"></a><span class="done DONE">DONE</span> REST Interface Tutorial <code>[5/5]</code><br  /><ul class="org-ul"><li><a id="sec-1-7-2-1-1" name="sec-1-7-2-1-1"></a><span class="done DONE">DONE</span> Abstract<br  /></li>
+<li><a id="sec-1-7-2-1-2" name="sec-1-7-2-1-2"></a><span class="done DONE">DONE</span> Creating a schema <code>[3/3]</code><br  /><ul class="org-ul"><li><a id="sec-1-7-2-1-2-1" name="sec-1-7-2-1-2-1"></a><span class="done DONE">DONE</span> Creating the name field type<br  /><div class="outline-text-7" id="text-1-7-2-1-2-1">
+<p>
+Create a field type sample via POST :
+curl -XPOST localhost:12060/repository/schema/fieldType -H 'Content-Type: application/json' -d '
+{
+  action: "create",
+  fieldType: {
+    name: "n$name",
+    valueType: { primitive: "STRING" },
+    scope: "versioned",
+    namespaces: { "my.demo": "n" }
+  }
+}' -D -
+</p>
+
+<p>
+GET
+<a href="http://localhost:12060/repository/schema/fieldType/n\$name?ns.n=my.demo">http://localhost:12060/repository/schema/fieldType/n\$name?ns.n=my.demo</a>
+Retrieve the resource created by its namespace
+</p>
+
+<p>
+GET <a href="http://localhost:12060/repository/schema/fieldTypeById/{uuid">http://localhost:12060/repository/schema/fieldTypeById/{uuid</a>}
+Retrieve the resource created by its id (ouch!)
+</p>
+</div>
+</li>
+<li><a id="sec-1-7-2-1-2-2" name="sec-1-7-2-1-2-2"></a><span class="done DONE">DONE</span> Creating the price field type<br  /><div class="outline-text-7" id="text-1-7-2-1-2-2">
+<p>
+Via PUT
+curl -XPUT localhost:12060/repository/schema/fieldType/n\$price?ns.n=my.demo -H 'Content-Type: application/json' -d '
+{
+  name: "n$price",
+  valueType: { primitive: "DECIMAL" },
+  scope: "versioned",
+  namespaces: { "my.demo": "n" }
+}' -D -
+</p>
+</div>
+</li>
+<li><a id="sec-1-7-2-1-2-3" name="sec-1-7-2-1-2-3"></a><span class="done DONE">DONE</span> Creating the product record type<br  /><div class="outline-text-7" id="text-1-7-2-1-2-3">
+<p>
+Retrieve the record type
+<a href="http://localhost:12060/repository/schema/recordTypeById/{UUID">http://localhost:12060/repository/schema/recordTypeById/{UUID</a>}
+</p>
+
+<p>
+Retrieve the record till the version
+curl -XGET
+<a href="http://localhost:12060/repository/schema/recordTypeById/{UUID}/version/1">http://localhost:12060/repository/schema/recordTypeById/{UUID}/version/1</a>
+</p>
+</div>
+</li></ul>
+</li>
+
+<li><a id="sec-1-7-2-1-3" name="sec-1-7-2-1-3"></a><span class="done DONE">DONE</span> Creating records <code>[2/2]</code><br  /><ul class="org-ul"><li><a id="sec-1-7-2-1-3-1" name="sec-1-7-2-1-3-1"></a><span class="done DONE">DONE</span> Create record using POST, server assigns record Id<br  /><div class="outline-text-7" id="text-1-7-2-1-3-1">
+<p>
+Create a record via post :
+curl -XPOST localhost:12060/repository/record -H 'Content-Type: application/json' -d '
+{
+  action : "create",
+  record: {
+    type: "n$product",
+    fields: {
+      n$name: "Bread",
+      n$price: 2.11
+    },
+    namespaces: { "my.demo": "n" }
+  }
+}' -D -
+</p>
+</div>
+</li>
+<li><a id="sec-1-7-2-1-3-2" name="sec-1-7-2-1-3-2"></a><span class="done DONE">DONE</span> Creating a record using PUT, assigning the record ID yourself<br  /><div class="outline-text-7" id="text-1-7-2-1-3-2">
+<p>
+Generate a uuid
+uuidgen -r
+</p>
+
+<p>
+Use this uuid and pass it to the resource to create
+curl -XPUT localhost:12060/repository/record/UUID.a7166289-eb7a-4715-8c8e-3c997d752926 -H 'Content-Type: application/json' -d '
+{
+  type: "n$product",
+  fields: {
+    n$name: "Butter",
+    n$price: 4.25
+  },
+  namespaces: { "my.demo": "n" }
+}' -D -
+</p>
+</div>
+</li></ul>
+</li>
+<li><a id="sec-1-7-2-1-4" name="sec-1-7-2-1-4"></a><span class="done DONE">DONE</span> Reading records<br  /><div class="outline-text-6" id="text-1-7-2-1-4">
+<p>
+Get the record by its id
+curl <a href="http://localhost:12060/repository/record/UUID.a7166289-eb7a-4715-8c8e-3c997d752926">http://localhost:12060/repository/record/UUID.a7166289-eb7a-4715-8c8e-3c997d752926</a> | json<sub>reformat</sub>
+</p>
+
+<p>
+Subset of fields of the record :
+curl 'http://localhost:12060/repository/record/UUID.a7166289-eb7a-4715-8c8e-3c997d752926?fields=n$name&amp;ns.n=my.demo' | json<sub>reformat</sub>
+</p>
+</div>
+</li>
+<li><a id="sec-1-7-2-1-5" name="sec-1-7-2-1-5"></a><span class="done DONE">DONE</span> Creating a record with a blob field<br  /></li></ul>
+</li>
+<li><a id="sec-1-7-2-2" name="sec-1-7-2-2"></a><span class="todo TODO">TODO</span> REST Interface Reference<br  /></li></ul>
+</div>
+</div>
+<div id="outline-container-sec-1-8" class="outline-3">
+<h3 id="sec-1-8"><span class="todo TODO">TODO</span> Bulk Imports <code>[/]</code></h3>
+</div>
+<div id="outline-container-sec-1-9" class="outline-3">
+<h3 id="sec-1-9"><span class="todo TODO">TODO</span> ZooKeeper Connectionloss And Session Expiration Behavior <code>[/]</code></h3>
+</div>
+<div id="outline-container-sec-1-10" class="outline-3">
+<h3 id="sec-1-10"><span class="todo TODO">TODO</span> Metrics <code>[/]</code></h3>
+</div>
+<div id="outline-container-sec-1-11" class="outline-3">
+<h3 id="sec-1-11"><span class="todo TODO">TODO</span> Table creation settings <code>[/]</code></h3>
+</div>
+<div id="outline-container-sec-1-12" class="outline-3">
+<h3 id="sec-1-12"><span class="todo TODO">TODO</span> Lily Hackers <code>[0/6]</code></h3>
+<div class="outline-text-3" id="text-1-12">
+</div><div id="outline-container-sec-1-12-1" class="outline-4">
+<h4 id="sec-1-12-1"><span class="todo TODO">TODO</span> Getting Started <code>[0/3]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-2" class="outline-4">
+<h4 id="sec-1-12-2"><span class="todo TODO">TODO</span> Lily Source Code <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-3" class="outline-4">
+<h4 id="sec-1-12-3"><span class="todo TODO">TODO</span> Repository Model To HBase Mapping <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-4" class="outline-4">
+<h4 id="sec-1-12-4"><span class="todo TODO">TODO</span> Blobstore <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-5" class="outline-4">
+<h4 id="sec-1-12-5"><span class="todo TODO">TODO</span> Releasing <code>[0/3]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-6" class="outline-4">
+<h4 id="sec-1-12-6"><span class="todo TODO">TODO</span> Building A Lily Release <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-7" class="outline-4">
+<h4 id="sec-1-12-7"><span class="todo TODO">TODO</span> Publishing The Lily Maven Site (javadocs) <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-8" class="outline-4">
+<h4 id="sec-1-12-8"><span class="todo TODO">TODO</span> Branching the docs <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-9" class="outline-4">
+<h4 id="sec-1-12-9"><span class="todo TODO">TODO</span> Guidelines <code>[0/2]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-10" class="outline-4">
+<h4 id="sec-1-12-10"><span class="todo TODO">TODO</span> Code Style <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-11" class="outline-4">
+<h4 id="sec-1-12-11"><span class="todo TODO">TODO</span> Programming Guidelines <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-12" class="outline-4">
+<h4 id="sec-1-12-12"><span class="todo TODO">TODO</span> Lily Maven Repository Access <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-13" class="outline-4">
+<h4 id="sec-1-12-13"><span class="todo TODO">TODO</span> Incompatible changes (by commit) <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-14" class="outline-4">
+<h4 id="sec-1-12-14"><span class="todo TODO">TODO</span> Creating Snapshots Of 3d Party Projects <code>[0/4]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-15" class="outline-4">
+<h4 id="sec-1-12-15"><span class="todo TODO">TODO</span> Building HBase Snapshot <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-16" class="outline-4">
+<h4 id="sec-1-12-16"><span class="todo TODO">TODO</span> Building Kauri Snapshot <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-17" class="outline-4">
+<h4 id="sec-1-12-17"><span class="todo TODO">TODO</span> Building Avro Plugin Snapshot <code>[/]</code></h4>
+</div>
+<div id="outline-container-sec-1-12-18" class="outline-4">
+<h4 id="sec-1-12-18"><span class="todo TODO">TODO</span> Deploying Solr war To Maven <code>[/]</code></h4>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="todo TODO">TODO</span> <a href="http://docs.outerthought.org/lilyenterprise-docs-current/ext/toc/">Read Lily enterprise documentation - Howto to setup a cluster environment with Lily</a> <code>[0/4]</code></h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="todo TODO">TODO</span> Lily Enterprise Documentation (v1)</h3>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="todo TODO">TODO</span> Lily Cluster Installation Guide <code>[0/18]</code></h3>
+<div class="outline-text-3" id="text-2-2">
+</div><div id="outline-container-sec-2-2-1" class="outline-4">
+<h4 id="sec-2-2-1"><span class="todo TODO">TODO</span> Assumptions</h4>
+</div>
+<div id="outline-container-sec-2-2-2" class="outline-4">
+<h4 id="sec-2-2-2"><span class="todo TODO">TODO</span> Passwordless sudo Access</h4>
+</div>
+<div id="outline-container-sec-2-2-3" class="outline-4">
+<h4 id="sec-2-2-3"><span class="todo TODO">TODO</span> Used Port Numbers</h4>
+</div>
+<div id="outline-container-sec-2-2-4" class="outline-4">
+<h4 id="sec-2-2-4"><span class="todo TODO">TODO</span> Data Safety</h4>
+</div>
+<div id="outline-container-sec-2-2-5" class="outline-4">
+<h4 id="sec-2-2-5"><span class="todo TODO">TODO</span> Hardware Usage</h4>
+</div>
+<div id="outline-container-sec-2-2-6" class="outline-4">
+<h4 id="sec-2-2-6"><span class="todo TODO">TODO</span> Setup The Provisioning Master Node</h4>
+</div>
+<div id="outline-container-sec-2-2-7" class="outline-4">
+<h4 id="sec-2-2-7"><span class="todo TODO">TODO</span> Configure Node Roles</h4>
+</div>
+<div id="outline-container-sec-2-2-8" class="outline-4">
+<h4 id="sec-2-2-8"><span class="todo TODO">TODO</span> Software Installation <code>[0/4]</code></h4>
+<div class="outline-text-4" id="text-2-2-8">
+</div><ul class="org-ul"><li><a id="sec-2-2-8-1" name="sec-2-2-8-1"></a><span class="todo TODO">TODO</span> Installing pssh<br  /></li>
+<li><a id="sec-2-2-8-2" name="sec-2-2-8-2"></a><span class="todo TODO">TODO</span> Installing Java<br  /></li>
+<li><a id="sec-2-2-8-3" name="sec-2-2-8-3"></a><span class="todo TODO">TODO</span> Installing Hadoop, ZooKeeper, HBase, Solr and Lily<br  /></li>
+<li><a id="sec-2-2-8-4" name="sec-2-2-8-4"></a><span class="todo TODO">TODO</span> Installing LZO Support<br  /></li></ul>
+</div>
+<div id="outline-container-sec-2-2-9" class="outline-4">
+<h4 id="sec-2-2-9"><span class="todo TODO">TODO</span> Check Hostnames</h4>
+</div>
+<div id="outline-container-sec-2-2-10" class="outline-4">
+<h4 id="sec-2-2-10"><span class="todo TODO">TODO</span> Configuration Overview <code>[0/7]</code></h4>
+<div class="outline-text-4" id="text-2-2-10">
+</div><ul class="org-ul"><li><a id="sec-2-2-10-1" name="sec-2-2-10-1"></a><span class="todo TODO">TODO</span> Hadoop Configuration<br  /></li>
+<li><a id="sec-2-2-10-2" name="sec-2-2-10-2"></a><span class="todo TODO">TODO</span> ZooKeeper Configuration<br  /></li>
+<li><a id="sec-2-2-10-3" name="sec-2-2-10-3"></a><span class="todo TODO">TODO</span> HBase Configuration<br  /></li>
+<li><a id="sec-2-2-10-4" name="sec-2-2-10-4"></a><span class="todo TODO">TODO</span> Lily Configuration<br  /></li>
+<li><a id="sec-2-2-10-5" name="sec-2-2-10-5"></a><span class="todo TODO">TODO</span> Solr Configuration<br  /></li>
+<li><a id="sec-2-2-10-6" name="sec-2-2-10-6"></a><span class="todo TODO">TODO</span> Cluster-wide Configuration Deployment<br  /></li>
+<li><a id="sec-2-2-10-7" name="sec-2-2-10-7"></a><span class="todo TODO">TODO</span> Configuration Best Practice<br  /></li></ul>
+</div>
+<div id="outline-container-sec-2-2-11" class="outline-4">
+<h4 id="sec-2-2-11"><span class="todo TODO">TODO</span> Creating The Data Directories</h4>
+</div>
+<div id="outline-container-sec-2-2-12" class="outline-4">
+<h4 id="sec-2-2-12"><span class="todo TODO">TODO</span> Installing Daemon Packages</h4>
+</div>
+<div id="outline-container-sec-2-2-13" class="outline-4">
+<h4 id="sec-2-2-13"><span class="todo TODO">TODO</span> Starting Up The Cluster</h4>
+</div>
+<div id="outline-container-sec-2-2-14" class="outline-4">
+<h4 id="sec-2-2-14"><span class="todo TODO">TODO</span> Changing Configuration And Restarting Processes</h4>
+</div>
+<div id="outline-container-sec-2-2-15" class="outline-4">
+<h4 id="sec-2-2-15"><span class="todo TODO">TODO</span> Testing The Cluster</h4>
+</div>
+<div id="outline-container-sec-2-2-16" class="outline-4">
+<h4 id="sec-2-2-16"><span class="todo TODO">TODO</span> Emptying The Cluster</h4>
+</div>
+<div id="outline-container-sec-2-2-17" class="outline-4">
+<h4 id="sec-2-2-17"><span class="todo TODO">TODO</span> Ganglia Setup</h4>
+</div>
+<div id="outline-container-sec-2-2-18" class="outline-4">
+<h4 id="sec-2-2-18"><span class="todo TODO">TODO</span> Maintenance</h4>
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="todo TODO">TODO</span> Lily Administration Application <code>[0/2]</code></h3>
+<div class="outline-text-3" id="text-2-3">
+</div><div id="outline-container-sec-2-3-1" class="outline-4">
+<h4 id="sec-2-3-1"><span class="todo TODO">TODO</span> Setting Up the Lily Admin App</h4>
+</div>
+<div id="outline-container-sec-2-3-2" class="outline-4">
+<h4 id="sec-2-3-2"><span class="todo TODO">TODO</span> Using the Lily Admin App</h4>
+</div>
+</div>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="todo TODO">TODO</span> Summary Tables</h3>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="done DONE">DONE</span> Lily Course &#x2013;  Lundi 18/07/2011 - Mardi 19/07/2011</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">Lily introduction : Architecture and feature</h3>
+<div class="outline-text-3" id="text-3-1">
+</div><div id="outline-container-sec-3-1-1" class="outline-4">
+<h4 id="sec-3-1-1">Lily core concepts:</h4>
+<div class="outline-text-4" id="text-3-1-1">
+</div><ul class="org-ul"><li><a id="sec-3-1-1-1" name="sec-3-1-1-1"></a>Storage large scale: Hadoop, ZooKeeper, Hbase<br  /></li>
+<li><a id="sec-3-1-1-2" name="sec-3-1-1-2"></a>Indexing: module lily which communicates between Lily and Solr<br  /></li>
+<li><a id="sec-3-1-1-3" name="sec-3-1-1-3"></a>Search: Apache Solr<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-2" class="outline-4">
+<h4 id="sec-3-1-2">Lily Architecture</h4>
+<div class="outline-text-4" id="text-3-1-2">
+</div><ul class="org-ul"><li><a id="sec-3-1-2-1" name="sec-3-1-2-1"></a>Some simple schema<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-3" class="outline-4">
+<h4 id="sec-3-1-3">Hadoop</h4>
+<div class="outline-text-4" id="text-3-1-3">
+</div><ul class="org-ul"><li><a id="sec-3-1-3-1" name="sec-3-1-3-1"></a>HDFS<br  /><ul class="org-ul"><li><a id="sec-3-1-3-1-1" name="sec-3-1-3-1-1"></a>Cluster of nodes<br  /></li>
+<li><a id="sec-3-1-3-1-2" name="sec-3-1-3-1-2"></a>Large files, High throughput over low latency<br  /></li>
+<li><a id="sec-3-1-3-1-3" name="sec-3-1-3-1-3"></a>write once, append<br  /></li>
+<li><a id="sec-3-1-3-1-4" name="sec-3-1-3-1-4"></a>Multiple copies in the cluster<br  /></li>
+<li><a id="sec-3-1-3-1-5" name="sec-3-1-3-1-5"></a>namenode which manages the filesystem namespace (table to actual data on data node)<br  /></li>
+<li><a id="sec-3-1-3-1-6" name="sec-3-1-3-1-6"></a>datanodes which knows where the blocks are (where on the hdd in function of the filesystem)<br  /></li>
+<li><a id="sec-3-1-3-1-7" name="sec-3-1-3-1-7"></a>Based on GFS<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-3-2" name="sec-3-1-3-2"></a>Map-Reduce Framework: functional system for distributed processing<br  /><ul class="org-ul"><li><a id="sec-3-1-3-2-1" name="sec-3-1-3-2-1"></a>Map phase<br  /><ul class="org-ul"><li><a id="sec-3-1-3-2-1-0-1" name="sec-3-1-3-2-1-0-1"></a>On the namenode, job tracker which does the distributing of map algorithm job to tasks trackers<br  /></li>
+<li><a id="sec-3-1-3-2-1-0-2" name="sec-3-1-3-2-1-0-2"></a>On the datanodes, there are tasks trackers which does the computing of the map part<br  /></li>
+<li><a id="sec-3-1-3-2-1-0-3" name="sec-3-1-3-2-1-0-3"></a>Sort the different maps result into a more coherent set<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-3-2-2" name="sec-3-1-3-2-2"></a>Reduce phase<br  /><ul class="org-ul"><li><a id="sec-3-1-3-2-2-0-1" name="sec-3-1-3-2-2-0-1"></a>Retrieve the maps part and compute the result into partial parts which in turns are computed into one final result.<br  /></li>
+<li><a id="sec-3-1-3-2-2-0-2" name="sec-3-1-3-2-2-0-2"></a>The secret of all is that it is distributed amongst nodes.<br  /></li></ul>
+</li></ul>
+</li>
+<li><a id="sec-3-1-3-3" name="sec-3-1-3-3"></a>=&gt; The important phase into for a nosql environment is the writing, the reading can be slow.<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-4" class="outline-4">
+<h4 id="sec-3-1-4">Lily and Hadoop</h4>
+</div>
+<div id="outline-container-sec-3-1-5" class="outline-4">
+<h4 id="sec-3-1-5">Hbase</h4>
+<div class="outline-text-4" id="text-3-1-5">
+</div><ul class="org-ul"><li><a id="sec-3-1-5-1" name="sec-3-1-5-1"></a>a "sparse, distributed, persistent multidimensional sorted map"<br  /></li>
+<li><a id="sec-3-1-5-2" name="sec-3-1-5-2"></a>add some functionalities above HDFS<br  /><ul class="org-ul"><li><a id="sec-3-1-5-2-0-1" name="sec-3-1-5-2-0-1"></a>small items capacity, read-write, random access<br  /></li>
+<li><a id="sec-3-1-5-2-0-2" name="sec-3-1-5-2-0-2"></a>scan and filter<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-5-3" name="sec-3-1-5-3"></a>borrows some functionality too<br  /><ul class="org-ul"><li><a id="sec-3-1-5-3-0-1" name="sec-3-1-5-3-0-1"></a>high write throughput<br  /></li>
+<li><a id="sec-3-1-5-3-0-2" name="sec-3-1-5-3-0-2"></a>distributed capacity<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-5-4" name="sec-3-1-5-4"></a>not SQL: no query model, no transactions<br  /></li>
+<li><a id="sec-3-1-5-5" name="sec-3-1-5-5"></a>model; multi-dimensional hashtable<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-6" class="outline-4">
+<h4 id="sec-3-1-6">Lily and Hbase</h4>
+<div class="outline-text-4" id="text-3-1-6">
+</div><ul class="org-ul"><li><a id="sec-3-1-6-1" name="sec-3-1-6-1"></a>adds high level content model<br  /><ul class="org-ul"><li><a id="sec-3-1-6-1-1" name="sec-3-1-6-1-1"></a>data types<br  /></li>
+<li><a id="sec-3-1-6-1-2" name="sec-3-1-6-1-2"></a>versioning<br  /><div class="outline-text-6" id="text-3-1-6-1-2">
+<ul class="org-ul">
+<li>interpretation on the OT's part, it's a counter
+</li>
+<li>no timestamp is used =&gt; no gap inside version
+</li>
+</ul>
+</div>
+</li>
+<li><a id="sec-3-1-6-1-3" name="sec-3-1-6-1-3"></a>blog storage on HDFS<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-6-2" name="sec-3-1-6-2"></a>focus on sparse storage<br  /></li>
+<li><a id="sec-3-1-6-3" name="sec-3-1-6-3"></a>rowlog for synchronous cross-table updates and async message queue =&gt; Write Ahead Log (to know what has happened) and Message queue (for indexing)<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-7" class="outline-4">
+<h4 id="sec-3-1-7">ZooKeeper</h4>
+<div class="outline-text-4" id="text-3-1-7">
+</div><ul class="org-ul"><li><a id="sec-3-1-7-1" name="sec-3-1-7-1"></a>For distributing cluster combination<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-8" class="outline-4">
+<h4 id="sec-3-1-8">Lily and ZooKeeper</h4>
+<div class="outline-text-4" id="text-3-1-8">
+</div><ul class="org-ul"><li><a id="sec-3-1-8-1" name="sec-3-1-8-1"></a>Server discovery<br  /></li>
+<li><a id="sec-3-1-8-2" name="sec-3-1-8-2"></a>Master election for centralized jobs (indexer, rowlog shard)<br  /></li>
+<li><a id="sec-3-1-8-3" name="sec-3-1-8-3"></a>Deals with locks<br  /></li>
+<li><a id="sec-3-1-8-4" name="sec-3-1-8-4"></a>Schema:<br  /><div class="outline-text-5" id="text-3-1-8-4">
+<p>
+Lily client -&gt; Zk -&gt; redirects to one Lily node
+If one lily node crashes, zk knows and won't use this one for future
+lily clients
+</p>
+</div>
+</li>
+<li><a id="sec-3-1-8-5" name="sec-3-1-8-5"></a>Number of zookeeper instances : 2n + 1 ~ 3-5<br  /><div class="outline-text-5" id="text-3-1-8-5">
+<p>
+With 100 machines
+</p>
+<ul class="org-ul">
+<li>1 machine with one namenode service, hbase master service, job
+tracker service
+</li>
+<li>99 with datanodes services, hbase regions, task tracker, etc&#x2026;
+</li>
+<li>Amongst those 100 machines, there can be from 3 to 5 zookeeper instances
+</li>
+</ul>
+</div>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-9" class="outline-4">
+<h4 id="sec-3-1-9">Solr (cf. chubby paper)</h4>
+<div class="outline-text-4" id="text-3-1-9">
+</div><ul class="org-ul"><li><a id="sec-3-1-9-1" name="sec-3-1-9-1"></a>open source<br  /></li>
+<li><a id="sec-3-1-9-2" name="sec-3-1-9-2"></a>enterprise search server service<br  /></li>
+<li><a id="sec-3-1-9-3" name="sec-3-1-9-3"></a>based on the Lucene Java Search Library (popular and widespread)<br  /></li>
+<li><a id="sec-3-1-9-4" name="sec-3-1-9-4"></a>Amongst Features:<br  /><ul class="org-ul"><li><a id="sec-3-1-9-4-1" name="sec-3-1-9-4-1"></a>REST interfaces : XML and json<br  /></li>
+<li><a id="sec-3-1-9-4-2" name="sec-3-1-9-4-2"></a>caching, faceted search, replication<br  /></li>
+<li><a id="sec-3-1-9-4-3" name="sec-3-1-9-4-3"></a>web administration interface<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-10" class="outline-4">
+<h4 id="sec-3-1-10">Lily and Solr</h4>
+<div class="outline-text-4" id="text-3-1-10">
+</div><ul class="org-ul"><li><a id="sec-3-1-10-1" name="sec-3-1-10-1"></a>flexible mapping between hbase content model and solr field index<br  /></li>
+<li><a id="sec-3-1-10-2" name="sec-3-1-10-2"></a>use solr as-is<br  /></li>
+<li><a id="sec-3-1-10-3" name="sec-3-1-10-3"></a>interactive and batch index maintenance (M/R)<br  /></li>
+<li><a id="sec-3-1-10-4" name="sec-3-1-10-4"></a>sharding -&gt; more than once instances solr =&gt; distributing solr<br  /></li>
+<li><a id="sec-3-1-10-5" name="sec-3-1-10-5"></a>Access from Lily to Solr via the Solr Rest API<br  /></li>
+<li><a id="sec-3-1-10-6" name="sec-3-1-10-6"></a>search access via SOLR (HTTP) API<br  /><div class="outline-text-5" id="text-3-1-10-6">
+<p>
+=&gt; Careful here, if we want abstraction from solr, we need to implement it!!!
+=&gt; cf. <a href="http://wiki.apache.org/solr/Solrj">http://wiki.apache.org/solr/Solrj</a> Solr java client to access
+solr, add, update or query the solr index
+=&gt; what if we shard the solr index ? =&gt; i think we're screwed!!!!
+</p>
+</div>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-11" class="outline-4">
+<h4 id="sec-3-1-11">Lily Architecture</h4>
+<div class="outline-text-4" id="text-3-1-11">
+</div><ul class="org-ul"><li><a id="sec-3-1-11-1" name="sec-3-1-11-1"></a>Some fucking complex schemas<br  /><div class="outline-text-5" id="text-3-1-11-1">
+<p>
+<a href="http://docs.outerthought.org/lily-docs-current/384-lily/version/default/part/ImageData/data">http://docs.outerthought.org/lily-docs-current/384-lily/version/default/part/ImageData/data</a>
+<a href="http://docs.outerthought.org/lily-docs-current/385-lily/version/default/part/ImageData/data">http://docs.outerthought.org/lily-docs-current/385-lily/version/default/part/ImageData/data</a>
+</p>
+</div>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-12" class="outline-4">
+<h4 id="sec-3-1-12">Lily Storage Model</h4>
+<div class="outline-text-4" id="text-3-1-12">
+</div><ul class="org-ul"><li><a id="sec-3-1-12-1" name="sec-3-1-12-1"></a>Schema<br  /><ul class="org-ul"><li><a id="sec-3-1-12-1-1" name="sec-3-1-12-1-1"></a>Models into<br  /><ul class="org-ul"><li><a id="sec-3-1-12-1-1-1" name="sec-3-1-12-1-1-1"></a>Record - RecordType (Structure of a record)<br  /></li>
+<li><a id="sec-3-1-12-1-1-2" name="sec-3-1-12-1-1-2"></a>Field - FieldType (Structure of a field)<br  /></li>
+<li><a id="sec-3-1-12-1-1-3" name="sec-3-1-12-1-1-3"></a>RecordType * -&gt; * FieldType * -&gt; 1 ValueType (Date, time, blob, long, etc&#x2026;)<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-12-1-2" name="sec-3-1-12-1-2"></a>Notes: Namespace, global nature, semantics<br  /><ul class="org-ul"><li><a id="sec-3-1-12-1-2-1" name="sec-3-1-12-1-2-1"></a>The meaning of the fieldType is broader than the recordType. They're used inside a recordType but not limited to it.<br  /></li></ul>
+</li></ul>
+</li>
+<li><a id="sec-3-1-12-2" name="sec-3-1-12-2"></a>Versioning model<br  /></li>
+<li><a id="sec-3-1-12-3" name="sec-3-1-12-3"></a>Variants<br  /></li>
+<li><a id="sec-3-1-12-4" name="sec-3-1-12-4"></a>Mixins<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-13" class="outline-4">
+<h4 id="sec-3-1-13">Flexible content model</h4>
+<div class="outline-text-4" id="text-3-1-13">
+</div><ul class="org-ul"><li><a id="sec-3-1-13-1" name="sec-3-1-13-1"></a>generic enough to accomodate many popular content schemas<br  /></li>
+<li><a id="sec-3-1-13-2" name="sec-3-1-13-2"></a>developer convenience<br  /><ul class="org-ul"><li><a id="sec-3-1-13-2-1" name="sec-3-1-13-2-1"></a>higher level constructs<br  /></li>
+<li><a id="sec-3-1-13-2-2" name="sec-3-1-13-2-2"></a>schema reuse<br  /></li>
+<li><a id="sec-3-1-13-2-3" name="sec-3-1-13-2-3"></a>versioning, linking, &#x2026;<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-14" class="outline-4">
+<h4 id="sec-3-1-14">Repository model</h4>
+<div class="outline-text-4" id="text-3-1-14">
+<p>
+<a href="http://docs.outerthought.org/lily-docs-current/387-lily/version/default/part/ImageData/data">http://docs.outerthought.org/lily-docs-current/387-lily/version/default/part/ImageData/data</a>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-1-15" class="outline-4">
+<h4 id="sec-3-1-15">Mixins</h4>
+<div class="outline-text-4" id="text-3-1-15">
+<p>
+<a href="http://docs.outerthought.org/lily-docs-current/451-lily/version/default/part/ImageData/data">http://docs.outerthought.org/lily-docs-current/451-lily/version/default/part/ImageData/data</a>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-1-16" class="outline-4">
+<h4 id="sec-3-1-16">Sample Schema json</h4>
+<div class="outline-text-4" id="text-3-1-16">
+</div><ul class="org-ul"><li><a id="sec-3-1-16-1" name="sec-3-1-16-1"></a>Order is important<br  /></li>
+<li><a id="sec-3-1-16-2" name="sec-3-1-16-2"></a><span class="todo TODO">TODO</span> add a link to a sample<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-17" class="outline-4">
+<h4 id="sec-3-1-17">Sample Schema Overview</h4>
+<div class="outline-text-4" id="text-3-1-17">
+</div><ul class="org-ul"><li><a id="sec-3-1-17-1" name="sec-3-1-17-1"></a>Work in progress to simplify the schema declared in json<br  /><div class="outline-text-5" id="text-3-1-17-1">
+<p>
+@1 non versioned scope
+@# versioned scope
+@v versioned mutable scope (metadatas can change)
+'*' mandatory
+'?' optional
+</p>
+</div>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-18" class="outline-4">
+<h4 id="sec-3-1-18">Schema API</h4>
+<div class="outline-text-4" id="text-3-1-18">
+</div><ul class="org-ul"><li><a id="sec-3-1-18-1" name="sec-3-1-18-1"></a>TypeManager<br  /><ul class="org-ul"><li><a id="sec-3-1-18-1-1" name="sec-3-1-18-1-1"></a>Methods for creates and updates<br  /></li>
+<li><a id="sec-3-1-18-1-2" name="sec-3-1-18-1-2"></a>Not yet delete/purge<br  /></li>
+<li><a id="sec-3-1-18-1-3" name="sec-3-1-18-1-3"></a>Straightforward API<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-18-2" name="sec-3-1-18-2"></a>Implementation performs client side caching<br  /><ul class="org-ul"><li><a id="sec-3-1-18-2-1" name="sec-3-1-18-2-1"></a>Enhances performance<br  /></li>
+<li><a id="sec-3-1-18-2-2" name="sec-3-1-18-2-2"></a>Gets refresh trigger upon changes<br  /></li>
+<li><a id="sec-3-1-18-2-3" name="sec-3-1-18-2-3"></a>Assumes you keep your client running<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-19" class="outline-4">
+<h4 id="sec-3-1-19">API for getting access</h4>
+<div class="outline-text-4" id="text-3-1-19">
+</div><ul class="org-ul"><li><a id="sec-3-1-19-1" name="sec-3-1-19-1"></a>Create an instance of ZooKeeperItf<br  /><div class="outline-text-5" id="text-3-1-19-1">
+<p>
+ZooKeeperItf zk = new StateWatchingZooKeeper(localhost:2181, 10000)
+</p>
+</div>
+</li>
+<li><a id="sec-3-1-19-2" name="sec-3-1-19-2"></a>Then a LilyClient instance<br  /><div class="outline-text-5" id="text-3-1-19-2">
+<p>
+LilyClient lilyClient = new LilyClient(zk);
+</p>
+</div>
+</li>
+<li><a id="sec-3-1-19-3" name="sec-3-1-19-3"></a>A repository instance from the lilyClient instance<br  /><div class="outline-text-5" id="text-3-1-19-3">
+<p>
+Repository repo = lilyClient.getRepository();
+</p>
+</div>
+</li>
+<li><a id="sec-3-1-19-4" name="sec-3-1-19-4"></a>Factory to manipulate Record, Field<br  /><div class="outline-text-5" id="text-3-1-19-4">
+<p>
+IdGenerator idgen = repo.getIdGenerator();
+</p>
+</div>
+</li>
+<li><a id="sec-3-1-19-5" name="sec-3-1-19-5"></a>To manage types<br  /><div class="outline-text-5" id="text-3-1-19-5">
+<p>
+TypeManager types = repo.getTypeManager();
+</p>
+</div>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-20" class="outline-4">
+<h4 id="sec-3-1-20">Schema API Reading</h4>
+<div class="outline-text-4" id="text-3-1-20">
+</div><ul class="org-ul"><li><a id="sec-3-1-20-1" name="sec-3-1-20-1"></a>QName == Qualified name; namespace + name of the field or record or whatever<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-21" class="outline-4">
+<h4 id="sec-3-1-21">Schema API Writing</h4>
+</div>
+<div id="outline-container-sec-3-1-22" class="outline-4">
+<h4 id="sec-3-1-22">Lily versioning</h4>
+<div class="outline-text-4" id="text-3-1-22">
+<p>
+<a href="http://docs.outerthought.org/lily-docs-current/388-lily/version/default/part/ImageData/data">http://docs.outerthought.org/lily-docs-current/388-lily/version/default/part/ImageData/data</a>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-1-23" class="outline-4">
+<h4 id="sec-3-1-23">Record API Reading</h4>
+<div class="outline-text-4" id="text-3-1-23">
+</div><ul class="org-ul"><li><a id="sec-3-1-23-1" name="sec-3-1-23-1"></a>RecordId id = idgen.fromString("USER.mary<sub>shelley</sub>")<br  /><div class="outline-text-5" id="text-3-1-23-1">
+<p>
+=&gt; Create an instance of RecordId
+</p>
+</div>
+</li>
+<li><a id="sec-3-1-23-2" name="sec-3-1-23-2"></a>Record record = repo.read(id, version)<br  /><div class="outline-text-5" id="text-3-1-23-2">
+<p>
+<code>&gt; Read into hbase the record, version =</code> null to have the last version of the record if it exists
+</p>
+</div>
+</li>
+<li><a id="sec-3-1-23-3" name="sec-3-1-23-3"></a>Fields fields = record.getFields()<br  /><div class="outline-text-5" id="text-3-1-23-3">
+<p>
+=&gt; Retrieve the fields of the record
+</p>
+</div>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-24" class="outline-4">
+<h4 id="sec-3-1-24">ID</h4>
+<div class="outline-text-4" id="text-3-1-24">
+</div><ul class="org-ul"><li><a id="sec-3-1-24-1" name="sec-3-1-24-1"></a>Ownership/Control<br  /><ul class="org-ul"><li><a id="sec-3-1-24-1-1" name="sec-3-1-24-1-1"></a>"USER" - identity controlled by application/client<br  /></li>
+<li><a id="sec-3-1-24-1-2" name="sec-3-1-24-1-2"></a>"UUID" - identity open to application, assured unique<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-24-2" name="sec-3-1-24-2"></a>UUID generated<br  /><ul class="org-ul"><li><a id="sec-3-1-24-2-1" name="sec-3-1-24-2-1"></a>@Client - known prior to actual create<br  /></li>
+<li><a id="sec-3-1-24-2-2" name="sec-3-1-24-2-2"></a>@Server - create first, then read resulting id<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-25" class="outline-4">
+<h4 id="sec-3-1-25">Record API creation</h4>
+<div class="outline-text-4" id="text-3-1-25">
+<p>
+Record id = idgen.newRecordId()
+Record r = repo.newRecord();
+r = repo.newRecord(id);
+r.setRecordType(qname, version);
+</p>
+
+<p>
+Fields
+r.setField(qname, objectValue);
+</p>
+
+<p>
+Record
+r.create();
+r.update();
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-1-26" class="outline-4">
+<h4 id="sec-3-1-26">Blobs</h4>
+<div class="outline-text-4" id="text-3-1-26">
+</div><ul class="org-ul"><li><a id="sec-3-1-26-1" name="sec-3-1-26-1"></a>Associates (larger) files to the record<br  /><ul class="org-ul"><li><a id="sec-3-1-26-1-1" name="sec-3-1-26-1-1"></a>size determines the value of the location (S, M, L)<br  /></li>
+<li><a id="sec-3-1-26-1-2" name="sec-3-1-26-1-2"></a>includes metadata (filename, mime-type, size)<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-26-2" name="sec-3-1-26-2"></a>Can be multi-value as well<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-27" class="outline-4">
+<h4 id="sec-3-1-27">Blobs API Reading</h4>
+<div class="outline-text-4" id="text-3-1-27">
+<p>
+BlobAccess ba = repo.getBlob(record, new QName(ns, blobFieldName));
+Blob b = ba.getBlob();
+InputStream is = b.getInputStream();
+&#x2026;
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-1-28" class="outline-4">
+<h4 id="sec-3-1-28">Lily Schema flexibility</h4>
+<div class="outline-text-4" id="text-3-1-28">
+</div><ul class="org-ul"><li><a id="sec-3-1-28-1" name="sec-3-1-28-1"></a>All records must contain all required fields<br  /><ul class="org-ul"><li><a id="sec-3-1-28-1-1" name="sec-3-1-28-1-1"></a>Enforced validation on create/update<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-28-2" name="sec-3-1-28-2"></a>All records can contain all fields<br  /><ul class="org-ul"><li><a id="sec-3-1-28-2-1" name="sec-3-1-28-2-1"></a>even if not present in schema of record-type<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-28-3" name="sec-3-1-28-3"></a>This flexibility is useful for schema versioning<br  /><ul class="org-ul"><li><a id="sec-3-1-28-3-1" name="sec-3-1-28-3-1"></a>schema changes<br  /><ul class="org-ul"><li><a id="sec-3-1-28-3-1-1" name="sec-3-1-28-3-1-1"></a>do not alter any data<br  /></li>
+<li><a id="sec-3-1-28-3-1-2" name="sec-3-1-28-3-1-2"></a>are not validated<br  /></li>
+<li><a id="sec-3-1-28-3-1-3" name="sec-3-1-28-3-1-3"></a>do not trigger indexing<br  /></li></ul>
+</li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-29" class="outline-4">
+<h4 id="sec-3-1-29">Lily versioning</h4>
+<div class="outline-text-4" id="text-3-1-29">
+<p>
+<a href="http://docs.outerthought.org/lily-docs-current/388-lily/version/default/part/ImageData/data">http://docs.outerthought.org/lily-docs-current/388-lily/version/default/part/ImageData/data</a>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-1-30" class="outline-4">
+<h4 id="sec-3-1-30">Relation to vtag</h4>
+<div class="outline-text-4" id="text-3-1-30">
+</div><ul class="org-ul"><li><a id="sec-3-1-30-1" name="sec-3-1-30-1"></a>Name pointer to a certain version<br  /></li>
+<li><a id="sec-3-1-30-2" name="sec-3-1-30-2"></a>Needed ofr the indexer to pick which data will be indexed in any given solr index<br  /></li>
+<li><a id="sec-3-1-30-3" name="sec-3-1-30-3"></a>Each one labels one of your version as being<br  /><ul class="org-ul"><li><a id="sec-3-1-30-3-1" name="sec-3-1-30-3-1"></a>last, live, &#x2026;, ready, any marker you need =&gt; Careful, the implementation is then on the application's side!<br  /></li>
+<li><a id="sec-3-1-30-3-2" name="sec-3-1-30-3-2"></a>vtag last is implicit =&gt; always the last version of a record or type or &#x2026;<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-30-4" name="sec-3-1-30-4"></a>Technically just a field except for 'last'<br  /><ul class="org-ul"><li><a id="sec-3-1-30-4-1" name="sec-3-1-30-4-1"></a>unversioned, LONG valueType<br  /></li>
+<li><a id="sec-3-1-30-4-2" name="sec-3-1-30-4-2"></a>(org.lilyproject.vtag)<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-30-5" name="sec-3-1-30-5"></a>Value '0' points to unversionned data<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-31" class="outline-4">
+<h4 id="sec-3-1-31">Variants</h4>
+<div class="outline-text-4" id="text-3-1-31">
+</div><ul class="org-ul"><li><a id="sec-3-1-31-1" name="sec-3-1-31-1"></a>Loose grouping of related 'records'<br  /></li>
+<li><a id="sec-3-1-31-2" name="sec-3-1-31-2"></a>Extension on the 'ID' concept<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-32" class="outline-4">
+<h4 id="sec-3-1-32">Variants API Snippet</h4>
+</div>
+<div id="outline-container-sec-3-1-33" class="outline-4">
+<h4 id="sec-3-1-33">REST API</h4>
+</div>
+<div id="outline-container-sec-3-1-34" class="outline-4">
+<h4 id="sec-3-1-34">REST classic: method tunneling</h4>
+<div class="outline-text-4" id="text-3-1-34">
+</div><ul class="org-ul"><li><a id="sec-3-1-34-1" name="sec-3-1-34-1"></a>X-HTTP-REQUEST<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-35" class="outline-4">
+<h4 id="sec-3-1-35">REST API Representations</h4>
+<div class="outline-text-4" id="text-3-1-35">
+</div><ul class="org-ul"><li><a id="sec-3-1-35-1" name="sec-3-1-35-1"></a>Content-type: application/json<br  /><ul class="org-ul"><li><a id="sec-3-1-35-1-1" name="sec-3-1-35-1-1"></a>UTF-8<br  /></li>
+<li><a id="sec-3-1-35-1-2" name="sec-3-1-35-1-2"></a>cool json implementation<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-35-2" name="sec-3-1-35-2"></a>Namespaces<br  /></li>
+<li><a id="sec-3-1-35-3" name="sec-3-1-35-3"></a>ValueTypes<br  /><ul class="org-ul"><li><a id="sec-3-1-35-3-1" name="sec-3-1-35-3-1"></a>BLOB<br  /></li>
+<li><a id="sec-3-1-35-3-2" name="sec-3-1-35-3-2"></a>LINK<br  /></li>
+<li><a id="sec-3-1-35-3-3" name="sec-3-1-35-3-3"></a>DATE/TIME<br  /></li>
+<li><a id="sec-3-1-35-3-4" name="sec-3-1-35-3-4"></a>&#x2026;<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-36" class="outline-4">
+<h4 id="sec-3-1-36">REST API More Representations</h4>
+<div class="outline-text-4" id="text-3-1-36">
+</div><ul class="org-ul"><li><a id="sec-3-1-36-1" name="sec-3-1-36-1"></a>List format<br  /></li>
+<li><a id="sec-3-1-36-2" name="sec-3-1-36-2"></a>POST format<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-37" class="outline-4">
+<h4 id="sec-3-1-37">REST API for Schema</h4>
+</div>
+<div id="outline-container-sec-3-1-38" class="outline-4">
+<h4 id="sec-3-1-38">REST API for Records</h4>
+</div>
+<div id="outline-container-sec-3-1-39" class="outline-4">
+<h4 id="sec-3-1-39">REST API for Blobs</h4>
+</div>
+<div id="outline-container-sec-3-1-40" class="outline-4">
+<h4 id="sec-3-1-40">Search</h4>
+<div class="outline-text-4" id="text-3-1-40">
+</div><ul class="org-ul"><li><a id="sec-3-1-40-1" name="sec-3-1-40-1"></a>Nope not yet!<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-41" class="outline-4">
+<h4 id="sec-3-1-41">Index</h4>
+</div>
+<div id="outline-container-sec-3-1-42" class="outline-4">
+<h4 id="sec-3-1-42">Lily Indexer</h4>
+<div class="outline-text-4" id="text-3-1-42">
+</div><ul class="org-ul"><li><a id="sec-3-1-42-1" name="sec-3-1-42-1"></a>Why ?<br  /></li>
+<li><a id="sec-3-1-42-2" name="sec-3-1-42-2"></a>Data in Hbase retrievable by ID only<br  /><ul class="org-ul"><li><a id="sec-3-1-42-2-1" name="sec-3-1-42-2-1"></a>scalable and fast persistence<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-42-3" name="sec-3-1-42-3"></a>solr ready to build up a searchable index<br  /></li>
+<li><a id="sec-3-1-42-4" name="sec-3-1-42-4"></a>Indexer: move data from hbase into Solr<br  /><ul class="org-ul"><li><a id="sec-3-1-42-4-1" name="sec-3-1-42-4-1"></a>incrementally when created/updated records arrive<br  /></li>
+<li><a id="sec-3-1-42-4-2" name="sec-3-1-42-4-2"></a>redo whenever needed<br  /></li>
+<li><a id="sec-3-1-42-4-3" name="sec-3-1-42-4-3"></a>flexibly when new indexes are needed<br  /></li>
+<li><a id="sec-3-1-42-4-4" name="sec-3-1-42-4-4"></a>based on the rich semantic content model<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-43" class="outline-4">
+<h4 id="sec-3-1-43">Lily indexer 2</h4>
+<div class="outline-text-4" id="text-3-1-43">
+</div><ul class="org-ul"><li><a id="sec-3-1-43-1" name="sec-3-1-43-1"></a>how it works<br  /><ul class="org-ul"><li><a id="sec-3-1-43-1-1" name="sec-3-1-43-1-1"></a>rowlog coupling<br  /></li>
+<li><a id="sec-3-1-43-1-2" name="sec-3-1-43-1-2"></a>batch processing: zookeeper and locks<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-43-2" name="sec-3-1-43-2"></a>schema mapping<br  /><ul class="org-ul"><li><a id="sec-3-1-43-2-1" name="sec-3-1-43-2-1"></a>vtags<br  /></li>
+<li><a id="sec-3-1-43-2-2" name="sec-3-1-43-2-2"></a>lily schema &lt;&gt; solr schema<br  /><ul class="org-ul"><li><a id="sec-3-1-43-2-2-1" name="sec-3-1-43-2-2-1"></a>dynamic fields<br  /></li></ul>
+</li></ul>
+</li>
+<li><a id="sec-3-1-43-3" name="sec-3-1-43-3"></a>management<br  /><ul class="org-ul"><li><a id="sec-3-1-43-3-1" name="sec-3-1-43-3-1"></a>CLI tools and zookeeper<br  /></li>
+<li><a id="sec-3-1-43-3-2" name="sec-3-1-43-3-2"></a>API<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-44" class="outline-4">
+<h4 id="sec-3-1-44">Hbase rowlog library</h4>
+</div>
+<div id="outline-container-sec-3-1-45" class="outline-4">
+<h4 id="sec-3-1-45">Hbase rowlog library 2</h4>
+<div class="outline-text-4" id="text-3-1-45">
+</div><ul class="org-ul"><li><a id="sec-3-1-45-1" name="sec-3-1-45-1"></a>WAL<br  /></li>
+<li><a id="sec-3-1-45-2" name="sec-3-1-45-2"></a>Queue<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-46" class="outline-4">
+<h4 id="sec-3-1-46">Hbase rowlog library</h4>
+<div class="outline-text-4" id="text-3-1-46">
+</div><ul class="org-ul"><li><a id="sec-3-1-46-1" name="sec-3-1-46-1"></a>schema<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-47" class="outline-4">
+<h4 id="sec-3-1-47">Indexer feature</h4>
+<div class="outline-text-4" id="text-3-1-47">
+</div><ul class="org-ul"><li><a id="sec-3-1-47-1" name="sec-3-1-47-1"></a>schema<br  /><ul class="org-ul"><li><a id="sec-3-1-47-1-1" name="sec-3-1-47-1-1"></a>1. denormalize -&gt; link field in cascade<br  /></li>
+<li><a id="sec-3-1-47-1-2" name="sec-3-1-47-1-2"></a>2. multi-version<br  /></li>
+<li><a id="sec-3-1-47-1-3" name="sec-3-1-47-1-3"></a>3. incremental -&gt; near real-time, as fast as possible<br  /></li>
+<li><a id="sec-3-1-47-1-4" name="sec-3-1-47-1-4"></a>4. batch -&gt;<br  /></li>
+<li><a id="sec-3-1-47-1-5" name="sec-3-1-47-1-5"></a>5. extraction<br  /></li>
+<li><a id="sec-3-1-47-1-6" name="sec-3-1-47-1-6"></a>6. sharded<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-48" class="outline-4">
+<h4 id="sec-3-1-48">Lily indexer howto</h4>
+<div class="outline-text-4" id="text-3-1-48">
+</div><ul class="org-ul"><li><a id="sec-3-1-48-1" name="sec-3-1-48-1"></a>matching solr schema<br  /><ul class="org-ul"><li><a id="sec-3-1-48-1-1" name="sec-3-1-48-1-1"></a>and launch a solr instance that makes uses of this schema<br  /></li>
+<li><a id="sec-3-1-48-1-2" name="sec-3-1-48-1-2"></a>define index = define queries (and facets)<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-48-2" name="sec-3-1-48-2"></a>indexer configuration<br  /><ul class="org-ul"><li><a id="sec-3-1-48-2-1" name="sec-3-1-48-2-1"></a>which records to index<br  /></li>
+<li><a id="sec-3-1-48-2-2" name="sec-3-1-48-2-2"></a>how to map the lily fields onto solr fields<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-48-3" name="sec-3-1-48-3"></a>declare an index in Lily<br  /><ul class="org-ul"><li><a id="sec-3-1-48-3-1" name="sec-3-1-48-3-1"></a>use of the indexer configuration<br  /></li>
+<li><a id="sec-3-1-48-3-2" name="sec-3-1-48-3-2"></a>send to the matching solr shard<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-49" class="outline-4">
+<h4 id="sec-3-1-49">Indexer configuration @SOLR</h4>
+<div class="outline-text-4" id="text-3-1-49">
+</div><ul class="org-ul"><li><a id="sec-3-1-49-1" name="sec-3-1-49-1"></a>Presentation of the mandatories fields<br  /></li>
+<li><a id="sec-3-1-49-2" name="sec-3-1-49-2"></a>If modifying this file (schema.xml), restart the solr instance<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-50" class="outline-4">
+<h4 id="sec-3-1-50">Lily system fields in solr</h4>
+<div class="outline-text-4" id="text-3-1-50">
+</div><ul class="org-ul"><li><a id="sec-3-1-50-1" name="sec-3-1-50-1"></a>explanation of the mandatory fields for lily<br  /><ul class="org-ul"><li><a id="sec-3-1-50-1-1" name="sec-3-1-50-1-1"></a>lily.key: unique solr doc identification. combo of lily.id and vtag.id<br  /></li>
+<li><a id="sec-3-1-50-1-2" name="sec-3-1-50-1-2"></a>lily.id: lily record id<br  /></li>
+<li><a id="sec-3-1-50-1-3" name="sec-3-1-50-1-3"></a>lily.vtagId: field-schema-id of the vtag field<br  /></li>
+<li><a id="sec-3-1-50-1-4" name="sec-3-1-50-1-4"></a>lily.vtag: textual version (e.g. last)<br  /></li>
+<li><a id="sec-3-1-50-1-5" name="sec-3-1-50-1-5"></a>lily.version: actual sequence number of the version<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-51" class="outline-4">
+<h4 id="sec-3-1-51">Terminology</h4>
+<div class="outline-text-4" id="text-3-1-51">
+</div><ul class="org-ul"><li><a id="sec-3-1-51-1" name="sec-3-1-51-1"></a>Don't forget that Solr knows nothing about Lily<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-52" class="outline-4">
+<h4 id="sec-3-1-52">Indexer configuration @Lily</h4>
+<div class="outline-text-4" id="text-3-1-52">
+</div><ul class="org-ul"><li><a id="sec-3-1-52-1" name="sec-3-1-52-1"></a>&lt;field name="{solr references}" value="{lily expressions}" /&gt;<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-53" class="outline-4">
+<h4 id="sec-3-1-53">Why Lily indexing conf ?</h4>
+<div class="outline-text-4" id="text-3-1-53">
+</div><ul class="org-ul"><li><a id="sec-3-1-53-1" name="sec-3-1-53-1"></a>Alternative ?<br  /><ul class="org-ul"><li><a id="sec-3-1-53-1-1" name="sec-3-1-53-1-1"></a>Think the other way around -&gt; Where to stop the indexing (link of link of link of &#x2026;)<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-53-2" name="sec-3-1-53-2"></a>send all fields (and not store, not index @Solr)<br  /></li>
+<li><a id="sec-3-1-53-3" name="sec-3-1-53-3"></a>send all versions, recordtypes, &#x2026;<br  /></li>
+<li><a id="sec-3-1-53-4" name="sec-3-1-53-4"></a>&#x2026;<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-54" class="outline-4">
+<h4 id="sec-3-1-54">Lily index principles</h4>
+<div class="outline-text-4" id="text-3-1-54">
+</div><ul class="org-ul"><li><a id="sec-3-1-54-1" name="sec-3-1-54-1"></a>indexing picks up directly in the field-level<br  /></li>
+<li><a id="sec-3-1-54-2" name="sec-3-1-54-2"></a>vtag based<br  /></li>
+<li><a id="sec-3-1-54-3" name="sec-3-1-54-3"></a>filtering of records to index<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-55" class="outline-4">
+<h4 id="sec-3-1-55">Lily Index syntax</h4>
+</div>
+<div id="outline-container-sec-3-1-56" class="outline-4">
+<h4 id="sec-3-1-56">Lily index record matching</h4>
+<div class="outline-text-4" id="text-3-1-56">
+</div><ul class="org-ul"><li><a id="sec-3-1-56-1" name="sec-3-1-56-1"></a>first matching test will trigger the indexing<br  /></li>
+<li><a id="sec-3-1-56-2" name="sec-3-1-56-2"></a>&#x2026;<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-57" class="outline-4">
+<h4 id="sec-3-1-57">Lily indexing patterns</h4>
+</div>
+<div id="outline-container-sec-3-1-58" class="outline-4">
+<h4 id="sec-3-1-58">Grouping patterns</h4>
+</div>
+<div id="outline-container-sec-3-1-59" class="outline-4">
+<h4 id="sec-3-1-59">Working with blobs</h4>
+<div class="outline-text-4" id="text-3-1-59">
+</div><ul class="org-ul"><li><a id="sec-3-1-59-1" name="sec-3-1-59-1"></a>tika library is used for content extraction<br  /></li>
+<li><a id="sec-3-1-59-2" name="sec-3-1-59-2"></a>explicit mentioning to the indexer is expected<br  /><div class="outline-text-5" id="text-3-1-59-2">
+<p>
+&lt;field name="solr-field-name" value="prefix:name-blob-field"
+</p>
+</div>
+</li>
+<li><a id="sec-3-1-59-3" name="sec-3-1-59-3"></a>&#x2026;<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-60" class="outline-4">
+<h4 id="sec-3-1-60">Indexing lily system information</h4>
+<div class="outline-text-4" id="text-3-1-60">
+</div><ul class="org-ul"><li><a id="sec-3-1-60-1" name="sec-3-1-60-1"></a>we can index recordType<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-61" class="outline-4">
+<h4 id="sec-3-1-61">Dynamic index fields</h4>
+<div class="outline-text-4" id="text-3-1-61">
+</div><ul class="org-ul"><li><a id="sec-3-1-61-1" name="sec-3-1-61-1"></a>Useful to lower maintenance. When:<br  /><ul class="org-ul"><li><a id="sec-3-1-61-1-1" name="sec-3-1-61-1-1"></a>lots of fields<br  /></li>
+<li><a id="sec-3-1-61-1-2" name="sec-3-1-61-1-2"></a>many schema changes expected<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-61-2" name="sec-3-1-61-2"></a>first matching rule is active (tip: more specific on top)<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-62" class="outline-4">
+<h4 id="sec-3-1-62">Dynamic index fields 2</h4>
+</div>
+<div id="outline-container-sec-3-1-63" class="outline-4">
+<h4 id="sec-3-1-63">Dynamic index fields examples</h4>
+</div>
+<div id="outline-container-sec-3-1-64" class="outline-4">
+<h4 id="sec-3-1-64">Sample full dynamic index</h4>
+</div>
+<div id="outline-container-sec-3-1-65" class="outline-4">
+<h4 id="sec-3-1-65">Lily Advanced Indexing: Formatters</h4>
+<div class="outline-text-4" id="text-3-1-65">
+</div><ul class="org-ul"><li><a id="sec-3-1-65-1" name="sec-3-1-65-1"></a>Extension point, rarely needed<br  /></li>
+<li><a id="sec-3-1-65-2" name="sec-3-1-65-2"></a>Own implementation of org.lilyproject.indexer.model.indexerconf.Formatter<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-66" class="outline-4">
+<h4 id="sec-3-1-66">Managing indexes</h4>
+<div class="outline-text-4" id="text-3-1-66">
+</div><ul class="org-ul"><li><a id="sec-3-1-66-1" name="sec-3-1-66-1"></a>Control indexer states<br  /><ul class="org-ul"><li><a id="sec-3-1-66-1-1" name="sec-3-1-66-1-1"></a>General: ACTIVE, DISABLED, DELETE<sub>REQUESTED</sub>, DELETING, DELETE<sub>FAILED</sub><br  /></li>
+<li><a id="sec-3-1-66-1-2" name="sec-3-1-66-1-2"></a>Update-state: SUBSCRIBE<sub>AND</sub><sub>LISTEN</sub>, SUBSCRIBE<sub>DO</sub><sub>NOT</sub><sub>LISTEN</sub>, NOT<sub>SUBSCRIBED</sub><br  /></li>
+<li><a id="sec-3-1-66-1-3" name="sec-3-1-66-1-3"></a>Batch Build Atete: BUILD<sub>REQUESTED</sub>, BUILDING, INACTIVE<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-67" class="outline-4">
+<h4 id="sec-3-1-67">Managing indexes</h4>
+<div class="outline-text-4" id="text-3-1-67">
+</div><ul class="org-ul"><li><a id="sec-3-1-67-1" name="sec-3-1-67-1"></a>some commands:<br  /><ul class="org-ul"><li><a id="sec-3-1-67-1-1" name="sec-3-1-67-1-1"></a>List indexes: lily-list-indexes<br  /></li>
+<li><a id="sec-3-1-67-1-2" name="sec-3-1-67-1-2"></a>Retrieve lost indexerconf.xml file: lily-get-indexerconf -n NAME &gt;&gt; NAME-indexerconf.xml<br  /></li>
+<li><a id="sec-3-1-67-1-3" name="sec-3-1-67-1-3"></a>Update indexerconf.xml: lily-update-index -n NAME -c NAME-indexerconf.xml<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-68" class="outline-4">
+<h4 id="sec-3-1-68">Search?</h4>
+</div>
+<div id="outline-container-sec-3-1-69" class="outline-4">
+<h4 id="sec-3-1-69">Not yet: recap. how did we get here ?</h4>
+</div>
+<div id="outline-container-sec-3-1-70" class="outline-4">
+<h4 id="sec-3-1-70">Cool, no we can get to&#x2026;</h4>
+<div class="outline-text-4" id="text-3-1-70">
+</div><ul class="org-ul"><li><a id="sec-3-1-70-1" name="sec-3-1-70-1"></a>search!!!<br  /></li>
+<li><a id="sec-3-1-70-2" name="sec-3-1-70-2"></a>no, we have to commit the fucking indexer<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-71" class="outline-4">
+<h4 id="sec-3-1-71">SOLR Commit</h4>
+<div class="outline-text-4" id="text-3-1-71">
+</div><ul class="org-ul"><li><a id="sec-3-1-71-1" name="sec-3-1-71-1"></a>Flush added documents to the index<br  /></li>
+<li><a id="sec-3-1-71-2" name="sec-3-1-71-2"></a>Automatic<br  /><ul class="org-ul"><li><a id="sec-3-1-71-2-1" name="sec-3-1-71-2-1"></a>cf. solrconfig.xml ===&gt; we must test the environment to find the optimum period for the autocommit!<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-71-3" name="sec-3-1-71-3"></a>API<br  /><ul class="org-ul"><li><a id="sec-3-1-71-3-1" name="sec-3-1-71-3-1"></a>solrserver.commit()<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-71-4" name="sec-3-1-71-4"></a>REST<br  /><ul class="org-ul"><li><a id="sec-3-1-71-4-1" name="sec-3-1-71-4-1"></a>curl <a href="http://localhost:8983/solr/update">http://localhost:8983/solr/update</a> -H 'Content-type: text/xml' &#x2013;data-binary '&lt;commit /&gt;'<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-72" class="outline-4">
+<h4 id="sec-3-1-72">Querying solr</h4>
+<div class="outline-text-4" id="text-3-1-72">
+</div><ul class="org-ul"><li><a id="sec-3-1-72-1" name="sec-3-1-72-1"></a>Query "where:what"<br  /><ul class="org-ul"><li><a id="sec-3-1-72-1-1" name="sec-3-1-72-1-1"></a>what?<br  /><ul class="org-ul"><li><a id="sec-3-1-72-1-1-1" name="sec-3-1-72-1-1-1"></a>keyword or a value.<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-72-1-2" name="sec-3-1-72-1-2"></a>where?<br  /><ul class="org-ul"><li><a id="sec-3-1-72-1-2-1" name="sec-3-1-72-1-2-1"></a>which index? default one.<br  /></li></ul>
+</li></ul>
+</li>
+<li><a id="sec-3-1-72-2" name="sec-3-1-72-2"></a>API<br  /><ul class="org-ul"><li><a id="sec-3-1-72-2-1" name="sec-3-1-72-2-1"></a>solrserver.query(new SolrQuery("authors:shelley"));<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-72-3" name="sec-3-1-72-3"></a>REST<br  /><ul class="org-ul"><li><a id="sec-3-1-72-3-1" name="sec-3-1-72-3-1"></a><i>solr/select</i>?q=authors:shelley&amp;indent=on<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-1-73" class="outline-4">
+<h4 id="sec-3-1-73">SOLR Queries</h4>
+<div class="outline-text-4" id="text-3-1-73">
+</div><ul class="org-ul"><li><a id="sec-3-1-73-1" name="sec-3-1-73-1"></a>REST API - HTTP/XML<br  /></li>
+<li><a id="sec-3-1-73-2" name="sec-3-1-73-2"></a>cf. query on solr <a href="http://lucene.apache.org/solr/">http://lucene.apache.org/solr/</a><br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-74" class="outline-4">
+<h4 id="sec-3-1-74">SOLR Queries - Request params</h4>
+<div class="outline-text-4" id="text-3-1-74">
+</div><ul class="org-ul"><li><a id="sec-3-1-74-1" name="sec-3-1-74-1"></a>q=where:what<br  /></li>
+<li><a id="sec-3-1-74-2" name="sec-3-1-74-2"></a>fl=comma separated list of fields to return<br  /><ul class="org-ul"><li><a id="sec-3-1-74-2-1" name="sec-3-1-74-2-1"></a>*: all stored and indexed<br  /></li>
+<li><a id="sec-3-1-74-2-2" name="sec-3-1-74-2-2"></a>score: relevance<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-74-3" name="sec-3-1-74-3"></a>wt=json =&gt; json output format<br  /></li>
+<li><a id="sec-3-1-74-4" name="sec-3-1-74-4"></a>sort=field [asc|desc][, field [asc|desc]]<br  /></li>
+<li><a id="sec-3-1-74-5" name="sec-3-1-74-5"></a>hl=true =&gt; highlight<br  /><ul class="org-ul"><li><a id="sec-3-1-74-5-1" name="sec-3-1-74-5-1"></a>hl.fl = field to highlight<br  /></li></ul>
+</li>
+<li><a id="sec-3-1-74-6" name="sec-3-1-74-6"></a>&#x2026;<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-75" class="outline-4">
+<h4 id="sec-3-1-75">SOLR API</h4>
+<div class="outline-text-4" id="text-3-1-75">
+</div><ul class="org-ul"><li><a id="sec-3-1-75-1" name="sec-3-1-75-1"></a>REST API, implemented in java, no java api<br  /></li>
+<li><a id="sec-3-1-75-2" name="sec-3-1-75-2"></a>REST is a must @SOLR<br  /></li>
+<li><a id="sec-3-1-75-3" name="sec-3-1-75-3"></a>solj client java API<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-1-76" class="outline-4">
+<h4 id="sec-3-1-76">Solrj facets samples</h4>
+</div>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2">Lily training course</h3>
+<div class="outline-text-3" id="text-3-2">
+</div><div id="outline-container-sec-3-2-1" class="outline-4">
+<h4 id="sec-3-2-1">Agenda</h4>
+<div class="outline-text-4" id="text-3-2-1">
+</div><ul class="org-ul"><li><a id="sec-3-2-1-1" name="sec-3-2-1-1"></a>Changes since 0.3<br  /></li>
+<li><a id="sec-3-2-1-2" name="sec-3-2-1-2"></a>Dev env. support<br  /></li>
+<li><a id="sec-3-2-1-3" name="sec-3-2-1-3"></a>Dynamic links<br  /></li>
+<li><a id="sec-3-2-1-4" name="sec-3-2-1-4"></a>Changes since 0.3<br  /></li>
+<li><a id="sec-3-2-1-5" name="sec-3-2-1-5"></a>Repository API, performance, etc&#x2026;<br  /></li>
+<li><a id="sec-3-2-1-6" name="sec-3-2-1-6"></a>Blobs<br  /></li>
+<li><a id="sec-3-2-1-7" name="sec-3-2-1-7"></a>Indexer<br  /></li>
+<li><a id="sec-3-2-1-8" name="sec-3-2-1-8"></a>Various upgrades<br  /><ul class="org-ul"><li><a id="sec-3-2-1-8-1" name="sec-3-2-1-8-1"></a>SOLR 3.1<br  /></li>
+<li><a id="sec-3-2-1-8-2" name="sec-3-2-1-8-2"></a>Tika 0.8<br  /></li>
+<li><a id="sec-3-2-1-8-3" name="sec-3-2-1-8-3"></a>Avro 1.5 + patch (ant netty)<br  /></li></ul>
+</li>
+<li><a id="sec-3-2-1-9" name="sec-3-2-1-9"></a>Various fixes<br  /></li>
+<li><a id="sec-3-2-1-10" name="sec-3-2-1-10"></a>Lily enterpris<br  /></li>
+<li><a id="sec-3-2-1-11" name="sec-3-2-1-11"></a>Repository changes<br  /></li>
+<li><a id="sec-3-2-1-12" name="sec-3-2-1-12"></a>Various performance gain<br  /></li>
+<li><a id="sec-3-2-1-13" name="sec-3-2-1-13"></a>API<br  /></li>
+<li><a id="sec-3-2-1-14" name="sec-3-2-1-14"></a>The record ID String representation ';' -&gt; ','<br  /></li>
+<li><a id="sec-3-2-1-15" name="sec-3-2-1-15"></a>Blobs changes<br  /></li>
+<li><a id="sec-3-2-1-16" name="sec-3-2-1-16"></a>Before the access of blobs was global -&gt; move toward an access control through a record<br  /></li>
+<li><a id="sec-3-2-1-17" name="sec-3-2-1-17"></a>In anticipation of record-level access-control<br  /></li>
+<li><a id="sec-3-2-1-18" name="sec-3-2-1-18"></a>Blob-access: only through context of record<br  /></li>
+<li><a id="sec-3-2-1-19" name="sec-3-2-1-19"></a>Uploaded blobs (created but not used, cannot be read) until it's associated to a record<br  /></li>
+<li><a id="sec-3-2-1-20" name="sec-3-2-1-20"></a>REST interface adapted accordingly<br  /></li>
+<li><a id="sec-3-2-1-21" name="sec-3-2-1-21"></a>HDFS storage uses directory hierarchy for speed (uses the name in hierarchy folder)<br  /></li>
+<li><a id="sec-3-2-1-22" name="sec-3-2-1-22"></a>Blobs API Reading<br  /><div class="outline-text-5" id="text-3-2-1-22">
+<p>
+BlobAccess ba = repo.getBlob(record, new QName(ns, blobFieldName));
+Blob b = ba.getBlob();
+InputStream is = b.getInputStream();
+</p>
+</div>
+</li>
+<li><a id="sec-3-2-1-23" name="sec-3-2-1-23"></a>Indexer changes<br  /></li>
+<li><a id="sec-3-2-1-24" name="sec-3-2-1-24"></a>vtag.last automatic<br  /></li>
+<li><a id="sec-3-2-1-25" name="sec-3-2-1-25"></a>no version = vtag.x == 0<br  /></li>
+<li><a id="sec-3-2-1-26" name="sec-3-2-1-26"></a>renamed built-in required solr field to "lily."<br  /></li>
+<li><a id="sec-3-2-1-27" name="sec-3-2-1-27"></a>more compact indexer-conf.xml<br  /><ul class="org-ul"><li><a id="sec-3-2-1-27-1" name="sec-3-2-1-27-1"></a>support for dynamic fields<br  /></li></ul>
+</li>
+<li><a id="sec-3-2-1-28" name="sec-3-2-1-28"></a>Lily enterprise offer<br  /></li>
+<li><a id="sec-3-2-1-29" name="sec-3-2-1-29"></a>deployment packages (rpm/deb)<br  /></li>
+<li><a id="sec-3-2-1-30" name="sec-3-2-1-30"></a>hue admin<br  /></li>
+<li><a id="sec-3-2-1-31" name="sec-3-2-1-31"></a>cluster setup guide<br  /></li>
+<li><a id="sec-3-2-1-32" name="sec-3-2-1-32"></a>Upgrading<br  /></li>
+<li><a id="sec-3-2-1-33" name="sec-3-2-1-33"></a>No ascendant compatibility between 0.3 and 1.0 or later version<br  /></li></ul>
+</div>
+<div id="outline-container-sec-3-2-2" class="outline-4">
+<h4 id="sec-3-2-2">Development support (testing context)</h4>
+<div class="outline-text-4" id="text-3-2-2">
+</div><ul class="org-ul"><li><a id="sec-3-2-2-1" name="sec-3-2-2-1"></a>Maven project archetype<br  /><ul class="org-ul"><li><a id="sec-3-2-2-1-1" name="sec-3-2-2-1-1"></a>Generate a project with:<br  /><div class="outline-text-6" id="text-3-2-2-1-1">
+<p>
+mvn archetype:generate \
+  -DarchetypeGroupId=org.lilyproject \
+  -DarchetypeArtifactId=lily-archetype-basic \
+  -DarchetypeVersion=1.1-r5000 \
+  -DarchetypeRepository=<a href="http://lilyproject.org/maven/maven2/deploy/">http://lilyproject.org/maven/maven2/deploy/</a>
+</p>
+</div>
+</li>
+<li><a id="sec-3-2-2-1-2" name="sec-3-2-2-1-2"></a>Everything set up to get you started right away<br  /></li></ul>
+</li>
+<li><a id="sec-3-2-2-2" name="sec-3-2-2-2"></a>The lily-test-framework<br  /><ul class="org-ul"><li><a id="sec-3-2-2-2-1" name="sec-3-2-2-2-1"></a>2 options:<br  /><ul class="org-ul"><li><a id="sec-3-2-2-2-1-1" name="sec-3-2-2-2-1-1"></a>embed mode: all run inside a same vm; lily and tests<br  /><ul class="org-ul"><li><a id="sec-3-2-2-2-1-1-1" name="sec-3-2-2-2-1-1-1"></a>cons: slow<br  /></li>
+<li><a id="sec-3-2-2-2-1-1-2" name="sec-3-2-2-2-1-1-2"></a>plus: no external setup<br  /></li></ul>
+</li>
+<li><a id="sec-3-2-2-2-1-2" name="sec-3-2-2-2-1-2"></a>connect mode: tests talk to a standalone lily stack -&gt; there is a possibility to clean all the datas inserted during the tests!<br  /><ul class="org-ul"><li><a id="sec-3-2-2-2-1-2-1" name="sec-3-2-2-2-1-2-1"></a>add-hoc testings<br  /></li></ul>
+</li></ul>
+</li></ul>
+</li>
+<li><a id="sec-3-2-2-3" name="sec-3-2-2-3"></a>lily test framework<br  /><div class="outline-text-5" id="text-3-2-2-3">
+
+<div class="figure">
+<p><img src="http://docs.outerthought.org/lily-docs-trunk/516-lily/version/default/part/ImageData/data/lilytestproxy.png" alt="lilytestproxy.png" />
+</p>
+</div>
+</div>
+</li>
+<li><a id="sec-3-2-2-4" name="sec-3-2-2-4"></a>Clean slate<br  /><ul class="org-ul"><li><a id="sec-3-2-2-4-1" name="sec-3-2-2-4-1"></a>embed: clean slate at starting<br  /></li>
+<li><a id="sec-3-2-2-4-2" name="sec-3-2-2-4-2"></a>standalone:<br  /><ul class="org-ul"><li><a id="sec-3-2-2-4-2-1" name="sec-3-2-2-4-2-1"></a>provided jmx operation 'resetLilySlate'<br  /></li>
+<li><a id="sec-3-2-2-4-2-2" name="sec-3-2-2-4-2-2"></a>this operation is triggered at starting<br  /></li></ul>
+</li></ul>
+</li>
+<li><a id="sec-3-2-2-5" name="sec-3-2-2-5"></a>The big idea -&gt; abandonned<br  /></li>
+<li><a id="sec-3-2-2-6" name="sec-3-2-2-6"></a>How to use<br  /><ul class="org-ul"><li><a id="sec-3-2-2-6-1" name="sec-3-2-2-6-1"></a>pom.xml<br  /><div class="outline-text-6" id="text-3-2-2-6-1">
+<p>
+&lt;project&gt;
+  &lt;dependencies&gt;
+</p>
+
+<p>
+&lt;dependency&gt;
+  &lt;groupId&gt;org.lilyproject&lt;/groupId&gt;
+  &lt;artifactId&gt;lily-server-testfw&lt;/artifactId&gt;
+  &lt;version&gt;1.1-SNAPSHOT&lt;/version&gt;
+  &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</p>
+
+<p>
+&lt;dependency&gt;
+  &lt;groupId&gt;junit&lt;/groupId&gt;
+  &lt;artifactId&gt;junit&lt;/artifactId&gt;
+  &lt;version&gt;4.8.1&lt;/version&gt;
+  &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</p>
+
+<p>
+  &lt;/dependencies&gt;
+&lt;/project&gt;
+</p>
+</div>
+</li></ul>
+</li>
+<li><a id="sec-3-2-2-7" name="sec-3-2-2-7"></a>RT Lily dependencies<br  /><div class="outline-text-5" id="text-3-2-2-7">
+<p>
+&lt;project&gt;
+  &lt;dependencies&gt;
+</p>
+
+<p>
+&lt;dependency&gt;
+  &lt;groupId&gt;org.lilyproject&lt;/groupId&gt;
+  &lt;artifactId&gt;lily-server-testfw&lt;/artifactId&gt;
+  &lt;version&gt;1.1-SNAPSHOT&lt;/version&gt;
+  &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</p>
+
+<p>
+&lt;dependency&gt;
+  &lt;groupId&gt;junit&lt;/groupId&gt;
+  &lt;artifactId&gt;junit&lt;/artifactId&gt;
+  &lt;version&gt;4.8.1&lt;/version&gt;
+  &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</p>
+
+<p>
+  &lt;/dependencies&gt;
+&lt;/project&gt;
+</p>
+</div>
+</li>
+<li><a id="sec-3-2-2-8" name="sec-3-2-2-8"></a>More maven config<br  /><ul class="org-ul"><li><a id="sec-3-2-2-8-1" name="sec-3-2-2-8-1"></a>testing should fork vm (beware of classpath issues)<br  /><div class="outline-text-6" id="text-3-2-2-8-1">
+<p>
+&lt;project&gt;
+  &lt;build&gt;
+    &lt;plugins&gt;
+</p>
+
+<p>
+&lt;plugin&gt;
+  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+  &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+  &lt;version&gt;2.5&lt;/version&gt;
+  &lt;configuration&gt;
+    &lt;forkMode&gt;always&lt;/forkMode&gt;
+    &lt;systemPropertyVariables&gt;
+      &lt;lily.lilyproxy.mode&gt;${lily.lilyproxy.mode}&lt;/lily.lilyproxy.mode&gt;
+      &lt;lily.config.customdir&gt;${lily.config.customdir}&lt;/lily.config.customdir&gt;
+      &lt;lily.plugin.dir&gt;${lily.plugin.dir}&lt;/lily.plugin.dir&gt;
+    &lt;/systemPropertyVariables&gt;
+  &lt;/configuration&gt;
+&lt;/plugin&gt;
+</p>
+
+<p>
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;
+</p>
+</div>
+</li></ul>
+</li>
+
+<li><a id="sec-3-2-2-9" name="sec-3-2-2-9"></a>And finally<br  /><ul class="org-ul"><li><a id="sec-3-2-2-9-1" name="sec-3-2-2-9-1"></a>maven dependencies<br  /></li></ul>
+</li>
+<li><a id="sec-3-2-2-10" name="sec-3-2-2-10"></a>Maven convenience<br  /><ul class="org-ul"><li><a id="sec-3-2-2-10-1" name="sec-3-2-2-10-1"></a>create profile to connect<br  /><div class="outline-text-6" id="text-3-2-2-10-1">
+<p>
+&lt;project&gt;
+  &lt;profiles&gt;
+</p>
+
+<p>
+&lt;profile&gt;
+  &lt;id&gt;connect&lt;/id&gt;
+  &lt;properties&gt;
+    &lt;lily.lilyproxy.mode&gt;connect&lt;/lily.lilyproxy.mode&gt;
+  &lt;/properties&gt;
+&lt;/profile&gt;
+</p>
+
+<p>
+  &lt;/profiles&gt;
+&lt;/project&gt;
+</p>
+</div>
+</li>
+<li><a id="sec-3-2-2-10-2" name="sec-3-2-2-10-2"></a>define path properties in the pom (adding modules to lily == adding modules to cody)<br  /><div class="outline-text-6" id="text-3-2-2-10-2">
+<p>
+&lt;lily.config.customdir&gt;&lt;/lily.config.customdir&gt;
+&lt;lily.plugin.dir&gt;&lt;/lily.plugin.dir&gt;
+</p>
+</div>
+</li></ul>
+</li>
+<li><a id="sec-3-2-2-11" name="sec-3-2-2-11"></a>Under the hood<br  /></li>
+<li><a id="sec-3-2-2-12" name="sec-3-2-2-12"></a>Recommended: class level proxy<br  /><ul class="org-ul"><li><a id="sec-3-2-2-12-1" name="sec-3-2-2-12-1"></a>Example:<br  /><div class="outline-text-6" id="text-3-2-2-12-1">
+<div class="org-src-container">
+
+<pre class="src src-java">import org.junit.Test;
+import org.lilyproject.lilyservertestfw.LilyProxy;
+import org.lilyproject.repository.api.*;
+
+public class MyTest {
+    @Test
+    public void testMe() throws Exception {
+	LilyProxy proxy = new LilyProxy();
+
+	// Depending on mode, this will:
+	//  - start Hadoop, ZooKeeper, HBase, Solr, Lily embedded
+	//  - connect to locally running instance launched by launch-test-lily and clear its state
+	proxy.start();
+
+	Repository repository = proxy.getLilyServerProxy().getClient();
+
+	// Do stuff with the repository
+	// ...
+
+	proxy.stop();
+    }
+}
+</pre>
+</div>
+</div>
+</li>
+<li><a id="sec-3-2-2-12-2" name="sec-3-2-2-12-2"></a>Example 2:<br  /><div class="outline-text-6" id="text-3-2-2-12-2">
+<div class="org-src-container">
+
+<pre class="src src-java">import org.junit.Test;
+import org.lilyproject.lilyservertestfw.LilyProxy;
+import org.lilyproject.repository.api.*;
+
+public class MyTest {
+    private static LilyProxy LILY_PROXY;
+
+    @BeforeClass
+    public static void setup() {
+	LILY_PROXY = new LilyProxy();
+	// Depending on mode, this will:
+	//  - start Hadoop, ZooKeeper, HBase, Solr, Lily embedded
+	//  - connect to locally running instance launched by launch-test-lily and clear its state
+	LILY_PROXY.start();
+    }
+
+    @AfterClass
+    public static void tearDown() {
+	LILY_PROXY.stop();
+    }
+
+    @Test
+    public void testMe() throws Exception {
+	Repository repository = LILY_PROXY.getLilyServerProxy().getClient();
+
+	// Do stuff with the repository
+	// ...
+    }
+}
+</pre>
+</div>
+</div>
+</li></ul>
+</li>
+<li><a id="sec-3-2-2-13" name="sec-3-2-2-13"></a>Embed -&gt; Standalone + Connect<br  /><ul class="org-ul"><li><a id="sec-3-2-2-13-1" name="sec-3-2-2-13-1"></a>embed: mvn install<br  /></li>
+<li><a id="sec-3-2-2-13-2" name="sec-3-2-2-13-2"></a>standalone ?<br  /><ul class="org-ul"><li><a id="sec-3-2-2-13-2-1" name="sec-3-2-2-13-2-1"></a>launch with ./bin/launch-test-lily<br  /></li></ul>
+</li>
+<li><a id="sec-3-2-2-13-3" name="sec-3-2-2-13-3"></a>test connected<br  /><ul class="org-ul"><li><a id="sec-3-2-2-13-3-1" name="sec-3-2-2-13-3-1"></a>mvn -Pconnect install<br  /></li></ul>
+</li>
+<li><a id="sec-3-2-2-13-4" name="sec-3-2-2-13-4"></a>then LilyProxy.start() will call JMX#resetListState<br  /></li>
+<li><a id="sec-3-2-2-13-5" name="sec-3-2-2-13-5"></a>when running tests (IDE) outside maven, test will react on system property: -Dlily.lilyproxy.mode=connect<br  /></li>
+<li><a id="sec-3-2-2-13-6" name="sec-3-2-2-13-6"></a>Possibility to use directly a real lily (don't call LilyProxy.start() on the tests)<br  /></li></ul>
+</li>
+<li><a id="sec-3-2-2-14" name="sec-3-2-2-14"></a>Service configuration<br  /><ul class="org-ul"><li><a id="sec-3-2-2-14-1" name="sec-3-2-2-14-1"></a>Allow SOLR schema changes<br  /><ul class="org-ul"><li><a id="sec-3-2-2-14-1-1" name="sec-3-2-2-14-1-1"></a>on startup<br  /></li>
+<li><a id="sec-3-2-2-14-1-2" name="sec-3-2-2-14-1-2"></a>or even later<br  /><ul class="org-ul"><li><a id="sec-3-2-2-14-1-2-1" name="sec-3-2-2-14-1-2-1"></a>LILY<sub>PROXY</sub>.getSorlProxy().changeSolrSchema(solrSchemaData)<br  /></li></ul>
+</li>
+<li><a id="sec-3-2-2-14-1-3" name="sec-3-2-2-14-1-3"></a>&#x2026;<br  /></li></ul>
+</li></ul>
+</li>
+<li><a id="sec-3-2-2-15" name="sec-3-2-2-15"></a>Utilities<br  /><ul class="org-ul"><li><a id="sec-3-2-2-15-1" name="sec-3-2-2-15-1"></a>timeout on methods to "wait" for a result. Return true if the action happened between the timeout, false otherwise.<br  /></li>
+<li><a id="sec-3-2-2-15-2" name="sec-3-2-2-15-2"></a>add an index<br  /></li>
+<li><a id="sec-3-2-2-15-3" name="sec-3-2-2-15-3"></a>wait for the mq, wal and commit solr<br  /></li>
+<li><a id="sec-3-2-2-15-4" name="sec-3-2-2-15-4"></a>batch rebuild index<br  /></li></ul>
+</li></ul>
+</div>
+<div id="outline-container-sec-3-2-3" class="outline-4">
+<h4 id="sec-3-2-3">Dynamic links</h4>
+<div class="outline-text-4" id="text-3-2-3">
+</div><ul class="org-ul"><li><a id="sec-3-2-3-1" name="sec-3-2-3-1"></a>Dynamic Links Storage Model<br  /><div class="outline-text-5" id="text-3-2-3-1">
+<p>
+schema
+</p>
+</div>
+</li>
+<li><a id="sec-3-2-3-2" name="sec-3-2-3-2"></a>Setup and configuration<br  /><ul class="org-ul"><li><a id="sec-3-2-3-2-1" name="sec-3-2-3-2-1"></a>deploy dynamic-link jar to ~/.m2/repository<br  /><div class="outline-text-6" id="text-3-2-3-2-1">
+<p>
+sources: ~/Downloads/lily/20110719-lily-training/dl-extra/
+</p>
+</div>
+</li>
+<li><a id="sec-3-2-3-2-2" name="sec-3-2-3-2-2"></a>Add required configuration from "conf" and "plugins" folder<br  /><div class="outline-text-6" id="text-3-2-3-2-2">
+<p>
+sources: ~/Downloads/lily/20110719-lily-training/dl-ss-0.2.tar.gz
+</p>
+</div>
+</li></ul>
+</li>
+<li><a id="sec-3-2-3-3" name="sec-3-2-3-3"></a>Add the DL feature to the Lily Node<br  /><ul class="org-ul"><li><a id="sec-3-2-3-3-1" name="sec-3-2-3-3-1"></a>These are plugins which are specific for wikeo.<br  /></li>
+<li><a id="sec-3-2-3-3-2" name="sec-3-2-3-3-2"></a>./plugins/load-before-repository/wiring.xml<br  /><div class="outline-text-6" id="text-3-2-3-3-2">
+<p>
+load the extension module into lily-node jvm
+</p>
+</div>
+</li>
+<li><a id="sec-3-2-3-3-3" name="sec-3-2-3-3-3"></a>./conf/repository/repository.xml<br  /><div class="outline-text-6" id="text-3-2-3-3-3">
+<p>
+let the lily node know what it can find in that module
+</p>
+</div>
+</li></ul>
+</li>
+<li><a id="sec-3-2-3-4" name="sec-3-2-3-4"></a>Configure the DL feature<br  /><ul class="org-ul"><li><a id="sec-3-2-3-4-1" name="sec-3-2-3-4-1"></a>./conf/dynamiclink/dynamiclink.xml<br  /></li>
+<li><a id="sec-3-2-3-4-2" name="sec-3-2-3-4-2"></a>./conf/dynamiclink/dlmetrics.xml<br  /></li></ul>
+</li>
+<li><a id="sec-3-2-3-5" name="sec-3-2-3-5"></a>Run Lily with extensions<br  /><ul class="org-ul"><li><a id="sec-3-2-3-5-1" name="sec-3-2-3-5-1"></a>Standalone<br  /><ul class="org-ul"><li><a id="sec-3-2-3-5-1-1" name="sec-3-2-3-5-1-1"></a>Add maven jars in repo-layout to $LILY<sub>HOME</sub>/lib<br  /></li>
+<li><a id="sec-3-2-3-5-1-2" name="sec-3-2-3-5-1-2"></a>Add configuration files in provided layout to $LILY<sub>HOME</sub>/conf<br  /></li></ul>
+</li>
+<li><a id="sec-3-2-3-5-2" name="sec-3-2-3-5-2"></a>Embed<br  /><div class="outline-text-6" id="text-3-2-3-5-2">
+<p>
+&lt;lily.config.customdir&gt;config&lt;/lily.config.customdir&gt;
+&lt;lily.plugin.dir&gt;plugin&lt;/lily.plugin.dir&gt;
+</p>
+</div>
+</li>
+<li><a id="sec-3-2-3-5-3" name="sec-3-2-3-5-3"></a>Deploy<br  /><ul class="org-ul"><li><a id="sec-3-2-3-5-3-1" name="sec-3-2-3-5-3-1"></a>running dev.<br  /></li></ul>
+</li></ul>
+</li>
+<li><a id="sec-3-2-3-6" name="sec-3-2-3-6"></a>Dynamic link schema<br  /></li>
+<li><a id="sec-3-2-3-7" name="sec-3-2-3-7"></a>Sample<br  /></li>
+<li><a id="sec-3-2-3-8" name="sec-3-2-3-8"></a>Sample 2<br  /></li>
+<li><a id="sec-3-2-3-9" name="sec-3-2-3-9"></a>Updating the query<br  /></li>
+<li><a id="sec-3-2-3-10" name="sec-3-2-3-10"></a>dl.query<br  /><ul class="org-ul"><li><a id="sec-3-2-3-10-1" name="sec-3-2-3-10-1"></a>Strict json syntqx<br  /><ul class="org-ul"><li><a id="sec-3-2-3-10-1-1" name="sec-3-2-3-10-1-1"></a>=&gt; Use Jackson library<br  /></li></ul>
+</li>
+<li><a id="sec-3-2-3-10-2" name="sec-3-2-3-10-2"></a>Json-properties map onto solr-query parameters<br  /><ul class="org-ul"><li><a id="sec-3-2-3-10-2-1" name="sec-3-2-3-10-2-1"></a>directly pass through, no checking<br  /></li></ul>
+</li>
+<li><a id="sec-3-2-3-10-3" name="sec-3-2-3-10-3"></a>Exceptions<br  /><ul class="org-ul"><li><a id="sec-3-2-3-10-3-1" name="sec-3-2-3-10-3-1"></a>fl and wt are ignored<br  /></li>
+<li><a id="sec-3-2-3-10-3-2" name="sec-3-2-3-10-3-2"></a>upgrading qt vqleurs with / to path segments<br  /></li></ul>
+</li></ul>
+</li>
+<li><a id="sec-3-2-3-11" name="sec-3-2-3-11"></a>[DL] Related topics<br  /><ul class="org-ul"><li><a id="sec-3-2-3-11-1" name="sec-3-2-3-11-1"></a>Peeking into the link index<br  /></li>
+<li><a id="sec-3-2-3-11-2" name="sec-3-2-3-11-2"></a>conditional updates<br  /></li>
+<li><a id="sec-3-2-3-11-3" name="sec-3-2-3-11-3"></a>Decorators<br  /></li>
+<li><a id="sec-3-2-3-11-4" name="sec-3-2-3-11-4"></a>record update hook<br  /></li>
+<li><a id="sec-3-2-3-11-5" name="sec-3-2-3-11-5"></a>extensions (cf. running lily with extensions)<br  /></li></ul>
+</li>
+<li><a id="sec-3-2-3-12" name="sec-3-2-3-12"></a>Using the link index<br  /><ul class="org-ul"><li><a id="sec-3-2-3-12-1" name="sec-3-2-3-12-1"></a>Who links to me ?<br  /></li>
+<li><a id="sec-3-2-3-12-2" name="sec-3-2-3-12-2"></a>based on internal knowledge in lily (hbase table dedicated to it)<br  /></li>
+<li><a id="sec-3-2-3-12-3" name="sec-3-2-3-12-3"></a>requires the link-index artifact<br  /><ul class="org-ul"><li><a id="sec-3-2-3-12-3-1" name="sec-3-2-3-12-3-1"></a>update the pom.xml with the dependency<br  /></li></ul>
+</li></ul>
+</li>
+<li><a id="sec-3-2-3-13" name="sec-3-2-3-13"></a>LinkIndex Object<br  /></li>
+<li><a id="sec-3-2-3-14" name="sec-3-2-3-14"></a>Conditional updates<br  /></li>
+<li><a id="sec-3-2-3-15" name="sec-3-2-3-15"></a>Decorators and update hooks<br  /></li>
+<li><a id="sec-3-2-3-16" name="sec-3-2-3-16"></a>API Exercises<br  /></li></ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Antoine Romain Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>PIH - ch7 - Higher-order functions 3/3</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<meta  name="description" content="Higher order functions, function composition, foldr, foldl exercises."
+ />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">PIH - ch7 - Higher-order functions 3/3</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">transmitter</a>
+<ul>
+<li><a href="#sec-1-1">parbit</a></li>
+<li><a href="#sec-1-2">encode</a></li>
+<li><a href="#sec-1-3">chop9</a></li>
+<li><a href="#sec-1-4">checkParbit</a>
+<ul>
+<li><a href="#sec-1-4-1">Exception: Not ok</a></li>
+<li><a href="#sec-1-4-2">decode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-2">Test</a>
+<ul>
+<li><a href="#sec-2-1">Without errors</a></li>
+<li><a href="#sec-2-2">Errors</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+For the first exercises, <a href="http://adumont.fr/blog/pih-ch7-higher-order-functions-12/">see this post</a> and <a href="http://adumont.fr/blog/pih-ch7-higher-order-functions-23/">this one</a>.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">transmitter</h2>
+<div class="outline-text-2" id="text-1">
+<blockquote>
+<p>
+Modify the string transmitter program to detect simple transmission errors using parity bits. That is, each eight-bit binary number produced during encoding is extended with a parity bit, set to one if the number contains an odd number of ones, and to zero otherwise.
+In turn, each resulting nine-bit binary number consumed during decoding is checked to ensure that its parity bit is correct, with the parity bit being discarded if this is the case, and a parity error reported otherwise.
+</p>
+
+<p>
+<b>Hint:</b>
+The library function <code>error :: String → a</code> terminates evaluation and displays the given string as an error message.
+</p>
+</blockquote>
+
+<p>
+Recall the existing functions:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">int2bin :: Int -&gt; [Bit]
+int2bin 0 = []
+int2bin n = int2bin (n `div` 2) ++ [n `mod` 2]
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">parbit</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+We need the <code>parbit</code> function which add the parity bit at the ninth position:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">parbit :: [Bit] -&gt; [Bit]
+parbit xs | even (sum xs) = xs ++ [0] -- even number of ones
+	  | otherwise     = xs ++ [1] -- odd number of ones
+</pre>
+</div>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch7_2&gt; parbit [1,1,0]
+[1,1,0,0]
+*Ch7_2&gt; parbit [1,1,1]
+[1,1,1,1]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">encode</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Now we need to add in the function the adding of the parity bit.
+After we created the 8 bits portion seems a good idea, so here we go:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">encode :: String -&gt; [Bit]
+encode = concat . map (parbit . make8 . int2bin . C.ord)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">chop9</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Now we need to be able to chop bits by bucket of 9:
+</p>
+
+<p>
+Using <code>unfold</code>, this goes quite fast:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">chop9 :: [Bit] -&gt; [[Bit]]
+chop9 = unfold null (take 9) (drop 9)
+</pre>
+</div>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch7_2&gt; chop9 (encode "haskell")
+[[0,1,1,0,1,0,0,0,1],[0,1,1,0,0,0,0,1,1],[0,1,1,1,0,0,1,1,1],[0,1,1,0,1,0,1,1,1],[0,1,1,0,0,1,0,1,0],[0,1,1,0,1,1,0,0,0],[0,1,1,0,1,1,0,0,0]]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">checkParbit</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+I take 8 bits, compute the parity bit and check with the all list, if this matches, then I return the 8th bits, otherwise, i raise an error:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">checkParbit :: [Bit] -&gt; [Bit]
+checkParbit xs | (parbit (take 8 xs) == xs) = (take 8 xs)
+	       | otherwise = error "Not ok"
+</pre>
+</div>
+
+<p>
+Example:
+#+begin<sub>src</sub> haskell
+*Ch7<sub>2</sub>&gt; checkParbit (encode "a")
+[0,1,0,0,0,0,1,1]
+*Ch7<sub>2</sub>&gt; checkParbit [0,1,0,0,0,0,1,0]
+</p>
+</div>
+<div id="outline-container-sec-1-4-1" class="outline-4">
+<h4 id="sec-1-4-1">Exception: Not ok</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<p>
+#+end<sub>src</sub>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4-2" class="outline-4">
+<h4 id="sec-1-4-2">decode</h4>
+<div class="outline-text-4" id="text-1-4-2">
+<p>
+At last, we can update the decode phase.
+We must first chop by 9 bits the list of bits we receive.
+Then checking the parity bits, then the rest:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">decode :: [Bit] -&gt; String
+decode = map (C.chr . bin2int . checkParbit) . chop9
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Test</h2>
+<div class="outline-text-2" id="text-2">
+<blockquote>
+<p>
+Test your new string transmitter program from the previous exercise using a faulty communication channel that forgets the first bit, which can be modelled using the tail function on lists of bits.
+</p>
+</blockquote>
+</div>
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Without errors</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Recall the transmit function:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">channel :: a -&gt; a
+channel = id
+
+transmit :: String -&gt; String
+transmit = decode . channel . encode
+</pre>
+</div>
+
+<p>
+Thus, everything works ok:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch7_2&gt; transmit "haskell is great"
+"haskell is great"
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">Errors</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+The transmit function does not need to change. However, the channel one does.
+As the problem states, we can for example use <code>tail</code> for this:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">channel :: a -&gt; a
+channel = tail
+</pre>
+</div>
+
+<p>
+Then all hell breaks loose:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch7_2&gt; transmit "haskell is great"
+"\209\195\231\215\202\216\216A\210\231A\207\228\202\195*** Exception: Not ok
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2013-01-08 mar. 19:56]</span></span></p>
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

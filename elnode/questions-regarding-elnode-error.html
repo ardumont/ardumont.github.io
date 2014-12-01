@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Questions regarding elnode errors</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js"></script>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Questions regarding elnode errors</h1>
+<p>
+Hi,
+</p>
+
+<p>
+I am developing org-trello, a minor mode to synchronize between [org-mode](<a href="https://github.com/org-trello/org-trello">https://github.com/org-trello/org-trello</a>) and [trello](<a href="http://trello.com">http://trello.com</a>) (through their public API).
+At the moment, all of this is coupled and synchronous (thus blocking emacs for batch sync &#x2013; `evil`). The query is built and sent to trello for it to satisfy.
+</p>
+
+<p>
+I am working on an evolution involving elnode as a `proxy`.
+I kept the same functionality as above but now the idea is to enrich and wrap the query built for trello (with data org needs but trello does not care) and send it to the proxy.
+The proxy unwraps the query and send the query to trello.
+When trello answers, the proxy enrichs the response and bounce it to the client.
+</p>
+
+<p>
+This has advantages:
+</p>
+<ul class="org-ul">
+<li>evolutivity
+</li>
+<li>I can avoid some actual hack regarding marker on the buffer (I can enrich the query with the position and the buffer I want to update)
+</li>
+<li>more importantly, I can now exploit some concurrence (this has its own difficulties though :D)
+</li>
+</ul>
+
+<p>
+Anyway, I succeeded mostly for some basic synchronization but I got some elnode errors that keep poping-up during the process.
+I do not understand those errors as everything seems to work.
+</p>
+
+<p>
+Here is some <b>Message</b> buffer sample:
+</p>
+
+<p>
+```lisp
+elnode-error: filter: handler returned on *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46186&gt;
+Request to trello server to wrap: #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8 data (:method "PUT" :uri "/cards/51e7e60bd23ccba35c00a588" :params (("name" . "yet another fail") ("idList" . "51e538a89c05f1e25c0027c6")) :position 5658 :buffername "TODO-tests.org"))
+Request to proxy wrapped: #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8 data (:method "POST" :uri "/" :params #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8 data (:method "PUT" :uri "/cards/51e7e60bd23ccba35c00a588" :params (("name" . "yet another fail") ("idList" . "51e538a89c05f1e25c0027c6")) :position 5658 :buffername "TODO-tests.org"))))
+elnode-error: elnode&#x2013;sentinel 'open from 127.0.0.1.' for process  *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46188&gt; with buffer nil
+elnode-error: Elnode status: *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46188&gt; open from 127.0.0.1
+elnode-error: filter: calling handler on *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46188&gt;
+Proxy server: params -&gt; #&lt;process *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46188&gt;&gt;
+Blocking call to accept-process-output with quit inhibited!! [2 times]
+callback post/put/delete: ((url . "<a href="https://trello.com/c/pwwSdcg0/45-yet-another-fail">https://trello.com/c/pwwSdcg0/45-yet-another-fail</a>") (pos . 65535) (name . "yet another fail") (labels . []) (manualCoverAttachment . :json-false) (idAttachmentCover) (idShort . 45) (idMembers . []) (idList . "51e538a89c05f1e25c0027c6") (idChecklists . []) (idBoard . "51d99bbc1e1d8988390047f2") (due) (desc . "") (dateLastActivity . "2013-08-13T23:44:24.347Z") (closed . :json-false) (checkItemStates . []) (badges (due) (description . :json-false) (attachments . 0) (comments . 0) (checkItemsChecked . 0) (checkItems . 0) (fogbugz . "") (subscribed . :json-false) (viewingMemberVoted . :json-false) (votes . 0)) (id . "51e7e60bd23ccba35c00a588")) - position: 5658
+Responding to the proxy's client with ((id . "51e7e60bd23ccba35c00a588") (position . 5658) (buffername . "TODO-tests.org"))
+elnode-error: starting HTTP response on *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46188&gt;
+elnode-error: elnode&#x2013;process-send-eof on *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46188&gt;
+elnode-error: elnode&#x2013;http-end ending socket <b>elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46188&gt;
+elnode-error: elnode&#x2013;sentinel 'deleted.' for process  *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46188&gt; with buffer  *elnode-request-46188</b>
+elnode-error: Elnode status: *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46188&gt; deleted
+orgtrello-query/&#x2013;update-entity-id-to-buffer-callback: ((buffername . "TODO-tests.org") (position . 5658) (id . "51e7e60bd23ccba35c00a588")) - pos 51e7e60bd23ccba35c00a588 - id 5658
+TRACE: :entry-meta: #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8 data (:buffername "TODO-tests.org" :position 5658 :level 1 :keyword "DELEGATED" :title "yet another fail" :id "51e7e60bd23ccba35c00a588" :due nil))
+TRACE: :already-present-id: "51e7e60bd23ccba35c00a588"
+TRACE: :current-name: "yet another fail"
+Entity 'yet another fail' synced with id '51e7e60bd23ccba35c00a588'
+elnode-error: filter: handler returned on *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46188&gt;
+Request to trello server to wrap: #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8 data (:method "PUT" :uri "/cards/51ffe96c32c0ac5e59000850" :params (("name" . "cancelled task") ("idList" . "51e538e6c7a68fa0510014ee")) :position 5746 :buffername "TODO-tests.org"))
+Request to proxy wrapped: #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8 data (:method "POST" :uri "/" :params #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8 data (:method "PUT" :uri "/cards/51ffe96c32c0ac5e59000850" :params (("name" . "cancelled task") ("idList" . "51e538e6c7a68fa0510014ee")) :position 5746 :buffername "TODO-tests.org"))))
+elnode-error: elnode&#x2013;sentinel 'open from 127.0.0.1.' for process  *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46190&gt; with buffer nil
+elnode-error: Elnode status: *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46190&gt; open from 127.0.0.1
+elnode-error: filter: calling handler on *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46190&gt;
+Proxy server: params -&gt; #&lt;process *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46190&gt;&gt;
+Blocking call to accept-process-output with quit inhibited!! [2 times]
+callback post/put/delete: ((url . "<a href="https://trello.com/c/smLa9B2J/63-cancelled-task">https://trello.com/c/smLa9B2J/63-cancelled-task</a>") (pos . 16384) (name . "cancelled task") (labels . []) (manualCoverAttachment . :json-false) (idAttachmentCover) (idShort . 63) (idMembers . []) (idList . "51e538e6c7a68fa0510014ee") (idChecklists . []) (idBoard . "51d99bbc1e1d8988390047f2") (due) (desc . "") (dateLastActivity . "2013-08-13T23:44:25.115Z") (closed . :json-false) (checkItemStates . []) (badges (due) (description . :json-false) (attachments . 0) (comments . 0) (checkItemsChecked . 0) (checkItems . 0) (fogbugz . "") (subscribed . :json-false) (viewingMemberVoted . :json-false) (votes . 0)) (id . "51ffe96c32c0ac5e59000850")) - position: 5746
+Responding to the proxy's client with ((id . "51ffe96c32c0ac5e59000850") (position . 5746) (buffername . "TODO-tests.org"))
+elnode-error: starting HTTP response on *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46190&gt;
+elnode-error: elnode&#x2013;process-send-eof on *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46190&gt;
+elnode-error: elnode&#x2013;http-end ending socket <b>elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46190&gt;
+elnode-error: elnode&#x2013;sentinel 'deleted.' for process  *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46190&gt; with buffer  *elnode-request-46190</b>
+elnode-error: Elnode status: *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46190&gt; deleted
+orgtrello-query/&#x2013;update-entity-id-to-buffer-callback: ((buffername . "TODO-tests.org") (position . 5746) (id . "51ffe96c32c0ac5e59000850")) - pos 51ffe96c32c0ac5e59000850 - id 5746
+TRACE: :entry-meta: #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8 data (:buffername "TODO-tests.org" :position 5746 :level 1 :keyword "CANCELLED" :title "cancelled task" :id "51ffe96c32c0ac5e59000850" :due nil))
+TRACE: :already-present-id: "51ffe96c32c0ac5e59000850"
+TRACE: :current-name: "cancelled task"
+Entity 'cancelled task' synced with id '51ffe96c32c0ac5e59000850'
+elnode-error: filter: handler returned on *elnode-webserver-proc*&lt;1&gt; &lt;127.0.0.1:46190&gt;
+Saving file /home/tony/repositories/perso/org-trello/TODO-tests.org&#x2026;
+Wrote /home/tony/repositories/perso/org-trello/TODO-tests.org
+ot is on! To begin with, hit C-c o h or M-x 'org-trello/help-describing-bindings
+Org-mode restarted
+Synchronizing org-mode file to the board 'api test board' - done!
+</p>
+
+<p>
+```
+</p>
+
+<ul class="org-ul">
+<li>GNU Emacs 24.3.1 (x86<sub>64</sub>-pc-linux-gnu, X toolkit, Xaw3d scroll bars) of 2013-04-14 on marid, modified by Debian
+</li>
+<li>;; Package-Requires: ((org "8.0.7") (dash "1.5.0") (request "0.2.0") (cl-lib "0.3.0") (json "1.2") (elnode "0.9.9.7.6"))
+</li>
+</ul>
+
+<p>
+If you ever get <a href="https://github.com/org-trello/org-trello/blob/0.1.2/org-trello.el#L496-L598">interested by the code</a>&#x2026;
+I'm trying a very basic literate approach. As a consequence, this is not necessarily consistent here (<a href="https://github.com/org-trello/org-trello/blob/0.1.2/org-trello.el#L496-L598">but this is in the code</a> or so I think!) &#x2013; add link.
+</p>
+
+<p>
+Starting elnode:
+</p>
+
+<p>
+```lisp
+(defvar <b>ORGTRELLO-PROXY-HOST</b> "localhost")
+(defvar <b>ORGTRELLO-PROXY-PORT</b> 8009)
+(defvar <b>ORGTRELLO-PROXY-URL</b> (format "<a href="http://%25s:%25d/proxy">http://%25s:%25d/proxy</a>" <b>ORGTRELLO-PROXY-HOST</b> <b>ORGTRELLO-PROXY-PORT</b>))
+</p>
+
+<p>
+(defun orgtrello-proxy/&#x2013;elnode-proxy (http-con)
+  "A simple handler to extract the params information and make the request to trello."
+  (orgtrello-log/msg 5 "Proxy server: params -&gt; %S" http-con)
+  (let* ((query-map-wrapped (orgtrello-proxy/&#x2013;extract-trello-query http-con))
+         (position          (assoc-default 'position query-map-wrapped))
+         (buffer-name       (assoc-default 'buffername query-map-wrapped))
+         (query-map         (orgtrello-proxy/&#x2013;compute-trello-query query-map-wrapped))
+         (method            (orgtrello-query/&#x2013;method query-map))
+         (fn-dispatch       (orgtrello-proxy/&#x2013;dispatch-http-query method)))
+    ;; Execute the request to trello (at the moment, synchronous)
+    (funcall fn-dispatch http-con query-map (list position buffer-name) t)))
+</p>
+
+<p>
+(defvar orgtrello-query/&#x2013;app-routes '(;; proxy routine
+                                       ("<sup>localhost</sup>//proxy/\\(.*\\)" . orgtrello-proxy/&#x2013;elnode-proxy)
+                                       ;; whatever&#x2026;
+                                       ("^.*//\\(.*\\)" . elnode-webserver)))
+</p>
+
+<p>
+(defun orgtrello-proxy/&#x2013;proxy-handler (http-con)
+  "Launch function to start the proxy"
+  (elnode-hostpath-dispatcher http-con orgtrello-query/&#x2013;app-routes))
+</p>
+
+<p>
+(elnode-start 'orgtrello-proxy/&#x2013;proxy-handler :port <b>ORGTRELLO-PROXY-PORT</b> :host <b>ORGTRELLO-PROXY-HOST</b>)
+```
+</p>
+
+<p>
+The client interface to request:
+</p>
+
+<p>
+```lisp
+(defun orgtrello-proxy/http (query-map &amp;optional sync success-callback error-callback)
+  "Query the trello api asynchronously."
+  (orgtrello-log/msg 5 "Request to trello server to wrap: %S" query-map)
+  (let ((query-map-proxy (orgtrello-hash/make-hash "POST" "/" query-map)))
+    (orgtrello-log/msg 5 "Request to proxy wrapped: %S" query-map-proxy)
+    (orgtrello-query/&#x2013;http <b>ORGTRELLO-PROXY-URL</b> query-map-proxy sync success-callback error-callback)))
+```
+</p>
+
+<p>
+Dealing with request answer takes place here:
+</p>
+
+<p>
+```lisp
+(defun orgtrello-proxy/&#x2013;response (http-con data)
+  "A response wrapper"
+  (orgtrello-log/msg 5 "Responding to the proxy's client with %S" data)
+  (elnode-http-start http-con 201 '("Content-type" . "application/json"))
+  (elnode-http-return http-con (json-encode data)))
+</p>
+
+<p>
+(defun orgtrello-proxy/&#x2013;standard-get-success-callback (http-connection)
+  (lexical-let ((http-con http-connection))
+    "Return a callback function able to deal with the position."
+    (cl-defun get-some-insignificant-name (&amp;key data &amp;allow-other-keys)
+      "Standard get response will simply relay the information to the client."
+      (orgtrello-log/msg 5 "callback get: %S" data)
+      (orgtrello-proxy/&#x2013;response http-con data))))
+</p>
+
+<p>
+(defun orgtrello-proxy/&#x2013;standard-post-or-put-or-delete-success-callback (http-connection buffer-metadata)
+  "Return a callback function able to deal with the position."
+  (lexical-let ((http-con http-connection)
+                (position (first buffer-metadata))
+                (buffername (second buffer-metadata)))
+    (cl-defun put-some-insignificant-name (&amp;key data &amp;allow-other-keys)
+      "Will read the information from the response and simply return id and position."
+      (orgtrello-log/msg 5 "callback post/put/delete: %S - position: %s" data position)
+      (let ((orgtrello-query/&#x2013;identifier (orgtrello-query/&#x2013;id data)))
+        (orgtrello-proxy/&#x2013;response http-con `((id . ,orgtrello-query/&#x2013;identifier)
+                                               (position . ,position)
+                                               (buffername . ,buffername)))))))
+</p>
+
+<p>
+```
+</p>
+
+<p>
+This is the main query to trello interface (first a dispatch takes place depending on the query method (get, post, put, delete) then the execution).
+</p>
+
+<p>
+```lisp
+(defun orgtrello-proxy/&#x2013;get (http-con query-map &amp;optional buffer-metadata sync)
+  "GET on trello with the callback"
+  (orgtrello-query/http-trello query-map sync (orgtrello-proxy/&#x2013;standard-get-success-callback http-con)))
+</p>
+
+<p>
+(defun orgtrello-proxy/&#x2013;post-or-put-or-delete (http-con query-map &amp;optional buffer-metadata sync)
+  "POST/PUT/DELETE"
+  (orgtrello-query/http-trello query-map sync (orgtrello-proxy/&#x2013;standard-post-or-put-or-delete-success-callback http-con buffer-metadata)))
+</p>
+
+<p>
+(defun orgtrello-proxy/&#x2013;dispatch-http-query (method)
+  "Dispach query function depending on the http method input parameter."
+  (cond ((string= "GET" method)         'orgtrello-proxy/&#x2013;get)
+        ((or (string= "POST" method)
+             (string= "PUT" method)
+             (string= "DELETE" method)) 'orgtrello-proxy/&#x2013;post-or-put-or-delete)))
+</p>
+
+<p>
+```
+</p>
+
+<p>
+Extraction function from the query made to the proxy:
+</p>
+
+<p>
+```lisp
+(defun orgtrello-proxy/&#x2013;extract-trello-query (http-con)
+  "Given an httpcon object, extract the params entry which corresponds to the real trello query."
+  (let ((params-proxy-json (caar (elnode-http-params http-con))))
+    (json-read-from-string params-proxy-json)))
+</p>
+
+<p>
+(defun orgtrello-proxy/&#x2013;compute-trello-query (query-map-wrapped)
+  (let ((method  (assoc-default 'method query-map-wrapped))
+        (uri     (assoc-default 'uri query-map-wrapped))
+        (payload (assoc-default 'params query-map-wrapped)))
+    (orgtrello-hash/make-hash method uri payload)))
+</p>
+
+<p>
+```
+</p>
+
+<p>
+Do you see if I did something wrong?
+</p>
+
+<p>
+Oh and by the way:
+</p>
+
+<p>
+```lisp
+(thanks (and 'elnode 'marmalade 'tutorial-videos))
+```
+</p>
+
+<p>
+Thanks again for your time
+</p>
+
+<p>
+Cheers,
+</p>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

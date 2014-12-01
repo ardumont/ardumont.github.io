@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>PIH - ch9 - Interactive programs - exercises</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<meta  name="description" content="Learning haskell and solving problems using reasoning and 'repl'ing"
+ />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">PIH - ch9 - Interactive programs - exercises</h1>
+<p>
+Here are the exercises from the chapter 9 of the book <a href="http://www.cs.nott.ac.uk/~gmh/book.html">Programming in Haskell</a>.
+As there were some compatibilities issues between the content of the book and my realities, We will only concentrate the efforts on the nim one.
+</p>
+
+<p>
+Anyway, enough chit chat, here is the exercise:
+</p>
+
+<blockquote>
+<p>
+Nim is a game that is played on a board comprising five numbered rows of stars, which is initially set up as follows:
+</p>
+
+<p>
+1:∗∗∗∗∗
+</p>
+
+<p>
+2:∗∗∗∗
+</p>
+
+<p>
+3:∗∗∗
+</p>
+
+<p>
+4:∗∗
+</p>
+
+<p>
+5:∗
+</p>
+
+<p>
+Two players take it in turn to remove one or more stars from the end of a single row.
+The winner is the player who removes the last star or stars from the board.
+Implement the game of nim in Haskell.
+</p>
+
+<p>
+<span class="underline">Hint:</span> represent the board as a list comprising the number of stars remaining on each row, with the initial board being <code>[5, 4, 3, 2, 1]</code>.
+</p>
+</blockquote>
+
+<p>
+We will begin simply by representing a board following the recommandations.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">type Board = [Int]
+</pre>
+</div>
+
+<p>
+I'm creating a utility function to create a board:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">makeBoard :: Int -&gt; Board
+makeBoard n = [n, n-1..1]
+</pre>
+</div>
+
+<p>
+For example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch9&gt; makeBoard 5
+[5,4,3,2,1]
+</pre>
+</div>
+
+<p>
+Now we can compute the stars to display on board:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">computeStars :: Board -&gt; [(Int, String)]
+computeStars b = zip [0..(length b - 1)] (map (flip replicate '*') b)
+</pre>
+</div>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch9&gt; computeStars board
+[(0,"*****"),(1,"****"),(2,"***"),(3,"**"),(4,"*")]
+</pre>
+</div>
+
+<p>
+Now, we can show the board:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">showBoard :: [(Int, String)] -&gt; IO ()
+showBoard b = mapM_ putStrLn [ show x ++ ": " ++ s | (x, s) &lt;- b ]
+</pre>
+</div>
+
+<p>
+Possible output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch9&gt; showBoard $ computeStars board
+0: *****
+1: ****
+2: ***
+3: **
+4: *
+</pre>
+</div>
+
+<p>
+We will also need some utility function to deal silently with error.
+That is if we want to remove more stars than exists, then we no longer have stars.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">wrap :: Int -&gt; Int
+wrap n = if n &gt;= 0 then n else 0
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch9&gt; wrap 0
+0
+*Ch9&gt; wrap (-1)
+0
+</pre>
+</div>
+
+<p>
+Same idea for dealing with stars.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">wrapStars :: Int -&gt; Int -&gt; Int
+wrapStars r l | r &lt; 0 = 0
+	      | l &lt;= r = l
+	      | otherwise = r
+</pre>
+</div>
+
+<p>
+Output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch9&gt; wrapStars 10 12
+10
+*Ch9&gt; wrapStars 13 12
+12
+*Ch9&gt; wrapStars (-1) 12
+0
+</pre>
+</div>
+
+<p>
+Now we need some function to help in removing stars.
+Simply, I split at the index r and retrieve the head of the second list (which then correponds to the value we want to decrement).
+Then we update the new value by decrementing the value by n. We wrap the result to return 0 at the worst case scenario.
+Then we recreate the list with the new value.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">remove :: Int -&gt; Int -&gt; Board -&gt; Board
+remove r n b = let (h, (v:t)) = splitAt r b
+		   ns = wrap (v - n) in
+	       h ++ (ns:t)
+</pre>
+</div>
+
+<p>
+Output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch9&gt; remove 0 2 board
+[3,4,3,2,1]
+*Ch9&gt; remove 0 10 board
+[0,4,3,2,1]
+*Ch9&gt; remove 0 5 board
+[0,4,3,2,1]
+</pre>
+</div>
+
+<p>
+The game is finished if the board no longer has stars.
+As the board is represented by a list of int, we simply compute the sum of the list.
+It the rest is zero, there is no more stars.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">win :: Board -&gt; Bool
+win = (== 0) . sum
+</pre>
+</div>
+
+<p>
+Output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch9&gt; win [4,4,3,2,1]
+False
+*Ch9&gt; win [0,0,0,0,0]
+True
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">turn :: Int -&gt; Board -&gt; IO Board
+turn p b = do showBoard $ computeStars b
+	      putStrLn $ "Player " ++ (show p) ++ ", on which row do you want to remove stars?"
+	      x &lt;- getLine
+	      let r = read x in
+		do putStrLn "How many stars?"
+		   s &lt;- getLine
+		   let n = wrapStars (read s) (length b) in
+		     return $ remove r n b
+</pre>
+</div>
+
+<p>
+Output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch9&gt; turn 1 board
+*****
+****
+***
+**
+*
+Player 1, what stars do you want to remove?
+1
+[5,3,3,2,1]
+</pre>
+</div>
+
+<p>
+Here is a small function to compute the next player:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">nextplayer :: Int -&gt; Int
+nextplayer p = ((p+1) `mod` 2)
+</pre>
+</div>
+
+<p>
+Output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch9&gt; nextplayer 1
+0
+*Ch9&gt; nextplayer 0
+1
+</pre>
+</div>
+
+<p>
+The main function which, given a player and a board, launches the game:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">game :: Int -&gt; Board -&gt; IO ()
+game p b = do nb &lt;- turn p b
+	      if win nb
+		then putStrLn $ "p" ++ (show p) ++ " won!"
+		else game (nextplayer p) nb
+</pre>
+</div>
+
+<p>
+A small utility function to setup the game regarding the size of the board and which player starts:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">setupGame :: IO (Int, Int)
+setupGame = do putStrLn "What size for the board?"
+	       n &lt;- getLine
+	       let size = read n in
+		 do putStrLn "What player first? (0 or 1)"
+		    p &lt;- getLine
+		    let player = read p in
+		      return (size, player)
+</pre>
+</div>
+
+<p>
+At last, the main function which launches the game:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">main :: IO ()
+main = do (size, player) &lt;- setupGame
+	  game player (makeBoard size)
+</pre>
+</div>
+
+<p>
+A sample run:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch9&gt; main
+What size for the board?
+3
+What player first? (0 or 1)
+1
+0: ***
+1: **
+2: *
+Player 1, on which row do you want to remove stars?
+0
+How many stars?
+3
+0:
+1: **
+2: *
+Player 0, on which row do you want to remove stars?
+1
+How many stars?
+1
+0:
+1: *
+2: *
+Player 1, on which row do you want to remove stars?
+0
+How many stars?
+1
+0:
+1: *
+2: *
+Player 0, on which row do you want to remove stars?
+2
+How many stars?
+1
+0:
+1: *
+2:
+Player 1, on which row do you want to remove stars?
+1
+How many stars?
+1
+p1 won!
+</pre>
+</div>
+
+<p>
+As usual, here is the complete <a href="https://github.com/ardumont/haskell-lab/blob/master/src/Nim.hs">source</a>.
+</p>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2013-04-25 jeu. 21:56]</span></span></p>
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

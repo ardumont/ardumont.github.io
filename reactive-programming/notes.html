@@ -1,0 +1,3777 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Reactive programming</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Reactive programming</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Definition</a>
+<ul>
+<li><a href="#sec-1-1">Future</a></li>
+<li><a href="#sec-1-2">Promise</a></li>
+</ul>
+</li>
+<li><a href="#sec-2"><span class="done DONE">DONE</span> week 1 <code>[100%]</code></a>
+<ul>
+<li><a href="#sec-2-1"><span class="done DONE">DONE</span> What is reactive programming?</a>
+<ul>
+<li><a href="#sec-2-1-1">Traditionally</a></li>
+<li><a href="#sec-2-1-2">Now</a></li>
+<li><a href="#sec-2-1-3">scalable</a></li>
+<li><a href="#sec-2-1-4">resilient</a></li>
+<li><a href="#sec-2-1-5">responsive</a></li>
+<li><a href="#sec-2-1-6">fundamental constructions</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-2"><span class="done DONE">DONE</span> Recap: Functions and Pattern Matching</a></li>
+<li><a href="#sec-2-3"><span class="done DONE">DONE</span> Recap: Collections</a></li>
+<li><a href="#sec-2-4"><span class="done DONE">DONE</span> Functional random generators</a></li>
+<li><a href="#sec-2-5"><span class="done DONE">DONE</span> Monads</a>
+<ul>
+<li><a href="#sec-2-5-1">Def</a></li>
+<li><a href="#sec-2-5-2">Monads and map</a></li>
+<li><a href="#sec-2-5-3">Monad laws</a></li>
+<li><a href="#sec-2-5-4">Associativity</a></li>
+<li><a href="#sec-2-5-5">Left unit</a></li>
+<li><a href="#sec-2-5-6">Right unit</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-6"><span class="done DONE">DONE</span> Assignments</a></li>
+</ul>
+</li>
+<li><a href="#sec-3"><span class="done DONE">DONE</span> week 2 <code>[100%]</code></a>
+<ul>
+<li><a href="#sec-3-1"><span class="done DONE">DONE</span> 4 - 1 - Functions and State</a>
+<ul>
+<li><a href="#sec-3-1-1">Remarks</a></li>
+<li><a href="#sec-3-1-2">Stateful objects</a></li>
+<li><a href="#sec-3-1-3">Implementation of state</a></li>
+<li><a href="#sec-3-1-4">State in objects</a></li>
+<li><a href="#sec-3-1-5">Statefulness and variables</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-2"><span class="done DONE">DONE</span> 4 - 3 - Identity and Change</a>
+<ul>
+<li><a href="#sec-3-2-1">Assignment poses new problem</a></li>
+<li><a href="#sec-3-2-2">Example</a></li>
+<li><a href="#sec-3-2-3">What's "being the same"?</a></li>
+<li><a href="#sec-3-2-4">Example</a></li>
+<li><a href="#sec-3-2-5">Another Example</a></li>
+<li><a href="#sec-3-2-6">Assignment and substitution model</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-3"><span class="done DONE">DONE</span> 4 - 4 - Loops</a>
+<ul>
+<li><a href="#sec-3-3-1">WHILE</a></li>
+<li><a href="#sec-3-3-2">REPEAT</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-4"><span class="done DONE">DONE</span> 4 - 5 - Extended Example - Discrete Event Simulation</a>
+<ul>
+<li><a href="#sec-3-4-1">Digital circuit</a></li>
+<li><a href="#sec-3-4-2">Diagram - basic</a></li>
+<li><a href="#sec-3-4-3">Diagram - combine</a></li>
+<li><a href="#sec-3-4-4">Gates</a></li>
+<li><a href="#sec-3-4-5">Constructing Components</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-5"><span class="done DONE">DONE</span> 4 - 6 - Discrete Event Simulation_ API and Usage</a>
+<ul>
+<li><a href="#sec-3-5-1">Discrete event Simulation</a></li>
+<li><a href="#sec-3-5-2">Simulation trait</a></li>
+<li><a href="#sec-3-5-3">Class diagram</a></li>
+<li><a href="#sec-3-5-4">The Wire Class</a></li>
+<li><a href="#sec-3-5-5">Wire implem.</a></li>
+<li><a href="#sec-3-5-6">Inverter</a></li>
+<li><a href="#sec-3-5-7">And Gate</a></li>
+<li><a href="#sec-3-5-8">Or Gate</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-6"><span class="done DONE">DONE</span> 4 - 7 - Discrete Event Simluation_ Implementation and Test</a>
+<ul>
+<li><a href="#sec-3-6-1">Simulation trait</a></li>
+<li><a href="#sec-3-6-2">Handling time</a></li>
+<li><a href="#sec-3-6-3">AfterDelay implem.</a></li>
+<li><a href="#sec-3-6-4">The Event handling Loop</a></li>
+<li><a href="#sec-3-6-5">The run method</a></li>
+<li><a href="#sec-3-6-6">Probes</a></li>
+<li><a href="#sec-3-6-7">Defining Technology-Dependent Parameters</a></li>
+<li><a href="#sec-3-6-8">Circuits</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-7"><span class="done DONE">DONE</span> Assignment</a></li>
+</ul>
+</li>
+<li><a href="#sec-4"><span class="done DONE">DONE</span> week 3 <code>[100%]</code></a>
+<ul>
+<li><a href="#sec-4-1"><span class="done DONE">DONE</span> 5 - 1 - Monads and Effects</a>
+<ul>
+<li><a href="#sec-4-1-1">Simple adventure game</a></li>
+<li><a href="#sec-4-1-2">Actions may fail</a></li>
+<li><a href="#sec-4-1-3">Sequential composition of actions that may fail</a></li>
+<li><a href="#sec-4-1-4">Expose possibility of failure in the types, honestly</a></li>
+<li><a href="#sec-4-1-5">Making failure evident in the type</a></li>
+<li><a href="#sec-4-1-6">Dealing with failure explicitely</a></li>
+<li><a href="#sec-4-1-7">HOF to manipulate Try[T]</a></li>
+<li><a href="#sec-4-1-8">Monads guide you through the happy path</a></li>
+<li><a href="#sec-4-1-9">Noise reduction</a></li>
+<li><a href="#sec-4-1-10">HOF to manipulate Try[T]</a></li>
+<li><a href="#sec-4-1-11">Quiz</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-2"><span class="done DONE">DONE</span> 5 - 3 - Latency as an Effect</a>
+<ul>
+<li><a href="#sec-4-2-1">A simple adventure game&#x2026; is very similar to a simple network stack</a></li>
+<li><a href="#sec-4-2-2">Timings for various operations on a typical PC on human scale</a></li>
+<li><a href="#sec-4-2-3">Sequential composition of actions that take time</a></li>
+<li><a href="#sec-4-2-4">Convert using Norvig's table</a></li>
+<li><a href="#sec-4-2-5">Monads guide you through the happy path</a></li>
+<li><a href="#sec-4-2-6">Futures asynchronously notify consumers</a></li>
+<li><a href="#sec-4-2-7">Futures alternative designs</a></li>
+<li><a href="#sec-4-2-8">Futures asynchronously notify consumers</a></li>
+<li><a href="#sec-4-2-9">Send packets using futures I</a></li>
+<li><a href="#sec-4-2-10">Send packets using futures II</a></li>
+<li><a href="#sec-4-2-11">Creating Futures</a></li>
+<li><a href="#sec-4-2-12">Creating Futures</a></li>
+<li><a href="#sec-4-2-13">Quiz</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-3"><span class="done DONE">DONE</span> 5 - 4 - Combinators on Futures</a>
+<ul>
+<li><a href="#sec-4-3-1">Futures recap</a></li>
+<li><a href="#sec-4-3-2">Sending packets using features</a></li>
+<li><a href="#sec-4-3-3">FlatMap to the rescue</a></li>
+<li><a href="#sec-4-3-4">Sending packets using futures under the covers</a></li>
+<li><a href="#sec-4-3-5">Sending packets using futures robustly (?)</a></li>
+<li><a href="#sec-4-3-6">Send packets using futures robustly</a></li>
+<li><a href="#sec-4-3-7">Send packets using futures robustly</a></li>
+<li><a href="#sec-4-3-8">Better recovery with less matching</a></li>
+<li><a href="#sec-4-3-9">Fallback implementation</a></li>
+<li><a href="#sec-4-3-10">Quiz</a></li>
+<li><a href="#sec-4-3-11">Asynchronous where possible, blocking where necessary</a></li>
+<li><a href="#sec-4-3-12">Asynchronous where possible, blocking where necessary</a></li>
+<li><a href="#sec-4-3-13">Duration</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-4"><span class="done DONE">DONE</span> 5 - 5 - Composing Futures</a>
+<ul>
+<li><a href="#sec-4-4-1">FlatMap</a></li>
+<li><a href="#sec-4-4-2">Comprehensions</a></li>
+<li><a href="#sec-4-4-3">Retrying to send</a></li>
+<li><a href="#sec-4-4-4">Retrying to send implem.</a></li>
+<li><a href="#sec-4-4-5">Folding lists</a></li>
+<li><a href="#sec-4-4-6">Retrying to send implem. using foldLeft pattern</a></li>
+<li><a href="#sec-4-4-7">Retrying to send implem. using foldRight pattern</a></li>
+<li><a href="#sec-4-4-8">Making effects implicit</a></li>
+<li><a href="#sec-4-4-9">Async await magic</a></li>
+<li><a href="#sec-4-4-10">Async, the small print</a></li>
+<li><a href="#sec-4-4-11">Retrying to send using await</a></li>
+<li><a href="#sec-4-4-12">Reimplementing filter using await</a></li>
+<li><a href="#sec-4-4-13">Quiz</a></li>
+<li><a href="#sec-4-4-14">Reimplementing filter on Future[T]</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-5"><span class="done DONE">DONE</span> 5 - 6 - Promises, promises, promises</a>
+<ul>
+<li><a href="#sec-4-5-1">Promises</a></li>
+<li><a href="#sec-4-5-2">Racing</a></li>
+<li><a href="#sec-4-5-3">Simpler helper methods</a></li>
+<li><a href="#sec-4-5-4">Reimplementing filter on Future[T]</a></li>
+<li><a href="#sec-4-5-5">Reimplementing zip using Promises</a></li>
+<li><a href="#sec-4-5-6">Reimplementing zip with await</a></li>
+<li><a href="#sec-4-5-7">Implement sequence with Promise</a></li>
+<li><a href="#sec-4-5-8">Implement sequence with await</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-6"><span class="done DONE">DONE</span> Assignment</a></li>
+</ul>
+</li>
+<li><a href="#sec-5"><span class="done DONE">DONE</span> week 4 <code>[100%]</code></a>
+<ul>
+<li><a href="#sec-5-1"><span class="done DONE">DONE</span> 6 - 1 - From Futures to Observables</a></li>
+<li><a href="#sec-5-2"><span class="done DONE">DONE</span> 6 - 2 - Basic Combinators on Observable Collections</a></li>
+<li><a href="#sec-5-3"><span class="done DONE">DONE</span> 6 - 3 - Subscriptions</a></li>
+<li><a href="#sec-5-4"><span class="done DONE">DONE</span> 6 - 4 - Creating Rx Streams</a></li>
+<li><a href="#sec-5-5"><span class="done DONE">DONE</span> 6 - 5 - Schedulers I (Optional)</a></li>
+<li><a href="#sec-5-6"><span class="done DONE">DONE</span> 6 - 6 - Schedulers II (Optional)</a></li>
+<li><a href="#sec-5-7"><span class="done DONE">DONE</span> assignment</a></li>
+</ul>
+</li>
+<li><a href="#sec-6"><span class="done DONE">DONE</span> week 5 <code>[100%]</code></a>
+<ul>
+<li><a href="#sec-6-1"><span class="done DONE">DONE</span> 7 - 1 - Introduction_ Why Actors</a></li>
+<li><a href="#sec-6-2"><span class="done DONE">DONE</span> 7 - 2 - The Actor Model (13<sub>43</sub>).mp4</a></li>
+<li><a href="#sec-6-3"><span class="done DONE">DONE</span> 7 - 3 - Message Processing Semantics (27<sub>28</sub>).mp4</a></li>
+<li><a href="#sec-6-4"><span class="done DONE">DONE</span> 7 - 4 - Designing Actor Systems (38<sub>43</sub>).mp4</a>
+<ul>
+<li><a href="#sec-6-4-1">Web Crawler</a></li>
+<li><a href="#sec-6-4-2">Getter</a></li>
+<li><a href="#sec-6-4-3">Controller</a></li>
+<li><a href="#sec-6-4-4">Receptionist</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-5"><span class="done DONE">DONE</span> 7 - 5 - Testing Actor Systems (17<sub>16</sub>).mp4</a></li>
+<li><a href="#sec-6-6"><span class="done DONE">DONE</span> assignment</a></li>
+</ul>
+</li>
+<li><a href="#sec-7">IN-PROGRESS week 6 <code>[25%]</code></a>
+<ul>
+<li><a href="#sec-7-1"><span class="done DONE">DONE</span> 10 - 1 - Failure Handling with Actors</a>
+<ul>
+<li><a href="#sec-7-1-1">Failure handling in asynchronous system</a></li>
+<li><a href="#sec-7-1-2">Supervision</a></li>
+<li><a href="#sec-7-1-3">Supervisor strategy</a></li>
+<li><a href="#sec-7-1-4">Supervisor Strategy 2</a></li>
+<li><a href="#sec-7-1-5">Supervisor Strategy 3</a></li>
+<li><a href="#sec-7-1-6">Actor identity</a></li>
+<li><a href="#sec-7-1-7">Actor Lifecycle</a></li>
+<li><a href="#sec-7-1-8">Actor lifecycle Hooks</a></li>
+<li><a href="#sec-7-1-9">The default Lifecycle</a></li>
+<li><a href="#sec-7-1-10">Lifecycle spanning restarts</a></li>
+</ul>
+</li>
+<li><a href="#sec-7-2"><span class="todo TODO">TODO</span> 10 - 2 - Lifecycle Monitoring and the Error Kernel</a>
+<ul>
+<li><a href="#sec-7-2-1">Lifecycle Monitoring</a></li>
+<li><a href="#sec-7-2-2">DeathWatch API</a></li>
+</ul>
+</li>
+<li><a href="#sec-7-3"><span class="todo TODO">TODO</span> 10 - 3 - Persistent Actor State</a></li>
+<li><a href="#sec-7-4"><span class="todo TODO">TODO</span> Assignment</a></li>
+</ul>
+</li>
+<li><a href="#sec-8"><span class="todo TODO">TODO</span> week 7 <code>[0%]</code></a></li>
+</ul>
+</div>
+</div>
+<p>
+resources:
+</p>
+<ul class="org-ul">
+<li><a href="http://docs.scala-lang.org/overviews/core/futures.html">http://docs.scala-lang.org/overviews/core/futures.html</a>
+</li>
+<li><a href="http://docs.scala-lang.org/sips/pending/futures-promises.html">http://docs.scala-lang.org/sips/pending/futures-promises.html</a>
+</li>
+<li><a href="https://github.com/scala/scala/blob/master/src/library/scala/concurrent/Future.scala">https://github.com/scala/scala/blob/master/src/library/scala/concurrent/Future.scala</a>
+</li>
+<li><a href="https://github.com/scala/scala/blob/master/src/library/scala/concurrent/Promise.scala">https://github.com/scala/scala/blob/master/src/library/scala/concurrent/Promise.scala</a>
+</li>
+</ul>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Definition</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">Future</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+The type Future[T] designates a value of type T that might not be available now, but will become available at some point in the future.
+This type captures the concept of time in your programs - the future is initially not completed, and then becomes completed at some time.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">Promise</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+The Promise[T] is a single-assignment variable - an object which initially has no value, but to which you can write some value of type T only once using methods like
+`complete` or `success`, and then it has that value forever.
+Instances of the type Promise[T] have a method called `future` that returns the Future[T] corresponding to that promise.
+As soon as you write to a promise, its corresponding future will be completed.
+</p>
+
+<p>
+If you think about it, this allows you to obtain a completed future involving no asynchronous computation whatsoever.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="done DONE">DONE</span> week 1 <code>[100%]</code></h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="done DONE">DONE</span> What is reactive programming?</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Reactive: readily responsive to stimulus
+</p>
+
+<p>
+Reacts to:
+</p>
+<ul class="org-ul">
+<li>events (event-driven)
+</li>
+<li>load (scalable)
+</li>
+<li>failures (resilient)
+</li>
+<li>users (responsive)
+</li>
+</ul>
+
+
+<p>
+Event-driven -&gt; scalable  -&gt;
+             -&gt; resilient -&gt; responsive
+                          -&gt;
+</p>
+</div>
+
+
+<div id="outline-container-sec-2-1-1" class="outline-4">
+<h4 id="sec-2-1-1">Traditionally</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+multiple threads (shared, synchronized state) -&gt; strong coupling, hard to compose
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-1-2" class="outline-4">
+<h4 id="sec-2-1-2">Now</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<p>
+composed from loosely coupled event-handlers -&gt; events can be handled asynchronously, without blocking
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-1-3" class="outline-4">
+<h4 id="sec-2-1-3">scalable</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<p>
+an applications is scalable if it can expand according to its usage:
+</p>
+<ul class="org-ul">
+<li>scale up: make use of parallelism in multi-core system
+</li>
+<li>scale out: make use of multiple server nodes
+</li>
+</ul>
+
+<p>
+important for scalability: minimize shared mutable state
+important for scale out: location transparency, resilience
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-sec-2-1-4" class="outline-4">
+<h4 id="sec-2-1-4">resilient</h4>
+<div class="outline-text-4" id="text-2-1-4">
+<p>
+recover quickly from failure
+</p>
+
+<p>
+failures can be:
+</p>
+<ul class="org-ul">
+<li>software
+</li>
+<li>hardware
+</li>
+<li>connection
+</li>
+</ul>
+
+<p>
+it is not an afterthought, it needs to be part of the design from the beginning
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-1-5" class="outline-4">
+<h4 id="sec-2-1-5">responsive</h4>
+<div class="outline-text-4" id="text-2-1-5">
+<p>
+rich, real-time interaction with its users even under load and in the presence of failures
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-1-6" class="outline-4">
+<h4 id="sec-2-1-6">fundamental constructions</h4>
+<div class="outline-text-4" id="text-2-1-6">
+<p>
+to get composable event abstractions
+</p>
+<ul class="org-ul">
+<li>events are first-class
+</li>
+<li>events are often represented as messages
+</li>
+<li>handlers of events are also first-class
+</li>
+<li>complex handlers can be composed from primitive ones
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="done DONE">DONE</span> Recap: Functions and Pattern Matching</h3>
+<div class="outline-text-3" id="text-2-2">
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="done DONE">DONE</span> Recap: Collections</h3>
+<div class="outline-text-3" id="text-2-3">
+</div>
+</div>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="done DONE">DONE</span> Functional random generators</h3>
+<div class="outline-text-3" id="text-2-4">
+</div>
+</div>
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5"><span class="done DONE">DONE</span> Monads</h3>
+<div class="outline-text-3" id="text-2-5">
+</div>
+
+<div id="outline-container-sec-2-5-1" class="outline-4">
+<h4 id="sec-2-5-1">Def</h4>
+<div class="outline-text-4" id="text-2-5-1">
+<p>
+monad M is a parametric type M[T] with 2 operations, flatMap (bind) and unit that have to satisfy some laws:
+</p>
+<ul class="org-ul">
+<li>associativity
+</li>
+<li>left unit
+</li>
+<li>right unit
+</li>
+</ul>
+
+<p>
+In scala, we can see the monad as a trait:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">trait M[T] {
+  def flatMap[U](f: T =&gt; M[U]): M[U]
+}
+
+def unit[T](x: T): M[T]
+</pre>
+</div>
+
+<p>
+Example of monads:
+</p>
+<ul class="org-ul">
+<li>List with unit(x) is List(x)
+</li>
+<li>Set with unit(x) is Set(x)
+</li>
+<li>Option with unit(x) is Some(x)
+</li>
+<li>Generator with unit(x) is single(x)
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-2-5-2" class="outline-4">
+<h4 id="sec-2-5-2">Monads and map</h4>
+<div class="outline-text-4" id="text-2-5-2">
+<p>
+map can be defined as a combination between flatMap and unit.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">m map f == m flatMap (f andThen unit)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-5-3" class="outline-4">
+<h4 id="sec-2-5-3">Monad laws</h4>
+</div>
+<div id="outline-container-sec-2-5-4" class="outline-4">
+<h4 id="sec-2-5-4">Associativity</h4>
+<div class="outline-text-4" id="text-2-5-4">
+<p>
+(m flatMap f) flatMap g == m flatMap ( x =&gt; f(x) flatMap g f)
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-5-5" class="outline-4">
+<h4 id="sec-2-5-5">Left unit</h4>
+<div class="outline-text-4" id="text-2-5-5">
+<p>
+unit(x) flatMap f == f(x)
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-5-6" class="outline-4">
+<h4 id="sec-2-5-6">Right unit</h4>
+<div class="outline-text-4" id="text-2-5-6">
+<p>
+m flatMap unit == m
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6"><span class="done DONE">DONE</span> Assignments</h3>
+<div class="outline-text-3" id="text-2-6">
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="done DONE">DONE</span> week 2 <code>[100%]</code></h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="done DONE">DONE</span> 4 - 1 - Functions and State</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+Without side effect, the concept of time is not important.
+</p>
+
+<p>
+Substitution model: programs can be evaluated by rewriting.
+As there is no side effect, only reformulation of one's program by replacing each call by it's definition expanding the values.
+</p>
+</div>
+
+<div id="outline-container-sec-3-1-1" class="outline-4">
+<h4 id="sec-3-1-1">Remarks</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+Rewriting can be done anywhere in a term.
+</p>
+
+<p>
+All rewritings which terminate lead to the same result -&gt; confluence (a.k.a Church-Rosser theorem)
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-1-2" class="outline-4">
+<h4 id="sec-3-1-2">Stateful objects</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<p>
+Stateful -&gt; changes over the course of time.
+</p>
+
+<p>
+"an object has a state if its behavior is influenced by its history"
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-1-3" class="outline-4">
+<h4 id="sec-3-1-3">Implementation of state</h4>
+<div class="outline-text-4" id="text-3-1-3">
+<p>
+In scala, every form of mutable state is constructed from variables.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-1-4" class="outline-4">
+<h4 id="sec-3-1-4">State in objects</h4>
+<div class="outline-text-4" id="text-3-1-4">
+<p>
+objects with state -&gt; objects with variable
+</p>
+
+<p>
+Example: Bank Account
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala"> class BankAccount {
+  private var balance = 0
+  def deposit(amount: Int): Unit = {
+    if (amount &gt; 0) balance += amount
+  }
+
+  def withdraw(amount: Int): Int = {
+    if (0 &lt; amount &amp;&amp; amount &lt;= balance) {
+      balance -= amount
+	balance
+    }
+  }
+}
+
+val acct = new BankAccount
+acct deposit 50
+acct withdraw 20
+acct withdraw 20
+acct withdraw 15 // -&gt; Error
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-1-5" class="outline-4">
+<h4 id="sec-3-1-5">Statefulness and variables</h4>
+<div class="outline-text-4" id="text-3-1-5">
+</div><ul class="org-ul"><li><a id="sec-3-1-5-1" name="sec-3-1-5-1"></a>Example 1<br  /><div class="outline-text-5" id="text-3-1-5-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">def cons[T](hd: T, tl: =&gt; Stream[T]) = new Stream[T] {
+    def head = hd
+    private var tlOpt: Option[Stream[T]] = None
+    def tail: T = tlOpt match {
+      case Some(x) =&gt; x
+      case None    =&gt; tlOpt = Some(tl); tail
+    }
+}
+</pre>
+</div>
+
+<p>
+Is the result of cons a stateful object?
+</p>
+
+<ul class="org-ul">
+<li>No   -&gt; if the tail is pure (without side effect), this is not.
+</li>
+
+<li>Yes  -&gt; if the tail is side-effecty, tail will depend on the history so yes
+</li>
+</ul>
+</div>
+</li>
+
+<li><a id="sec-3-1-5-2" name="sec-3-1-5-2"></a>Example2<br  /><div class="outline-text-5" id="text-3-1-5-2">
+<div class="org-src-container">
+
+<pre class="src src-scala">class BankAccountProxy(ba: BankAccount) {
+  def deposit(amount: Int): Unit = ba.deposit(amount)
+  def withdraw(amount: Int): Int = ba.withdraw(amount)
+}
+</pre>
+</div>
+
+<p>
+Are instances of BankAccountProxy stateful objects?
+</p>
+
+<p>
+Yes -&gt; same call won't result in the same result each time.
+</p>
+</div>
+</li></ul>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="done DONE">DONE</span> 4 - 3 - Identity and Change</h3>
+<div class="outline-text-3" id="text-3-2">
+</div>
+<div id="outline-container-sec-3-2-1" class="outline-4">
+<h4 id="sec-3-2-1">Assignment poses new problem</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+Assignment poses the new problem of deciding whether 2 expressions are the same.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">val x = E; val y = E; // -&gt; safe to assume that x and y are the same (val so no assignment).
+</pre>
+</div>
+
+<p>
+we could also have written:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">val x = E; val y = x;
+</pre>
+</div>
+
+<p>
+-&gt; referential transparency
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2-2" class="outline-4">
+<h4 id="sec-3-2-2">Example</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<div class="org-src-container">
+
+<pre class="src src-scala">val x = new BankAccount
+val y = new BankAccount
+</pre>
+</div>
+
+<p>
+Are x and y are the same?
+No
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2-3" class="outline-4">
+<h4 id="sec-3-2-3">What's "being the same"?</h4>
+<div class="outline-text-4" id="text-3-2-3">
+<p>
+property of "operational equivalence" &lt;-&gt; x and y are operationally equivalent if no possible test can distinguish between them.
+</p>
+
+<p>
+How:
+</p>
+<ul class="org-ul">
+<li>Execute multiple arbitrary definitions on both x and y and check the possible outcomes.
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">val x = new BankAccount
+val y = new BankAccount
+f (x, y)
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Then execute the definitions with another sequence S obtained by replacing each x occurrence by y
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">val x = new BankAccount
+val y = new BankAccount
+f (x, x)
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Then create another sequence S' by replace x by y in every sequence of S
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">val x = new BankAccount
+val y = new BankAccount
+f (y, y)
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>if the results are different then the expressions x and y are certainly different
+</li>
+
+<li>if all possible pairs of sequences (S, S') produce the same result, then x and y are the same.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2-4" class="outline-4">
+<h4 id="sec-3-2-4">Example</h4>
+<div class="outline-text-4" id="text-3-2-4">
+</div><ul class="org-ul"><li><a id="sec-3-2-4-1" name="sec-3-2-4-1"></a>First round<br  /><div class="outline-text-5" id="text-3-2-4-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">val x = new BankAccount
+val y = new BankAccount
+x deposit 30  // val res1: Int = 30
+y withdraw 20 // -&gt; error
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="sec-3-2-4-2" name="sec-3-2-4-2"></a>Second<br  /><div class="outline-text-5" id="text-3-2-4-2">
+<div class="org-src-container">
+
+<pre class="src src-scala">val x = new BankAccount
+val y = new BankAccount
+x deposit 30  // val res1: Int = 30
+x withdraw 20 // val res1: Int = 10
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="sec-3-2-4-3" name="sec-3-2-4-3"></a>conclusion<br  /><div class="outline-text-5" id="text-3-2-4-3">
+<p>
+The final result is different then x and y are different
+</p>
+</div>
+</li></ul>
+</div>
+
+<div id="outline-container-sec-3-2-5" class="outline-4">
+<h4 id="sec-3-2-5">Another Example</h4>
+<div class="outline-text-4" id="text-3-2-5">
+<div class="org-src-container">
+
+<pre class="src src-scala">val x = new BankAccount
+val y = x
+x deposit 30  // val res1: Int = 30
+y withdraw 20 // -&gt; error
+</pre>
+</div>
+
+<p>
+Here, using the same experiment, we obtain the same result so x and y are the same.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2-6" class="outline-4">
+<h4 id="sec-3-2-6">Assignment and substitution model</h4>
+<div class="outline-text-4" id="text-3-2-6">
+<p>
+With previous examples, we can see that the substitution model can no longer be used with assignments.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="done DONE">DONE</span> 4 - 4 - Loops</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+With assignment, variables are enough to model all imperative programs.
+Loop is an unnecessary construct.
+</p>
+
+<p>
+Example of the "power" method using the useless native while operation.
+</p>
+</div>
+
+<div id="outline-container-sec-3-3-1" class="outline-4">
+<h4 id="sec-3-3-1">WHILE</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<p>
+WHILE as a functional function:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def WHILE(condition: =&gt; Boolean)(command: =&gt; Unit): Unit =
+ if (condition) {
+   command
+   WHILE(condition)(command)
+} else ()
+</pre>
+</div>
+
+<p>
+Note:
+</p>
+<ul class="org-ul">
+<li>condition and command must be passed by name so that they're reevaluated in each iteration
+</li>
+<li>WHILE is tail-recursive so it can operate with a constant stack size
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-3-3-2" class="outline-4">
+<h4 id="sec-3-3-2">REPEAT</h4>
+<div class="outline-text-4" id="text-3-3-2">
+<p>
+Write a function implementing a repeat loop (Repeat the command until the condition is met).
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def REPEAT(command: =&gt; Unit)(condition: =&gt; Boolean): Unit = {
+  command
+  if (condition) ()
+  else REPEAT(command)(condition)
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4"><span class="done DONE">DONE</span> 4 - 5 - Extended Example - Discrete Event Simulation</h3>
+<div class="outline-text-3" id="text-3-4">
+</div>
+<div id="outline-container-sec-3-4-1" class="outline-4">
+<h4 id="sec-3-4-1">Digital circuit</h4>
+<div class="outline-text-4" id="text-3-4-1">
+<p>
+It's composed of:
+</p>
+<ul class="org-ul">
+<li>wires (transport signals)
+</li>
+<li>functional components (transform signals)
+</li>
+</ul>
+
+<p>
+based components:
+</p>
+<ul class="org-ul">
+<li>inverter - output is the inverse of its input
+</li>
+<li>AND      - output is the conjunction of the inputs
+</li>
+<li>OR       - output is the disjunction of the inputs
+</li>
+</ul>
+
+<p>
+Other components are built by combining these base components.
+</p>
+
+<p>
+<i>Note</i>
+Components have a reaction time (delay). Their outputs do not change immediately after a change of their inputs.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-4-2" class="outline-4">
+<h4 id="sec-3-4-2">Diagram - basic</h4>
+<div class="outline-text-4" id="text-3-4-2">
+
+<div class="figure">
+<p><img src="./resources/basic-components.png" alt="basic-components.png" />
+</p>
+</div>
+
+<p>
+FIXME crop
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-4-3" class="outline-4">
+<h4 id="sec-3-4-3">Diagram - combine</h4>
+<div class="outline-text-4" id="text-3-4-3">
+
+<div class="figure">
+<p><img src="./resources/combine-basic-in-half-adder.png" alt="combine-basic-in-half-adder.png" />
+</p>
+</div>
+
+<p>
+FIXME crop
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-4-4" class="outline-4">
+<h4 id="sec-3-4-4">Gates</h4>
+<div class="outline-text-4" id="text-3-4-4">
+<div class="org-src-container">
+
+<pre class="src src-scala">def inverter(input: Wire, output: Wire): Unit
+def andGate(a1: Wire, a2: Wire, output: Wire): Unit
+def orGate(o1: Wire, o2: Wire, output: Wire): Unit
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-4-5" class="outline-4">
+<h4 id="sec-3-4-5">Constructing Components</h4>
+<div class="outline-text-4" id="text-3-4-5">
+</div><ul class="org-ul"><li><a id="sec-3-4-5-1" name="sec-3-4-5-1"></a>Half-adder<br  /><div class="outline-text-5" id="text-3-4-5-1">
+<p>
+Definition:
+s = a | b &amp; !(a &amp; b)
+c = a &amp; b
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def halfAdder(a: Wire, b: Wire, s: Wire, c: Wire): Unit = {
+  val d = new Wire
+  val e = new Wire
+
+  orGate(a, b, d)
+  andGate(a, b, c)
+  inverter(c, e)
+  andGate(d, e, s)
+}
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="./resources/half-adder.png" alt="half-adder.png" />
+</p>
+</div>
+</div>
+</li>
+
+<li><a id="sec-3-4-5-2" name="sec-3-4-5-2"></a>Full-adder<br  /><div class="outline-text-5" id="text-3-4-5-2">
+<p>
+composed of 2 full-adders:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def fullAdder(a: Wire, b: Wire, cin: Wire, sum: Wire, cout: Wire): Unit = {
+  val s = new Wire
+  val c1 = new Wire
+  val c2 = new Wire
+
+  halfAdder(b, cin, s, c1)
+  halfAdder(a, s, sum, c2)
+  orGate(c1, c2, cout)
+}
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="./resources/full-adder.png" alt="full-adder.png" />
+</p>
+</div>
+</div>
+</li>
+
+
+<li><a id="sec-3-4-5-3" name="sec-3-4-5-3"></a>Exercise: Mystery function<br  /><div class="outline-text-5" id="text-3-4-5-3">
+<div class="org-src-container">
+
+<pre class="src src-scala">def f(a: Wire, b: Wire, c: Wire): Unit = {
+  val d, e, f, g = Wire
+  inverter(a, d)
+  inverter(b, e)
+  andGate(a, e, f)
+  andGate(b, d, g)
+  orGate(f, g, c)
+}
+</pre>
+</div>
+
+<p>
+Question: What logical function does this program describe?
+</p>
+
+<p>
+Answer: a != b (xor)
+</p>
+
+<p>
+d = !a
+e = !b
+f = a &amp; !b
+g = b &amp; !a
+c = f | g = (a &amp; !b) | (b &amp; !a)
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="right">a</th>
+<th scope="col" class="right">b</th>
+<th scope="col" class="right">a &amp; !b</th>
+<th scope="col" class="right">b &amp; !a</th>
+<th scope="col" class="right">c</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">&#xa0;</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="right">0</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="right">1</td>
+<td class="right">0</td>
+<td class="right">1</td>
+<td class="right">0</td>
+<td class="right">1</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="right">0</td>
+<td class="right">1</td>
+<td class="right">0</td>
+<td class="right">1</td>
+<td class="right">1</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="right">1</td>
+<td class="right">1</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="right">0</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+xor
+</p>
+</div>
+</li></ul>
+</div>
+</div>
+
+<div id="outline-container-sec-3-5" class="outline-3">
+<h3 id="sec-3-5"><span class="done DONE">DONE</span> 4 - 6 - Discrete Event Simulation_ API and Usage</h3>
+<div class="outline-text-3" id="text-3-5">
+</div>
+<div id="outline-container-sec-3-5-1" class="outline-4">
+<h4 id="sec-3-5-1">Discrete event Simulation</h4>
+<div class="outline-text-4" id="text-3-5-1">
+<p>
+a discrete event simulator performs actions, specified by the user at a given moment.
+</p>
+
+<p>
+A action is a function that does not take any parameters and which returns Unit:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">type Action = () =&gt; Unit
+</pre>
+</div>
+
+<p>
+The time is simulated, it has nothing to do with actual time.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-5-2" class="outline-4">
+<h4 id="sec-3-5-2">Simulation trait</h4>
+<div class="outline-text-4" id="text-3-5-2">
+<p>
+A concrete simulation happens inside an object that inherits from the trait Simulation:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">trait Simulation {
+  // return the current simulated time
+  def currentTime: Int = ???
+  // registers an action to perform after a certain delay (relative to currentTime)
+  def afterDelay(delay: Int)(block: =&gt; Unit): Unit = ???
+  // performs the simulation until there are no more actions waiting
+  def run(): Unit = ???
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-5-3" class="outline-4">
+<h4 id="sec-3-5-3">Class diagram</h4>
+<div class="outline-text-4" id="text-3-5-3">
+<p>
+Simulation
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<tbody>
+<tr>
+</tr>
+</tbody>
+</table>
+<p>
+Gates           Wire, AND, OR, INV
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<tbody>
+<tr>
+</tr>
+</tbody>
+</table>
+<p>
+Circuits        HA, ADDER
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<tbody>
+<tr>
+</tr>
+</tbody>
+</table>
+<p>
+MySimulation
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-5-4" class="outline-4">
+<h4 id="sec-3-5-4">The Wire Class</h4>
+<div class="outline-text-4" id="text-3-5-4">
+<p>
+3 basic operations:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">class Wire extends Simulation {
+  getSignal: Boolean
+  setSignal(sig: Boolean): Unit
+
+  // Attaches the specified procedure to the actions of the wire. All of the attached actions are executed at each change of the transported signal.
+  addAction(a: Action): Unit
+}
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-3-5-5" class="outline-4">
+<h4 id="sec-3-5-5">Wire implem.</h4>
+<div class="outline-text-4" id="text-3-5-5">
+<div class="org-src-container">
+
+<pre class="src src-scala">class Wire extends Simulation {
+  private var sigVal = false
+  private var actions: List[Action] = List()
+
+  getSignal: Boolean = sigVal
+
+  setSignal(sig: Boolean): Unit =
+    if (s != sigVal) {
+      sigVal = s
+      actions foreach(_())                        // use foreach because of the signature returning Unit
+    }
+
+  addAction(a: Action): Unit = {
+    actions = a :: actions
+    a()
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-5-6" class="outline-4">
+<h4 id="sec-3-5-6">Inverter</h4>
+<div class="outline-text-4" id="text-3-5-6">
+<p>
+installing an action on its input wire.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def inverter(input: Wire, output: Wire) = {
+  def invertAction(): Unit = {
+    val inputSig = input.getSignal
+    afterDelay(InverterDelay) { output setSignal !inputSig }
+  }
+
+  input addAction invertAction
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-5-7" class="outline-4">
+<h4 id="sec-3-5-7">And Gate</h4>
+<div class="outline-text-4" id="text-3-5-7">
+<div class="org-src-container">
+
+<pre class="src src-scala">def andGate(in1: Wire, in2: Wire, output: Wire): Unit = {
+  def andAction(): Unit = {
+    val in1Sig = in1.getSignal
+    val in2Sig = in2.getSignal
+    afterDelay(AndGateDelay) { output setSignal (in1Sig &amp; in2Sig) }
+  }
+
+  in1 addAction andAction
+  in2 addAction andAction
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-5-8" class="outline-4">
+<h4 id="sec-3-5-8">Or Gate</h4>
+<div class="outline-text-4" id="text-3-5-8">
+<div class="org-src-container">
+
+<pre class="src src-scala">#+begin_src scala
+def orGate(in1: Wire, in2: Wire, output: Wire): Unit = {
+  def orAction(): Unit = {
+    val in1Sig = in1.getSignal
+    val in2Sig = in2.getSignal
+    afterDelay(OrGateDelay) { output setSignal (in1Sig | in2Sig) }
+  }
+
+  in1 addAction orAction
+  in2 addAction orAction
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-6" class="outline-3">
+<h3 id="sec-3-6"><span class="done DONE">DONE</span> 4 - 7 - Discrete Event Simluation_ Implementation and Test</h3>
+<div class="outline-text-3" id="text-3-6">
+</div>
+<div id="outline-container-sec-3-6-1" class="outline-4">
+<h4 id="sec-3-6-1">Simulation trait</h4>
+<div class="outline-text-4" id="text-3-6-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">trait Simulation {
+  type Action = () =&gt; Unit
+  case class Event(time: Int, action: Action)
+  private type Agenda = List[Event]
+  private var agenda: Agenda = List()
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-6-2" class="outline-4">
+<h4 id="sec-3-6-2">Handling time</h4>
+</div>
+
+<div id="outline-container-sec-3-6-3" class="outline-4">
+<h4 id="sec-3-6-3">AfterDelay implem.</h4>
+<div class="outline-text-4" id="text-3-6-3">
+<div class="org-src-container">
+
+<pre class="src src-scala">def afterDelay(delay: Int)(block: =&gt; Unit): Unit = {
+  val item = Event(currentTime + delay, () =&gt; block)
+  agenda = insert(agenda, item)
+}
+
+private def insert(ag: List[Event], item: Event): List[Event] = ag match {
+  case first :: rest if first.time &lt;= item.time =&gt;
+    first :: insert(rest, item)
+  case _ =&gt; item :: ag
+}
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-3-6-4" class="outline-4">
+<h4 id="sec-3-6-4">The Event handling Loop</h4>
+<div class="outline-text-4" id="text-3-6-4">
+<div class="org-src-container">
+
+<pre class="src src-scala">private def loop(): Unit = agenda match {
+  case first :: rest =&gt;
+    agenda = rest
+    curtime = first.time
+    first.action()
+    loop()
+  case Nil =&gt;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-6-5" class="outline-4">
+<h4 id="sec-3-6-5">The run method</h4>
+<div class="outline-text-4" id="text-3-6-5">
+<div class="org-src-container">
+
+<pre class="src src-scala">def run(): Unit = {
+  afterDelay(0) {
+    println("*** simulation started, time = " + currentTime + " ***")
+  }
+  loop()
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-6-6" class="outline-4">
+<h4 id="sec-3-6-6">Probes</h4>
+<div class="outline-text-4" id="text-3-6-6">
+<p>
+A way to examine the changes of the signals on the wires:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def probe(name: String, Wire: Wire): Unit = {
+  def probeAction(): Unit = {
+    println(s"$name $currentTime value = ${wire.getSignal}")
+  }
+  wire addAction probeAction
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-6-7" class="outline-4">
+<h4 id="sec-3-6-7">Defining Technology-Dependent Parameters</h4>
+<div class="outline-text-4" id="text-3-6-7">
+<div class="org-src-container">
+
+<pre class="src src-scala">trait Parameters {
+  def InverterDelay = 2
+  def AndGateDelay = 3
+  def OrGateDelay = 5
+}
+</pre>
+</div>
+
+<p>
+We can add another trait to the MySimulation:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">object MySimulation extends Circuits with Parameters
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-6-8" class="outline-4">
+<h4 id="sec-3-6-8">Circuits</h4>
+<div class="outline-text-4" id="text-3-6-8">
+<div class="org-src-container">
+
+<pre class="src src-scala">class Circuits extends {
+  def half-adder...
+  def full-adder...
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-7" class="outline-3">
+<h3 id="sec-3-7"><span class="done DONE">DONE</span> Assignment</h3>
+<div class="outline-text-3" id="text-3-7">
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="done DONE">DONE</span> week 3 <code>[100%]</code></h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="done DONE">DONE</span> 5 - 1 - Monads and Effects</h3>
+<div class="outline-text-3" id="text-4-1">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">One</th>
+<th scope="col" class="left">Many</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">Synchronous</td>
+<td class="left">Try[T]</td>
+<td class="left">Iterable[T]</td>
+</tr>
+
+<tr>
+<td class="left">Asynchronous</td>
+<td class="left">Future[T]</td>
+<td class="left">Observable[T]</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div id="outline-container-sec-4-1-1" class="outline-4">
+<h4 id="sec-4-1-1">Simple adventure game</h4>
+<div class="outline-text-4" id="text-4-1-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">trait Adventure {
+  def collectCoins(): List[Coin]
+  def buyTreasure(coins: List[Coin]): Treasure
+}
+</pre>
+</div>
+
+<p>
+No as simple as we may think since me need to deal with failure.
+This does not appear when orchestrating code
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1-2" class="outline-4">
+<h4 id="sec-4-1-2">Actions may fail</h4>
+<div class="outline-text-4" id="text-4-1-2">
+<p>
+We need to add the failure.
+</p>
+
+<p>
+If we look at implementation details in collectCoins and buyTreasure, we see the unhappy path.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1-3" class="outline-4">
+<h4 id="sec-4-1-3">Sequential composition of actions that may fail</h4>
+</div>
+
+<div id="outline-container-sec-4-1-4" class="outline-4">
+<h4 id="sec-4-1-4">Expose possibility of failure in the types, honestly</h4>
+<div class="outline-text-4" id="text-4-1-4">
+<p>
+From: T =&gt; S
+To: T =&gt; Try[S]
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1-5" class="outline-4">
+<h4 id="sec-4-1-5">Making failure evident in the type</h4>
+<div class="outline-text-4" id="text-4-1-5">
+<p>
+Using:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">import scala.util.{Try, Success, Failure}
+
+abstract class Try[T]
+case class Success[T](elem: T) extends Try[T]
+case class Failure[T](t: Throwable) extends Try[Nothing]
+</pre>
+</div>
+
+<p>
+Now the trait becomes:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">trait Adventure {
+  def collectCoins(): Try[List[Coin]]
+  def buyTreasure(coins: List[Coin]): Try[Treasure]
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1-6" class="outline-4">
+<h4 id="sec-4-1-6">Dealing with failure explicitely</h4>
+<div class="outline-text-4" id="text-4-1-6">
+<p>
+Code becomes uglier but it reflects the reality we ever meant:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">val adventure = Adventure()
+
+val coins: Try[List[Coin]] = adventure.collectCoins()
+
+val treasure: Try[Treasure] = coins match {
+  case Success(cs)        =&gt; adventure.buyTreasure(cs)
+  case failure@Failure(t) =&gt; failure
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1-7" class="outline-4">
+<h4 id="sec-4-1-7">HOF to manipulate Try[T]</h4>
+<div class="outline-text-4" id="text-4-1-7">
+<div class="org-src-container">
+
+<pre class="src src-scala">def flatMap[S](f: T =&gt; Try[S]): Try[S]
+def flatten[U &lt;: Try[T]]: Try[U]
+def map[S](f: T =&gt; S): Try[T]
+def filter(p: T =&gt; Boolean): Try[T]
+def recoverWith(f: PartialFunction[Throwable, Try[T]]): Try[T]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1-8" class="outline-4">
+<h4 id="sec-4-1-8">Monads guide you through the happy path</h4>
+<div class="outline-text-4" id="text-4-1-8">
+<p>
+Try[T], a monad (has flatMap + previous rules) that handles exceptions
+</p>
+
+<p>
+Effects are visible in the type.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-sec-4-1-9" class="outline-4">
+<h4 id="sec-4-1-9">Noise reduction</h4>
+<div class="outline-text-4" id="text-4-1-9">
+<ol class="org-ol">
+<li>Using flatMap
+</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-scala">val adventure = Adventure()
+
+val treasure: Try[Treasure] =
+  adventure.collectCoins().flatMap(coins =&gt; adventure.buyTreasure(coins))
+</pre>
+</div>
+
+<ol class="org-ol">
+<li>Using for-comprehension (flatMap inside :D)
+</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-scala">val adventure = Adventure()
+
+val treasure: Try[Treasure] =
+  for(coins &lt;- adventure.collectCoins;
+      treasure &lt;- adventure.buyTreasure(coins)) yield treasure
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1-10" class="outline-4">
+<h4 id="sec-4-1-10">HOF to manipulate Try[T]</h4>
+<div class="outline-text-4" id="text-4-1-10">
+<p>
+Object companion of Try (called at construction if memory serves me well):
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">object Try {
+  def apply[T](r: =&gt; T): Try[T] = { // r call by name to delay the execution
+    try { Success(r) }
+    catch { case t =&gt; Failure(t) }
+  }
+}
+</pre>
+</div>
+
+<p>
+Map implementation of Try:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def map[S](f: T =&gt; S): Try[S] = this match {
+  case Success(value)     =&gt; Try(f(value))
+  case failure@Failure(t) =&gt; failure
+}
+</pre>
+</div>
+
+<p>
+Try helps in materializing the exceptions!
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1-11" class="outline-4">
+<h4 id="sec-4-1-11">Quiz</h4>
+<div class="outline-text-4" id="text-4-1-11">
+<p>
+FlatMap implementation:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def flatMap[S](f: T =&gt; Try[S]): Try[S] = this match {
+  case Success(value)     =&gt; try { f(value) } catch { case t =&gt; Failure(t) }
+  case failure@Failure(t) =&gt; failure
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="done DONE">DONE</span> 5 - 3 - Latency as an Effect</h3>
+<div class="outline-text-3" id="text-4-2">
+</div>
+
+<div id="outline-container-sec-4-2-1" class="outline-4">
+<h4 id="sec-4-2-1">A simple adventure game&#x2026; is very similar to a simple network stack</h4>
+<div class="outline-text-4" id="text-4-2-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">trait Socket {
+  def readFromMemory(): Array[Byte]
+  def sendToEurope(packet: Array[Byte]): Array[Byte]
+}
+
+val socket = new Socket()
+val packet = socket.readFromMemory()
+val confirmation = socket.sendToEurope(packet)
+</pre>
+</div>
+
+<p>
+Side-effects apparent?
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-2" class="outline-4">
+<h4 id="sec-4-2-2">Timings for various operations on a typical PC on human scale</h4>
+<div class="outline-text-4" id="text-4-2-2">
+<p>
+Peter Norvig's table
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">Instructions</th>
+<th scope="col" class="right">Time (ns)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">execute typical instruction</td>
+<td class="right">1000000000</td>
+</tr>
+
+<tr>
+<td class="left">fetch from L1 cache memory</td>
+<td class="right">0.5</td>
+</tr>
+
+<tr>
+<td class="left">branch misprediction</td>
+<td class="right">5</td>
+</tr>
+
+<tr>
+<td class="left">fetch from L2 cache memory</td>
+<td class="right">7</td>
+</tr>
+
+<tr>
+<td class="left">mutex lock/unlock</td>
+<td class="right">25</td>
+</tr>
+
+<tr>
+<td class="left">fetch from main memory</td>
+<td class="right">100</td>
+</tr>
+
+<tr>
+<td class="left">send 2k bytes over 1Gbps network</td>
+<td class="right">20000</td>
+</tr>
+
+<tr>
+<td class="left">read 1Mb sequentially from memory</td>
+<td class="right">250000</td>
+</tr>
+
+<tr>
+<td class="left">fetch from new disk location (seek)</td>
+<td class="right">8000000</td>
+</tr>
+
+<tr>
+<td class="left">read 1Mb sequentially from disk</td>
+<td class="right">20000000</td>
+</tr>
+
+<tr>
+<td class="left">send packet US to Europe and back</td>
+<td class="right">150000000</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+<a href="http://norvig.com/21-days.html#answers">http://norvig.com/21-days.html#answers</a>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4-2-3" class="outline-4">
+<h4 id="sec-4-2-3">Sequential composition of actions that take time</h4>
+<div class="outline-text-4" id="text-4-2-3">
+<div class="org-src-container">
+
+<pre class="src src-scala">val socket = new Socket()
+val packet = socket.readFromMemory()
+// block for 50,000 ns
+// only continues if no exception
+
+val confirmation = socket.sendToEurope(packet)
+// block for 150,000,000 ns
+// only continues if no exception
+</pre>
+</div>
+
+<p>
+but what does 50,000 ns represent in human term?
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-4" class="outline-4">
+<h4 id="sec-4-2-4">Convert using Norvig's table</h4>
+<div class="outline-text-4" id="text-4-2-4">
+<p>
+Let's convert those ns into second.
+This is not the reality!
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">Instructions</th>
+<th scope="col" class="left">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">execute typical instruction</td>
+<td class="left">1</td>
+</tr>
+
+<tr>
+<td class="left">fetch from L1 cache memory</td>
+<td class="left">0.5s</td>
+</tr>
+
+<tr>
+<td class="left">branch misprediction</td>
+<td class="left">5s</td>
+</tr>
+
+<tr>
+<td class="left">fetch from L2 cache memory</td>
+<td class="left">7s</td>
+</tr>
+
+<tr>
+<td class="left">mutex lock/unlock</td>
+<td class="left">0.5m</td>
+</tr>
+
+<tr>
+<td class="left">fetch from main memory</td>
+<td class="left">1.5m</td>
+</tr>
+
+<tr>
+<td class="left">send 2k bytes over 1Gbps network</td>
+<td class="left">5.5h</td>
+</tr>
+
+<tr>
+<td class="left">read 1Mb sequentially from memory</td>
+<td class="left">3d</td>
+</tr>
+
+<tr>
+<td class="left">fetch from new disk location (seek)</td>
+<td class="left">13w</td>
+</tr>
+
+<tr>
+<td class="left">read 1Mb sequentially from disk</td>
+<td class="left">6.5 months</td>
+</tr>
+
+<tr>
+<td class="left">send packet US to Europe and back</td>
+<td class="left">5y</td>
+</tr>
+</tbody>
+</table>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">val socket = new Socket()
+val packet = socket.readFromMemory()
+// block for 3 days
+// only continues if no exception
+
+val confirmation = socket.sendToEurope(packet)
+// block for 5 years
+// only continues if no exception
+</pre>
+</div>
+
+<p>
+This is huge!
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-sec-4-2-5" class="outline-4">
+<h4 id="sec-4-2-5">Monads guide you through the happy path</h4>
+<div class="outline-text-4" id="text-4-2-5">
+<p>
+Future[T] a monad that handles exception and latency
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-6" class="outline-4">
+<h4 id="sec-4-2-6">Futures asynchronously notify consumers</h4>
+<div class="outline-text-4" id="text-4-2-6">
+<p>
+Futures are computation that completes on the future.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">import scala.concurrent._
+import scala.concurrent.ExecutionContext.Implicits.global
+
+trait Future[T] {
+  def onComplete(callback: Try[T] =&gt; Unit)
+    (implicit executor: ExecutionContext): Unit
+}
+</pre>
+</div>
+
+<p>
+NB: The execution context will remain implicit as this is not necessary to understand futures.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-7" class="outline-4">
+<h4 id="sec-4-2-7">Futures alternative designs</h4>
+<div class="outline-text-4" id="text-4-2-7">
+<div class="org-src-container">
+
+<pre class="src src-scala">trait Future[T] {
+  def onComplete(success: T =&gt; Unit, failed: Throwable =&gt; Unit)
+    (implicit executor: ExecutionContext): Unit
+
+  def onComplete(callback: Observer[T]): Unit
+}
+
+trait Observer[T] {
+  def onNext(value: T): Unit
+  def onError(error: Throwable): Unit
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-8" class="outline-4">
+<h4 id="sec-4-2-8">Futures asynchronously notify consumers</h4>
+<div class="outline-text-4" id="text-4-2-8">
+<div class="org-src-container">
+
+<pre class="src src-scala">trait Socket {
+  def readFromMemory(): Future[Array[Byte]]
+  def sendToEurope(packet: Array[Byte]): Future[Array[Byte]]
+}
+</pre>
+</div>
+
+<p>
+If you know the computation will take a long time, always make your method return a future.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-9" class="outline-4">
+<h4 id="sec-4-2-9">Send packets using futures I</h4>
+<div class="outline-text-4" id="text-4-2-9">
+<p>
+Impact on the code obviously.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">val socket = Socket()
+
+val packet: Future[Array[Byte]] = socket.readFromMemory()
+
+val confirmation: Future[Array[Byte]] =
+  packet onComplete {
+    case Success(p) =&gt; socket.sendToEurope(p)
+    case Failure(t) =&gt; ...
+}
+</pre>
+</div>
+<p>
+This does not work
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-10" class="outline-4">
+<h4 id="sec-4-2-10">Send packets using futures II</h4>
+<div class="outline-text-4" id="text-4-2-10">
+<p>
+Impact on the code obviously.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">val socket = Socket()
+
+val packet: Future[Array[Byte]] = socket.readFromMemory()
+
+packet onComplete {
+  case Success(p) =&gt;
+    val confirmation: Future[Array[Byte]] = socket.sendToEurope(p)
+  case Failure(t) =&gt; ...
+}
+</pre>
+</div>
+
+<p>
+This does work but this can lead to spaghetti code!
+CARNAGE!
+</p>
+
+<p>
+Isn't there a better way?
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-11" class="outline-4">
+<h4 id="sec-4-2-11">Creating Futures</h4>
+<div class="outline-text-4" id="text-4-2-11">
+<p>
+Starts an async computation and returns a future object to which you can suscribe to be notified when the future completes
+</p>
+
+<p>
+Companion object for Future:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">Object Future {
+  def apply(body: =&gt; T)
+   (implicit context: ExecutionContext): Future[T]
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-12" class="outline-4">
+<h4 id="sec-4-2-12">Creating Futures</h4>
+<div class="outline-text-4" id="text-4-2-12">
+<div class="org-src-container">
+
+<pre class="src src-scala">import scala.concurrent.ExecutionContext.Implicits.global
+import akka.serializer._
+
+val memory = Queue[EMailMessage](
+  EMailMessage(from = "Erik", to = "Roland"),
+  EMailMessage(from = "Martin", to = "Erik"),
+  EMailMessage(from = "Roland", to = "Martin"),
+  ...
+
+def readFromMemory(): Future[Array[Byte]] = Future {
+  val email = queue.dequeue()
+  val serializer = serialization.findSerializerFor(email)
+  serializer.toBinary(email)
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-13" class="outline-4">
+<h4 id="sec-4-2-13">Quiz</h4>
+<div class="outline-text-4" id="text-4-2-13">
+<div class="org-src-container">
+
+<pre class="src src-scala">import scala.concurrent.ExecutionContext.Implicits.global
+
+val packet: Future[Array[Byte]] = socket.readFromMemory()
+
+packet.onSuccess {
+  case bs =&gt; socket.sendToEurope(p)
+}
+
+packet.onSuccess {
+  case bs =&gt; socket.sendToEurope(p)
+}
+</pre>
+</div>
+
+<p>
+How many messages remains in the e-mail queue? 3, 2, 1, or 0
+-&gt; 2
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="done DONE">DONE</span> 5 - 4 - Combinators on Futures</h3>
+<div class="outline-text-3" id="text-4-3">
+</div>
+
+<div id="outline-container-sec-4-3-1" class="outline-4">
+<h4 id="sec-4-3-1">Futures recap</h4>
+<div class="outline-text-4" id="text-4-3-1">
+<p>
+Future is a monad (flatMap in implem.)
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">trait Awaitable[T] extends AnyRef {
+  abstract def ready(atMost: Duration): Unit
+  abstract def result(atMost: Duration): T
+}
+
+trait Future[T] extends Awaitable[T] {
+  def filter(p: T =&gt; Boolean): Future[T]
+  def flatMap[S](f: T =&gt; Future[S]): Future[U]
+  def map[S](f: T =&gt; S): Future[S]
+  def recoverWith(f: PartialFunction[Throwable, Future[T]]): Future[T]
+}
+
+object Future {
+  def apply[T](body: =&gt; T): Future[T]
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3-2" class="outline-4">
+<h4 id="sec-4-3-2">Sending packets using features</h4>
+<div class="outline-text-4" id="text-4-3-2">
+<p>
+THE MESS:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">val socket = Socket()
+
+val packet: Future[Array[Byte]] = socket.readFromMemory()
+
+packet onComplete {
+  case Success(p) =&gt;
+    val confirmation: Future[Array[Byte]] = socket.sendToEurope(p)
+  case Failure(t) =&gt; ...
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3-3" class="outline-4">
+<h4 id="sec-4-3-3">FlatMap to the rescue</h4>
+<div class="outline-text-4" id="text-4-3-3">
+<div class="org-src-container">
+
+<pre class="src src-scala">val socket = Socket()
+
+val packet: Future[Array[Byte]] = socket.readFromMemory()
+
+val confirmation: Future[Array[Byte]] = packet.flatMap(p =&gt; socket.sendToEurope(p))
+</pre>
+</div>
+
+<p>
+In scala, flatMap is the hero of every monad.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3-4" class="outline-4">
+<h4 id="sec-4-3-4">Sending packets using futures under the covers</h4>
+<div class="outline-text-4" id="text-4-3-4">
+<div class="org-src-container">
+
+<pre class="src src-scala">import scala.concurrent.ExecutionContext.Implicits.global
+import scala.imaginary.Http._
+
+object Http {
+  def apply(url: URL, req: Request): Future[Response] =
+   // runs the http request asynchronously
+}
+
+def sendToEurope(packet: Array[Byte]): Future[Array[Byte]] =
+  Http.url(URL("mail.server.eu"), Request(packet))
+    .filter(response =&gt; response.isOK)
+    .map(response =&gt; response.toByteArray)
+</pre>
+</div>
+
+<p>
+Code seems nice but can still break at some point.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3-5" class="outline-4">
+<h4 id="sec-4-3-5">Sending packets using futures robustly (?)</h4>
+<div class="outline-text-4" id="text-4-3-5">
+<div class="org-src-container">
+
+<pre class="src src-scala">def sendTo(url: URL, packet: Array[Byte]): Future[Array[Byte]] =
+  Http.url(url, Request(packet))
+    .filter(response =&gt; response.isOK)
+    .map(response =&gt; response.toByteArray)
+
+def sendToAndBackup(packet: Array[Byte]): Future[(Array[Byte], Array[Byte])] = {
+  val europeConfirm = sendTo(mailServer.europe, packet)
+  val usaConfirm = sendTo(mailServer.usa, packet)
+  europeConfirm.zip(usaConfirm)
+}
+</pre>
+</div>
+
+<p>
+Not more robust.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3-6" class="outline-4">
+<h4 id="sec-4-3-6">Send packets using futures robustly</h4>
+<div class="outline-text-4" id="text-4-3-6">
+<ul class="org-ul">
+<li>recover: If future has failed, you can return the throwable containing the error.
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">def recover(f: PartialFunction[Throwable, T]): Future[T]
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>recoverWith: If the future fails, try the second future as fallback.
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scala">def recoverWith(f: PartialFunction[Throwable, Future[T]]): Future[T]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3-7" class="outline-4">
+<h4 id="sec-4-3-7">Send packets using futures robustly</h4>
+<div class="outline-text-4" id="text-4-3-7">
+<p>
+n#+begin<sub>src</sub> scala
+def sendTo(url: URL, packet: Array[Byte]): Future[Array[Byte]] =
+  Http.url(url, Request(packet))
+    .filter(response =&gt; response.isOK)
+    .map(response =&gt; response.toByteArray)
+</p>
+
+<p>
+def sendToSafe(packet: Array[Byte]): Future[(Array[Byte], Array[Byte])] =
+  sendTo(mailServer.europe, packet) recoverWith {
+    case europeError =&gt; sendTo(mailServer.usa, packet) recover {
+      case usaError =&gt; usaError.getMessage.toByteArray
+    }
+  }
+</p>
+
+<p>
+#+end<sub>src</sub>
+</p>
+
+<p>
+Not good yet, because we receive the confirmation from usa even for europe.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3-8" class="outline-4">
+<h4 id="sec-4-3-8">Better recovery with less matching</h4>
+<div class="outline-text-4" id="text-4-3-8">
+<div class="org-src-container">
+
+<pre class="src src-scala">def sendToSafe(packet: Array[Byte]): Future[(Array[Byte], Array[Byte])] =
+  sendTo(mailServer.europe, packet) fallbackTo {
+    sendTo(mailServer.usa, packet)
+  } recover {
+      case europeError =&gt; europeError.getMessage.toByteArray
+    }
+  }
+
+def fallbackTo(that: =&gt; Future[T]): Future[T] =
+  //... if 'this' future fails take the successful result of 'that' future
+  //... if 'that' future fails too, take the error of 'this' future
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-4-3-9" class="outline-4">
+<h4 id="sec-4-3-9">Fallback implementation</h4>
+<div class="outline-text-4" id="text-4-3-9">
+<div class="org-src-container">
+
+<pre class="src src-scala">def sendToSafe(packet: Array[Byte]): Future[(Array[Byte], Array[Byte])] =
+  sendTo(mailServer.europe, packet) fallbackTo {
+    sendTo(mailServer.usa, packet)
+  } recover {
+      case europeError =&gt; europeError.getMessage.toByteArray
+    }
+  }
+
+def fallbackTo(that: =&gt; Future[T]): Future[T] =
+  this recoverWith {
+    case _ =&gt; that recoverWith { case _ =&gt; this }
+  }
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3-10" class="outline-4">
+<h4 id="sec-4-3-10">Quiz</h4>
+<div class="outline-text-4" id="text-4-3-10">
+<div class="org-src-container">
+
+<pre class="src src-scala">object Try {
+  def apply(f: Future[T]): Future[Try[T]] = ...
+}
+</pre>
+</div>
+
+<p>
+What's the correct implementation?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">object Try {
+  def apply(f: Future[T]): Future[Try[T]] =
+    f map { x =&gt; Success(s) } recover { case t =&gt; Failure(t) }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3-11" class="outline-4">
+<h4 id="sec-4-3-11">Asynchronous where possible, blocking where necessary</h4>
+<div class="outline-text-4" id="text-4-3-11">
+<div class="org-src-container">
+
+<pre class="src src-scala">trait Awaitable[T] extends AnyRef {
+  abstract def ready(atMost: Duration): Unit
+  abstract def result(atMost: Duration): T
+}
+</pre>
+</div>
+
+<p>
+Beware with this trait, we can get out of the monad world =&gt; DANGEROUS
+</p>
+
+<p>
+Never block if unnecessary
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3-12" class="outline-4">
+<h4 id="sec-4-3-12">Asynchronous where possible, blocking where necessary</h4>
+<div class="outline-text-4" id="text-4-3-12">
+<div class="org-src-container">
+
+<pre class="src src-scala">val socket = Socket()
+
+val packet: Future[Array[Byte]] = socket.readFromMemory()
+
+val confirmation: Future[Array[Byte]] =
+  packet.flatMap(socket.sendToSafe(_))
+
+val c = Await.result(confirmation, 2 seconds)
+println(c.toText)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3-13" class="outline-4">
+<h4 id="sec-4-3-13">Duration</h4>
+<div class="outline-text-4" id="text-4-3-13">
+<div class="org-src-container">
+
+<pre class="src src-scala">import scala.language.postfixOps
+
+object Duration {
+  def apply(length: Long, unit: TimeUnit): Duration
+}
+
+val fiveYears = 1826 minutes
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4" class="outline-3">
+<h3 id="sec-4-4"><span class="done DONE">DONE</span> 5 - 5 - Composing Futures</h3>
+<div class="outline-text-3" id="text-4-4">
+</div>
+<div id="outline-container-sec-4-4-1" class="outline-4">
+<h4 id="sec-4-4-1">FlatMap</h4>
+</div>
+<div id="outline-container-sec-4-4-2" class="outline-4">
+<h4 id="sec-4-4-2">Comprehensions</h4>
+<div class="outline-text-4" id="text-4-4-2">
+<div class="org-src-container">
+
+<pre class="src src-scala">val socket = Socket()
+val confirmation: Future[Array[Byte]] = for {
+  packet &lt;- socket.readFromMemory()
+  confirmation &lt;- socket.sendToSafe(packet)
+} yield confirmation
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4-4-3" class="outline-4">
+<h4 id="sec-4-4-3">Retrying to send</h4>
+<div class="outline-text-4" id="text-4-4-3">
+<div class="org-src-container">
+
+<pre class="src src-scala">def retry(noTimes: Int)(block: =&gt; Future[T]): Future[T] =
+  // retry successfully completing block at most noTimes
+  // and give up after that
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4-4" class="outline-4">
+<h4 id="sec-4-4-4">Retrying to send implem.</h4>
+<div class="outline-text-4" id="text-4-4-4">
+<div class="org-src-container">
+
+<pre class="src src-scala">def retry(noTimes: Int)(block: =&gt; Future[T]): Future[T] =
+  if (noTimes == 0)
+    Future.failed(new Exception("sorry"))
+  else
+    block fallbackTo retry(noTimes - 1)(block)
+</pre>
+</div>
+
+<p>
+Try to avoid recursion and use a more higher level approach (fold)
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4-5" class="outline-4">
+<h4 id="sec-4-4-5">Folding lists</h4>
+<div class="outline-text-4" id="text-4-4-5">
+<p>
+"Northern wind comes from the North" (Richard Bird)
+</p>
+
+<p>
+Right comes from the right
+</p>
+<blockquote>
+<p>
+List(a, b, c).foldRight(e)(f) &lt;=&gt; f(a, f(b, f(c, e)))
+</p>
+</blockquote>
+
+<p>
+Left comes from the left
+</p>
+<blockquote>
+<p>
+List(a, b, c).foldLeft(e)(f) &lt;=&gt; f(f(f(e, a), b), c)
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4-6" class="outline-4">
+<h4 id="sec-4-4-6">Retrying to send implem. using foldLeft pattern</h4>
+<div class="outline-text-4" id="text-4-4-6">
+<div class="org-src-container">
+
+<pre class="src src-scala">def retry(noTimes: Int)(block: =&gt; Future[T]): Future[T] = {
+  val ns: Iterator[Int] = (1 to noTimes).iterator
+  val attempts: Iterator[Future[T]] = ns.map(_ =&gt; () =&gt; block)
+  val failed = Future.failed(new Exception("sorry"))
+
+  attempts.foldLeft(failed)((a, block) =&gt; a recoverWith { block() })
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4-7" class="outline-4">
+<h4 id="sec-4-4-7">Retrying to send implem. using foldRight pattern</h4>
+<div class="outline-text-4" id="text-4-4-7">
+<div class="org-src-container">
+
+<pre class="src src-scala">def retry(noTimes: Int)(block: =&gt; Future[T]): Future[T] = {
+  val ns: Iterator[Int] = (1 to noTimes).iterator
+  val attempts: Iterator[Future[T]] = ns.map(_ =&gt; () =&gt; block)
+  val failed = Future.failed(new Exception("sorry"))
+
+  attempts.foldRight(() =&gt; failed)((block, a) =&gt; block() fallbackTo { a() })
+}
+</pre>
+</div>
+
+<p>
+This is COMPLICATED code =&gt; not good
+</p>
+
+<p>
+We need to write baby code.
+Needs to be intuitive
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4-8" class="outline-4">
+<h4 id="sec-4-4-8">Making effects implicit</h4>
+<div class="outline-text-4" id="text-4-4-8">
+<p>
+We want to render the effects implicit here:
+</p>
+
+<p>
+From:
+T =&gt; Future[S]
+to:
+T =&gt; Try[S]
+or even:
+T =&gt; S
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4-9" class="outline-4">
+<h4 id="sec-4-4-9">Async await magic</h4>
+<div class="outline-text-4" id="text-4-4-9">
+<div class="org-src-container">
+
+<pre class="src src-scala">import scala.async.Async._
+
+def async[T](body: =&gt; T)
+  (implicit context: ExecutionContext): Future[T]
+
+def await[T](future: Future[T]): T
+</pre>
+</div>
+
+<p>
+This way, we can use an async code which contains a more natural and regular code to read which is Asynchronous.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">async {
+  // "normal" code
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4-10" class="outline-4">
+<h4 id="sec-4-4-10">Async, the small print</h4>
+<div class="outline-text-4" id="text-4-4-10">
+<p>
+Some illegal uses:
+</p>
+<ul class="org-ul">
+<li>await requires a directly-enclosing async (await must not be used inside a closure nested within an async block, or inside a nested object, trait or class)
+</li>
+<li>await must not be used inside an expression passed as argument to a by-name parameter
+</li>
+<li>not be used inside a Boolean short-circuit argument
+</li>
+<li>return expressions are illegal inside an async block
+</li>
+<li>Await should not be used under a try/catch
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4-11" class="outline-4">
+<h4 id="sec-4-4-11">Retrying to send using await</h4>
+<div class="outline-text-4" id="text-4-4-11">
+<div class="org-src-container">
+
+<pre class="src src-scala">def retry(noTimes: Int)(block: =&gt; Future[T]): Future[T] = async {
+  var i = 0
+  var result: Try[T] = Failure(new Exception("sorry"))
+  while (i &lt; noTimes &amp;&amp; result.isFailure) {
+    result = await { Try(block) }
+    i += 1
+  }
+  result.get
+}
+</pre>
+</div>
+
+<p>
+Erik Mejer: "Sometimes, using an imperative style is the more natural way"&#x2026;
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4-12" class="outline-4">
+<h4 id="sec-4-4-12">Reimplementing filter using await</h4>
+<div class="outline-text-4" id="text-4-4-12">
+<div class="org-src-container">
+
+<pre class="src src-scala">def filter(p: T =&gt; Boolean): Future[T] = async {
+  val x = await { this }
+  if (!p(x)) throw new NoSuchElementException()
+  else x
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4-13" class="outline-4">
+<h4 id="sec-4-4-13">Quiz</h4>
+<div class="outline-text-4" id="text-4-4-13">
+<p>
+Recall:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def async[T](body: =&gt; T)
+  (implicit context: ExecutionContext): Future[T]
+
+def await[T](future: Future[T]): T
+</pre>
+</div>
+
+<p>
+flatMap using async/await
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def flatMap[S](f: T =&gt; Future[S]): Future[S] = ...
+</pre>
+</div>
+
+<p>
+Answer:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def flatMap[S](f: T =&gt; Future[S]): Future[S] = async {
+  await {
+    f( await { this } )
+  }
+}
+</pre>
+</div>
+
+<p>
+Checking the type:
+await { this }: Future[T] =&gt; T
+f             : T =&gt; Future[S]
+await         : S
+async         : Future[S]
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4-14" class="outline-4">
+<h4 id="sec-4-4-14">Reimplementing filter on Future[T]</h4>
+<div class="outline-text-4" id="text-4-4-14">
+<div class="org-src-container">
+
+<pre class="src src-scala">def filter(pred: T =&gt; Boolean): Future = {
+  val p = Promise[T]()
+
+  this onComplete {
+    case Failure(e) =&gt; p.failure(e)
+    case Success(x) =&gt; if (!pred(e)) p.failure(new NoSuchElementException())
+		       else p.success(x)
+  }
+  p.future
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-5" class="outline-3">
+<h3 id="sec-4-5"><span class="done DONE">DONE</span> 5 - 6 - Promises, promises, promises</h3>
+<div class="outline-text-3" id="text-4-5">
+</div>
+<div id="outline-container-sec-4-5-1" class="outline-4">
+<h4 id="sec-4-5-1">Promises</h4>
+<div class="outline-text-4" id="text-4-5-1">
+<p>
+A Promise contains a Future.
+</p>
+
+<p>
+When creating the promise, you can take the future out of the promise.
+And the future will be notified (its callback will be called) whenever you call complete on the promise!!!
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">trait Promise[T] {
+  ...
+  def future: Future[T]
+  def complete(result: Try[T]): Unit
+  def tryComplete(result: Try[T]): Boolean
+  ...
+}
+
+trait Future[T] {
+  ...
+  def onCompleted(f: Try[T] =&gt; Unit): Unit
+  ...
+}
+</pre>
+</div>
+
+<p>
+Note:
+</p>
+<ul class="org-ul">
+<li>Think of the promise as a mailbox.
+</li>
+
+<li>A future is idempotent
+</li>
+<li>you can call complete on promise only once (otherwise, "complete" will throw)
+</li>
+<li>you can only complete a promise once
+</li>
+<li>"tryComplete" will return true once and false the other time
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4-5-2" class="outline-4">
+<h4 id="sec-4-5-2">Racing</h4>
+<div class="outline-text-4" id="text-4-5-2">
+<div class="org-src-container">
+
+<pre class="src src-scala">import scala.concurrent.ExecutionContext.Implicits.global
+
+def race[T](left: Future[T], right: Future[T]): Future[T] = {
+  val p = Promise[T]()
+  left onComplete { p.tryComplete(_) }
+  right onComplete { p.tryComplete(_) }
+  p.future
+}
+</pre>
+</div>
+
+<p>
+The first future that completes will run the race by setting the value of the future p.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-5-3" class="outline-4">
+<h4 id="sec-4-5-3">Simpler helper methods</h4>
+<div class="outline-text-4" id="text-4-5-3">
+<div class="org-src-container">
+
+<pre class="src src-scala">def success(value: T): Unit = this.complete(Success(value))
+
+def failure(t: Throwable): Unit = this.complete(Failure(t))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-5-4" class="outline-4">
+<h4 id="sec-4-5-4">Reimplementing filter on Future[T]</h4>
+<div class="outline-text-4" id="text-4-5-4">
+<div class="org-src-container">
+
+<pre class="src src-scala">def filter(pred: T =&gt; Boolean): Future = {
+  val p = Promise[T]()
+
+  this onComplete {
+    case Failure(e) =&gt; p.failure(e)
+    case Success(x) =&gt; if (!pred(e)) p.failure(new NoSuchElementException())
+		       else p.success(x)
+  }
+  p.future
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-5-5" class="outline-4">
+<h4 id="sec-4-5-5">Reimplementing zip using Promises</h4>
+<div class="outline-text-4" id="text-4-5-5">
+<div class="org-src-container">
+
+<pre class="src src-scala">def zip[S, R](that: Future[S], f: (T, S) =&gt; R): Future[R] = {
+  val p = Promise[R]()
+
+  this onComplete {
+    case Failure(e) =&gt; p.failure(e)
+    case Success(x) =&gt; that onComplete {
+	case Failure(e) =&gt; p.failure(e)
+	case Success(y) =&gt; p.success(f(x,y))
+      }
+  }
+  p.future
+}
+</pre>
+</div>
+
+<p>
+Imbrication is not that beautiful.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-5-6" class="outline-4">
+<h4 id="sec-4-5-6">Reimplementing zip with await</h4>
+<div class="outline-text-4" id="text-4-5-6">
+<div class="org-src-container">
+
+<pre class="src src-scala">def zip[S, R](p: Future[S], f: (T, S) =&gt; R): Future[R] = async {
+  f(await { this }, await { that })
+}
+</pre>
+</div>
+
+<p>
+Using async/await permits to concentrate on the essence of what we want to implement.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-5-7" class="outline-4">
+<h4 id="sec-4-5-7">Implement sequence with Promise</h4>
+<div class="outline-text-4" id="text-4-5-7">
+<div class="org-src-container">
+
+<pre class="src src-scala">def sequence[T](fs: List[Future[T]]): Future[List[T]] = {
+  val successful = Promise[List[T]]()
+  fs.foldRight(successful.future) {
+    (f, acc) =&gt; for { x &lt;- f; xs &lt;- acc } yield x :: xs
+  }
+}
+</pre>
+</div>
+
+<p>
+This is hairy!
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-5-8" class="outline-4">
+<h4 id="sec-4-5-8">Implement sequence with await</h4>
+<div class="outline-text-4" id="text-4-5-8">
+<div class="org-src-container">
+
+<pre class="src src-scala">def sequence[T](fs: List[Future[T]]): Future[List[T]] = async {
+  var _fs = fs
+  val r = ListBuffer[T]()
+
+  while(_fs != Nil) {
+    r += await { _fs.head }
+    _fs = _fs.tail
+  }
+  f.result
+}
+</pre>
+</div>
+
+<p>
+this is "mapM".
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4-6" class="outline-3">
+<h3 id="sec-4-6"><span class="done DONE">DONE</span> Assignment</h3>
+<div class="outline-text-3" id="text-4-6">
+</div>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="done DONE">DONE</span> week 4 <code>[100%]</code></h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="done DONE">DONE</span> 6 - 1 - From Futures to Observables</h3>
+<div class="outline-text-3" id="text-5-1">
+</div>
+</div>
+<div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="done DONE">DONE</span> 6 - 2 - Basic Combinators on Observable Collections</h3>
+<div class="outline-text-3" id="text-5-2">
+</div>
+</div>
+<div id="outline-container-sec-5-3" class="outline-3">
+<h3 id="sec-5-3"><span class="done DONE">DONE</span> 6 - 3 - Subscriptions</h3>
+<div class="outline-text-3" id="text-5-3">
+</div>
+</div>
+<div id="outline-container-sec-5-4" class="outline-3">
+<h3 id="sec-5-4"><span class="done DONE">DONE</span> 6 - 4 - Creating Rx Streams</h3>
+<div class="outline-text-3" id="text-5-4">
+</div>
+</div>
+<div id="outline-container-sec-5-5" class="outline-3">
+<h3 id="sec-5-5"><span class="done DONE">DONE</span> 6 - 5 - Schedulers I (Optional)</h3>
+<div class="outline-text-3" id="text-5-5">
+</div>
+</div>
+<div id="outline-container-sec-5-6" class="outline-3">
+<h3 id="sec-5-6"><span class="done DONE">DONE</span> 6 - 6 - Schedulers II (Optional)</h3>
+<div class="outline-text-3" id="text-5-6">
+</div>
+</div>
+<div id="outline-container-sec-5-7" class="outline-3">
+<h3 id="sec-5-7"><span class="done DONE">DONE</span> assignment</h3>
+<div class="outline-text-3" id="text-5-7">
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="done DONE">DONE</span> week 5 <code>[100%]</code></h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="done DONE">DONE</span> 7 - 1 - Introduction_ Why Actors</h3>
+<div class="outline-text-3" id="text-6-1">
+</div>
+</div>
+<div id="outline-container-sec-6-2" class="outline-3">
+<h3 id="sec-6-2"><span class="done DONE">DONE</span> 7 - 2 - The Actor Model (13<sub>43</sub>).mp4</h3>
+<div class="outline-text-3" id="text-6-2">
+</div>
+</div>
+<div id="outline-container-sec-6-3" class="outline-3">
+<h3 id="sec-6-3"><span class="done DONE">DONE</span> 7 - 3 - Message Processing Semantics (27<sub>28</sub>).mp4</h3>
+<div class="outline-text-3" id="text-6-3">
+</div>
+</div>
+<div id="outline-container-sec-6-4" class="outline-3">
+<h3 id="sec-6-4"><span class="done DONE">DONE</span> 7 - 4 - Designing Actor Systems (38<sub>43</sub>).mp4</h3>
+<div class="outline-text-3" id="text-6-4">
+</div>
+
+<div id="outline-container-sec-6-4-1" class="outline-4">
+<h4 id="sec-6-4-1">Web Crawler</h4>
+<div class="outline-text-4" id="text-6-4-1">
+</div><ul class="org-ul"><li><a id="sec-6-4-1-1" name="sec-6-4-1-1"></a>Client - bad implem:<br  /><div class="outline-text-5" id="text-6-4-1-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">package concurrency.actor
+
+import com.ning.http.client.AsyncHttpClient
+
+object WebClient {
+  private val client = new AsyncHttpClient
+
+  case class BadStatus(status: Int) extends RuntimeException
+
+  def get(url: String) = {
+    val response = client.prepareGet(url).execute().get
+    if (response.getStatusCode &lt; 400)
+      response.getResponseBodyExcerpt(131072)
+    else
+      throw new BadStatus(response.getStatusCode)
+  }
+}
+</pre>
+</div>
+
+<p>
+Bad implem:
+</p>
+<ul class="org-ul">
+<li>blocking by waiting the response of the http request
+</li>
+<li>during this blocing time, the actor is deaf to other request.
+</li>
+<li>no cancellation
+</li>
+<li>1 thread (which is a limited resource) -&gt; HEAVY
+</li>
+</ul>
+</div>
+</li>
+
+<li><a id="sec-6-4-1-2" name="sec-6-4-1-2"></a>Improved version using futures<br  /><div class="outline-text-5" id="text-6-4-1-2">
+<div class="org-src-container">
+
+<pre class="src src-scala">package concurrency.actor
+
+import scala.concurrent.Future
+import com.ning.http.client.AsyncHttpClient
+import scala.concurrent.Promise
+import java.util.concurrent.Executor
+
+object WebClient {
+  private val client = new AsyncHttpClient
+
+  case class BadStatus(status: Int) extends RuntimeException
+
+  def get(url: String)(implicit exec: Executor): Future[String]  = {
+    val f = client.prepareGet(url).execute()
+    val p = Promise[String]()
+    f.addListener(new Runnable {
+		    def run = {
+		      val response = f.get
+		      if (response.getStatusCode &lt; 400)
+			p.success(response.getResponseBodyExcerpt(131072))
+		      else
+			p.failure(BadStatus(response.getStatusCode))
+		    }
+		  }, exec)
+    p.future
+  }
+
+  def shutdown(): Unit = client.close()
+}
+
+object webClientTryout extends Application {
+  import scala.concurrent.ExecutionContext.Implicits.global
+
+  val url = "http://www.google.fr"
+  WebClient get url map println foreach (_ =&gt; WebClient.shutdown())
+}
+</pre>
+</div>
+</div>
+</li></ul>
+</div>
+
+
+<div id="outline-container-sec-6-4-2" class="outline-4">
+<h4 id="sec-6-4-2">Getter</h4>
+<div class="outline-text-4" id="text-6-4-2">
+</div><ul class="org-ul"><li><a id="sec-6-4-2-1" name="sec-6-4-2-1"></a>Compute links<br  /><div class="outline-text-5" id="text-6-4-2-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">package concurrency.actor
+
+object Getter {
+  val A_TAG = "(?i)&lt;a ([^&gt;]+)&gt;.+?&lt;/a&gt;".r
+  val HREF_ATTR = """\s*(?i)href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^'"&gt;\s]+))\s*""".r
+
+  def findLinks(body: String): Iterator[String] = {
+    for {
+      anchor &lt;- A_TAG.findAllMatchIn(body)
+      HREF_ATTR(dquot, quot, bare) &lt;- anchor.subgroups
+    } yield if (dquot != null) dquot
+    else if (quot != null) quot
+    else bare
+  }
+}
+
+object GetterTryout extends Application {
+  val bodyToParse1 = """&lt;a class=gb1 href="http://www.google.fr/imghp?hl=fr&amp;tab=wi"&gt;Images&lt;/a&gt; &lt;a class=gb1 href="http://maps.google.fr/maps?hl=fr&amp;tab=wl"&gt;Maps&lt;/a&gt; &lt;a class=gb1 href="https://play.google.com/?hl=fr&amp;tab=w8"&gt;Play&lt;/a&gt; &lt;a class=gb1 href="http://www.youtube.com/?gl=FR&amp;tab=w1"&gt;YouTube&lt;/a&gt;"""
+
+  Getter.findLinks(bodyToParse1) foreach println // prints nothing, the class attribute does not pass
+
+  val bodyToParse2 = """&lt;a href="http://www.google.fr/imghp?hl=fr&amp;tab=wi"&gt;Images&lt;/a&gt; &lt;a href="http://maps.google.fr/maps?hl=fr&amp;tab=wl"&gt;Maps&lt;/a&gt; &lt;a href="https://play.google.com/?hl=fr&amp;tab=w8"&gt;Play&lt;/a&gt; &lt;a href="http://www.youtube.com/?gl=FR&amp;tab=w1"&gt;YouTube&lt;/a&gt;"""
+
+  Getter.findLinks(bodyToParse2) foreach println // prints the links
+
+  val bodyToParse3 = """&lt;a href="link1"&gt;Images&lt;/a&gt; &lt;a href="link2"&gt;Maps&lt;/a&gt; &lt;a href="link3"&gt;Play&lt;/a&gt; &lt;a href="link4"&gt;YouTube&lt;/a&gt;"""
+
+  Getter.findLinks(bodyToParse3) foreach println // prints the links
+
+}
+</pre>
+</div>
+</div>
+</li></ul>
+</div>
+
+
+<div id="outline-container-sec-6-4-3" class="outline-4">
+<h4 id="sec-6-4-3">Controller</h4>
+<div class="outline-text-4" id="text-6-4-3">
+<div class="org-src-container">
+
+<pre class="src src-scala">package concurrency.actor
+
+import akka.actor.{Actor, Props, ActorRef, ReceiveTimeout}
+import scala.concurrent.duration._
+
+object Controller {
+  case class Check(link: String, depth: Int)
+  case class Result(cache: Set[String])
+}
+
+/** Class in charge of spawning Getter to retrieve url's content.
+  */
+class Controller extends Actor {
+  import Controller._
+
+  context.setReceiveTimeout(10.seconds)// limit the waiting time by 10 seconds
+
+  var cache = Set.empty[String]
+  var children = Set.empty[ActorRef]
+
+  def receive = {
+    case Check(url, depth) =&gt;
+      if(!cache(url) &amp;&amp; depth &gt; 0) // spawn a new Getter in charge of retrieving the url's content
+	children += context.actorOf(Props(new Getter(url, depth - 1)))
+      cache += url
+    case Getter.Done       =&gt; //
+      children -= sender
+      if (children.isEmpty) context.parent ! Result(cache) // computation done, we send the result to the caller
+    case ReceiveTimeout    =&gt; // this way, we do not wait too long and be able to send a stop all to every Getter spawned
+      children foreach(_ ! Getter.Abort)
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-6-4-4" class="outline-4">
+<h4 id="sec-6-4-4">Receptionist</h4>
+<div class="outline-text-4" id="text-6-4-4">
+<div class="org-src-container">
+
+<pre class="src src-scala">package concurrency.actor
+
+import akka.actor.{Actor, ActorRef, Props}
+
+object Receptionist {
+  private case class Job(client: ActorRef, url: String)
+  case class Get(url: String)
+  case class Result(url: String, links: Set[String])
+  case class Failed(url: String)
+}
+
+class Receptionist extends Actor {
+  import Receptionist._
+
+  def receive = waiting
+
+  /** Waiting for some action
+    * Get(url)
+    */
+  val waiting: Receive = {
+    // First reception of a Get, we enqueue our first job
+    case Get(url) =&gt;
+      context.become(runNext(Vector(Job(sender, url))))
+  }
+
+  def running(queue: Vector[Job]): Receive = {
+    // Reception of a new Get(url), we enqueue another job for the url
+    case Get(url)                 =&gt;
+      context.become(enqueueJob(queue, Job(sender, url)))
+
+    case Controller.Result(links) =&gt;
+      val Job(client, url) = queue.head
+      client ! Result(url, links)
+      context.stop(sender)
+      context.become(runNext(queue.tail))
+  }
+
+  var reqNo = 0
+  def runNext(queue: Vector[Job]): Receive = {
+    reqNo += 1
+    if (queue.isEmpty) waiting
+    else {
+      val controller = context.actorOf(Props[Controller], s"crawlerController$reqNo")
+      controller ! Controller.Check(queue.head.url, 2)
+      running(queue)
+    }
+  }
+
+  def enqueueJob(queue: Vector[Job], job: Job): Receive = {
+    if (queue.size &gt; 3) {
+      sender ! Failed(job.url)
+      running(queue)
+    } else {
+      running(queue :+ job)
+    }
+  }
+
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6-5" class="outline-3">
+<h3 id="sec-6-5"><span class="done DONE">DONE</span> 7 - 5 - Testing Actor Systems (17<sub>16</sub>).mp4</h3>
+<div class="outline-text-3" id="text-6-5">
+</div>
+</div>
+<div id="outline-container-sec-6-6" class="outline-3">
+<h3 id="sec-6-6"><span class="done DONE">DONE</span> assignment</h3>
+<div class="outline-text-3" id="text-6-6">
+</div>
+</div>
+</div>
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">IN-PROGRESS week 6 <code>[25%]</code></h2>
+<div class="outline-text-2" id="text-7">
+</div><div id="outline-container-sec-7-1" class="outline-3">
+<h3 id="sec-7-1"><span class="done DONE">DONE</span> 10 - 1 - Failure Handling with Actors</h3>
+<div class="outline-text-3" id="text-7-1">
+</div>
+<div id="outline-container-sec-7-1-1" class="outline-4">
+<h4 id="sec-7-1-1">Failure handling in asynchronous system</h4>
+<div class="outline-text-4" id="text-7-1-1">
+<p>
+Where shall failures go?
+</p>
+<ul class="org-ul">
+<li>reify as message
+</li>
+<li>send to a known address
+</li>
+</ul>
+
+<p>
+The actor model is anthropomorphic (based on how humans interact)
+</p>
+<ul class="org-ul">
+<li>Actors work together in teams (system)
+</li>
+<li>individual failure is handled by the team leader
+</li>
+</ul>
+
+<p>
+cf. example of big company as a hierarchical tree with different company services&#x2026;
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-7-1-2" class="outline-4">
+<h4 id="sec-7-1-2">Supervision</h4>
+<div class="outline-text-4" id="text-7-1-2">
+<p>
+Resilience means "recovering from deformations".
+</p>
+
+<p>
+Resilience demands containment and delegation of failure.
+</p>
+
+<ul class="org-ul">
+<li>failed Actor is terminated or restarted
+</li>
+<li>decision must be taken by one other Actor
+</li>
+<li>supervised Actors from a tree structure.
+</li>
+<li>the supervisor needs to create its subordinate
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-7-1-3" class="outline-4">
+<h4 id="sec-7-1-3">Supervisor strategy</h4>
+<div class="outline-text-4" id="text-7-1-3">
+<p>
+In Akka the parent declares how its child Actors are supervised:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">class Manager extends Actor {
+  override val supervisorStrategy = OneForOneStrategy() {
+    case _ : DBException =&gt; Restart
+    case _ : ActorKilledException =&gt; Restart
+    case _ : ServiceDownException =&gt; Escalate
+  }
+  ...
+  context.actorOf(Props[DBActor], "db")
+  context.actorOf(Props[ImportantServiceActor], "service")
+  ...
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7-1-4" class="outline-4">
+<h4 id="sec-7-1-4">Supervisor Strategy 2</h4>
+<div class="outline-text-4" id="text-7-1-4">
+<p>
+Failure is sent and processed like a message.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">class Manager extends Actor {
+  var restarts = Map.empty[ActorRef, Int].withDefaultValue(0)
+
+  override val supervisorStrategy = OneForOneStrategy() {
+    case _ : DBException =&gt; restart(sender) match {
+      case toomany if toomamy &gt; 10 =&gt; restarts -= sender; Stop
+      case n                       =&gt; restarts = restarts.updated(sender, n+1); Restart
+    }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-7-1-5" class="outline-4">
+<h4 id="sec-7-1-5">Supervisor Strategy 3</h4>
+<div class="outline-text-4" id="text-7-1-5">
+<p>
+If decision applies to all children: AllForOneStrategy
+</p>
+
+<p>
+Simple rate trigger included:
+</p>
+<ul class="org-ul">
+<li>allow a finite number of restarts
+</li>
+<li>all a finite number of restarts in a time window
+</li>
+<li>if restriction violated then Stop instead of Restart
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">OneForOneStrategy(maxNrOfRestarts = 10, withinTimeRange = 1.minute) {
+  case _: DBException =&gt; Restart // will turn into a stop at the 11th restart within the same minute
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7-1-6" class="outline-4">
+<h4 id="sec-7-1-6">Actor identity</h4>
+<div class="outline-text-4" id="text-7-1-6">
+<p>
+Recovery by restart requires stable identifier to refer to the services
+</p>
+<ul class="org-ul">
+<li>in Akka, the ActorRef stays valid after a restart
+</li>
+<li>in Erland, a name is registered for the current PID
+</li>
+</ul>
+
+<p>
+What does restart mean?
+</p>
+
+<ul class="org-ul">
+<li>expected error conditions are handled explicitely
+</li>
+<li>unexpected error indicate invalidated actor state
+</li>
+<li>restart will install initial behavior / state
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-7-1-7" class="outline-4">
+<h4 id="sec-7-1-7">Actor Lifecycle</h4>
+<div class="outline-text-4" id="text-7-1-7">
+<ul class="org-ul">
+<li>start
+</li>
+<li>(restart)*
+</li>
+<li>stop
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-7-1-8" class="outline-4">
+<h4 id="sec-7-1-8">Actor lifecycle Hooks</h4>
+<div class="outline-text-4" id="text-7-1-8">
+<div class="org-src-container">
+
+<pre class="src src-scala">trait Actor {
+  def preStart(): Unit = {}
+
+  def preRestart(reason: Throwable, message: Option[Any}): Unit = {
+    context.children foreach (context.stop(_))
+    postStop()
+  }
+
+  def postRestart(reason: Throwable): Unit = {
+    preStart()
+  }
+
+  def postStop(): Unit = {}
+  ...
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7-1-9" class="outline-4">
+<h4 id="sec-7-1-9">The default Lifecycle</h4>
+<div class="outline-text-4" id="text-7-1-9">
+<div class="org-src-container">
+
+<pre class="src src-scala">class DBActor extends Actor {
+  val db = DB.openConnection(...)
+  ...
+
+  override def postStop(): Unit = {
+    db.close()
+  }
+}
+</pre>
+</div>
+
+<p>
+In this model, the actor is fully reinitialized during restart.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-7-1-10" class="outline-4">
+<h4 id="sec-7-1-10">Lifecycle spanning restarts</h4>
+<div class="outline-text-4" id="text-7-1-10">
+<div class="org-src-container">
+
+<pre class="src src-scala">class Listener(source: ActorRef) extends Actor {
+  override def preStart() { source ! RegisterListener(self) }
+  override def preRestart(reason: Throwable, message: Option[Any]) {}
+  override def postRestart(reason: Throwable) {}
+  override def postStop() { source ! UnregisterListener(self) }
+}
+</pre>
+</div>
+
+<p>
+Actor-local state connot be kept across restarts, only external state can be managed like this.
+Child actors not stopped during restart will be restarted recursively.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7-2" class="outline-3">
+<h3 id="sec-7-2"><span class="todo TODO">TODO</span> 10 - 2 - Lifecycle Monitoring and the Error Kernel</h3>
+<div class="outline-text-3" id="text-7-2">
+</div><div id="outline-container-sec-7-2-1" class="outline-4">
+<h4 id="sec-7-2-1">Lifecycle Monitoring</h4>
+<div class="outline-text-4" id="text-7-2-1">
+<p>
+The only observable transition occurs when stopping an actor:
+</p>
+<ul class="org-ul">
+<li>having an actorRef implies liveness (at some earlier point)
+</li>
+<li>restarts are not externally visible
+</li>
+<li>after stop, there will be no more responses
+</li>
+</ul>
+
+<p>
+No replies could also be due to communication failure, therefore Akka supports Lifecycle Monitoring a.k.a. DeathWatch
+</p>
+<ul class="org-ul">
+<li>an actor registers its interest using context.watch(target)
+</li>
+<li>it will receive a Terminated(target) message when target stops
+</li>
+<li>it will not receive any direct messages from target thereafter
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-7-2-2" class="outline-4">
+<h4 id="sec-7-2-2">DeathWatch API</h4>
+<div class="outline-text-4" id="text-7-2-2">
+<div class="org-src-container">
+
+<pre class="src src-scala">trait ActorContext {
+  def watch(target: ActorRef): ActorRef
+  def unwatch(target: ActorRef): ActorRef
+  ...
+}
+
+case class Terminated private[akka] (actor: ActorRef)
+  (val existenceConfirmed: Boolean, val addressTerminated: Boolean)
+    extends AutoReceiveMessage with PossiblyHarmful
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-sec-7-3" class="outline-3">
+<h3 id="sec-7-3"><span class="todo TODO">TODO</span> 10 - 3 - Persistent Actor State</h3>
+</div>
+<div id="outline-container-sec-7-4" class="outline-3">
+<h3 id="sec-7-4"><span class="todo TODO">TODO</span> Assignment</h3>
+</div>
+</div>
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="todo TODO">TODO</span> week 7 <code>[0%]</code></h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

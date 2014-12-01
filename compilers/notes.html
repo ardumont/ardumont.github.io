@@ -1,0 +1,1308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Compilers - Alex Aiken - Stanford University</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Compilers - Alex Aiken - Stanford University</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1"><span class="done DONE">DONE</span> 1 - Introduction</a>
+<ul>
+<li><a href="#sec-1-1"><span class="done DONE">DONE</span> 10 - 1 - 01-01_ Introduction</a>
+<ul>
+<li><a href="#sec-1-1-1">Compiler</a></li>
+<li><a href="#sec-1-1-2">Interpreter</a></li>
+<li><a href="#sec-1-1-3">History</a></li>
+<li><a href="#sec-1-1-4">Compiler Phases</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2"><span class="done DONE">DONE</span> 10 - 2 - 01-02_ Structure of a Compiler</a>
+<ul>
+<li><a href="#sec-1-2-1">Lexical Analysis</a></li>
+<li><a href="#sec-1-2-2">Parsing</a></li>
+<li><a href="#sec-1-2-3">Semantic analysis</a></li>
+<li><a href="#sec-1-2-4">Optimization</a></li>
+<li><a href="#sec-1-2-5">Code gen(eration)</a></li>
+<li><a href="#sec-1-2-6">Conclusion</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-3"><span class="done DONE">DONE</span> 10 - 3 - 01-03_ The Economy of Programming Languages</a>
+<ul>
+<li><a href="#sec-1-3-1">Why are there so many (P)rogramming (L)anguages?</a></li>
+<li><a href="#sec-1-3-2">Why are there new PL?</a></li>
+<li><a href="#sec-1-3-3">What is a good PL?</a></li>
+<li><a href="#sec-1-3-4">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-2"><span class="todo TODO">TODO</span> 2</a>
+<ul>
+<li><a href="#sec-2-1"><span class="todo TODO">TODO</span> 20 - 1 - 02-01_ Cool Overview</a></li>
+<li><a href="#sec-2-2"><span class="todo TODO">TODO</span> 20 - 2 - 02-02_ Cool Example II</a></li>
+<li><a href="#sec-2-3"><span class="todo TODO">TODO</span> 20 - 3 - 02-03_ Cool Example III</a></li>
+</ul>
+</li>
+<li><a href="#sec-3"><span class="todo TODO">TODO</span> 3</a>
+<ul>
+<li><a href="#sec-3-1"><span class="todo TODO">TODO</span> 30 - 1 - 03-01_ Lexical Analysis</a></li>
+<li><a href="#sec-3-2"><span class="todo TODO">TODO</span> 30 - 2 - 03-02_ Lexical Analysis Examples</a></li>
+<li><a href="#sec-3-3"><span class="todo TODO">TODO</span> 30 - 3 - 03-03_ Regular Languages</a></li>
+<li><a href="#sec-3-4"><span class="todo TODO">TODO</span> 30 - 4 - 03-04_ Formal Languages</a></li>
+<li><a href="#sec-3-5"><span class="todo TODO">TODO</span> 30 - 5 - 03-05_ Lexical Specifications</a></li>
+<li><a href="#sec-3-6"><span class="todo TODO">TODO</span> 30 - 6 - DeduceIt Demo</a></li>
+</ul>
+</li>
+<li><a href="#sec-4"><span class="todo TODO">TODO</span> 4</a>
+<ul>
+<li><a href="#sec-4-1"><span class="todo TODO">TODO</span> 40 - 1 - 04-01_ Lexical Specification</a></li>
+<li><a href="#sec-4-2"><span class="todo TODO">TODO</span> 40 - 2 - 04-02_ Finite Automata</a></li>
+<li><a href="#sec-4-3"><span class="todo TODO">TODO</span> 40 - 3 - 04-03_ Regular Expressions into NFAs</a></li>
+<li><a href="#sec-4-4"><span class="todo TODO">TODO</span> 40 - 4 - 04-04_ NFA to DFA</a></li>
+<li><a href="#sec-4-5"><span class="todo TODO">TODO</span> 40 - 5 - 04-05_ Implementing Finite Automata</a></li>
+</ul>
+</li>
+<li><a href="#sec-5"><span class="todo TODO">TODO</span> 5</a>
+<ul>
+<li><a href="#sec-5-1"><span class="todo TODO">TODO</span> 50 - 1 - 05-01_ Introduction to Parsing</a></li>
+<li><a href="#sec-5-2"><span class="todo TODO">TODO</span> 50 - 2 - 05-02_ Context Free Grammars</a></li>
+<li><a href="#sec-5-3"><span class="todo TODO">TODO</span> 50 - 3 - 05-03_ Derivations</a></li>
+<li><a href="#sec-5-4"><span class="todo TODO">TODO</span> 50 - 4 - 05-04_ Ambiguity</a></li>
+</ul>
+</li>
+<li><a href="#sec-6"><span class="todo TODO">TODO</span> 6</a>
+<ul>
+<li><a href="#sec-6-1"><span class="todo TODO">TODO</span> 60 - 1 - 06-01_ Error Handling</a></li>
+<li><a href="#sec-6-2"><span class="todo TODO">TODO</span> 60 - 2 - 06-02_ Abstract Syntax Trees</a></li>
+<li><a href="#sec-6-3"><span class="todo TODO">TODO</span> 60 - 3 - 06-03_ Recursive Descent Parsing</a></li>
+<li><a href="#sec-6-4"><span class="todo TODO">TODO</span> 60 - 4 - 06-04_ Recursive Descent Algorithm</a></li>
+<li><a href="#sec-6-5"><span class="todo TODO">TODO</span> 60 - 5 - 06-04-1_ Recursive Descent Limitations</a></li>
+<li><a href="#sec-6-6"><span class="todo TODO">TODO</span> 60 - 6 - 06-05_ Left Recursion</a></li>
+</ul>
+</li>
+<li><a href="#sec-7"><span class="todo TODO">TODO</span> 7</a>
+<ul>
+<li><a href="#sec-7-1"><span class="todo TODO">TODO</span> 70 - 1 - 07-01_ Predictive Parsing</a></li>
+<li><a href="#sec-7-2"><span class="todo TODO">TODO</span> 70 - 2 - 07-02_ First Sets</a></li>
+<li><a href="#sec-7-3"><span class="todo TODO">TODO</span> 70 - 3 - 07-03_ Follow Sets</a></li>
+<li><a href="#sec-7-4"><span class="todo TODO">TODO</span> 70 - 4 - 07-04_ LL1 Parsing Tables</a></li>
+<li><a href="#sec-7-5"><span class="todo TODO">TODO</span> 70 - 5 - 07-05_ Bottom-Up Parsing</a></li>
+<li><a href="#sec-7-6"><span class="todo TODO">TODO</span> 70 - 6 - 07-06_ Shift-Reduce Parsing</a></li>
+</ul>
+</li>
+<li><a href="#sec-8"><span class="todo TODO">TODO</span> 8</a>
+<ul>
+<li><a href="#sec-8-1"><span class="todo TODO">TODO</span> 80 - 1 - 08-01_ Handles</a></li>
+<li><a href="#sec-8-2"><span class="todo TODO">TODO</span> 80 - 2 - 08-02_ Recognizing Handles</a></li>
+<li><a href="#sec-8-3"><span class="todo TODO">TODO</span> 80 - 3 - 08-03_ Recognizing Viable Prefixes</a></li>
+<li><a href="#sec-8-4"><span class="todo TODO">TODO</span> 80 - 4 - 08-04_ Valid Items</a></li>
+<li><a href="#sec-8-5"><span class="todo TODO">TODO</span> 80 - 5 - 08-05_ SLR Parsing</a></li>
+<li><a href="#sec-8-6"><span class="todo TODO">TODO</span> 80 - 6 - 08-06_ SLR Parsing Example</a></li>
+<li><a href="#sec-8-7"><span class="todo TODO">TODO</span> 80 - 7 - 08-07_ SLR Improvements</a></li>
+<li><a href="#sec-8-8"><span class="todo TODO">TODO</span> 80 - 8 - 08-08_ SLR Examples</a></li>
+</ul>
+</li>
+<li><a href="#sec-9"><span class="todo TODO">TODO</span> 9</a>
+<ul>
+<li><a href="#sec-9-1"><span class="todo TODO">TODO</span> 90 - 1 - 09-01_ Introduction to Semantic Analysis</a></li>
+<li><a href="#sec-9-2"><span class="todo TODO">TODO</span> 90 - 2 - 09-02_ Scope</a></li>
+<li><a href="#sec-9-3"><span class="todo TODO">TODO</span> 90 - 3 - 09-03_ Symbol Tables</a></li>
+<li><a href="#sec-9-4"><span class="todo TODO">TODO</span> 90 - 4 - 09-04_ Types</a></li>
+<li><a href="#sec-9-5"><span class="todo TODO">TODO</span> 90 - 5 - 09-05_ Type Checking</a></li>
+<li><a href="#sec-9-6"><span class="todo TODO">TODO</span> 90 - 6 - 09-06_ Type Environments</a></li>
+<li><a href="#sec-9-7"><span class="todo TODO">TODO</span> 90 - 7 - 09-07_ Subtyping</a></li>
+<li><a href="#sec-9-8"><span class="todo TODO">TODO</span> 90 - 8 - 09-08_ Typing Methods</a></li>
+<li><a href="#sec-9-9"><span class="todo TODO">TODO</span> 90 - 9 - 09-09_ Implementing Type Checking</a></li>
+</ul>
+</li>
+<li><a href="#sec-10"><span class="todo TODO">TODO</span> 10</a>
+<ul>
+<li><a href="#sec-10-1"><span class="todo TODO">TODO</span> 100 - 1 - 10-01_ Static vs. Dynamic Typing</a></li>
+<li><a href="#sec-10-2"><span class="todo TODO">TODO</span> 100 - 2 - 10-02_ Self Type</a></li>
+<li><a href="#sec-10-3"><span class="todo TODO">TODO</span> 100 - 3 - 10-03_ Self Type Operations</a></li>
+<li><a href="#sec-10-4"><span class="todo TODO">TODO</span> 100 - 4 - 10-04_ Self Type Usage</a></li>
+<li><a href="#sec-10-5"><span class="todo TODO">TODO</span> 100 - 5 - 10-05_ Self Type Checking</a></li>
+<li><a href="#sec-10-6"><span class="todo TODO">TODO</span> 100 - 6 - 10-06_ Error Recovery</a></li>
+</ul>
+</li>
+<li><a href="#sec-11"><span class="todo TODO">TODO</span> 11</a>
+<ul>
+<li><a href="#sec-11-1"><span class="todo TODO">TODO</span> 110 - 1 - 11-01_ Runtime Organization</a></li>
+<li><a href="#sec-11-2"><span class="todo TODO">TODO</span> 110 - 2 - 11-02_ Activations</a></li>
+<li><a href="#sec-11-3"><span class="todo TODO">TODO</span> 110 - 3 - 11-03_ Activation Records</a></li>
+<li><a href="#sec-11-4"><span class="todo TODO">TODO</span> 110 - 4 - 11-04_ Globals and Heap</a></li>
+<li><a href="#sec-11-5"><span class="todo TODO">TODO</span> 110 - 5 - 11-05_ Alignment</a></li>
+<li><a href="#sec-11-6"><span class="todo TODO">TODO</span> 110 - 6 - 11-06_ Stack Machines</a></li>
+</ul>
+</li>
+<li><a href="#sec-12"><span class="todo TODO">TODO</span> 12</a>
+<ul>
+<li><a href="#sec-12-1"><span class="todo TODO">TODO</span> 120 - 1 - 12-01_ Introduction to Code Generation</a></li>
+<li><a href="#sec-12-2"><span class="todo TODO">TODO</span> 120 - 2 - 12-02_ Code Generation I</a></li>
+<li><a href="#sec-12-3"><span class="todo TODO">TODO</span> 120 - 3 - 12-03_ Code Generation II</a></li>
+<li><a href="#sec-12-4"><span class="todo TODO">TODO</span> 120 - 4 - 12-04_ Code Generation Example</a></li>
+<li><a href="#sec-12-5"><span class="todo TODO">TODO</span> 120 - 5 - 12-05_ Temporaries</a></li>
+<li><a href="#sec-12-6"><span class="todo TODO">TODO</span> 120 - 6 - 12-06_ Object Layout</a></li>
+</ul>
+</li>
+<li><a href="#sec-13"><span class="todo TODO">TODO</span> 13</a>
+<ul>
+<li><a href="#sec-13-1"><span class="todo TODO">TODO</span> 130 - 1 - 13-01_ Semantics Overview</a></li>
+<li><a href="#sec-13-2"><span class="todo TODO">TODO</span> 130 - 2 - 13-02_ Operational Semantics</a></li>
+<li><a href="#sec-13-3"><span class="todo TODO">TODO</span> 130 - 3 - 13-03_ Cool Semantics I</a></li>
+<li><a href="#sec-13-4"><span class="todo TODO">TODO</span> 130 - 4 - 13-04_ Cool Semantics II</a></li>
+</ul>
+</li>
+<li><a href="#sec-14"><span class="todo TODO">TODO</span> 14</a>
+<ul>
+<li><a href="#sec-14-1"><span class="todo TODO">TODO</span> 140 - 1 - 14-01_ Intermediate Code</a></li>
+<li><a href="#sec-14-2"><span class="todo TODO">TODO</span> 140 - 2 - 14-02_ Optimization Overview</a></li>
+<li><a href="#sec-14-3"><span class="todo TODO">TODO</span> 140 - 3 - 14-03_ Local Optimization</a></li>
+<li><a href="#sec-14-4"><span class="todo TODO">TODO</span> 140 - 4 - 14-04_ Peephole Optimization</a></li>
+</ul>
+</li>
+<li><a href="#sec-15"><span class="todo TODO">TODO</span> 15</a>
+<ul>
+<li><a href="#sec-15-1"><span class="todo TODO">TODO</span> 150 - 1 - 15-01_ Dataflow Analysis</a></li>
+<li><a href="#sec-15-2"><span class="todo TODO">TODO</span> 150 - 2 - 15-02_ Constant Propagation</a></li>
+<li><a href="#sec-15-3"><span class="todo TODO">TODO</span> 150 - 3 - 15-03_ Analysis of Loops</a></li>
+<li><a href="#sec-15-4"><span class="todo TODO">TODO</span> 150 - 4 - 15-04_ Orderings</a></li>
+<li><a href="#sec-15-5"><span class="todo TODO">TODO</span> 150 - 5 - 15-05_ Liveness Analysis</a></li>
+</ul>
+</li>
+<li><a href="#sec-16"><span class="todo TODO">TODO</span> 16</a>
+<ul>
+<li><a href="#sec-16-1"><span class="todo TODO">TODO</span> 160 - 1 - 16-01_ Register Allocation</a></li>
+<li><a href="#sec-16-2"><span class="todo TODO">TODO</span> 160 - 2 - 16-02_ Graph Coloring</a></li>
+<li><a href="#sec-16-3"><span class="todo TODO">TODO</span> 160 - 3 - 16-03_ Spilling</a></li>
+<li><a href="#sec-16-4"><span class="todo TODO">TODO</span> 160 - 4 - 16-04_ Managing Caches</a></li>
+</ul>
+</li>
+<li><a href="#sec-17"><span class="todo TODO">TODO</span> 17</a>
+<ul>
+<li><a href="#sec-17-1"><span class="todo TODO">TODO</span> 170 - 1 - 17-01_ Automatic Memory Management</a></li>
+<li><a href="#sec-17-2"><span class="todo TODO">TODO</span> 170 - 2 - 17-02_ Mark and Sweep</a></li>
+<li><a href="#sec-17-3"><span class="todo TODO">TODO</span> 170 - 3 - 17-03_ Stop and Copy</a></li>
+<li><a href="#sec-17-4"><span class="todo TODO">TODO</span> 170 - 4 - 17-04_ Conservative Collection</a></li>
+<li><a href="#sec-17-5"><span class="todo TODO">TODO</span> 170 - 5 - 17-05_ Reference Counting</a></li>
+</ul>
+</li>
+<li><a href="#sec-18"><span class="todo TODO">TODO</span> 18</a>
+<ul>
+<li><a href="#sec-18-1"><span class="todo TODO">TODO</span> 180 - 1 - 18-01_ Java</a></li>
+<li><a href="#sec-18-2"><span class="todo TODO">TODO</span> 180 - 2 - 18-02_ Java Arrays</a></li>
+<li><a href="#sec-18-3"><span class="todo TODO">TODO</span> 180 - 3 - 18-03_ Java Exceptions</a></li>
+<li><a href="#sec-18-4"><span class="todo TODO">TODO</span> 180 - 4 - 18-04_ Java Interfaces</a></li>
+<li><a href="#sec-18-5"><span class="todo TODO">TODO</span> 180 - 5 - 18-05_ Java Coercions</a></li>
+<li><a href="#sec-18-6"><span class="todo TODO">TODO</span> 180 - 6 - 18-06_ Java Threads</a></li>
+<li><a href="#sec-18-7"><span class="todo TODO">TODO</span> 180 - 7 - 18-07_ Other Topics</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="done DONE">DONE</span> 1 - Introduction</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="done DONE">DONE</span> 10 - 1 - 01-01_ Introduction</h3>
+<div class="outline-text-3" id="text-1-1">
+</div>
+<div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1">Compiler</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+"off-line"
+                Data
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<tbody>
+<tr>
+</tr>
+</tbody>
+</table>
+<p>
+                 v
+Program -&gt; C -&gt; exec
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<tbody>
+<tr>
+</tr>
+</tbody>
+</table>
+<p>
+  v
+Output
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2">Interpreter</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+"online"
+</p>
+
+<p>
+Program -&gt; I -&gt; Output
+Data    -&gt;
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3">History</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<ul class="org-ul">
+<li>1954 IBM develops the 704
+<ul class="org-ul">
+<li>successor to the 701
+</li>
+</ul>
+</li>
+</ul>
+
+<p>
+IBM discovers that: software cost &gt;&gt;&gt; hardware cost
+(software is dominant expense)
+</p>
+
+<ul class="org-ul">
+<li>1953 "speedcoding" -&gt; early example of interpreter
+</li>
+</ul>
+<p>
+John Backus
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">Pros</th>
+<th scope="col" class="left">Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">dev code faster</td>
+<td class="left">code was 10-20x slower</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">300 bytes (in those days, that represented 30% of machine memory</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+John backus thought this was promising&#x2026;
+</p>
+
+<ul class="org-ul">
+<li>FORTRAN1
+</li>
+</ul>
+<p>
+&#x2026; If the formula was somehow transformed, this would be faster
+-&gt; FORmulas TRANslated -&gt; building compiler from 1954-1957
+</p>
+
+<ul class="org-ul">
+<li>1958 50% of programs written in FORTRAN
+</li>
+</ul>
+<p>
+Very fast adoption
+</p>
+
+<ul class="org-ul">
+<li>First compiler
+<ul class="org-ul">
+<li>Huge impact on computer science
+</li>
+</ul>
+</li>
+
+<li>Led to an enormous body of theoretical work
+</li>
+<li>New Compiler today preserve the FORTRAN1 compiler outline
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-4" class="outline-4">
+<h4 id="sec-1-1-4">Compiler Phases</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<ol class="org-ol">
+<li>Lexical analysis    -&gt; syntactic
+</li>
+<li>Parsing             -&gt; syntactic
+</li>
+<li>Semantic analysis   -&gt; Types, Scope, etc&#x2026;
+</li>
+<li>Optimization        -&gt; Collection of transformation to run faster or use less memory
+</li>
+<li>Code generation     -&gt; Translation (byte-code, machine/binary code, to other programming language, etc&#x2026;)
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="done DONE">DONE</span> 10 - 2 - 01-02_ Structure of a Compiler</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+<div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1">Lexical Analysis</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<ul class="org-ul">
+<li>recognize words
+<ul class="org-ul">
+<li>smallest unit above words -&gt; "This is a sentence"
+</li>
+</ul>
+</li>
+</ul>
+
+<p>
+Humans recognizes immediately the 4 words.
+Almost automatic.
+</p>
+
+<ul class="org-ul">
+<li>goal: divides program text into `words` or `tokens`
+<ul class="org-ul">
+<li>keywords
+</li>
+<li>variables
+</li>
+<li>operators
+</li>
+<li>punctuation (blank, semi-colon, etc&#x2026;)
+</li>
+<li>etc&#x2026;
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-2" class="outline-4">
+<h4 id="sec-1-2-2">Parsing</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<ul class="org-ul">
+<li>Def: Diagramming sentences.
+</li>
+</ul>
+
+<p>
+The diagram is a tree.
+</p>
+
+<ul class="org-ul">
+<li>Example with an english sentence:
+</li>
+</ul>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">This</td>
+<td class="left">line</td>
+<td class="left">is</td>
+<td class="left">a</td>
+<td class="left">longer</td>
+<td class="left">sentence</td>
+</tr>
+
+<tr>
+<td class="left">article</td>
+<td class="left">noun</td>
+<td class="left">verb</td>
+<td class="left">article</td>
+<td class="left">adjective</td>
+<td class="left">noun</td>
+</tr>
+
+<tr>
+<td class="left">subject</td>
+<td class="left">verb</td>
+<td class="left">object</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Group them together to form a sentence
+</p>
+
+<p>
+article + noun -&gt; subject  -&gt;
+                      verb -&gt; sentence
+article + adjective + noun -&gt;
+</p>
+
+<ul class="org-ul">
+<li>Piece of code:
+</li>
+</ul>
+
+<p>
+if x == y then z = 1; else z = 2;
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-txt">		  +----------------+
+		  |  if-then-else  |
+		  +-------+--------+
+			  |
+	+-----------------+----------------+
+	|                 |                |
++--------------+   +--------------+  +-----------+
+| predicate    |   | then-stmt    |  | else-stmt |
++------+-------+   +------+-------+  +-----+-----+
+       |                  |                |
++--------------+   +--------------+  +------------+
+|  relation    |   |    assign    |  |   assign   |
++------+-------+   +------+-------+  +-----+------+
+       |                  |                |
+      -+-                -+-              -+-
+     / | \              /   \            /   \
+    x  ==  y           z     1          z     2
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-3" class="outline-4">
+<h4 id="sec-1-2-3">Semantic analysis</h4>
+<div class="outline-text-4" id="text-1-2-3">
+</div><ul class="org-ul"><li><a id="sec-1-2-3-1" name="sec-1-2-3-1"></a>Def<br  /><div class="outline-text-5" id="text-1-2-3-1">
+<p>
+Once sentence structure is understood, we can try to understand "meaning"
+  -&gt; this is too hard!
+</p>
+
+<ul class="org-ul">
+<li>Compilers perform limited semantic analysis to catch inconsistencies
+</li>
+</ul>
+</div>
+</li>
+
+<li><a id="sec-1-2-3-2" name="sec-1-2-3-2"></a>Example<br  /><div class="outline-text-5" id="text-1-2-3-2">
+<ul class="org-ul">
+<li>Jack said Jerry left his assignment at home
+
+<p>
+-&gt; `his` refers to Jack or Jerry?
+</p>
+</li>
+
+<li>Jack said Jack left his assignment at home?
+
+<p>
+-&gt; Is it the same Jack?
+-&gt; If no, which Jack `his` refers to
+</p>
+</li>
+</ul>
+</div>
+</li>
+
+<li><a id="sec-1-2-3-3" name="sec-1-2-3-3"></a>Checks<br  /><div class="outline-text-5" id="text-1-2-3-3">
+<ul class="org-ul">
+<li>Programming languages define strict rules to avoid such ambiguities.
+</li>
+<li>Compilers perform many semantic checks besides variable bindings
+</li>
+</ul>
+
+<p>
+Example:
+Jack left her homework at home
+</p>
+
+<p>
+type mismatch here -&gt; we can deduce that they are different people
+</p>
+</div>
+</li></ul>
+</div>
+
+<div id="outline-container-sec-1-2-4" class="outline-4">
+<h4 id="sec-1-2-4">Optimization</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<p>
+Has no strong counterpart in english.
+-&gt; ~ editing
+</p>
+
+<p>
+"But a little bit like editing"  -~-&gt; "But akin to editing"
+</p>
+
+<ul class="org-ul">
+<li>Automatically modify programs so that they:
+<ul class="org-ul">
+<li>run faster
+</li>
+<li>use less memory
+</li>
+<li>Power
+</li>
+<li>Network
+</li>
+<li>Database
+</li>
+<li>etc&#x2026;
+</li>
+</ul>
+</li>
+</ul>
+
+<p>
+Example:
+`X = Y * 0 is the same as X = 0`  =&gt; NO!
+</p>
+<ul class="org-ul">
+<li>valid for integers
+</li>
+<li>invalide for floating points numbers
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-5" class="outline-4">
+<h4 id="sec-1-2-5">Code gen(eration)</h4>
+<div class="outline-text-4" id="text-1-2-5">
+<ul class="org-ul">
+<li>usually produces assembly code
+</li>
+
+<li>A translation into another languages
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-6" class="outline-4">
+<h4 id="sec-1-2-6">Conclusion</h4>
+<div class="outline-text-4" id="text-1-2-6">
+<ul class="org-ul">
+<li>overall structure of almost every compiler adheres to our outline
+</li>
+
+<li>the proportions of phases have changed since FORTRAN1
+</li>
+</ul>
+
+<p>
+FORTRAN1:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-txt">+---------+ +-------+ +---+ +------+ +-------+
+|    L    | |   P   | | S | |   O  | |  CG   |
++---------+ +-------+ +---+ +------+ +-------+
+</pre>
+</div>
+
+<p>
+Nowadays:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-txt">+-+ +-+ +--------+ +--------------------------+ +--+
+|L| |P| |   S    | |            O             | |CG|
++-+ +-+ +--------+ +--------------------------+ +--+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="done DONE">DONE</span> 10 - 3 - 01-03_ The Economy of Programming Languages</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
+<li>Why are there so many (P)rogramming (L)anguages?
+</li>
+<li>Why are there new PL?
+</li>
+<li>What is a good PL?
+</li>
+</ul>
+</div>
+<div id="outline-container-sec-1-3-1" class="outline-4">
+<h4 id="sec-1-3-1">Why are there so many (P)rogramming (L)anguages?</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+Application domains have distinctive/conflicting needs.
+</p>
+
+<ul class="org-ul">
+<li>Scientific Computing
+<ul class="org-ul">
+<li>good floating points
+</li>
+<li>good Arrays
+</li>
+<li>parallelism
+</li>
+<li>&#x2026;
+</li>
+</ul>
+<p>
+-&gt; FORTRAN
+</p>
+</li>
+
+<li>Business applications
+<ul class="org-ul">
+<li>persistance
+</li>
+<li>report generation
+</li>
+<li>data analysis
+</li>
+<li>&#x2026;
+</li>
+</ul>
+<p>
+-&gt; SQL
+</p>
+</li>
+
+<li>Systems Programming
+<ul class="org-ul">
+<li>control of resources
+</li>
+<li>real time constraint
+</li>
+<li>&#x2026;
+</li>
+</ul>
+<p>
+-&gt; c/c++ family
+</p>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3-2" class="outline-4">
+<h4 id="sec-1-3-2">Why are there new PL?</h4>
+<div class="outline-text-4" id="text-1-3-2">
+</div><ul class="org-ul"><li><a id="sec-1-3-2-1" name="sec-1-3-2-1"></a>Claim: Programmer training is the dominant cost for a programming language.<br  /><div class="outline-text-5" id="text-1-3-2-1">
+<p>
+Predictions
+</p>
+
+<ol class="org-ol">
+<li>Widely used language will be slow to change
+With lots of people, difficult to change the language (impacts on them)
+</li>
+
+<li>Easy to start a new language
+0 training cost at the beginning
+They will choose this new language if: productivity &gt; training cost
+</li>
+
+<li>Languages adopted to fill a void.
+</li>
+</ol>
+</div>
+</li>
+
+
+<li><a id="sec-1-3-2-2" name="sec-1-3-2-2"></a>Claim: New Languages tend to look like old languages<br  /><div class="outline-text-5" id="text-1-3-2-2">
+<p>
+Family resemblance.
+Reduces the training cost.
+</p>
+
+<p>
+Ex: Java vs. c++
+</p>
+</div>
+</li></ul>
+</div>
+
+<div id="outline-container-sec-1-3-3" class="outline-4">
+<h4 id="sec-1-3-3">What is a good PL?</h4>
+<div class="outline-text-4" id="text-1-3-3">
+<p>
+There is no universally accepted metrics for language design.
+</p>
+
+<p>
+One def: "A good language is one people use?"
+</p>
+
+<p>
+LOL
+</p>
+
+<p>
+From SICP:
+</p>
+<ul class="org-ul">
+<li>Primitive of elements
+</li>
+<li>Means of combination
+</li>
+<li>Means of abstraction
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3-4" class="outline-4">
+<h4 id="sec-1-3-4">Conclusion</h4>
+<div class="outline-text-4" id="text-1-3-4">
+<p>
+`Application domains have conflicting needs.` -&gt; It is hard to design one system for all.
+</p>
+
+<p>
+`Programming training is the dominant cost for a programming language.`
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="todo TODO">TODO</span> 2</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="todo TODO">TODO</span> 20 - 1 - 02-01_ Cool Overview</h3>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="todo TODO">TODO</span> 20 - 2 - 02-02_ Cool Example II</h3>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="todo TODO">TODO</span> 20 - 3 - 02-03_ Cool Example III</h3>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="todo TODO">TODO</span> 3</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="todo TODO">TODO</span> 30 - 1 - 03-01_ Lexical Analysis</h3>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="todo TODO">TODO</span> 30 - 2 - 03-02_ Lexical Analysis Examples</h3>
+</div>
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="todo TODO">TODO</span> 30 - 3 - 03-03_ Regular Languages</h3>
+</div>
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4"><span class="todo TODO">TODO</span> 30 - 4 - 03-04_ Formal Languages</h3>
+</div>
+<div id="outline-container-sec-3-5" class="outline-3">
+<h3 id="sec-3-5"><span class="todo TODO">TODO</span> 30 - 5 - 03-05_ Lexical Specifications</h3>
+</div>
+<div id="outline-container-sec-3-6" class="outline-3">
+<h3 id="sec-3-6"><span class="todo TODO">TODO</span> 30 - 6 - DeduceIt Demo</h3>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="todo TODO">TODO</span> 4</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="todo TODO">TODO</span> 40 - 1 - 04-01_ Lexical Specification</h3>
+</div>
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="todo TODO">TODO</span> 40 - 2 - 04-02_ Finite Automata</h3>
+</div>
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="todo TODO">TODO</span> 40 - 3 - 04-03_ Regular Expressions into NFAs</h3>
+</div>
+<div id="outline-container-sec-4-4" class="outline-3">
+<h3 id="sec-4-4"><span class="todo TODO">TODO</span> 40 - 4 - 04-04_ NFA to DFA</h3>
+</div>
+<div id="outline-container-sec-4-5" class="outline-3">
+<h3 id="sec-4-5"><span class="todo TODO">TODO</span> 40 - 5 - 04-05_ Implementing Finite Automata</h3>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="todo TODO">TODO</span> 5</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="todo TODO">TODO</span> 50 - 1 - 05-01_ Introduction to Parsing</h3>
+</div>
+<div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="todo TODO">TODO</span> 50 - 2 - 05-02_ Context Free Grammars</h3>
+</div>
+<div id="outline-container-sec-5-3" class="outline-3">
+<h3 id="sec-5-3"><span class="todo TODO">TODO</span> 50 - 3 - 05-03_ Derivations</h3>
+</div>
+<div id="outline-container-sec-5-4" class="outline-3">
+<h3 id="sec-5-4"><span class="todo TODO">TODO</span> 50 - 4 - 05-04_ Ambiguity</h3>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="todo TODO">TODO</span> 6</h2>
+<div class="outline-text-2" id="text-6">
+</div><div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="todo TODO">TODO</span> 60 - 1 - 06-01_ Error Handling</h3>
+</div>
+<div id="outline-container-sec-6-2" class="outline-3">
+<h3 id="sec-6-2"><span class="todo TODO">TODO</span> 60 - 2 - 06-02_ Abstract Syntax Trees</h3>
+</div>
+<div id="outline-container-sec-6-3" class="outline-3">
+<h3 id="sec-6-3"><span class="todo TODO">TODO</span> 60 - 3 - 06-03_ Recursive Descent Parsing</h3>
+</div>
+<div id="outline-container-sec-6-4" class="outline-3">
+<h3 id="sec-6-4"><span class="todo TODO">TODO</span> 60 - 4 - 06-04_ Recursive Descent Algorithm</h3>
+</div>
+<div id="outline-container-sec-6-5" class="outline-3">
+<h3 id="sec-6-5"><span class="todo TODO">TODO</span> 60 - 5 - 06-04-1_ Recursive Descent Limitations</h3>
+</div>
+<div id="outline-container-sec-6-6" class="outline-3">
+<h3 id="sec-6-6"><span class="todo TODO">TODO</span> 60 - 6 - 06-05_ Left Recursion</h3>
+</div>
+</div>
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="todo TODO">TODO</span> 7</h2>
+<div class="outline-text-2" id="text-7">
+</div><div id="outline-container-sec-7-1" class="outline-3">
+<h3 id="sec-7-1"><span class="todo TODO">TODO</span> 70 - 1 - 07-01_ Predictive Parsing</h3>
+</div>
+<div id="outline-container-sec-7-2" class="outline-3">
+<h3 id="sec-7-2"><span class="todo TODO">TODO</span> 70 - 2 - 07-02_ First Sets</h3>
+</div>
+<div id="outline-container-sec-7-3" class="outline-3">
+<h3 id="sec-7-3"><span class="todo TODO">TODO</span> 70 - 3 - 07-03_ Follow Sets</h3>
+</div>
+<div id="outline-container-sec-7-4" class="outline-3">
+<h3 id="sec-7-4"><span class="todo TODO">TODO</span> 70 - 4 - 07-04_ LL1 Parsing Tables</h3>
+</div>
+<div id="outline-container-sec-7-5" class="outline-3">
+<h3 id="sec-7-5"><span class="todo TODO">TODO</span> 70 - 5 - 07-05_ Bottom-Up Parsing</h3>
+</div>
+<div id="outline-container-sec-7-6" class="outline-3">
+<h3 id="sec-7-6"><span class="todo TODO">TODO</span> 70 - 6 - 07-06_ Shift-Reduce Parsing</h3>
+</div>
+</div>
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="todo TODO">TODO</span> 8</h2>
+<div class="outline-text-2" id="text-8">
+</div><div id="outline-container-sec-8-1" class="outline-3">
+<h3 id="sec-8-1"><span class="todo TODO">TODO</span> 80 - 1 - 08-01_ Handles</h3>
+</div>
+<div id="outline-container-sec-8-2" class="outline-3">
+<h3 id="sec-8-2"><span class="todo TODO">TODO</span> 80 - 2 - 08-02_ Recognizing Handles</h3>
+</div>
+<div id="outline-container-sec-8-3" class="outline-3">
+<h3 id="sec-8-3"><span class="todo TODO">TODO</span> 80 - 3 - 08-03_ Recognizing Viable Prefixes</h3>
+</div>
+<div id="outline-container-sec-8-4" class="outline-3">
+<h3 id="sec-8-4"><span class="todo TODO">TODO</span> 80 - 4 - 08-04_ Valid Items</h3>
+</div>
+<div id="outline-container-sec-8-5" class="outline-3">
+<h3 id="sec-8-5"><span class="todo TODO">TODO</span> 80 - 5 - 08-05_ SLR Parsing</h3>
+</div>
+<div id="outline-container-sec-8-6" class="outline-3">
+<h3 id="sec-8-6"><span class="todo TODO">TODO</span> 80 - 6 - 08-06_ SLR Parsing Example</h3>
+</div>
+<div id="outline-container-sec-8-7" class="outline-3">
+<h3 id="sec-8-7"><span class="todo TODO">TODO</span> 80 - 7 - 08-07_ SLR Improvements</h3>
+</div>
+<div id="outline-container-sec-8-8" class="outline-3">
+<h3 id="sec-8-8"><span class="todo TODO">TODO</span> 80 - 8 - 08-08_ SLR Examples</h3>
+</div>
+</div>
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><span class="todo TODO">TODO</span> 9</h2>
+<div class="outline-text-2" id="text-9">
+</div><div id="outline-container-sec-9-1" class="outline-3">
+<h3 id="sec-9-1"><span class="todo TODO">TODO</span> 90 - 1 - 09-01_ Introduction to Semantic Analysis</h3>
+</div>
+<div id="outline-container-sec-9-2" class="outline-3">
+<h3 id="sec-9-2"><span class="todo TODO">TODO</span> 90 - 2 - 09-02_ Scope</h3>
+</div>
+<div id="outline-container-sec-9-3" class="outline-3">
+<h3 id="sec-9-3"><span class="todo TODO">TODO</span> 90 - 3 - 09-03_ Symbol Tables</h3>
+</div>
+<div id="outline-container-sec-9-4" class="outline-3">
+<h3 id="sec-9-4"><span class="todo TODO">TODO</span> 90 - 4 - 09-04_ Types</h3>
+</div>
+<div id="outline-container-sec-9-5" class="outline-3">
+<h3 id="sec-9-5"><span class="todo TODO">TODO</span> 90 - 5 - 09-05_ Type Checking</h3>
+</div>
+<div id="outline-container-sec-9-6" class="outline-3">
+<h3 id="sec-9-6"><span class="todo TODO">TODO</span> 90 - 6 - 09-06_ Type Environments</h3>
+</div>
+<div id="outline-container-sec-9-7" class="outline-3">
+<h3 id="sec-9-7"><span class="todo TODO">TODO</span> 90 - 7 - 09-07_ Subtyping</h3>
+</div>
+<div id="outline-container-sec-9-8" class="outline-3">
+<h3 id="sec-9-8"><span class="todo TODO">TODO</span> 90 - 8 - 09-08_ Typing Methods</h3>
+</div>
+<div id="outline-container-sec-9-9" class="outline-3">
+<h3 id="sec-9-9"><span class="todo TODO">TODO</span> 90 - 9 - 09-09_ Implementing Type Checking</h3>
+</div>
+</div>
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10"><span class="todo TODO">TODO</span> 10</h2>
+<div class="outline-text-2" id="text-10">
+</div><div id="outline-container-sec-10-1" class="outline-3">
+<h3 id="sec-10-1"><span class="todo TODO">TODO</span> 100 - 1 - 10-01_ Static vs. Dynamic Typing</h3>
+</div>
+<div id="outline-container-sec-10-2" class="outline-3">
+<h3 id="sec-10-2"><span class="todo TODO">TODO</span> 100 - 2 - 10-02_ Self Type</h3>
+</div>
+<div id="outline-container-sec-10-3" class="outline-3">
+<h3 id="sec-10-3"><span class="todo TODO">TODO</span> 100 - 3 - 10-03_ Self Type Operations</h3>
+</div>
+<div id="outline-container-sec-10-4" class="outline-3">
+<h3 id="sec-10-4"><span class="todo TODO">TODO</span> 100 - 4 - 10-04_ Self Type Usage</h3>
+</div>
+<div id="outline-container-sec-10-5" class="outline-3">
+<h3 id="sec-10-5"><span class="todo TODO">TODO</span> 100 - 5 - 10-05_ Self Type Checking</h3>
+</div>
+<div id="outline-container-sec-10-6" class="outline-3">
+<h3 id="sec-10-6"><span class="todo TODO">TODO</span> 100 - 6 - 10-06_ Error Recovery</h3>
+</div>
+</div>
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11"><span class="todo TODO">TODO</span> 11</h2>
+<div class="outline-text-2" id="text-11">
+</div><div id="outline-container-sec-11-1" class="outline-3">
+<h3 id="sec-11-1"><span class="todo TODO">TODO</span> 110 - 1 - 11-01_ Runtime Organization</h3>
+</div>
+<div id="outline-container-sec-11-2" class="outline-3">
+<h3 id="sec-11-2"><span class="todo TODO">TODO</span> 110 - 2 - 11-02_ Activations</h3>
+</div>
+<div id="outline-container-sec-11-3" class="outline-3">
+<h3 id="sec-11-3"><span class="todo TODO">TODO</span> 110 - 3 - 11-03_ Activation Records</h3>
+</div>
+<div id="outline-container-sec-11-4" class="outline-3">
+<h3 id="sec-11-4"><span class="todo TODO">TODO</span> 110 - 4 - 11-04_ Globals and Heap</h3>
+</div>
+<div id="outline-container-sec-11-5" class="outline-3">
+<h3 id="sec-11-5"><span class="todo TODO">TODO</span> 110 - 5 - 11-05_ Alignment</h3>
+</div>
+<div id="outline-container-sec-11-6" class="outline-3">
+<h3 id="sec-11-6"><span class="todo TODO">TODO</span> 110 - 6 - 11-06_ Stack Machines</h3>
+</div>
+</div>
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12"><span class="todo TODO">TODO</span> 12</h2>
+<div class="outline-text-2" id="text-12">
+</div><div id="outline-container-sec-12-1" class="outline-3">
+<h3 id="sec-12-1"><span class="todo TODO">TODO</span> 120 - 1 - 12-01_ Introduction to Code Generation</h3>
+</div>
+<div id="outline-container-sec-12-2" class="outline-3">
+<h3 id="sec-12-2"><span class="todo TODO">TODO</span> 120 - 2 - 12-02_ Code Generation I</h3>
+</div>
+<div id="outline-container-sec-12-3" class="outline-3">
+<h3 id="sec-12-3"><span class="todo TODO">TODO</span> 120 - 3 - 12-03_ Code Generation II</h3>
+</div>
+<div id="outline-container-sec-12-4" class="outline-3">
+<h3 id="sec-12-4"><span class="todo TODO">TODO</span> 120 - 4 - 12-04_ Code Generation Example</h3>
+</div>
+<div id="outline-container-sec-12-5" class="outline-3">
+<h3 id="sec-12-5"><span class="todo TODO">TODO</span> 120 - 5 - 12-05_ Temporaries</h3>
+</div>
+<div id="outline-container-sec-12-6" class="outline-3">
+<h3 id="sec-12-6"><span class="todo TODO">TODO</span> 120 - 6 - 12-06_ Object Layout</h3>
+</div>
+</div>
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13"><span class="todo TODO">TODO</span> 13</h2>
+<div class="outline-text-2" id="text-13">
+</div><div id="outline-container-sec-13-1" class="outline-3">
+<h3 id="sec-13-1"><span class="todo TODO">TODO</span> 130 - 1 - 13-01_ Semantics Overview</h3>
+</div>
+<div id="outline-container-sec-13-2" class="outline-3">
+<h3 id="sec-13-2"><span class="todo TODO">TODO</span> 130 - 2 - 13-02_ Operational Semantics</h3>
+</div>
+<div id="outline-container-sec-13-3" class="outline-3">
+<h3 id="sec-13-3"><span class="todo TODO">TODO</span> 130 - 3 - 13-03_ Cool Semantics I</h3>
+</div>
+<div id="outline-container-sec-13-4" class="outline-3">
+<h3 id="sec-13-4"><span class="todo TODO">TODO</span> 130 - 4 - 13-04_ Cool Semantics II</h3>
+</div>
+</div>
+<div id="outline-container-sec-14" class="outline-2">
+<h2 id="sec-14"><span class="todo TODO">TODO</span> 14</h2>
+<div class="outline-text-2" id="text-14">
+</div><div id="outline-container-sec-14-1" class="outline-3">
+<h3 id="sec-14-1"><span class="todo TODO">TODO</span> 140 - 1 - 14-01_ Intermediate Code</h3>
+</div>
+<div id="outline-container-sec-14-2" class="outline-3">
+<h3 id="sec-14-2"><span class="todo TODO">TODO</span> 140 - 2 - 14-02_ Optimization Overview</h3>
+</div>
+<div id="outline-container-sec-14-3" class="outline-3">
+<h3 id="sec-14-3"><span class="todo TODO">TODO</span> 140 - 3 - 14-03_ Local Optimization</h3>
+</div>
+<div id="outline-container-sec-14-4" class="outline-3">
+<h3 id="sec-14-4"><span class="todo TODO">TODO</span> 140 - 4 - 14-04_ Peephole Optimization</h3>
+</div>
+</div>
+<div id="outline-container-sec-15" class="outline-2">
+<h2 id="sec-15"><span class="todo TODO">TODO</span> 15</h2>
+<div class="outline-text-2" id="text-15">
+</div><div id="outline-container-sec-15-1" class="outline-3">
+<h3 id="sec-15-1"><span class="todo TODO">TODO</span> 150 - 1 - 15-01_ Dataflow Analysis</h3>
+</div>
+<div id="outline-container-sec-15-2" class="outline-3">
+<h3 id="sec-15-2"><span class="todo TODO">TODO</span> 150 - 2 - 15-02_ Constant Propagation</h3>
+</div>
+<div id="outline-container-sec-15-3" class="outline-3">
+<h3 id="sec-15-3"><span class="todo TODO">TODO</span> 150 - 3 - 15-03_ Analysis of Loops</h3>
+</div>
+<div id="outline-container-sec-15-4" class="outline-3">
+<h3 id="sec-15-4"><span class="todo TODO">TODO</span> 150 - 4 - 15-04_ Orderings</h3>
+</div>
+<div id="outline-container-sec-15-5" class="outline-3">
+<h3 id="sec-15-5"><span class="todo TODO">TODO</span> 150 - 5 - 15-05_ Liveness Analysis</h3>
+</div>
+</div>
+<div id="outline-container-sec-16" class="outline-2">
+<h2 id="sec-16"><span class="todo TODO">TODO</span> 16</h2>
+<div class="outline-text-2" id="text-16">
+</div><div id="outline-container-sec-16-1" class="outline-3">
+<h3 id="sec-16-1"><span class="todo TODO">TODO</span> 160 - 1 - 16-01_ Register Allocation</h3>
+</div>
+<div id="outline-container-sec-16-2" class="outline-3">
+<h3 id="sec-16-2"><span class="todo TODO">TODO</span> 160 - 2 - 16-02_ Graph Coloring</h3>
+</div>
+<div id="outline-container-sec-16-3" class="outline-3">
+<h3 id="sec-16-3"><span class="todo TODO">TODO</span> 160 - 3 - 16-03_ Spilling</h3>
+</div>
+<div id="outline-container-sec-16-4" class="outline-3">
+<h3 id="sec-16-4"><span class="todo TODO">TODO</span> 160 - 4 - 16-04_ Managing Caches</h3>
+</div>
+</div>
+<div id="outline-container-sec-17" class="outline-2">
+<h2 id="sec-17"><span class="todo TODO">TODO</span> 17</h2>
+<div class="outline-text-2" id="text-17">
+</div><div id="outline-container-sec-17-1" class="outline-3">
+<h3 id="sec-17-1"><span class="todo TODO">TODO</span> 170 - 1 - 17-01_ Automatic Memory Management</h3>
+</div>
+<div id="outline-container-sec-17-2" class="outline-3">
+<h3 id="sec-17-2"><span class="todo TODO">TODO</span> 170 - 2 - 17-02_ Mark and Sweep</h3>
+</div>
+<div id="outline-container-sec-17-3" class="outline-3">
+<h3 id="sec-17-3"><span class="todo TODO">TODO</span> 170 - 3 - 17-03_ Stop and Copy</h3>
+</div>
+<div id="outline-container-sec-17-4" class="outline-3">
+<h3 id="sec-17-4"><span class="todo TODO">TODO</span> 170 - 4 - 17-04_ Conservative Collection</h3>
+</div>
+<div id="outline-container-sec-17-5" class="outline-3">
+<h3 id="sec-17-5"><span class="todo TODO">TODO</span> 170 - 5 - 17-05_ Reference Counting</h3>
+</div>
+</div>
+<div id="outline-container-sec-18" class="outline-2">
+<h2 id="sec-18"><span class="todo TODO">TODO</span> 18</h2>
+<div class="outline-text-2" id="text-18">
+</div><div id="outline-container-sec-18-1" class="outline-3">
+<h3 id="sec-18-1"><span class="todo TODO">TODO</span> 180 - 1 - 18-01_ Java</h3>
+</div>
+<div id="outline-container-sec-18-2" class="outline-3">
+<h3 id="sec-18-2"><span class="todo TODO">TODO</span> 180 - 2 - 18-02_ Java Arrays</h3>
+</div>
+<div id="outline-container-sec-18-3" class="outline-3">
+<h3 id="sec-18-3"><span class="todo TODO">TODO</span> 180 - 3 - 18-03_ Java Exceptions</h3>
+</div>
+<div id="outline-container-sec-18-4" class="outline-3">
+<h3 id="sec-18-4"><span class="todo TODO">TODO</span> 180 - 4 - 18-04_ Java Interfaces</h3>
+</div>
+<div id="outline-container-sec-18-5" class="outline-3">
+<h3 id="sec-18-5"><span class="todo TODO">TODO</span> 180 - 5 - 18-05_ Java Coercions</h3>
+</div>
+<div id="outline-container-sec-18-6" class="outline-3">
+<h3 id="sec-18-6"><span class="todo TODO">TODO</span> 180 - 6 - 18-06_ Java Threads</h3>
+</div>
+<div id="outline-container-sec-18-7" class="outline-3">
+<h3 id="sec-18-7"><span class="todo TODO">TODO</span> 180 - 7 - 18-07_ Other Topics</h3>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

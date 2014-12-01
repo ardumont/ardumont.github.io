@@ -17,27 +17,26 @@
                              :base-directory "~/org/"
                              :base-extension "org"
                              ;; :publishing-directory "/ssh:user@host:~/html/notebook/"
-                             :publishing-directory ,(output-directory "html")
+                             :publishing-directory ,(output-directory "")
                              :publishing-function org-html-publish-to-html
                              ;; :exclude "PrivatePage.org"   ;; regexp
                              :headline-levels 3
                              :section-numbers nil
                              :with-toc t
-                             :html-head "<link rel=\"stylesheet\" href=\"../other/style.css\" type=\"text/css\"/>"
+                             :html-head "<link rel=\"stylesheet\" href=\"./other/style.css\" type=\"text/css\"/>"
                              :html-preamble t
-                             :recursive t)
+                             :recursive t
+                             :make-index t)
 
                             ("images"
                              :base-directory "~/org/img/"
                              :base-extension "jpg\\|gif\\|png"
-                             ;; :publishing-directory "/ssh:user@host:~/html/images/"
                              :publishing-directory ,(output-directory "img")
                              :publishing-function org-publish-attachment)
 
                             ("other"
                              :base-directory "~/org/other/"
                              :base-extension "css\\|el"
-                             ;; :publishing-directory "/ssh:user@host:~/html/other/"
                              :publishing-directory ,(output-directory "other")
                              :publishing-function org-publish-attachment)
 

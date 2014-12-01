@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>4clojure - Number maze problem</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<meta  name="description" content="One possible solution about the number maze (106) problem on 4clojure.com"
+ />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">4clojure - Number maze problem</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">make-children</a></li>
+<li><a href="#sec-2">breadth-first</a></li>
+<li><a href="#sec-3">main function</a></li>
+</ul>
+</div>
+</div>
+<p>
+Here is the problem statement:
+</p>
+
+<blockquote>
+<p>
+Given a pair of numbers, the start and end point, find a path between the two using only three possible operations:
+</p>
+<ul class="org-ul">
+<li>double
+</li>
+<li>halve (odd numbers cannot be halved)
+</li>
+<li>add 2
+</li>
+</ul>
+<p>
+Find the shortest path through the "maze". Because there are multiple shortest paths, you must return the length of the shortest path, not the path itself.
+</p>
+</blockquote>
+
+<p>
+For this, I did three functions to separate concerns:
+</p>
+<ul class="org-ul">
+<li>make-children function: deals with the operations (/, +, *) for each value, we can have 3 values for even number or 2 values for odd ones.
+</li>
+<li>lazy breadth-first tree: the construction of each possible values for each step (we use the make-children function)
+</li>
+<li>the lazy searching function: drop the returned values from the breadth-first tree as long as we do not find at least one possible value.
+</li>
+</ul>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">make-children</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+This function has only for goal to:
+</p>
+<ul class="org-ul">
+<li>compute the result of the operations on a given value (if the value is odd, we do not consider the / operation)
+</li>
+<li>compute the new distance (+ 1)
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(defn mkc
+  [[s d]]
+  (let [[_ &amp; r :as vf] [/ * + ]]
+    (map (fn [f] [(f s 2) (+ 1 d)]) (if (even? s) vf r))))
+</pre>
+</div>
+
+<p>
+Some unit tests representing the use cases (even and odd value):
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(fact
+  (mkc [10 1]) =&gt; [[5 2] [20 2] [12 2]]
+  (mkc [9 1])  =&gt; [[18 2]
+		   [11 2]])
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">breadth-first</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+For each node in the queue, we compute the children via the make-children function and enqueue them.
+We begin the algorithm by adding the initial input into the queue (the current value and an initial distance of 1)
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(defn bfs
+  "breadth-first search lazily"
+  ([s]
+      ((fn nx [q]
+	 (lazy-seq
+	  (when (seq q)
+	    (let [n (peek q)
+		  c (mkc n)]
+	      (cons n (nx (into (pop q) c)))))))
+       (conj clojure.lang.PersistentQueue/EMPTY [s 1]))))
+
+(fact
+  (take 1 (bfs 1)) =&gt; '([1 1])
+  (take 4 (bfs 2)) =&gt; '([2 1] [1 2] [4 2] [4 2]))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">main function</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+This is the main algorithm.
+</p>
+
+<p>
+For the simple case where s(tart) and e(nd) are equals, we return directly 1.
+</p>
+
+<p>
+Else, as long as we do not find an entry for which the starting and the ending match, we drop them.
+</p>
+
+<p>
+As soon as we find one input that matches the predicate, we retrieve the distance and return it.
+Indeed, as we search in breadth, we hit the minimal distance.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(defn maze
+  [s e]
+  (if (= s e) 1 (let [[[_ d]] (drop-while (fn [[s _]] (not= s e)) (bfs s))] d)))
+
+(fact
+  (maze 1 1)  =&gt;  1
+  (maze 3 12) =&gt;  3
+  (maze 12 3) =&gt;  3
+  (maze 5 9)  =&gt;  3
+  (maze 9 2)  =&gt;  9
+  (maze 9 12) =&gt;  5)
+</pre>
+</div>
+<p>
+source: <a href="https://github.com/ardumont/my-4clojure-lab/blob/master/src/my_4clojure_lab/149/core106.clj">106</a>
+</p>
+
+<p>
+<b>note</b>
+As this algorithm is lazy and as we drop the head (using drop-while), we could compute forever without smashing the stack :D.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2013-01-28 lun. 19:29]</span></span></p>
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Install cwm recovery on galaxy s4 9505</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="ardumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Install cwm recovery on galaxy s4 9505</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Pre-requisites</a>
+<ul>
+<li><a href="#sec-1-1">Rooted phone</a></li>
+<li><a href="#sec-1-2">Software</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">Download files</a></li>
+<li><a href="#sec-3">Install</a></li>
+<li><a href="#sec-4">Reboot in recovery mode</a></li>
+<li><a href="#sec-5">Install the zip as usual</a></li>
+</ul>
+</div>
+</div>
+<p>
+Disclaimer:
+Here is my notes about my own experiment to install cyanogen mod on my phone.
+I'm not responsible if you mess up your phone.
+</p>
+
+<p>
+sources: <a href="http://wiki.cyanogenmod.org/w/Install_CM_for_jflte">http://wiki.cyanogenmod.org/w/Install_CM_for_jflte</a>
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Pre-requisites</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">Rooted phone</h3>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">Software</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Install adb and heimdall:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">nix-env -i heimdall androidsdk_4_4
+</pre>
+</div>
+<p>
+<b>Note</b> Your mileage may vary, I chose to use nix because it simplifies everything (available for at least all GNU/Linux distributions and os x platforms).
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Download files</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Cyanogen mod, for example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">wget http://download.cyanogenmod.org/get/jenkins/90461/cm-11-20141112-SNAPSHOT-M12-jflte.zip
+
+# md5: 3ba06098eb49b8b8b25bf3db1ab53c52
+md5sum cm-11-20141112-SNAPSHOT-M12-jflte.zip
+</pre>
+</div>
+
+<p>
+files: <a href="http://download.cyanogenmod.org/?device=jflte&type=snapshot">http://download.cyanogenmod.org/?device=jflte&type=snapshot</a>
+</p>
+
+<p>
+Google apps are to install on the side due to license limitations: <a href="http://wiki.cyanogenmod.org/w/Google_Apps">http://wiki.cyanogenmod.org/w/Google_Apps</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Install</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Install files in your phone (so that's available in recovery mode):
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"># tony at dagobah in ~/Downloads/android/galaxy-s4-9505 [11:15:11]
+$ adb push ./cyanogen-mod/cm-11-20141112-SNAPSHOT-M12-jflte.zip /sdcard/
+6702 KB/s (236771758 bytes in 34.499s)
+
+# tony at dagobah in ~/Downloads/android/galaxy-s4-9505 [11:20:49]
+$ adb push ./google-apps/gapps-kk-20140606-signed.zip /sdcard/
+6790 KB/s (157694716 bytes in 22.677s)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Reboot in recovery mode</h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
+
+<pre class="src src-sh">adb reboot recovery
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Install the zip as usual</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Inside the recovery mode:
+</p>
+<ul class="org-ul">
+<li>wipe data/cache
+</li>
+<li>install cyanogen-mod: Install zip &gt; cm-11-20141112-SNAPSHOT-M12-jflte.zip &gt; confirm
+</li>
+<li>Then, install google apps: Install zip &gt; gapps-kk-20140606-signed.zip &gt; confirm
+</li>
+</ul>
+
+<p>
+Now reboot the phone and you should see cyanogen-mod booting.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: ardumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

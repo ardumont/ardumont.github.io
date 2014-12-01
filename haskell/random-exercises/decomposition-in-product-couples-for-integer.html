@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Problem - Decomposition into a product of 2 numbers</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Massyl Nait-Mouloud, Antoine R. Dumont" />
+<meta  name="description" content="Find all the unique couple (a,b) that a*b = n, for n in N+. A first use of quickcheck to generate tests."
+ />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Problem - Decomposition into a product of 2 numbers</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Problem</a></li>
+<li><a href="#sec-2">Discussion</a></li>
+<li><a href="#sec-3">algorithm</a></li>
+<li><a href="#sec-4">Quickcheck</a>
+<ul>
+<li><a href="#sec-4-1">output</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+A friend of mine asks me to solve an exercise in haskell.
+As I made a mistake in solving it the first time, due to the missed unicity, I considered posting it here.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Problem</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Here is the revised problem:
+</p>
+
+<blockquote>
+<p>
+Find all the unique couple <b>(a,b)</b> such that <b>a*b = n</b>, for n in N+
+</p>
+
+<p>
+<b>Note</b>
+As the multiplication is commutative, we consider : <b>for any a, b, (a,b) == (b,a)</b>
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Discussion</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+To avoid making duplicates <b>(a,b) /= (b,a)</b>, we can consider the input as a kind of pyramid instead of square.
+</p>
+
+<blockquote>
+<p>
+for <b>n = 9</b> <br  />
+</p>
+
+<p>
+a in <b>1 2 3 4 5 6 7 8 9</b> (we can see a in rows)<br  />
+</p>
+
+<p>
+b in the range [a n] (b in columns) <br  />
+</p>
+
+<p>
+<del>1</del> <b>2 3 4 5 6 7 8 9</b> <br  />
+  <del>1 2</del> <b>3 4 5 6 7 8 9</b> <br  />
+  <del>1 2 3</del> <b>4 5 6 7 8 9</b> <br  />
+  <del>1 2 3 4</del> <b>5 6 7 8 9</b> <br  />
+  <del>1 2 3 4 5</del> <b>6 7 8 9</b> <br  />
+  <del>1 2 3 4 5 6</del> <b>7 8 9</b> <br  />
+  <del>1 2 3 4 5 6 7</del> <b>8 9</b> <br  />
+  <del>1 2 3 4 5 6 7 8</del> <b>9</b> <br  />
+  <del>1 2 3 4 5 6 7 8 9</del>
+</p>
+</blockquote>
+
+<p>
+So, again, the trick is to bound oneself.
+What about using b in [a..n].
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-text">|-----+-----------------+-------------------------|
+|   a | b in [a..n]     | a * b                   |
+|-----+-----------------+-------------------------|
+|   1 | 1 2 3 4 5 ... n | 1 2 3  4  5  6 ...   n  |
+|   2 | . 2 3 4 5 ... n | . 4 6  8 10 12 ...  2n  |
+|   3 | . . 3 4 5 ... n | . . 9 12 15 18 ...  3n  |
+|   4 | . . . 4 5 ... n | . . . 16 20 24 ...  4n  |
+|   5 | . . . . 5 ... n | . . . .  25 30 ...  5n  |
+|   6 | . . . . . ... n | . . . . .   36 ...  6n  |
+| ... | . . . . . ... n | . . . . . . .  ...      |
+|   n | . . . . . ... n | . . . . . . .  ...  n^2 |
+|-----+-----------------+-------------------------|
+</pre>
+</div>
+
+<p>
+Seems right.
+But then again, we could limit the range [a..n] to [a..sqrt n].
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">algorithm</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+
+<pre class="src src-haskell">isqrt :: Int -&gt; Int
+isqrt = floor . sqrt . fromIntegral
+
+couple :: Int -&gt; [(Int, Int)]
+couple n = [(a,b) | a &lt;- [1..isqrt n], b &lt;- [a..n], a * b == n]
+</pre>
+</div>
+
+<p>
+I can do some repl to check the output:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Couple&gt; couple 10
+[(1,10),(2,5)]
+*Couple&gt; couple 12
+[(1,12),(2,6),(3,4)]
+*Couple&gt; couple 24
+[(1,24),(2,12),(3,8),(4,6)]
+*Couple&gt; couple 100
+[(1,100),(2,50),(4,25),(5,20),(10,10)]
+*Couple&gt; couple 1000
+[(1,1000),(2,500),(4,250),(5,200),(8,125),(10,100),(20,50),(25,40)]
+*Couple&gt; couple 1000
+[(1,1000),(2,500),(4,250),(5,200),(8,125),(10,100),(20,50),(25,40)]
+*Couple&gt; couple 10000
+[(1,10000),(2,5000),(4,2500),(5,2000),(8,1250),(10,1000),(16,625),(20,500),(25,400),(40,250),(50,200),(80,125),(100,100)]
+</pre>
+</div>
+
+<p>
+Seems ok to me&#x2026;
+</p>
+
+<p>
+source: <a href="https://github.com/ardumont/my-haskell-lab/blob/master/src/couple.hs">couple.hs</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Quickcheck</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Now that we have the algorithm, we can use <a href="//Www.Haskell.Org/Haskellwiki/Introduction_To_QuickCheck2">Quickcheck</a> to help up in generating the tests.
+</p>
+
+<p>
+For using <a href="http://www.haskell.org/haskellwiki/Introduction_to_QuickCheck2">quickcheck</a>, we need to define the properties of our algorithm:
+</p>
+
+<ul class="org-ul">
+<li>for all a,b in [(a,b) | n &lt;- [1..], couple n], a * b == n
+</li>
+<li>for all n,m in N+ x N+, couple n == couple m
+</li>
+<li>for all a,b in [(a,b) | n &lt;- [1..], couple n], a &lt;= isqrt n
+</li>
+</ul>
+
+<p>
+Now we tell <a href="http://www.haskell.org/haskellwiki/Introduction_to_QuickCheck2">quickcheck</a> to generate data and check those properties:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">prop_productOk = (\ n -&gt; all (\ (a,b) -&gt; a * b == n ) (couple n))
+prop_coupleIdempotence = (\ x y -&gt; couple x == couple y)
+prop_coupleInfSqrt = (\ n -&gt; all (\ (a,b) -&gt; a &lt;= isqrt n ) (couple n))
+
+-- adding
+main = do
+  verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_productOk
+  verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_coupleIdempotence
+  verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_coupleInfSqrt
+</pre>
+</div>
+
+<p>
+Here, I ask to chain the checking of each properties in limiting the number of success to 1000 and the size of the input.
+</p>
+
+<p>
+This could <a href="http://hackage.haskell.org/packages/archive/QuickCheck/2.4.1.1/doc/html/Test-QuickCheck.html">be adapted for more hard checking!</a>
+</p>
+</div>
+
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1">output</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+Here is a sample output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Couple&gt; main
+Passed:
+0
+...
+Passed:
+3
++++ OK, passed 10 tests.
+Passed:
+-1
+...
+Passed:
+11
++++ OK, passed 10 tests.
+Passed:
+-1
+Passed:
+6
+...
+Passed:
+-12
++++ OK, passed 10 tests.
+</pre>
+</div>
+
+<p>
+As we saw OK for all tests, we are more serene for delivering this code :D
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2013-01-29 mar. 20:11]</span></span></p>
+<p class="author">Author: Massyl Nait-Mouloud, Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

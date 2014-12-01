@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Beautiful concurrency - notes</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="ardumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Beautiful concurrency - notes</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">STM</a></li>
+<li><a href="#sec-2">Parallelism / Concurrency</a>
+<ul>
+<li><a href="#sec-2-1">Parallelism</a></li>
+<li><a href="#sec-2-2">Concurrency</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">Locks are bad</a></li>
+<li><a href="#sec-4">Definition</a></li>
+<li><a href="#sec-5">Transaction in haskell</a>
+<ul>
+<li><a href="#sec-5-1">atomically</a></li>
+<li><a href="#sec-5-2">STM</a>
+<ul>
+<li><a href="#sec-5-2-1">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<ul class="org-ul">
+<li><a href="https://www.fpcomplete.com/user/simonpj/beautiful-concurrency">Beautiful concurrency</a>
+</li>
+<li><a href="http://research.microsoft.com/en-us/um/people/simonpj/Papers/STM/stm.pdf">Composable Memory Transactions</a>
+</li>
+<li><a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2006/EECS-2006-1.pdf">The problems with threads</a>
+</li>
+<li><a href="http://www.stanford.edu/~ouster/cgi-bin/papers/threads.pdf">Why threads are a bad idea (for most purposes)</a>
+</li>
+<li><a href="http://research.microsoft.com/en-us/um/people/simonpj/papers/marktoberdorf/mark.pdf">Tackling the awkward squad: monadic input/output, concurrency, exceptions, and foreign language calls in Haskell</a>
+</li>
+</ul>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">STM</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+New approach on programming shared memory parallel processors
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Parallelism / Concurrency</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Parallelism</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>employs multiple processors to make programs run faster
+</li>
+<li>performance is the main goal
+</li>
+<li>ideally idempotency
+</li>
+<li>semantics of the programs is unchanged compared to a sequential program (ideally)
+</li>
+<li>has to do with implementation
+</li>
+</ul>
+
+<p>
+In haskell:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">Control.Parallel.par :: a -&gt; b -&gt; b
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">Concurrency</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>describes a situation where non-deterministic behaviour, and many things are going on at once, is part of the specification of the programs.
+</li>
+<li>must happen even on a uni-processor
+</li>
+<li>using forkIO to fork an explicit thread is a signal that a program uses concurrency
+</li>
+</ul>
+
+<p>
+Ex:
+</p>
+<ul class="org-ul">
+<li>web server with one-thread per client
+</li>
+<li>telephone switch
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">Control.Concurrent.forkIO :: IO () -&gt; IO GHC.Conc.Sync.ThreadId
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Locks are bad</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Too many situations can let hell break loose.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">Cons</th>
+<th scope="col" class="left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">Take too few locks</td>
+<td class="left">Multiple threads will modify the variable at the same time -&gt; corrupted data</td>
+</tr>
+
+<tr>
+<td class="left">Take too many locks</td>
+<td class="left">Inhibit concurrency or deadlock</td>
+</tr>
+
+<tr>
+<td class="left">Take the wrong lock</td>
+<td class="left">If the program is not clear enough, we cannot determine which lock is used for which data.</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">Increase the probability to take the wrong lock -&gt; corrupted data</td>
+</tr>
+
+<tr>
+<td class="left">Error Recovery</td>
+<td class="left">Hard. How to ensure there is no inconsistency when problem arise</td>
+</tr>
+
+<tr>
+<td class="left">Lost wake-ups and erroneous retries</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">Break modularity</td>
+<td class="left">Basic means of combining from smaller programs is no longer possible</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Definition</h2>
+<div class="outline-text-2" id="text-4">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">Term</th>
+<th scope="col" class="left">Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">Side effect</td>
+<td class="left">Anything that reads or write mutable state</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Transaction in haskell</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1">atomically</h3>
+<div class="outline-text-3" id="text-5-1">
+<div class="org-src-container">
+
+<pre class="src src-haskell">atomically ( action )
+</pre>
+</div>
+<p>
+where action is a unit block.
+</p>
+
+<p>
+`atomically` makes 2 guarantees:
+</p>
+
+<ul class="org-ul">
+<li>Atomicity: The effects of `atomically action` become visible to another thread all at once.
+</li>
+
+<li>Isolation: During a call of `atomically action`, the action `action` is completely unaffected by other threads.
+It acts as if atomically takes a snapshot of the world and the `action` executes against the snapshot.
+</li>
+</ul>
+
+<p>
+Its type:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">atomically :: STM a -&gt; IO a
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2">STM</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+An STM action is like an IO action with much more limited possible side effect.
+The main possible action is read/write a transaction variable (TVar).
+</p>
+
+<p>
+No IO action is possible within a STM action.
+This way, we can `retry` a transaction.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">newTVar :: a -&gt; STM (TVar a)
+readTVar :: TVar a -&gt; STM a
+writeTVar :: TVar a -&gt; a -&gt; STM ()
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Optimistic execution transation:
+<ul class="org-ul">
+<li>Transaction log thread in charge of the transaction log initially empty
+</li>
+<li>Instead of doing action immediately
+</li>
+<li>Each call `writeTVar` writes the reference of the TVar and the new value inside the transaction log
+</li>
+<li>Each call `readTVar` reads the transaction log to find out if other threads have written inside the TVar
+</li>
+<li>If no write is found, the value of the TVar is directly read from it.
+</li>
+<li>The `readTVar` call is written in the transaction log too
+</li>
+<li>When the action is finished, there is a transaction log validation step
+</li>
+<li>Ensure that the value in the transaction log match with the current value of the TVar
+</li>
+<li>If values match, then validation succeeds.
+The commit steps takes all the writes recorded in the log and writes them into the real TVars (atomically).
+</li>
+<li>Otherwise, the validation fails as the transaction has an inconsistent view of the world.
+The transaction is aborted.
+The transaction log is reinitialized.
+The action is run all over again (no commit have taken place so it can).
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+<div id="outline-container-sec-5-2-1" class="outline-4">
+<h4 id="sec-5-2-1">Examples</h4>
+<div class="outline-text-4" id="text-5-2-1">
+</div><ul class="org-ul"><li><a id="sec-5-2-1-1" name="sec-5-2-1-1"></a>Account Transfer<br  /><div class="outline-text-5" id="text-5-2-1-1">
+<div class="org-src-container">
+
+<pre class="src src-haskell">module Account where
+
+import Control.Concurrent.STM
+
+-- Represent the balance of the account
+type Account = TVar Int
+
+-- transfer `amount` from account `from` to account `to`
+transfer :: Account -&gt; Account -&gt; Int -&gt; IO ()
+transfer from to amount =
+  atomically (
+    do deposit to amount
+       withdraw from amount
+  )
+
+deposit :: Account -&gt; Int -&gt; STM ()
+deposit acc amt =
+  do balance &lt;- readTVar acc
+     writeTVar acc (balance + amt)
+
+withdraw :: Account -&gt; Int -&gt; STM ()
+withdraw acc amt = deposit acc (- amt)
+
+showAccount :: Account -&gt; IO String
+showAccount acc = do bal &lt;- (atomically . readTVar) acc
+		     return $ show bal
+
+displayAccount :: String -&gt; Account -&gt; IO ()
+displayAccount label acc =
+  do bal &lt;- showAccount acc
+     putStrLn $ label ++ ": " ++ bal
+
+transferFromAccountAToAccountB :: IO ()
+transferFromAccountAToAccountB =
+  do accA &lt;- accountA
+     accB &lt;- accountB
+     displayAccount "A" accA
+     displayAccount "B" accB
+     transfer accA accB 10
+     putStrLn "Transfer 10 from A to B: "
+     displayAccount "A" accA
+     displayAccount "B" accB
+    where accountA :: IO Account
+	  accountA = atomically . newTVar $ (100 :: Int)
+	  accountB :: IO Account
+	  accountB = atomically . newTVar $ (300 :: Int)
+
+-- *Account&gt; transferFromAccountAToAccountB
+-- A: 100
+-- B: 300
+-- Transfer 10 from A to B:
+-- A: 90
+-- B: 310
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="sec-5-2-1-2" name="sec-5-2-1-2"></a>Account transfer with blocking<br  /><div class="outline-text-5" id="text-5-2-1-2">
+<div class="org-src-container">
+
+<pre class="src src-haskell">-- need: import Control.Concurrent
+
+limitedWithdraw :: Account -&gt; Int -&gt; STM ()
+limitedWithdraw acc amt =
+  do balance &lt;- readTVar acc
+     check (0 &lt;= amt &amp;&amp; amt &lt;= balance)
+     writeTVar acc (balance - amt)
+
+-- Beware signature is different from deposit one
+delayDeposit :: Account -&gt; Int -&gt; IO ()
+delayDeposit acc amt =
+  do threadDelay 3000000            -- wait 3 seconds
+     atomically ( deposit acc amt )
+
+withdrawFromAccountAWithRetry :: IO ()
+withdrawFromAccountAWithRetry =
+  do accA &lt;- accountA
+     displayAccount "A" accA
+     putStrLn "Transfer 11 from A (waiting if not enough money)..."
+     forkIO(delayDeposit accA 1)
+     atomically ( limitedWithdraw accA 11 )
+     displayAccount "A" accA
+    where accountA :: IO Account
+	  accountA = atomically . newTVar $ (10 :: Int)
+
+-- *Account&gt; withdrawFromAccountAWithRetry
+-- A: 10
+-- Transfer 11 from A (waiting if not enough money)...
+-- A: 0
+</pre>
+</div>
+</div>
+</li></ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: ardumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

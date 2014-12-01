@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>clojure-jack-in-troubles</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">clojure-jack-in-troubles</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Versions</a>
+<ul>
+<li><a href="#sec-1-1">lein - 1.7.1-SNAPSHOT</a></li>
+<li><a href="#sec-1-2">swank-clojure 1.4.0</a></li>
+<li><a href="#sec-1-3">emacs</a></li>
+<li><a href="#sec-1-4">emacs el:</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">Install emacs 24</a></li>
+<li><a href="#sec-3">stacktrace</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Versions</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">lein - 1.7.1-SNAPSHOT</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.18,) 12:12:56 ~/repositories/perso/test $ lein -v
+Leiningen 1.7.1-SNAPSHOT on Java 1.6.0_26 Java HotSpot(TM) Client VM
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">swank-clojure 1.4.0</h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.08,) 14:36:49 ~/repositories/perso/test $ ls ~/.lein/plugins/
+lein-cljs-0.2.2.jar  lein-marginalia-0.7.0-SNAPSHOT.jar  lein-midje-1.0.7.jar  lein-noir-1.2.1.jar  swank-clojure-1.4.0.jar
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">emacs</h3>
+<div class="outline-text-3" id="text-1-3">
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.07,) 14:36:53 ~/repositories/perso/test $ emacs -version
+GNU Emacs 24.0.94.1
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">emacs el:</h3>
+<div class="outline-text-3" id="text-1-4">
+<div class="org-src-container">
+
+<pre class="src src-lisp">clojure-mode       1.11.5       installed  Major mode for Clojure code
+  find-file-in-pr... 3.0          installed  Find files in a project quickly.
+  flymake-shell      0.5          installed  A flymake syntax-checker for shell scripts
+  graphviz-dot-mode  0.3.7        installed  Mode for the dot-language used by graphviz (att).
+  idle-highlight-... 1.1.2        installed  highlight the word the point is on
+  ido-ubiquitous     1.0          installed  Use ido (nearly) everywhere.
+  magit              1.1.1        installed  Control Git from Emacs.
+  midje-mode         0.1.0        installed  Minor mode for running Midje tests in emacs, see: https://github.com/dnaumov/midje-mode
+  multi-term         0.8.8        installed  Managing multiple terminal buffers in Emacs.
+  paredit            22           installed  minor mode for editing parentheses  -*- Mode: Emacs-Lisp -*-
+  slime              20100404.1   installed  Superior Lisp Interaction Mode for Emacs
+  smex               1.1.2        installed  M-x interface with Ido-style fuzzy matching.
+  starter-kit        2.0.3        installed  Saner defaults and goodies.
+  starter-kit-bin... 2.0.2        installed  Saner defaults and goodies: bindings
+  switch-window      0.9          installed  A *visual* way to choose a window to switch to
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Install emacs 24</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+J'ai un equivalent de ton install-emacs24.sh
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">~/bin/deploy-emacs24.sh
+</pre>
+</div>
+
+<p>
+qui fait dans les grandes lignes la meme chose que toi.
+</p>
+
+<p>
+Un detail qui joue, j'ai decorelle l'install du setup, du coup pour refaire le setup:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">~/bin/setup-emacs24.sh
+</pre>
+</div>
+
+<p>
+Ensuite, je demarre emacs qui charge tout seul les dependances telles que declares dans <code>~/.emacs.d/init.el</code> genere par <code>setup-emacs24.sh</code>.
+</p>
+
+<p>
+Qd je lance :
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">emacs -fs -e clojure-jack-in -e split-window-vertically -e other-window -e multi-term
+</pre>
+</div>
+
+<p>
+J'ai l'erreur:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp">Debugger entered--Lisp error: (error "Could not start swank server:
+rlwrap: Oops, crashed (caught SIGFPE) - this should not have happened!
+If you need a core dump, re-configure with --enable-debug and rebuild
+Resetting terminal and cleaning up...
+")
+  signal(error ("Could not start swank server: \nrlwrap: Oops, crashed (caught SIGFPE) - this should not have happened!\nIf you need a core dump, re-configure with --enable-debug and rebuild\nResetting terminal and cleaning up...\n"))
+  error("Could not start swank server: %s" "\nrlwrap: Oops, crashed (caught SIGFPE) - this should not have happened!\nIf you need a core dump, re-configure with --enable-debug and rebuild\nResetting terminal and cleaning up...\n")
+  clojure-jack-in-sentinel(#&lt;process swank&gt; "exited abnormally with code 1\n")
+</pre>
+</div>
+
+<p>
+Qd je lance:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">lein swank
+</pre>
+</div>
+<p>
+Pas de pb.
+Puis je lance un <code>M-x slime-connect</code>
+Ca a l'air d'aller bien avec les petites phrases marrantes avant d'ouvrir un repl sauf que pas de repl.
+Si j'ouvre le buffer swank, j'ai
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp">rlwrap: Oops, crashed (caught SIGFPE) - this should not have happened!
+If you need a core dump, re-configure with --enable-debug and rebuild
+Resetting terminal and cleaning up...
+</pre>
+</div>
+
+<p>
+Bref, un truc qui pue.
+Je pense a une desynchro de version entre slime et swank.
+</p>
+
+<p>
+Je n'ai pas essaye le &#x2013;enable-debug parce que je ne sais pas de quoi il s'agit.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">stacktrace</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+
+<pre class="src src-clj">exception in read loop
+java.lang.Exception: Error reading swank message
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:513)
+	at clojure.lang.Compiler$NewExpr.eval(Compiler.java:2373)
+	at clojure.lang.Compiler$DefExpr.eval(Compiler.java:375)
+	at clojure.lang.Compiler.eval(Compiler.java:6470)
+	at clojure.lang.Compiler.load(Compiler.java:6902)
+	at clojure.lang.RT.loadResourceScript(RT.java:357)
+	at clojure.lang.RT.loadResourceScript(RT.java:348)
+	at clojure.lang.RT.load(RT.java:427)
+	at clojure.lang.RT.load(RT.java:398)
+	at clojure.core$load$fn__4610.invoke(core.clj:5386)
+	at clojure.core$load.doInvoke(core.clj:5385)
+	at clojure.lang.RestFn.invoke(RestFn.java:408)
+	at clojure.core$load_one.invoke(core.clj:5200)
+	at clojure.core$load_lib.doInvoke(core.clj:5237)
+	at clojure.lang.RestFn.applyTo(RestFn.java:142)
+	at clojure.core$apply.invoke(core.clj:602)
+	at clojure.core$load_libs.doInvoke(core.clj:5275)
+	at clojure.lang.RestFn.applyTo(RestFn.java:137)
+	at clojure.core$apply.invoke(core.clj:604)
+	at clojure.core$use.doInvoke(core.clj:5363)
+	at clojure.lang.RestFn.invoke(RestFn.java:436)
+	at swank.core.connection$eval173$loading__4505__auto____174.invoke(connection.clj:1)
+	at swank.core.connection$eval173.invoke(connection.clj:1)
+	at clojure.lang.Compiler.eval(Compiler.java:6465)
+	at clojure.lang.Compiler.eval(Compiler.java:6455)
+	at clojure.lang.Compiler.load(Compiler.java:6902)
+	at clojure.lang.RT.loadResourceScript(RT.java:357)
+	at clojure.lang.RT.loadResourceScript(RT.java:348)
+	at clojure.lang.RT.load(RT.java:427)
+	at clojure.lang.RT.load(RT.java:398)
+	at clojure.core$load$fn__4610.invoke(core.clj:5386)
+	at clojure.core$load.doInvoke(core.clj:5385)
+	at clojure.lang.RestFn.invoke(RestFn.java:408)
+	at clojure.core$load_one.invoke(core.clj:5200)
+	at clojure.core$load_lib.doInvoke(core.clj:5237)
+	at clojure.lang.RestFn.applyTo(RestFn.java:142)
+	at clojure.core$apply.invoke(core.clj:602)
+	at clojure.core$load_libs.doInvoke(core.clj:5275)
+	at clojure.lang.RestFn.applyTo(RestFn.java:137)
+	at clojure.core$apply.invoke(core.clj:604)
+	at clojure.core$use.doInvoke(core.clj:5363)
+	at clojure.lang.RestFn.invoke(RestFn.java:457)
+	at swank.core$eval46$loading__4505__auto____47.invoke(core.clj:1)
+	at swank.core$eval46.invoke(core.clj:1)
+	at clojure.lang.Compiler.eval(Compiler.java:6465)
+	at clojure.lang.Compiler.eval(Compiler.java:6455)
+	at clojure.lang.Compiler.load(Compiler.java:6902)
+	at clojure.lang.RT.loadResourceScript(RT.java:357)
+	at clojure.lang.RT.loadResourceScript(RT.java:348)
+	at clojure.lang.RT.load(RT.java:427)
+	at clojure.lang.RT.load(RT.java:398)
+	at clojure.core$load$fn__4610.invoke(core.clj:5386)
+	at clojure.core$load.doInvoke(core.clj:5385)
+	at clojure.lang.RestFn.invoke(RestFn.java:408)
+	at clojure.core$load_one.invoke(core.clj:5200)
+	at clojure.core$load_lib.doInvoke(core.clj:5237)
+	at clojure.lang.RestFn.applyTo(RestFn.java:142)
+	at clojure.core$apply.invoke(core.clj:602)
+	at clojure.core$load_libs.doInvoke(core.clj:5275)
+	at clojure.lang.RestFn.applyTo(RestFn.java:137)
+	at clojure.core$apply.invoke(core.clj:604)
+	at clojure.core$use.doInvoke(core.clj:5363)
+	at clojure.lang.RestFn.invoke(RestFn.java:512)
+	at swank.swank$eval40$loading__4505__auto____41.invoke(swank.clj:1)
+	at swank.swank$eval40.invoke(swank.clj:1)
+	at clojure.lang.Compiler.eval(Compiler.java:6465)
+	at clojure.lang.Compiler.eval(Compiler.java:6455)
+	at clojure.lang.Compiler.load(Compiler.java:6902)
+	at clojure.lang.RT.loadResourceScript(RT.java:357)
+	at clojure.lang.RT.loadResourceScript(RT.java:348)
+	at clojure.lang.RT.load(RT.java:427)
+	at clojure.lang.RT.load(RT.java:398)
+	at clojure.core$load$fn__4610.invoke(core.clj:5386)
+	at clojure.core$load.doInvoke(core.clj:5385)
+	at clojure.lang.RestFn.invoke(RestFn.java:408)
+	at clojure.core$load_one.invoke(core.clj:5200)
+	at clojure.core$load_lib.doInvoke(core.clj:5237)
+	at clojure.lang.RestFn.applyTo(RestFn.java:142)
+	at clojure.core$apply.invoke(core.clj:602)
+	at clojure.core$load_libs.doInvoke(core.clj:5271)
+	at clojure.lang.RestFn.applyTo(RestFn.java:137)
+	at clojure.core$apply.invoke(core.clj:602)
+	at clojure.core$require.doInvoke(core.clj:5352)
+	at clojure.lang.RestFn.invoke(RestFn.java:408)
+	at user$eval27.invoke(NO_SOURCE_FILE:1)
+	at clojure.lang.Compiler.eval(Compiler.java:6465)
+	at clojure.lang.Compiler.eval(Compiler.java:6455)
+	at clojure.lang.Compiler.eval(Compiler.java:6431)
+	at clojure.core$eval.invoke(core.clj:2795)
+	at clojure.main$eval_opt.invoke(main.clj:296)
+	at clojure.main$initialize.invoke(main.clj:315)
+	at clojure.main$null_opt.invoke(main.clj:348)
+	at clojure.main$main.doInvoke(main.clj:426)
+	at clojure.lang.RestFn.invoke(RestFn.java:421)
+	at clojure.lang.Var.invoke(Var.java:405)
+	at clojure.lang.AFn.applyToHelper(AFn.java:163)
+	at clojure.lang.Var.applyTo(Var.java:518)
+	at clojure.main.main(main.java:37)
+exception in control loop
+java.lang.InterruptedException
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:1961)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1996)
+	at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:399)
+	at swank.util.concurrent.mbox$receive.invoke(mbox.clj:28)
+	at swank.core$control_loop.invoke(core.clj:525)
+	at swank.swank$connection_serve$fn__1953$fn__1954$fn__1955.invoke(swank.clj:25)
+	at swank.swank$connection_serve$fn__1953$fn__1954.invoke(swank.clj:24)
+	at clojure.lang.AFn.applyToHelper(AFn.java:159)
+	at clojure.lang.AFn.applyTo(AFn.java:151)
+	at clojure.core$apply.invoke(core.clj:600)
+	at swank.swank$connection_serve$fn__1953.doInvoke(swank.clj:22)
+	at clojure.lang.RestFn.invoke(RestFn.java:397)
+	at clojure.lang.AFn.run(AFn.java:24)
+	at java.lang.Thread.run(Thread.java:662)
+;;; Bootstrapping bundled version of SLIME; please wait...
+
+
+
+
+(when (not (or (featurep 'slime-fbbb883a) (file-remote-p default-directory)))
+  (if (file-readable-p "/home/tony/.emacs.d/swank/slime-fbbb883a.elc")
+      (load-file "/home/tony/.emacs.d/swank/slime-fbbb883a.elc")
+    (byte-compile-file "/home/tony/.emacs.d/swank/slime-fbbb883a.el" t)))
+
+
+(when (not (or (featurep 'slime-frame-colors-a24dd450) (file-remote-p default-directory)))
+  (if (file-readable-p "/home/tony/.emacs.d/swank/slime-frame-colors-a24dd450.elc")
+      (load-file "/home/tony/.emacs.d/swank/slime-frame-colors-a24dd450.elc")
+    (byte-compile-file "/home/tony/.emacs.d/swank/slime-frame-colors-a24dd450.el" t)))
+
+
+(when (not (or (featurep 'slime-repl-79b38c83) (file-remote-p default-directory)))
+  (if (file-readable-p "/home/tony/.emacs.d/swank/slime-repl-79b38c83.elc")
+      (load-file "/home/tony/.emacs.d/swank/slime-repl-79b38c83.elc")
+    (byte-compile-file "/home/tony/.emacs.d/swank/slime-repl-79b38c83.el" t)))
+
+
+(when (not (or (featurep 'slime-eldoc-d8b3cf74) (file-remote-p default-directory)))
+  (if (file-readable-p "/home/tony/.emacs.d/swank/slime-eldoc-d8b3cf74.elc")
+      (load-file "/home/tony/.emacs.d/swank/slime-eldoc-d8b3cf74.elc")
+    (byte-compile-file "/home/tony/.emacs.d/swank/slime-eldoc-d8b3cf74.el" t)))
+(sleep-for 0.1)
+(run-hooks 'slime-load-hook) ; on port 62150
+;;; Done bootstrapping.
+[INFO] artifact org.twitter4j:twitter4j-core: checking for updates from central
+[INFO] artifact org.twitter4j:twitter4j-core: checking for updates from clojars
+[INFO] artifact org.clojure:clojure: checking for updates from clojars
+[INFO] artifact org.clojure:clojure: checking for updates from central
+Copying 11 files to /home/tony/repositories/perso/twitalyse/lib
+[INFO] snapshot com.intelie:lazytest:1.0.0-SNAPSHOT: checking for updates from clojars
+Overriding previous definition of reference to dependency.fileset
+Overriding previous definition of reference to twitalyse
+Copying 29 files to /home/tony/repositories/perso/twitalyse/lib/dev
+Listening for transport dt_socket at address: 56113
+;;; proceed to jack in
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

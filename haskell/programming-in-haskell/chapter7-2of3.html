@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>PIH - ch7 - Higher-order functions 2/3</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<meta  name="description" content="Higher order functions, function composition, foldr, foldl exercises."
+ />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">PIH - ch7 - Higher-order functions 2/3</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">curry/uncurry</a>
+<ul>
+<li><a href="#sec-1-1">curry</a></li>
+<li><a href="#sec-1-2">uncurry</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">unfold</a>
+<ul>
+<li><a href="#sec-2-1">chop8</a></li>
+<li><a href="#sec-2-2">map f</a></li>
+<li><a href="#sec-2-3">iterate f</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+For the first exercises, <a href="http://adumont.fr/blog/pih-ch7-higher-order-functions-12/">see this post</a>.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">curry/uncurry</h2>
+<div class="outline-text-2" id="text-1">
+<blockquote>
+<p>
+Without looking at the standard prelude, define the higher-order library function <b>curry</b> that converts a function on pairs into a curried function, and, conversely, the function <b>uncurry</b> that converts a curried function with two arguments into a function on pairs.
+</p>
+
+<p>
+<b>Hint:</b>
+First write down the types of the two functions.
+</p>
+</blockquote>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">curry</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+First the type:
+</p>
+
+<p>
+A function that takes a pair as parameter and output something is typed: <code>((a,b) -&gt; c)</code>
+A currified function that takes 2 parameters and output something is typed: <code>a -&gt; b -&gt; c</code>
+Thus the final type:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">curry :: ((a,b) -&gt; c) -&gt; a -&gt; b -&gt; c
+</pre>
+</div>
+
+<p>
+Now the definition:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">curry :: ((a,b) -&gt; c) -&gt; a -&gt; b -&gt; c
+curry f = \x -&gt; \y -&gt; f (x,y)
+</pre>
+</div>
+
+<p>
+Simpler
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">curry :: ((a,b) -&gt; c) -&gt; a -&gt; b -&gt; c
+curry f x y = f (x,y)
+</pre>
+</div>
+
+<p>
+Examples:
+</p>
+
+<p>
+We need a function that takes a pair as parameter:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">add :: Num a =&gt; (a,a) -&gt; a
+add (x,y) = x + y
+</pre>
+</div>
+
+<p>
+Here is how is used the function <code>add</code>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch7_2&gt; add (1,2)
+3
+</pre>
+</div>
+
+<p>
+Given that, a simple scenario to currify <code>add</code> is:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch7_2&gt; (curry add) 1 2
+3
+*Ch7_2&gt; ((curry add) 1) 2
+3
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">uncurry</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Conversely, the uncurrified function's type:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">uncurry :: a -&gt; b -&gt; c -&gt; (a, b) -&gt; c
+</pre>
+</div>
+
+<p>
+Now the definition:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">uncurry :: (a -&gt; b -&gt; c) -&gt; (a, b) -&gt; c
+uncurry f = \ (x, y) -&gt; (f x y)
+</pre>
+</div>
+
+<p>
+Simpler
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">uncurry :: (a -&gt; b -&gt; c) -&gt; (a, b) -&gt; c
+uncurry f (x, y) = f x y
+</pre>
+</div>
+
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch7_2&gt; add (1,2)
+3
+*Ch7_2&gt; (curry add) 1 2
+3
+*Ch7_2&gt; uncurry (curry add) (1,2)
+3
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">unfold</h2>
+<div class="outline-text-2" id="text-2">
+<blockquote>
+<p>
+A higher-order function <b>unfold</b> that encapsulates a simple pattern of recursion for producing a list can be defined as follows:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">unfold p h t x | p x = []
+	       | otherwise = h x : unfold p h t (t x)
+</pre>
+</div>
+
+<p>
+That is, the function <code>unfold p h t</code> produces the empty list if the predicate <code>p</code> is true of the argument, and otherwise produces a non-empty list by applying the function <code>h</code> to give the head, and the function <code>t</code> to generate another argument that is recursively processed in the same way to produce the tail of the list.
+</p>
+
+<p>
+For example, the function <b>int2bin</b> can be rewritten more compactly using <b>unfold</b> as follows:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">int2bin = unfold (== 0) (`mod` 2) (`div` 2)
+</pre>
+</div>
+
+<p>
+Redefine the functions <b>chop8</b>, <b>map f</b> and <b>iterate f</b> using unfold.
+</p>
+</blockquote>
+</div>
+
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">chop8</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+<i>Split a bits list into a list of 8-bits list.</i>
+</p>
+
+<p>
+Recall the definition of the chop8 function:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">chop8 :: [Bit] -&gt; [[Bit]]
+chop8 [] = []
+chop8 bits = take 8 bits : (chop8 (drop 8 bits))
+</pre>
+</div>
+
+<p>
+Here is the 3 functions needed:
+</p>
+<ul class="org-ul">
+<li>predicate: check if a list is empty, we can use the <code>null</code> function for that
+</li>
+<li>head: we take 8 bits
+</li>
+<li>tail: we drop 8 bits
+</li>
+</ul>
+
+<p>
+Using <code>unfold</code>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">chop8 :: [Bit] -&gt; [[Bit]]
+chop8 = unfold null (take 8) (drop 8)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">map f</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+<i>Map a function <code>f</code> to a list</i>
+</p>
+
+<p>
+Recall the recursive definition of <code>map</code>:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">map :: (a -&gt; b) -&gt; [a] -&gt; [b]
+map _ [] = []
+map f (x:xs) = f x:(map f xs)
+</pre>
+</div>
+
+<p>
+From this we deduce the 3 needed functions:
+</p>
+<ul class="org-ul">
+<li>predicate: check if a list is empty
+</li>
+<li>head: <code>f . head</code> (first extracting head, then applying <code>f</code> to it)
+</li>
+<li>tail: extracting the tail, <code>tail</code>.
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">map :: (a -&gt; b) -&gt; [a] -&gt; [b]
+map f = unfold null (f . head) tail
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch7_2&gt; map (+1) [1,2,4]
+[2,3,5]
+*Ch7_2&gt; map even [1,2,4]
+[False,True,True]
+*Ch7_2&gt; map int2bin [1,2,4,8,16]
+[[1],[0,1],[0,0,1],[0,0,0,1],[0,0,0,0,1]]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">iterate f</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+<i>lazy and infinite iteration over f=</i>
+</p>
+
+<p>
+A recursive definition of <code>iterate</code> can be:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">iterate :: (a -&gt; a) -&gt; a -&gt; [a]
+iterate f x = x : iterate f (f x)
+</pre>
+</div>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch7_2&gt; take 10 (iter (+1) 10)
+[10,11,12,13,14,15,16,17,18,19]
+</pre>
+</div>
+
+<p>
+Given this, here are the needed functions:
+</p>
+<ul class="org-ul">
+<li>predicate: we want an infinite function, so a function that takes a parameter and returns False, <code>(\ _ -&gt; False)</code> is a good default
+</li>
+<li>head: as we always return false, we'll never pass here, so identity is a good shot
+</li>
+<li>tail: at last, it's where all the work is done, we want <code>f</code> to be applied
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">iterate :: (a -&gt; a) -&gt; a -&gt; [a]
+iterate f = unfold (\ _ -&gt; False) id f
+</pre>
+</div>
+
+<p>
+<b>Note</b>
+I discovered the function <code>const</code>
+So we can replace this definition by this one:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">iterate :: (a -&gt; a) -&gt; a -&gt; [a]
+iterate f = unfold (const False) id f
+</pre>
+</div>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Ch7_2&gt; take 10 (iterate (+2) 0)
+[0,2,4,6,8,10,12,14,16,18]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2013-01-05 sam. 15:53]</span></span></p>
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

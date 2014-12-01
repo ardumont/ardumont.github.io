@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>PIH - ch8 1/2 - Functional parsers - exercises</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<meta  name="description" content="Learning haskell and solving problems using reasoning and 'repl'ing"
+ />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js"></script>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">PIH - ch8 1/2 - Functional parsers - exercises</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">int :: Parser Int</a></li>
+<li><a href="#sec-2">comment :: Parser ()</a></li>
+<li><a href="#sec-3">Draw Tree 1/2</a></li>
+<li><a href="#sec-4">Draw Tree 2/2</a></li>
+</ul>
+</div>
+</div>
+<p>
+Before being able to fool around on this chapter, here are some pre-requisites:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">import Control.Monad
+import Data.Char(isDigit, isUpper, isLower, isAlpha, isAlphaNum, isSpace)
+
+newtype Parser a  =  P (String -&gt; [(a,String)])
+
+parse             :: Parser a -&gt; String -&gt; [(a,String)]
+parse (P p) inp   =  p inp
+
+instance Monad Parser where
+  -- return parser: always succeeds by returning the result value
+  -- v without consuming the input
+    return v      =  P (\inp -&gt; [(v,inp)])
+
+  -- bind
+    p &gt;&gt;= f       =  P (\inp -&gt; case parse p inp of
+		       []        -&gt; []
+		       [(v,out)] -&gt; parse (f v) out)
+
+instance MonadPlus Parser where
+  -- fail
+    mzero         =  P (\_ -&gt; [])
+  -- choice
+    p `mplus` q   =  P (\inp -&gt; case parse p inp of
+		       []        -&gt; parse q inp
+		       [(v,out)] -&gt; [(v,out)])
+</pre>
+</div>
+<p>
+I will not enter into much detail here because <a href="http://hackage.haskell.org/packages/archive/base/latest/doc/html/Prelude.html#t:Monad">monads</a> will be presented later.
+</p>
+
+<p>
+As always, you'll find the <a href="https://github.com/ardumont/haskell-lab/blob/master/src/Parsers.hs">sources on github</a>.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">int :: Parser Int</h2>
+<div class="outline-text-2" id="text-1">
+<blockquote>
+<p>
+The library file also defines a parser <code>int :: Parser Int</code> for an integer. Without looking at this definition, define int.
+</p>
+
+<p>
+<span class="underline">Hint:</span> an integer is either a minus symbol followed by a natural number, or a natural number.
+</p>
+</blockquote>
+
+<p>
+The functions I will use to solve the problem:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">many :: Parser a -&gt; Parser [a]
+many p = many1 p +++ return []
+
+many1 :: Parser a -&gt; Parser [a]
+many1 p = do v  &lt;- p
+	     vs &lt;- many p
+	     return (v:vs)
+
+sat :: (Char -&gt; Bool) -&gt; Parser Char
+sat p = do x &lt;- item; if p x then return x else Parsers.fail
+
+nat :: Parser Int
+nat = do xs &lt;- many1 digit
+	 return (read xs)
+
+space :: Parser ()
+space = do many (sat isSpace)
+	   return ()
+
+token :: Parser a -&gt; Parser a
+token p = do space
+	     x &lt;- p
+	     space
+	     return x
+
+natural :: Parser Int
+natural = token nat
+
+string :: String -&gt; Parser String
+string [] = return []
+string (x:xs) = do char x
+		   string xs
+		   return (x:xs)
+
+symbol :: String -&gt; Parser String
+symbol s = token (string s)
+</pre>
+</div>
+
+<p>
+I have a 'choice' between parsing a negative natural number (beginning with '-') or a positive natural number.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">int :: Parser Int
+int = do symbol "-"
+	 n &lt;- natural
+	 return (-n)
+	 +++ natural
+</pre>
+</div>
+
+<p>
+Examples:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Parsers&gt; parse int "-1"
+[(-1,"")]
+*Parsers&gt; parse int "-10"
+[(-10,"")]
+*Parsers&gt; parse int "-101"
+[(-101,"")]
+*Parsers&gt; parse int "101"
+[(101,"")]
+*Parsers&gt; parse int " - 101"
+[(-101,"")]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">comment :: Parser ()</h2>
+<div class="outline-text-2" id="text-2">
+<blockquote>
+<p>
+Define a parser <code>comment :: Parser ()</code> for ordinary Haskell comments that begin with the symbol &#x2013; and extend to the end of the current line, which is represented by the control character ’\n’.
+</p>
+</blockquote>
+
+<p>
+Here are the functions I will use to answer the question:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">char :: Char -&gt; Parser Char
+char x = sat (== x)
+
+alphanum :: Parser Char
+alphanum = sat isAlphaNum
+</pre>
+</div>
+
+<p>
+Here is a first naive approach where you specify the characters you can read:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">comment :: Parser ()
+comment = do symbol "--"
+	     many (alphanum +++ char ' ')
+	     char '\n'
+	     return ()
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Parsers&gt; parse comment "--ignoredcomment\nnotignored"
+[((),"notignored")]
+*Parsers&gt; parse comment "--ignored   comment till\nnotignored"
+[((),"notignored")]
+*Parsers&gt; parse comment "--42 ignoredcomment till\nnotignored"
+[((),"notignored")]
+</pre>
+</div>
+
+<p>
+Indeed, for some edge cases, this won't work:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Parsers&gt; parse comment "-- comment!@# that breaks\nnotignored"
+[]
+</pre>
+</div>
+
+<p>
+A simpler and better approach would be to parse anything that's not the ending control char '\n':
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">comment :: Parser ()
+comment = do symbol "--"
+	     many (sat (/= '\n'))
+	     char '\n'
+	     return ()
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">*Parsers&gt; parse comment "--comment!@# doesnotbreak\nnotignored"
+[((),"notignored")]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Draw Tree 1/2</h2>
+<div class="outline-text-2" id="text-3">
+<blockquote>
+<p>
+Using our second grammar for arithmetic expressions, draw the two possible parse trees for the expression <code>2 + 3 + 4</code>.
+</p>
+</blockquote>
+
+<p>
+The grammar:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-txt">expr   ::= expr + expr | term
+term   ::= term * term | factor
+factor ::= (expr) | nat
+nat    ::= 0 | 1 | ... |
+</pre>
+</div>
+
+<p>
+<code>2+3+4</code> can be read in 2 ways:
+</p>
+<ul class="org-ul">
+<li><code>(2+3)+4</code>
+</li>
+</ul>
+
+
+<div class="figure">
+<p><img src="./resources/ch8-ex3-1.png" alt="ch8-ex3-1.png" />
+</p>
+</div>
+
+<ul class="org-ul">
+<li><code>2+(3+4)</code>
+</li>
+</ul>
+
+
+<div class="figure">
+<p><img src="./resources/ch8-ex3-2.png" alt="ch8-ex3-2.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Draw Tree 2/2</h2>
+<div class="outline-text-2" id="text-4">
+<blockquote>
+<p>
+Using our third grammar for arithmetic expressions, draw the parse trees for the expressions <code>2 + 3</code>, <code>2 ∗ 3 ∗ 4</code> and <code>(2 + 3) + 4</code>.
+</p>
+</blockquote>
+
+<p>
+The grammar:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-txt">expr   ::= term (+ expr | epsilon)
+term   ::= factor (* term | epsilon)
+factor ::= (expr) | nat
+nat    ::= 0 | 1 | ... |
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><code>2+3</code>
+</li>
+</ul>
+
+
+<div class="figure">
+<p><img src="./resources/ch8-ex4-1.png" alt="ch8-ex4-1.png" />
+</p>
+</div>
+
+<ul class="org-ul">
+<li><code>2*3*4</code>
+</li>
+</ul>
+
+
+<div class="figure">
+<p><img src="./resources/ch8-ex4-2.png" alt="ch8-ex4-2.png" />
+</p>
+</div>
+
+<ul class="org-ul">
+<li><code>(2+3)*4</code>
+</li>
+</ul>
+
+
+<div class="figure">
+<p><img src="./resources/ch8-ex4-3.png" alt="ch8-ex4-3.png" />
+</p>
+</div>
+
+<p>
+#+./resources/ch8-ex3-1.png <img src="http://adumont.fr/blog/wp-content/uploads/2013/04/wpid-ch8-ex3-1.png" alt="wpid-ch8-ex3-1.png" />
+#+./resources/ch8-ex3-2.png <img src="http://adumont.fr/blog/wp-content/uploads/2013/04/wpid-ch8-ex3-2.png" alt="wpid-ch8-ex3-2.png" />
+</p>
+
+<p>
+#+./resources/ch8-ex4-1.png <img src="http://adumont.fr/blog/wp-content/uploads/2013/04/wpid-ch8-ex4-1.png" alt="wpid-ch8-ex4-1.png" />
+#+./resources/ch8-ex4-2.png <img src="http://adumont.fr/blog/wp-content/uploads/2013/04/wpid-ch8-ex4-2.png" alt="wpid-ch8-ex4-2.png" />
+#+./resources/ch8-ex4-3.png <img src="http://adumont.fr/blog/wp-content/uploads/2013/04/wpid-ch8-ex4-3.png" alt="wpid-ch8-ex4-3.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2013-04-13 sam. 19:14]</span></span></p>
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>midje - clojure TDD framework</title>
+<!-- 2014-12-02 Tue 00:24 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine Romain Dumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">midje - clojure TDD framework</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1"><span class="done DONE">DONE</span> Core features <code>[3/3]</code></a>
+<ul>
+<li><a href="#sec-1-1"><span class="done DONE">DONE</span> Facts and prerequisites: How you describe claims about your code.</a></li>
+<li><a href="#sec-1-2"><span class="done DONE">DONE</span> Extended equality: `=` extended for regular expressions, functions, etc.</a></li>
+<li><a href="#sec-1-3"><span class="done DONE">DONE</span> Checkers: Prepackaged functions that perform common checks.</a></li>
+</ul>
+</li>
+<li><a href="#sec-2"><span class="todo TODO">TODO</span> Other features <code>[1/3]</code></a>
+<ul>
+<li><a href="#sec-2-1"><span class="done DONE">DONE</span> More about facts <code>[3/3]</code></a></li>
+<li><a href="#sec-2-2"><span class="done DONE">DONE</span> Negating arrows: A convenient way to describe what’s not true.</a></li>
+<li><a href="#sec-2-3"><span class="done DONE">DONE</span> Future facts: “Commenting out” facts in a way that prevents you from forgetting about them.</a></li>
+<li><a href="#sec-2-4"><span class="done DONE">DONE</span> Tabular facts: Shorthand for checking multiple sets of values</a></li>
+<li><a href="#sec-2-5"><span class="todo TODO">TODO</span> More about checkers <code>[0/3]</code></a></li>
+<li><a href="#sec-2-6"><span class="todo TODO">TODO</span> Checkers for collections and strings: Containment checking that allows gaps, arbitrary ordering, nested checkers, etc.</a></li>
+<li><a href="#sec-2-7"><span class="todo TODO">TODO</span> Metaconstants: A notation that avoids confusion between what’s essential about data and what’s accidental.</a></li>
+<li><a href="#sec-2-8"><span class="todo TODO">TODO</span> Metaconstants as partial packets of values</a></li>
+<li><a href="#sec-2-9"><span class="todo TODO">TODO</span> More about prerequisites <code>[0/6]</code></a></li>
+<li><a href="#sec-2-10"><span class="todo TODO">TODO</span> Folded prerequisites: Allowing prerequisites like `(f (g 1)) =&gt; 2`.</a></li>
+<li><a href="#sec-2-11"><span class="todo TODO">TODO</span> Background prerequisites: Prerequisites that apply to more than one fact.</a></li>
+<li><a href="#sec-2-12"><span class="todo TODO">TODO</span> Using stateful functions as prerequisites</a></li>
+<li><a href="#sec-2-13"><span class="todo TODO">TODO</span> Specifying call counts: Saying the function-under-test calls another function N times.</a></li>
+<li><a href="#sec-2-14"><span class="todo TODO">TODO</span> Checkers within prerequisites: They’re treated slightly differently than the normal case.</a></li>
+<li><a href="#sec-2-15"><span class="todo TODO">TODO</span> Prerequisites and protocols: Extra work is required to override protocol functions in facts. <code>[0/2]</code></a>
+<ul>
+<li><a href="#sec-2-15-1"><span class="todo TODO">TODO</span> Setup, teardown, and state: Executing code before, after, and around multiple facts or individual checks.</a></li>
+<li><a href="#sec-2-15-2"><span class="todo TODO">TODO</span> Production mode: Preventing Midje code from being compiled into production code.</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-3"><span class="todo TODO">TODO</span> Integration and migration <code>[0/7]</code></a>
+<ul>
+<li><a href="#sec-3-1"><span class="todo TODO">TODO</span> Migrating from clojure.test</a></li>
+<li><a href="#sec-3-2"><span class="todo TODO">TODO</span> lein test: It works with Midje.</a></li>
+<li><a href="#sec-3-3"><span class="todo TODO">TODO</span> lein midje: It works better.</a></li>
+<li><a href="#sec-3-4"><span class="todo TODO">TODO</span> cake midje: There’s a Cake task for Midje.</a></li>
+<li><a href="#sec-3-5"><span class="todo TODO">TODO</span> Midje-mode: Emacs mode for using Midje with a REPL.</a></li>
+<li><a href="#sec-3-6"><span class="todo TODO">TODO</span> clojure-jump-to-file: Jump to a line of Clojure code from any Emacs buffer (usually a shell buffer).</a></li>
+<li><a href="#sec-3-7"><span class="todo TODO">TODO</span> Cascalog functions</a></li>
+</ul>
+</li>
+<li><a href="#sec-4"><span class="done DONE">DONE</span> Videos <code>[4/4]</code></a>
+<ul>
+<li><a href="#sec-4-1"><span class="done DONE">DONE</span> An introduction to Midje for clojure.test users</a></li>
+<li><a href="#sec-4-2"><span class="done DONE">DONE</span> An example showing top-down testing using metaconstants (alternate download)</a></li>
+<li><a href="#sec-4-3"><span class="done DONE">DONE</span> An Emacs minor mode for Midje</a></li>
+<li><a href="#sec-4-4"><span class="done DONE">DONE</span> Emacs code to jump to a particular location in a Clojure file</a></li>
+</ul>
+</li>
+<li><a href="#sec-5"><span class="todo TODO">TODO</span> Project <code>[0/4]</code></a>
+<ul>
+<li><a href="#sec-5-1"><span class="todo TODO">TODO</span> Roadmap</a></li>
+<li><a href="#sec-5-2"><span class="todo TODO">TODO</span> Help wanted</a></li>
+<li><a href="#sec-5-3"><span class="todo TODO">TODO</span> Error message improvements</a></li>
+<li><a href="#sec-5-4"><span class="todo TODO">TODO</span> Why is it called "Midje"?</a></li>
+</ul>
+</li>
+<li><a href="#sec-6"><span class="todo TODO">TODO</span> Tips <code>[0/4]</code></a>
+<ul>
+<li><a href="#sec-6-1"><span class="todo TODO">TODO</span> Caching: Checking memoization and caching.</a></li>
+<li><a href="#sec-6-2"><span class="todo TODO">TODO</span> Top-down testing: “Programming by wishful thinking”</a></li>
+<li><a href="#sec-6-3"><span class="todo TODO">TODO</span> More than one check per checker</a></li>
+<li><a href="#sec-6-4"><span class="todo TODO">TODO</span> Line numbers in helper functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="done DONE">DONE</span> Core features <code>[3/3]</code></h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="done DONE">DONE</span> Facts and prerequisites: How you describe claims about your code.</h3>
+<div class="outline-text-3" id="text-1-1">
+</div>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="done DONE">DONE</span> Extended equality: `=` extended for regular expressions, functions, etc.</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+</div>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="done DONE">DONE</span> Checkers: Prepackaged functions that perform common checks.</h3>
+<div class="outline-text-3" id="text-1-3">
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="todo TODO">TODO</span> Other features <code>[1/3]</code></h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="done DONE">DONE</span> More about facts <code>[3/3]</code></h3>
+<div class="outline-text-3" id="text-2-1">
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="done DONE">DONE</span> Negating arrows: A convenient way to describe what’s not true.</h3>
+<div class="outline-text-3" id="text-2-2">
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="done DONE">DONE</span> Future facts: “Commenting out” facts in a way that prevents you from forgetting about them.</h3>
+<div class="outline-text-3" id="text-2-3">
+</div>
+</div>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="done DONE">DONE</span> Tabular facts: Shorthand for checking multiple sets of values</h3>
+<div class="outline-text-3" id="text-2-4">
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5"><span class="todo TODO">TODO</span> More about checkers <code>[0/3]</code></h3>
+<div class="outline-text-3" id="text-2-5">
+</div><div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6"><span class="todo TODO">TODO</span> Checkers for collections and strings: Containment checking that allows gaps, arbitrary ordering, nested checkers, etc.</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+o Chatty checkers: Checkers that explain more about a failure.
+o Checkers within prerequisites They’re treated slightly differently than the normal case.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-7" class="outline-3">
+<h3 id="sec-2-7"><span class="todo TODO">TODO</span> Metaconstants: A notation that avoids confusion between what’s essential about data and what’s accidental.</h3>
+</div>
+<div id="outline-container-sec-2-8" class="outline-3">
+<h3 id="sec-2-8"><span class="todo TODO">TODO</span> Metaconstants as partial packets of values</h3>
+</div>
+</div>
+<div id="outline-container-sec-2-9" class="outline-3">
+<h3 id="sec-2-9"><span class="todo TODO">TODO</span> More about prerequisites <code>[0/6]</code></h3>
+<div class="outline-text-3" id="text-2-9">
+</div><div id="outline-container-sec-2-10" class="outline-3">
+<h3 id="sec-2-10"><span class="todo TODO">TODO</span> Folded prerequisites: Allowing prerequisites like `(f (g 1)) =&gt; 2`.</h3>
+</div>
+<div id="outline-container-sec-2-11" class="outline-3">
+<h3 id="sec-2-11"><span class="todo TODO">TODO</span> Background prerequisites: Prerequisites that apply to more than one fact.</h3>
+</div>
+<div id="outline-container-sec-2-12" class="outline-3">
+<h3 id="sec-2-12"><span class="todo TODO">TODO</span> Using stateful functions as prerequisites</h3>
+</div>
+<div id="outline-container-sec-2-13" class="outline-3">
+<h3 id="sec-2-13"><span class="todo TODO">TODO</span> Specifying call counts: Saying the function-under-test calls another function N times.</h3>
+</div>
+<div id="outline-container-sec-2-14" class="outline-3">
+<h3 id="sec-2-14"><span class="todo TODO">TODO</span> Checkers within prerequisites: They’re treated slightly differently than the normal case.</h3>
+</div>
+<div id="outline-container-sec-2-15" class="outline-3">
+<h3 id="sec-2-15"><span class="todo TODO">TODO</span> Prerequisites and protocols: Extra work is required to override protocol functions in facts. <code>[0/2]</code></h3>
+<div class="outline-text-3" id="text-2-15">
+</div><div id="outline-container-sec-2-15-1" class="outline-4">
+<h4 id="sec-2-15-1"><span class="todo TODO">TODO</span> Setup, teardown, and state: Executing code before, after, and around multiple facts or individual checks.</h4>
+</div>
+<div id="outline-container-sec-2-15-2" class="outline-4">
+<h4 id="sec-2-15-2"><span class="todo TODO">TODO</span> Production mode: Preventing Midje code from being compiled into production code.</h4>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="todo TODO">TODO</span> Integration and migration <code>[0/7]</code></h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="todo TODO">TODO</span> Migrating from clojure.test</h3>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="todo TODO">TODO</span> lein test: It works with Midje.</h3>
+</div>
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="todo TODO">TODO</span> lein midje: It works better.</h3>
+</div>
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4"><span class="todo TODO">TODO</span> cake midje: There’s a Cake task for Midje.</h3>
+</div>
+<div id="outline-container-sec-3-5" class="outline-3">
+<h3 id="sec-3-5"><span class="todo TODO">TODO</span> Midje-mode: Emacs mode for using Midje with a REPL.</h3>
+</div>
+<div id="outline-container-sec-3-6" class="outline-3">
+<h3 id="sec-3-6"><span class="todo TODO">TODO</span> clojure-jump-to-file: Jump to a line of Clojure code from any Emacs buffer (usually a shell buffer).</h3>
+</div>
+<div id="outline-container-sec-3-7" class="outline-3">
+<h3 id="sec-3-7"><span class="todo TODO">TODO</span> Cascalog functions</h3>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="done DONE">DONE</span> Videos <code>[4/4]</code></h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="done DONE">DONE</span> An introduction to Midje for clojure.test users</h3>
+<div class="outline-text-3" id="text-4-1">
+</div>
+</div>
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="done DONE">DONE</span> An example showing top-down testing using metaconstants (alternate download)</h3>
+<div class="outline-text-3" id="text-4-2">
+</div>
+</div>
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="done DONE">DONE</span> An Emacs minor mode for Midje</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+^C k kill all rewards comments from midje
+^C ^k Send everything down to the REPL (compile)
+^C , 
+</p>
+<ul class="org-ul">
+<li>Send the execution to the REPL (gets the result back just in front of the fact)
+</li>
+</ul>
+<p>
+^C ^u
+</p>
+<ul class="org-ul">
+<li>send the method into the (unfinished) part in your file
+</li>
+<li>inside the (unfinished part), create the definition of the method
+not existing
+</li>
+</ul>
+<p>
+^C-f Focus on the current fact
+^C-h hides all facts
+^C-s shows all facts
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4-4" class="outline-3">
+<h3 id="sec-4-4"><span class="done DONE">DONE</span> Emacs code to jump to a particular location in a Clojure file</h3>
+<div class="outline-text-3" id="text-4-4">
+</div>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="todo TODO">TODO</span> Project <code>[0/4]</code></h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="todo TODO">TODO</span> Roadmap</h3>
+</div>
+<div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="todo TODO">TODO</span> Help wanted</h3>
+</div>
+<div id="outline-container-sec-5-3" class="outline-3">
+<h3 id="sec-5-3"><span class="todo TODO">TODO</span> Error message improvements</h3>
+</div>
+<div id="outline-container-sec-5-4" class="outline-3">
+<h3 id="sec-5-4"><span class="todo TODO">TODO</span> Why is it called "Midje"?</h3>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="todo TODO">TODO</span> Tips <code>[0/4]</code></h2>
+<div class="outline-text-2" id="text-6">
+</div><div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="todo TODO">TODO</span> Caching: Checking memoization and caching.</h3>
+</div>
+<div id="outline-container-sec-6-2" class="outline-3">
+<h3 id="sec-6-2"><span class="todo TODO">TODO</span> Top-down testing: “Programming by wishful thinking”</h3>
+</div>
+<div id="outline-container-sec-6-3" class="outline-3">
+<h3 id="sec-6-3"><span class="todo TODO">TODO</span> More than one check per checker</h3>
+</div>
+<div id="outline-container-sec-6-4" class="outline-3">
+<h3 id="sec-6-4"><span class="todo TODO">TODO</span> Line numbers in helper functions</h3>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Antoine Romain Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 00:24</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
