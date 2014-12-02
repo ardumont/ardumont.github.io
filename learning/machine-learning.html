@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Machine learning - notes</title>
+<!-- 2014-12-02 Tue 18:41 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine R. Dumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Machine learning - notes</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1"><span class="done DONE">DONE</span> 1 - 1 - Welcome</a></li>
+<li><a href="#sec-2"><span class="done DONE">DONE</span> 1 - 2 - What is Machine Learning</a></li>
+<li><a href="#sec-3"><span class="done DONE">DONE</span> 1 - 3 - Supervised Learning</a></li>
+<li><a href="#sec-4"><span class="done DONE">DONE</span> 1 - 4 - Unsupervised Learning</a></li>
+<li><a href="#sec-5">2 - 1 - Model Representation</a></li>
+<li><a href="#sec-6">2 - 2 - Cost Function</a></li>
+<li><a href="#sec-7">2 - 3 - Cost Function - Intuition I</a></li>
+<li><a href="#sec-8">2 - 4 - Cost Function - Intuition II</a></li>
+<li><a href="#sec-9">2 - 5 - Gradient Descent</a></li>
+<li><a href="#sec-10">2 - 6 - Gradient Descent Intuition</a></li>
+<li><a href="#sec-11">2 - 7 - Gradient Descent For Linear Regression</a></li>
+<li><a href="#sec-12">2 - 8 - What's Next</a></li>
+<li><a href="#sec-13">3 - 1 - Matrices and Vectors</a></li>
+<li><a href="#sec-14">3 - 2 - Addition and Scalar Multiplication</a></li>
+<li><a href="#sec-15">3 - 3 - Matrix Vector Multiplication</a></li>
+<li><a href="#sec-16">3 - 4 - Matrix Matrix Multiplication</a></li>
+<li><a href="#sec-17">3 - 5 - Matrix Multiplication Properties</a></li>
+<li><a href="#sec-18">3 - 6 - Inverse and Transpose</a></li>
+<li><a href="#sec-19">4 - 1 - Multiple Features</a></li>
+<li><a href="#sec-20">4 - 2 - Gradient Descent for Multiple Variables</a></li>
+<li><a href="#sec-21">4 - 3 - Gradient Descent in Practice I - Feature Scaling</a></li>
+<li><a href="#sec-22">4 - 4 - Gradient Descent in Practice II - Learning Rate</a></li>
+<li><a href="#sec-23">4 - 5 - Features and Polynomial Regression</a></li>
+<li><a href="#sec-24">4 - 6 - Normal Equation</a></li>
+<li><a href="#sec-25">4 - 7 - Normal Equation Noninvertibility (Optional)</a></li>
+<li><a href="#sec-26">5 - 1 - Basic Operations</a></li>
+<li><a href="#sec-27">5 - 2 - Moving Data Around</a></li>
+<li><a href="#sec-28">5 - 3 - Computing on Data</a></li>
+<li><a href="#sec-29">5 - 4 - Plotting Data</a></li>
+<li><a href="#sec-30">5 - 5 - Control Statements_ for, while, if statements</a></li>
+<li><a href="#sec-31">5 - 6 - Vectorization</a></li>
+<li><a href="#sec-32">5 - 7 - Working on and Submitting Programming Exercises</a></li>
+<li><a href="#sec-33">6 - 1 - Classification</a></li>
+<li><a href="#sec-34">6 - 2 - Hypothesis Representation</a></li>
+<li><a href="#sec-35">6 - 3 - Decision Boundary</a></li>
+<li><a href="#sec-36">6 - 4 - Cost Function</a></li>
+<li><a href="#sec-37">6 - 5 - Simplified Cost Function and Gradient Descent</a></li>
+<li><a href="#sec-38">6 - 6 - Advanced Optimization</a></li>
+<li><a href="#sec-39">6 - 7 - Multiclass Classification_ One-vs-all</a></li>
+<li><a href="#sec-40">7 - 1 - The Problem of Overfitting</a></li>
+<li><a href="#sec-41">7 - 2 - Cost Function</a></li>
+<li><a href="#sec-42">7 - 3 - Regularized Linear Regression</a></li>
+<li><a href="#sec-43">7 - 4 - Regularized Logistic Regression</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="done DONE">DONE</span> 1 - 1 - Welcome</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="done DONE">DONE</span> 1 - 2 - What is Machine Learning</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="done DONE">DONE</span> 1 - 3 - Supervised Learning</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Using data set -&gt; feed the right answers
+Regression - learn from passed data experience to try and determine the future
+Classification - multiple dimension properties
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="done DONE">DONE</span> 1 - 4 - Unsupervised Learning</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+a data set without any labels
+clustering algorithms
+</p>
+
+<p>
+algo splits alone -&gt; discover segments
+</p>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">2 - 1 - Model Representation</h2>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">2 - 2 - Cost Function</h2>
+</div>
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">2 - 3 - Cost Function - Intuition I</h2>
+</div>
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8">2 - 4 - Cost Function - Intuition II</h2>
+</div>
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9">2 - 5 - Gradient Descent</h2>
+</div>
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10">2 - 6 - Gradient Descent Intuition</h2>
+</div>
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11">2 - 7 - Gradient Descent For Linear Regression</h2>
+</div>
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12">2 - 8 - What's Next</h2>
+</div>
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13">3 - 1 - Matrices and Vectors</h2>
+</div>
+<div id="outline-container-sec-14" class="outline-2">
+<h2 id="sec-14">3 - 2 - Addition and Scalar Multiplication</h2>
+</div>
+<div id="outline-container-sec-15" class="outline-2">
+<h2 id="sec-15">3 - 3 - Matrix Vector Multiplication</h2>
+</div>
+<div id="outline-container-sec-16" class="outline-2">
+<h2 id="sec-16">3 - 4 - Matrix Matrix Multiplication</h2>
+</div>
+<div id="outline-container-sec-17" class="outline-2">
+<h2 id="sec-17">3 - 5 - Matrix Multiplication Properties</h2>
+</div>
+<div id="outline-container-sec-18" class="outline-2">
+<h2 id="sec-18">3 - 6 - Inverse and Transpose</h2>
+</div>
+<div id="outline-container-sec-19" class="outline-2">
+<h2 id="sec-19">4 - 1 - Multiple Features</h2>
+</div>
+<div id="outline-container-sec-20" class="outline-2">
+<h2 id="sec-20">4 - 2 - Gradient Descent for Multiple Variables</h2>
+</div>
+<div id="outline-container-sec-21" class="outline-2">
+<h2 id="sec-21">4 - 3 - Gradient Descent in Practice I - Feature Scaling</h2>
+</div>
+<div id="outline-container-sec-22" class="outline-2">
+<h2 id="sec-22">4 - 4 - Gradient Descent in Practice II - Learning Rate</h2>
+</div>
+<div id="outline-container-sec-23" class="outline-2">
+<h2 id="sec-23">4 - 5 - Features and Polynomial Regression</h2>
+</div>
+<div id="outline-container-sec-24" class="outline-2">
+<h2 id="sec-24">4 - 6 - Normal Equation</h2>
+</div>
+<div id="outline-container-sec-25" class="outline-2">
+<h2 id="sec-25">4 - 7 - Normal Equation Noninvertibility (Optional)</h2>
+</div>
+<div id="outline-container-sec-26" class="outline-2">
+<h2 id="sec-26">5 - 1 - Basic Operations</h2>
+</div>
+<div id="outline-container-sec-27" class="outline-2">
+<h2 id="sec-27">5 - 2 - Moving Data Around</h2>
+</div>
+<div id="outline-container-sec-28" class="outline-2">
+<h2 id="sec-28">5 - 3 - Computing on Data</h2>
+</div>
+<div id="outline-container-sec-29" class="outline-2">
+<h2 id="sec-29">5 - 4 - Plotting Data</h2>
+</div>
+<div id="outline-container-sec-30" class="outline-2">
+<h2 id="sec-30">5 - 5 - Control Statements_ for, while, if statements</h2>
+</div>
+<div id="outline-container-sec-31" class="outline-2">
+<h2 id="sec-31">5 - 6 - Vectorization</h2>
+</div>
+<div id="outline-container-sec-32" class="outline-2">
+<h2 id="sec-32">5 - 7 - Working on and Submitting Programming Exercises</h2>
+</div>
+<div id="outline-container-sec-33" class="outline-2">
+<h2 id="sec-33">6 - 1 - Classification</h2>
+</div>
+<div id="outline-container-sec-34" class="outline-2">
+<h2 id="sec-34">6 - 2 - Hypothesis Representation</h2>
+</div>
+<div id="outline-container-sec-35" class="outline-2">
+<h2 id="sec-35">6 - 3 - Decision Boundary</h2>
+</div>
+<div id="outline-container-sec-36" class="outline-2">
+<h2 id="sec-36">6 - 4 - Cost Function</h2>
+</div>
+<div id="outline-container-sec-37" class="outline-2">
+<h2 id="sec-37">6 - 5 - Simplified Cost Function and Gradient Descent</h2>
+</div>
+<div id="outline-container-sec-38" class="outline-2">
+<h2 id="sec-38">6 - 6 - Advanced Optimization</h2>
+</div>
+<div id="outline-container-sec-39" class="outline-2">
+<h2 id="sec-39">6 - 7 - Multiclass Classification_ One-vs-all</h2>
+</div>
+<div id="outline-container-sec-40" class="outline-2">
+<h2 id="sec-40">7 - 1 - The Problem of Overfitting</h2>
+</div>
+<div id="outline-container-sec-41" class="outline-2">
+<h2 id="sec-41">7 - 2 - Cost Function</h2>
+</div>
+<div id="outline-container-sec-42" class="outline-2">
+<h2 id="sec-42">7 - 3 - Regularized Linear Regression</h2>
+</div>
+<div id="outline-container-sec-43" class="outline-2">
+<h2 id="sec-43">7 - 4 - Regularized Logistic Regression</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Antoine R. Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 18:41</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>euler list of problems <a href="http://projecteuler.net">http://projecteuler.net</a></title>
+<!-- 2014-12-02 Tue 18:41 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Antoine Romain Dumont" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="./other/style.css" type="text/css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">euler list of problems <a href="http://projecteuler.net">http://projecteuler.net</a></h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1"><span class="done DONE">DONE</span> 1 Add all the natural numbers below one thousand that are multiples of 3 or 5. 175641 Solved</a></li>
+<li><a href="#sec-2"><span class="done DONE">DONE</span> 2 By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms. 145514 Solved</a></li>
+<li><a href="#sec-3"><span class="done DONE">DONE</span> 3 Find the largest prime factor of a composite number. 105794 Solved</a></li>
+<li><a href="#sec-4"><span class="done DONE">DONE</span> 4 Find the largest palindrome made from the product of two 3-digit numbers. 97831 Solved</a></li>
+<li><a href="#sec-5"><span class="done DONE">DONE</span> 5 What is the smallest number divisible by each of the numbers 1 to 20? 110059 Solved</a></li>
+<li><a href="#sec-6"><span class="done DONE">DONE</span> 6 What is the difference between the sum of the squares and the square of the sums? 111903 Solved</a></li>
+<li><a href="#sec-7"><span class="done DONE">DONE</span> 7 Find the 10001st prime. 93867 Solved</a></li>
+<li><a href="#sec-8"><span class="done DONE">DONE</span> 8 Discover the largest product of five consecutive digits in the 1000-digit number. 83088 Solved</a></li>
+<li><a href="#sec-9"><span class="done DONE">DONE</span> 9 Find the only Pythagorean triplet, {a, b, c}, for which a + b + c = 1000. 83027 Solved</a></li>
+<li><a href="#sec-10"><span class="done DONE">DONE</span> 10 Calculate the sum of all the primes below two million. 75406 Solved</a></li>
+<li><a href="#sec-11"><span class="done DONE">DONE</span> 11 What is the greatest product of four adjacent numbers on the same straight line in the 20 by 20 grid? 57276 Solved</a></li>
+<li><a href="#sec-12"><span class="done DONE">DONE</span> 12 What is the value of the first triangle number to have over five hundred divisors? 50320 Solved</a></li>
+<li><a href="#sec-13"><span class="done DONE">DONE</span> 13 Find the first ten digits of the sum of one-hundred 50-digit numbers. 56901 Solved</a></li>
+<li><a href="#sec-14"><span class="done DONE">DONE</span> 14 Find the longest sequence using a starting number under one million. 54911 Solved</a></li>
+<li><a href="#sec-15"><span class="done DONE">DONE</span> 15 Starting in the top left corner in a 20 by 20 grid, how many routes are there to the bottom right corner? 44848 Solved</a></li>
+<li><a href="#sec-16"><span class="done DONE">DONE</span> 16 What is the sum of the digits of the number 21000? 60523 Solved</a></li>
+<li><a href="#sec-17"><span class="done DONE">DONE</span> 17 How many letters would be needed to write all the numbers in words from 1 to 1000? 37647 Solved</a></li>
+<li><a href="#sec-18"><span class="done DONE">DONE</span> 18 Find the maximum sum travelling from the top of the triangle to the base. 38256 Solved</a></li>
+<li><a href="#sec-19"><span class="done DONE">DONE</span> 19 How many Sundays fell on the first of the month during the twentieth century? 34954</a></li>
+<li><a href="#sec-20"><span class="done DONE">DONE</span> 20 Find the sum of digits in 100! 58052 Solved</a></li>
+<li><a href="#sec-21"><span class="done DONE">DONE</span> 21 Evaluate the sum of all amicable pairs under 10000. 38122</a></li>
+<li><a href="#sec-22"><span class="done DONE">DONE</span> 22 Names scores</a></li>
+<li><a href="#sec-23"><span class="done DONE">DONE</span> 23 Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.</a></li>
+<li><a href="#sec-24"><span class="done DONE">DONE</span> 24 What is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9? 31195</a></li>
+<li><a href="#sec-25"><span class="done DONE">DONE</span> 25 What is the first term in the Fibonacci sequence to contain 1000 digits? 43537</a></li>
+<li><a href="#sec-26"><span class="done DONE">DONE</span> Reciprocal cycles</a></li>
+<li><a href="#sec-27"><span class="done DONE">DONE</span> 27 Find a quadratic formula that produces the maximum number of primes for consecutive values of n. 22895</a></li>
+<li><a href="#sec-28"><span class="done DONE">DONE</span> 29 ow many distinct terms are in the sequence generated by ab for 2 ≤ a ≤ 100 and 2 ≤ b ≤ 100?</a></li>
+<li><a href="#sec-29"><span class="done DONE">DONE</span> 30 Find the sum of all the numbers that can be written as the sum of fifth powers of their digits. 31111</a></li>
+<li><a href="#sec-30"><span class="todo TODO">TODO</span> 31 Investigating combinations of English currency denominations. 21244</a></li>
+<li><a href="#sec-31"><span class="todo TODO">TODO</span> 32 Find the sum of all numbers that can be written as pandigital products. 18387</a></li>
+<li><a href="#sec-32"><span class="todo TODO">TODO</span> 33 Discover all the fractions with an unorthodox cancelling method. 19911</a></li>
+<li><a href="#sec-33"><span class="todo TODO">TODO</span> 34 Find the sum of all numbers which are equal to the sum of the factorial of their digits. 27233</a></li>
+<li><a href="#sec-34"><span class="todo TODO">TODO</span> 35 How many circular primes are there below one million? 24734</a></li>
+<li><a href="#sec-35"><span class="todo TODO">TODO</span> 36 Find the sum of all numbers less than one million, which are palindromic in base 10 and base 2. 27376</a></li>
+<li><a href="#sec-36"><span class="todo TODO">TODO</span> 37 Find the sum of all eleven primes that are both truncatable from left to right and right to left. 20469</a></li>
+<li><a href="#sec-37"><span class="todo TODO">TODO</span> 38 What is the largest 1 to 9 pandigital that can be formed by multiplying a fixed number by 1, 2, 3, .. ?</a></li>
+<li><a href="#sec-38"><span class="todo TODO">TODO</span> 39 If p is the perimeter of a right angle triangle, {a, b, c}, which value, for p ≤ 1000, has the most solutions? 20109</a></li>
+<li><a href="#sec-39"><span class="todo TODO">TODO</span> 40 Finding the nth digit of the fractional part of the irrational number. 23406</a></li>
+<li><a href="#sec-40"><span class="todo TODO">TODO</span> 41 What is the largest n-digit pandigital prime that exists? 18923</a></li>
+<li><a href="#sec-41"><span class="todo TODO">TODO</span> 42 How many triangle words does the list of common English words contain? 22821</a></li>
+<li><a href="#sec-42"><span class="todo TODO">TODO</span> 43 Find the sum of all pandigital numbers with an unusual sub-string divisibility property. 15345</a></li>
+<li><a href="#sec-43"><span class="todo TODO">TODO</span> 44 Find the smallest pair of pentagonal numbers whose sum and difference is pentagonal. 14831</a></li>
+<li><a href="#sec-44"><span class="todo TODO">TODO</span> 45 After 40755, what is the next triangle number that is also pentagonal and hexagonal? 21815</a></li>
+<li><a href="#sec-45"><span class="todo TODO">TODO</span> 46 What is the smallest odd composite that cannot be written as the sum of a prime and twice a square? 15523</a></li>
+<li><a href="#sec-46"><span class="todo TODO">TODO</span> 47 Find the first four consecutive integers to have four distinct primes factors. 15711</a></li>
+<li><a href="#sec-47"><span class="todo TODO">TODO</span> 48 Find the last ten digits of 11 + 22 + &#x2026; + 10001000. 38591</a></li>
+<li><a href="#sec-48"><span class="todo TODO">TODO</span> 49 Find arithmetic sequences, made of prime terms, whose four digits are permutations of each other. 15039</a></li>
+<li><a href="#sec-49"><span class="todo TODO">TODO</span> 50 Which prime, below one-million, can be written as the sum of the most consecutive primes? 16368</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="done DONE">DONE</span> 1 Add all the natural numbers below one thousand that are multiples of 3 or 5. 175641 Solved</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="done DONE">DONE</span> 2 By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms. 145514 Solved</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="done DONE">DONE</span> 3 Find the largest prime factor of a composite number. 105794 Solved</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="done DONE">DONE</span> 4 Find the largest palindrome made from the product of two 3-digit numbers. 97831 Solved</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="done DONE">DONE</span> 5 What is the smallest number divisible by each of the numbers 1 to 20? 110059 Solved</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="done DONE">DONE</span> 6 What is the difference between the sum of the squares and the square of the sums? 111903 Solved</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+</div>
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="done DONE">DONE</span> 7 Find the 10001st prime. 93867 Solved</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+</div>
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="done DONE">DONE</span> 8 Discover the largest product of five consecutive digits in the 1000-digit number. 83088 Solved</h2>
+<div class="outline-text-2" id="text-8">
+</div>
+</div>
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><span class="done DONE">DONE</span> 9 Find the only Pythagorean triplet, {a, b, c}, for which a + b + c = 1000. 83027 Solved</h2>
+<div class="outline-text-2" id="text-9">
+</div>
+</div>
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10"><span class="done DONE">DONE</span> 10 Calculate the sum of all the primes below two million. 75406 Solved</h2>
+<div class="outline-text-2" id="text-10">
+</div>
+</div>
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11"><span class="done DONE">DONE</span> 11 What is the greatest product of four adjacent numbers on the same straight line in the 20 by 20 grid? 57276 Solved</h2>
+<div class="outline-text-2" id="text-11">
+</div>
+</div>
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12"><span class="done DONE">DONE</span> 12 What is the value of the first triangle number to have over five hundred divisors? 50320 Solved</h2>
+<div class="outline-text-2" id="text-12">
+</div>
+</div>
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13"><span class="done DONE">DONE</span> 13 Find the first ten digits of the sum of one-hundred 50-digit numbers. 56901 Solved</h2>
+<div class="outline-text-2" id="text-13">
+</div>
+</div>
+<div id="outline-container-sec-14" class="outline-2">
+<h2 id="sec-14"><span class="done DONE">DONE</span> 14 Find the longest sequence using a starting number under one million. 54911 Solved</h2>
+<div class="outline-text-2" id="text-14">
+</div>
+</div>
+<div id="outline-container-sec-15" class="outline-2">
+<h2 id="sec-15"><span class="done DONE">DONE</span> 15 Starting in the top left corner in a 20 by 20 grid, how many routes are there to the bottom right corner? 44848 Solved</h2>
+<div class="outline-text-2" id="text-15">
+</div>
+</div>
+<div id="outline-container-sec-16" class="outline-2">
+<h2 id="sec-16"><span class="done DONE">DONE</span> 16 What is the sum of the digits of the number 21000? 60523 Solved</h2>
+<div class="outline-text-2" id="text-16">
+</div>
+</div>
+<div id="outline-container-sec-17" class="outline-2">
+<h2 id="sec-17"><span class="done DONE">DONE</span> 17 How many letters would be needed to write all the numbers in words from 1 to 1000? 37647 Solved</h2>
+<div class="outline-text-2" id="text-17">
+</div>
+</div>
+<div id="outline-container-sec-18" class="outline-2">
+<h2 id="sec-18"><span class="done DONE">DONE</span> 18 Find the maximum sum travelling from the top of the triangle to the base. 38256 Solved</h2>
+<div class="outline-text-2" id="text-18">
+</div>
+</div>
+<div id="outline-container-sec-19" class="outline-2">
+<h2 id="sec-19"><span class="done DONE">DONE</span> 19 How many Sundays fell on the first of the month during the twentieth century? 34954</h2>
+<div class="outline-text-2" id="text-19">
+</div>
+</div>
+<div id="outline-container-sec-20" class="outline-2">
+<h2 id="sec-20"><span class="done DONE">DONE</span> 20 Find the sum of digits in 100! 58052 Solved</h2>
+<div class="outline-text-2" id="text-20">
+</div>
+</div>
+<div id="outline-container-sec-21" class="outline-2">
+<h2 id="sec-21"><span class="done DONE">DONE</span> 21 Evaluate the sum of all amicable pairs under 10000. 38122</h2>
+<div class="outline-text-2" id="text-21">
+</div>
+</div>
+<div id="outline-container-sec-22" class="outline-2">
+<h2 id="sec-22"><span class="done DONE">DONE</span> 22 Names scores</h2>
+<div class="outline-text-2" id="text-22">
+</div>
+</div>
+<div id="outline-container-sec-23" class="outline-2">
+<h2 id="sec-23"><span class="done DONE">DONE</span> 23 Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.</h2>
+<div class="outline-text-2" id="text-23">
+</div>
+</div>
+<div id="outline-container-sec-24" class="outline-2">
+<h2 id="sec-24"><span class="done DONE">DONE</span> 24 What is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9? 31195</h2>
+<div class="outline-text-2" id="text-24">
+</div>
+</div>
+<div id="outline-container-sec-25" class="outline-2">
+<h2 id="sec-25"><span class="done DONE">DONE</span> 25 What is the first term in the Fibonacci sequence to contain 1000 digits? 43537</h2>
+<div class="outline-text-2" id="text-25">
+</div>
+</div>
+<div id="outline-container-sec-26" class="outline-2">
+<h2 id="sec-26"><span class="done DONE">DONE</span> Reciprocal cycles</h2>
+<div class="outline-text-2" id="text-26">
+</div>
+</div>
+<div id="outline-container-sec-27" class="outline-2">
+<h2 id="sec-27"><span class="done DONE">DONE</span> 27 Find a quadratic formula that produces the maximum number of primes for consecutive values of n. 22895</h2>
+<div class="outline-text-2" id="text-27">
+</div>
+</div>
+<div id="outline-container-sec-28" class="outline-2">
+<h2 id="sec-28"><span class="done DONE">DONE</span> 29 ow many distinct terms are in the sequence generated by ab for 2 ≤ a ≤ 100 and 2 ≤ b ≤ 100?</h2>
+<div class="outline-text-2" id="text-28">
+</div>
+</div>
+<div id="outline-container-sec-29" class="outline-2">
+<h2 id="sec-29"><span class="done DONE">DONE</span> 30 Find the sum of all the numbers that can be written as the sum of fifth powers of their digits. 31111</h2>
+<div class="outline-text-2" id="text-29">
+</div>
+</div>
+<div id="outline-container-sec-30" class="outline-2">
+<h2 id="sec-30"><span class="todo TODO">TODO</span> 31 Investigating combinations of English currency denominations. 21244</h2>
+</div>
+<div id="outline-container-sec-31" class="outline-2">
+<h2 id="sec-31"><span class="todo TODO">TODO</span> 32 Find the sum of all numbers that can be written as pandigital products. 18387</h2>
+</div>
+<div id="outline-container-sec-32" class="outline-2">
+<h2 id="sec-32"><span class="todo TODO">TODO</span> 33 Discover all the fractions with an unorthodox cancelling method. 19911</h2>
+</div>
+<div id="outline-container-sec-33" class="outline-2">
+<h2 id="sec-33"><span class="todo TODO">TODO</span> 34 Find the sum of all numbers which are equal to the sum of the factorial of their digits. 27233</h2>
+</div>
+<div id="outline-container-sec-34" class="outline-2">
+<h2 id="sec-34"><span class="todo TODO">TODO</span> 35 How many circular primes are there below one million? 24734</h2>
+</div>
+<div id="outline-container-sec-35" class="outline-2">
+<h2 id="sec-35"><span class="todo TODO">TODO</span> 36 Find the sum of all numbers less than one million, which are palindromic in base 10 and base 2. 27376</h2>
+</div>
+<div id="outline-container-sec-36" class="outline-2">
+<h2 id="sec-36"><span class="todo TODO">TODO</span> 37 Find the sum of all eleven primes that are both truncatable from left to right and right to left. 20469</h2>
+</div>
+<div id="outline-container-sec-37" class="outline-2">
+<h2 id="sec-37"><span class="todo TODO">TODO</span> 38 What is the largest 1 to 9 pandigital that can be formed by multiplying a fixed number by 1, 2, 3, .. ?</h2>
+</div>
+<div id="outline-container-sec-38" class="outline-2">
+<h2 id="sec-38"><span class="todo TODO">TODO</span> 39 If p is the perimeter of a right angle triangle, {a, b, c}, which value, for p ≤ 1000, has the most solutions? 20109</h2>
+</div>
+<div id="outline-container-sec-39" class="outline-2">
+<h2 id="sec-39"><span class="todo TODO">TODO</span> 40 Finding the nth digit of the fractional part of the irrational number. 23406</h2>
+</div>
+<div id="outline-container-sec-40" class="outline-2">
+<h2 id="sec-40"><span class="todo TODO">TODO</span> 41 What is the largest n-digit pandigital prime that exists? 18923</h2>
+</div>
+<div id="outline-container-sec-41" class="outline-2">
+<h2 id="sec-41"><span class="todo TODO">TODO</span> 42 How many triangle words does the list of common English words contain? 22821</h2>
+</div>
+<div id="outline-container-sec-42" class="outline-2">
+<h2 id="sec-42"><span class="todo TODO">TODO</span> 43 Find the sum of all pandigital numbers with an unusual sub-string divisibility property. 15345</h2>
+</div>
+<div id="outline-container-sec-43" class="outline-2">
+<h2 id="sec-43"><span class="todo TODO">TODO</span> 44 Find the smallest pair of pentagonal numbers whose sum and difference is pentagonal. 14831</h2>
+</div>
+<div id="outline-container-sec-44" class="outline-2">
+<h2 id="sec-44"><span class="todo TODO">TODO</span> 45 After 40755, what is the next triangle number that is also pentagonal and hexagonal? 21815</h2>
+</div>
+<div id="outline-container-sec-45" class="outline-2">
+<h2 id="sec-45"><span class="todo TODO">TODO</span> 46 What is the smallest odd composite that cannot be written as the sum of a prime and twice a square? 15523</h2>
+</div>
+<div id="outline-container-sec-46" class="outline-2">
+<h2 id="sec-46"><span class="todo TODO">TODO</span> 47 Find the first four consecutive integers to have four distinct primes factors. 15711</h2>
+</div>
+<div id="outline-container-sec-47" class="outline-2">
+<h2 id="sec-47"><span class="todo TODO">TODO</span> 48 Find the last ten digits of 11 + 22 + &#x2026; + 10001000. 38591</h2>
+</div>
+<div id="outline-container-sec-48" class="outline-2">
+<h2 id="sec-48"><span class="todo TODO">TODO</span> 49 Find arithmetic sequences, made of prime terms, whose four digits are permutations of each other. 15039</h2>
+</div>
+<div id="outline-container-sec-49" class="outline-2">
+<h2 id="sec-49"><span class="todo TODO">TODO</span> 50 Which prime, below one-million, can be written as the sum of the most consecutive primes? 16368</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Antoine Romain Dumont</p>
+<p class="date">Created: 2014-12-02 Tue 18:41</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
