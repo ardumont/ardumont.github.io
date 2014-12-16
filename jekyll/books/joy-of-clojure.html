@@ -1,144 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-<head>
-<title>Joy of Clojure - Michael Fogus, Chris Houser</title>
-<!-- 2014-12-02 Tue 18:42 -->
-<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta  name="generator" content="Org-mode" />
-<meta  name="author" content="Antoine Romain Dumont" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
-  .title  { text-align: center; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { color: green; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
-    padding: 3px;
-    border: 1px solid black;
-  }
-  pre.src:hover:before { display: inline;}
-  pre.src-sh:before    { content: 'sh'; }
-  pre.src-bash:before  { content: 'sh'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-R:before     { content: 'R'; }
-  pre.src-perl:before  { content: 'Perl'; }
-  pre.src-java:before  { content: 'Java'; }
-  pre.src-sql:before   { content: 'SQL'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.right  { text-align: center;  }
-  th.left   { text-align: center;   }
-  th.center { text-align: center; }
-  td.right  { text-align: right;  }
-  td.left   { text-align: left;   }
-  td.center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara:nth-child(2) { display: inline; }
-  .footpara { display: block; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  /*]]>*/-->
-</style>
-<link rel="stylesheet" href="./other/style.css" type="text/css"/>
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
-</head>
-<body>
-<div id="content">
-<h1 class="title">Joy of Clojure - Michael Fogus, Chris Houser</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -147,15 +6,43 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#sec-1-1"><span class="done DONE">DONE</span> Part 1 Foundations <code>[100%]</code></a>
 <ul>
-<li><a href="#sec-1-1-1"><span class="done DONE">DONE</span> Clojure philosophy <code>[100%]</code></a></li>
+<li><a href="#sec-1-1-1"><span class="done DONE">DONE</span> Clojure philosophy <code>[100%]</code></a>
+<ul>
+<li><a href="#sec-1-1-1-1"><span class="done DONE">DONE</span> The Clojure way</a></li>
+<li><a href="#sec-1-1-1-2"><span class="done DONE">DONE</span> Why a(nother) Lisp?</a></li>
+<li><a href="#sec-1-1-1-3"><span class="done DONE">DONE</span> Functional Programming</a></li>
+<li><a href="#sec-1-1-1-4"><span class="done DONE">DONE</span> Why Clojure isn't especially object oriented</a></li>
+<li><a href="#sec-1-1-1-5"><span class="done DONE">DONE</span> Summary</a></li>
+</ul>
+</li>
 <li><a href="#sec-1-1-2"><span class="done DONE">DONE</span> Drinking from the Clojure firehose</a></li>
 <li><a href="#sec-1-1-3"><span class="done DONE">DONE</span> Dipping our toes in the pool</a></li>
 </ul>
 </li>
 <li><a href="#sec-1-2"><span class="done DONE">DONE</span> Part 2 Data Types <code>[100%]</code></a>
 <ul>
-<li><a href="#sec-1-2-1"><span class="done DONE">DONE</span> On scalars <code>[100%]</code></a></li>
-<li><a href="#sec-1-2-2"><span class="done DONE">DONE</span> Composite data types <code>[100%]</code></a></li>
+<li><a href="#sec-1-2-1"><span class="done DONE">DONE</span> On scalars <code>[100%]</code></a>
+<ul>
+<li><a href="#sec-1-2-1-1"><span class="done DONE">DONE</span> 4.1 Understanding precision</a></li>
+<li><a href="#sec-1-2-1-2"><span class="done DONE">DONE</span> 4.2 Trying to be rational</a></li>
+<li><a href="#sec-1-2-1-3"><span class="done DONE">DONE</span> 4.3 When to use keywords</a></li>
+<li><a href="#sec-1-2-1-4"><span class="done DONE">DONE</span> 4.4 Symbolic resolutions</a></li>
+<li><a href="#sec-1-2-1-5"><span class="done DONE">DONE</span> 4.5 Regular expressions-The second problem</a></li>
+<li><a href="#sec-1-2-1-6"><span class="done DONE">DONE</span> 4.6 Summary</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2-2"><span class="done DONE">DONE</span> Composite data types <code>[100%]</code></a>
+<ul>
+<li><a href="#sec-1-2-2-1"><span class="done DONE">DONE</span> 5.1 Persistence, sequence and complexity</a></li>
+<li><a href="#sec-1-2-2-2"><span class="done DONE">DONE</span> 5.2 Vectors: creating and using them in all their varieties</a></li>
+<li><a href="#sec-1-2-2-3"><span class="done DONE">DONE</span> 5.3 Lists: Clojure's code form data structure</a></li>
+<li><a href="#sec-1-2-2-4"><span class="done DONE">DONE</span> 5.4 How to use persistant queues</a></li>
+<li><a href="#sec-1-2-2-5"><span class="done DONE">DONE</span> 5.5 Persistant sets</a></li>
+<li><a href="#sec-1-2-2-6"><span class="done DONE">DONE</span> 5.6 Thinking in maps</a></li>
+<li><a href="#sec-1-2-2-7"><span class="done DONE">DONE</span> 5.7 Putting it all together: finding the position of items in a sequence</a></li>
+<li><a href="#sec-1-2-2-8"><span class="done DONE">DONE</span> 5.8 Summary</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#sec-1-3"><span class="todo TODO">TODO</span> Part 3 Functional Programming <code>[70%]</code></a>
@@ -166,7 +53,15 @@ for the JavaScript code in this tag.
 <li><a href="#sec-1-3-4"><span class="done DONE">DONE</span> Laziness</a></li>
 <li><a href="#sec-1-3-5"><span class="done DONE">DONE</span> Putting it all together: a lazy quicksort</a></li>
 <li><a href="#sec-1-3-6"><span class="done DONE">DONE</span> Functional programming</a></li>
-<li><a href="#sec-1-3-7"><span class="done DONE">DONE</span> Functions in all their forms <code>[100%]</code></a></li>
+<li><a href="#sec-1-3-7"><span class="done DONE">DONE</span> Functions in all their forms <code>[100%]</code></a>
+<ul>
+<li><a href="#sec-1-3-7-1"><span class="done DONE">DONE</span> 7.1.1 First-class functions</a></li>
+<li><a href="#sec-1-3-7-2"><span class="done DONE">DONE</span> 7.1.2 Higher-order functions</a></li>
+<li><a href="#sec-1-3-7-3"><span class="done DONE">DONE</span> 7.1.3 Pure functions</a></li>
+<li><a href="#sec-1-3-7-4"><span class="done DONE">DONE</span> 7.1.4 Named arguments</a></li>
+<li><a href="#sec-1-3-7-5"><span class="done DONE">DONE</span> 7.1.5 Constraining functions with pre- and postconditions</a></li>
+</ul>
+</li>
 <li><a href="#sec-1-3-8"><span class="todo TODO">TODO</span> Closures</a></li>
 <li><a href="#sec-1-3-9"><span class="todo TODO">TODO</span> Thinking recursively</a></li>
 <li><a href="#sec-1-3-10"><span class="todo TODO">TODO</span> Putting it all together: A* pathfinding</a></li>
@@ -203,21 +98,31 @@ for the JavaScript code in this tag.
 <h4 id="sec-1-1-1"><span class="done DONE">DONE</span> Clojure philosophy <code>[100%]</code></h4>
 <div class="outline-text-4" id="text-1-1-1">
 </div>
-<ul class="org-ul"><li><a id="sec-1-1-1-1" name="sec-1-1-1-1"></a><span class="done DONE">DONE</span> The Clojure way<br  /><div class="outline-text-5" id="text-1-1-1-1">
+<div id="outline-container-sec-1-1-1-1" class="outline-5">
+<h5 id="sec-1-1-1-1"><span class="done DONE">DONE</span> The Clojure way</h5>
+<div class="outline-text-5" id="text-1-1-1-1">
 </div>
-</li>
-<li><a id="sec-1-1-1-2" name="sec-1-1-1-2"></a><span class="done DONE">DONE</span> Why a(nother) Lisp?<br  /><div class="outline-text-5" id="text-1-1-1-2">
 </div>
-</li>
-<li><a id="sec-1-1-1-3" name="sec-1-1-1-3"></a><span class="done DONE">DONE</span> Functional Programming<br  /><div class="outline-text-5" id="text-1-1-1-3">
+<div id="outline-container-sec-1-1-1-2" class="outline-5">
+<h5 id="sec-1-1-1-2"><span class="done DONE">DONE</span> Why a(nother) Lisp?</h5>
+<div class="outline-text-5" id="text-1-1-1-2">
 </div>
-</li>
-<li><a id="sec-1-1-1-4" name="sec-1-1-1-4"></a><span class="done DONE">DONE</span> Why Clojure isn't especially object oriented<br  /><div class="outline-text-5" id="text-1-1-1-4">
 </div>
-</li>
-<li><a id="sec-1-1-1-5" name="sec-1-1-1-5"></a><span class="done DONE">DONE</span> Summary<br  /><div class="outline-text-5" id="text-1-1-1-5">
+<div id="outline-container-sec-1-1-1-3" class="outline-5">
+<h5 id="sec-1-1-1-3"><span class="done DONE">DONE</span> Functional Programming</h5>
+<div class="outline-text-5" id="text-1-1-1-3">
 </div>
-</li></ul>
+</div>
+<div id="outline-container-sec-1-1-1-4" class="outline-5">
+<h5 id="sec-1-1-1-4"><span class="done DONE">DONE</span> Why Clojure isn't especially object oriented</h5>
+<div class="outline-text-5" id="text-1-1-1-4">
+</div>
+</div>
+<div id="outline-container-sec-1-1-1-5" class="outline-5">
+<h5 id="sec-1-1-1-5"><span class="done DONE">DONE</span> Summary</h5>
+<div class="outline-text-5" id="text-1-1-1-5">
+</div>
+</div>
 </div>
 <div id="outline-container-sec-1-1-2" class="outline-4">
 <h4 id="sec-1-1-2"><span class="done DONE">DONE</span> Drinking from the Clojure firehose</h4>
@@ -238,53 +143,81 @@ for the JavaScript code in this tag.
 <h4 id="sec-1-2-1"><span class="done DONE">DONE</span> On scalars <code>[100%]</code></h4>
 <div class="outline-text-4" id="text-1-2-1">
 </div>
-<ul class="org-ul"><li><a id="sec-1-2-1-1" name="sec-1-2-1-1"></a><span class="done DONE">DONE</span> 4.1 Understanding precision<br  /><div class="outline-text-5" id="text-1-2-1-1">
+<div id="outline-container-sec-1-2-1-1" class="outline-5">
+<h5 id="sec-1-2-1-1"><span class="done DONE">DONE</span> 4.1 Understanding precision</h5>
+<div class="outline-text-5" id="text-1-2-1-1">
 </div>
-</li>
-<li><a id="sec-1-2-1-2" name="sec-1-2-1-2"></a><span class="done DONE">DONE</span> 4.2 Trying to be rational<br  /><div class="outline-text-5" id="text-1-2-1-2">
 </div>
-</li>
-<li><a id="sec-1-2-1-3" name="sec-1-2-1-3"></a><span class="done DONE">DONE</span> 4.3 When to use keywords<br  /><div class="outline-text-5" id="text-1-2-1-3">
+<div id="outline-container-sec-1-2-1-2" class="outline-5">
+<h5 id="sec-1-2-1-2"><span class="done DONE">DONE</span> 4.2 Trying to be rational</h5>
+<div class="outline-text-5" id="text-1-2-1-2">
 </div>
-</li>
-<li><a id="sec-1-2-1-4" name="sec-1-2-1-4"></a><span class="done DONE">DONE</span> 4.4 Symbolic resolutions<br  /><div class="outline-text-5" id="text-1-2-1-4">
 </div>
-</li>
-<li><a id="sec-1-2-1-5" name="sec-1-2-1-5"></a><span class="done DONE">DONE</span> 4.5 Regular expressions-The second problem<br  /><div class="outline-text-5" id="text-1-2-1-5">
+<div id="outline-container-sec-1-2-1-3" class="outline-5">
+<h5 id="sec-1-2-1-3"><span class="done DONE">DONE</span> 4.3 When to use keywords</h5>
+<div class="outline-text-5" id="text-1-2-1-3">
 </div>
-</li>
-<li><a id="sec-1-2-1-6" name="sec-1-2-1-6"></a><span class="done DONE">DONE</span> 4.6 Summary<br  /><div class="outline-text-5" id="text-1-2-1-6">
 </div>
-</li></ul>
+<div id="outline-container-sec-1-2-1-4" class="outline-5">
+<h5 id="sec-1-2-1-4"><span class="done DONE">DONE</span> 4.4 Symbolic resolutions</h5>
+<div class="outline-text-5" id="text-1-2-1-4">
+</div>
+</div>
+<div id="outline-container-sec-1-2-1-5" class="outline-5">
+<h5 id="sec-1-2-1-5"><span class="done DONE">DONE</span> 4.5 Regular expressions-The second problem</h5>
+<div class="outline-text-5" id="text-1-2-1-5">
+</div>
+</div>
+<div id="outline-container-sec-1-2-1-6" class="outline-5">
+<h5 id="sec-1-2-1-6"><span class="done DONE">DONE</span> 4.6 Summary</h5>
+<div class="outline-text-5" id="text-1-2-1-6">
+</div>
+</div>
 </div>
 <div id="outline-container-sec-1-2-2" class="outline-4">
 <h4 id="sec-1-2-2"><span class="done DONE">DONE</span> Composite data types <code>[100%]</code></h4>
 <div class="outline-text-4" id="text-1-2-2">
 </div>
-<ul class="org-ul"><li><a id="sec-1-2-2-1" name="sec-1-2-2-1"></a><span class="done DONE">DONE</span> 5.1 Persistence, sequence and complexity<br  /><div class="outline-text-5" id="text-1-2-2-1">
+<div id="outline-container-sec-1-2-2-1" class="outline-5">
+<h5 id="sec-1-2-2-1"><span class="done DONE">DONE</span> 5.1 Persistence, sequence and complexity</h5>
+<div class="outline-text-5" id="text-1-2-2-1">
 </div>
-</li>
-<li><a id="sec-1-2-2-2" name="sec-1-2-2-2"></a><span class="done DONE">DONE</span> 5.2 Vectors: creating and using them in all their varieties<br  /><div class="outline-text-5" id="text-1-2-2-2">
 </div>
-</li>
-<li><a id="sec-1-2-2-3" name="sec-1-2-2-3"></a><span class="done DONE">DONE</span> 5.3 Lists: Clojure's code form data structure<br  /><div class="outline-text-5" id="text-1-2-2-3">
+<div id="outline-container-sec-1-2-2-2" class="outline-5">
+<h5 id="sec-1-2-2-2"><span class="done DONE">DONE</span> 5.2 Vectors: creating and using them in all their varieties</h5>
+<div class="outline-text-5" id="text-1-2-2-2">
 </div>
-</li>
-<li><a id="sec-1-2-2-4" name="sec-1-2-2-4"></a><span class="done DONE">DONE</span> 5.4 How to use persistant queues<br  /><div class="outline-text-5" id="text-1-2-2-4">
 </div>
-</li>
-<li><a id="sec-1-2-2-5" name="sec-1-2-2-5"></a><span class="done DONE">DONE</span> 5.5 Persistant sets<br  /><div class="outline-text-5" id="text-1-2-2-5">
+<div id="outline-container-sec-1-2-2-3" class="outline-5">
+<h5 id="sec-1-2-2-3"><span class="done DONE">DONE</span> 5.3 Lists: Clojure's code form data structure</h5>
+<div class="outline-text-5" id="text-1-2-2-3">
 </div>
-</li>
-<li><a id="sec-1-2-2-6" name="sec-1-2-2-6"></a><span class="done DONE">DONE</span> 5.6 Thinking in maps<br  /><div class="outline-text-5" id="text-1-2-2-6">
 </div>
-</li>
-<li><a id="sec-1-2-2-7" name="sec-1-2-2-7"></a><span class="done DONE">DONE</span> 5.7 Putting it all together: finding the position of items in a sequence<br  /><div class="outline-text-5" id="text-1-2-2-7">
+<div id="outline-container-sec-1-2-2-4" class="outline-5">
+<h5 id="sec-1-2-2-4"><span class="done DONE">DONE</span> 5.4 How to use persistant queues</h5>
+<div class="outline-text-5" id="text-1-2-2-4">
 </div>
-</li>
-<li><a id="sec-1-2-2-8" name="sec-1-2-2-8"></a><span class="done DONE">DONE</span> 5.8 Summary<br  /><div class="outline-text-5" id="text-1-2-2-8">
 </div>
-</li></ul>
+<div id="outline-container-sec-1-2-2-5" class="outline-5">
+<h5 id="sec-1-2-2-5"><span class="done DONE">DONE</span> 5.5 Persistant sets</h5>
+<div class="outline-text-5" id="text-1-2-2-5">
+</div>
+</div>
+<div id="outline-container-sec-1-2-2-6" class="outline-5">
+<h5 id="sec-1-2-2-6"><span class="done DONE">DONE</span> 5.6 Thinking in maps</h5>
+<div class="outline-text-5" id="text-1-2-2-6">
+</div>
+</div>
+<div id="outline-container-sec-1-2-2-7" class="outline-5">
+<h5 id="sec-1-2-2-7"><span class="done DONE">DONE</span> 5.7 Putting it all together: finding the position of items in a sequence</h5>
+<div class="outline-text-5" id="text-1-2-2-7">
+</div>
+</div>
+<div id="outline-container-sec-1-2-2-8" class="outline-5">
+<h5 id="sec-1-2-2-8"><span class="done DONE">DONE</span> 5.8 Summary</h5>
+<div class="outline-text-5" id="text-1-2-2-8">
+</div>
+</div>
 </div>
 </div>
 <div id="outline-container-sec-1-3" class="outline-3">
@@ -324,21 +257,31 @@ for the JavaScript code in this tag.
 <h4 id="sec-1-3-7"><span class="done DONE">DONE</span> Functions in all their forms <code>[100%]</code></h4>
 <div class="outline-text-4" id="text-1-3-7">
 </div>
-<ul class="org-ul"><li><a id="sec-1-3-7-1" name="sec-1-3-7-1"></a><span class="done DONE">DONE</span> 7.1.1 First-class functions<br  /><div class="outline-text-5" id="text-1-3-7-1">
+<div id="outline-container-sec-1-3-7-1" class="outline-5">
+<h5 id="sec-1-3-7-1"><span class="done DONE">DONE</span> 7.1.1 First-class functions</h5>
+<div class="outline-text-5" id="text-1-3-7-1">
 </div>
-</li>
-<li><a id="sec-1-3-7-2" name="sec-1-3-7-2"></a><span class="done DONE">DONE</span> 7.1.2 Higher-order functions<br  /><div class="outline-text-5" id="text-1-3-7-2">
 </div>
-</li>
-<li><a id="sec-1-3-7-3" name="sec-1-3-7-3"></a><span class="done DONE">DONE</span> 7.1.3 Pure functions<br  /><div class="outline-text-5" id="text-1-3-7-3">
+<div id="outline-container-sec-1-3-7-2" class="outline-5">
+<h5 id="sec-1-3-7-2"><span class="done DONE">DONE</span> 7.1.2 Higher-order functions</h5>
+<div class="outline-text-5" id="text-1-3-7-2">
 </div>
-</li>
-<li><a id="sec-1-3-7-4" name="sec-1-3-7-4"></a><span class="done DONE">DONE</span> 7.1.4 Named arguments<br  /><div class="outline-text-5" id="text-1-3-7-4">
 </div>
-</li>
-<li><a id="sec-1-3-7-5" name="sec-1-3-7-5"></a><span class="done DONE">DONE</span> 7.1.5 Constraining functions with pre- and postconditions<br  /><div class="outline-text-5" id="text-1-3-7-5">
+<div id="outline-container-sec-1-3-7-3" class="outline-5">
+<h5 id="sec-1-3-7-3"><span class="done DONE">DONE</span> 7.1.3 Pure functions</h5>
+<div class="outline-text-5" id="text-1-3-7-3">
 </div>
-</li></ul>
+</div>
+<div id="outline-container-sec-1-3-7-4" class="outline-5">
+<h5 id="sec-1-3-7-4"><span class="done DONE">DONE</span> 7.1.4 Named arguments</h5>
+<div class="outline-text-5" id="text-1-3-7-4">
+</div>
+</div>
+<div id="outline-container-sec-1-3-7-5" class="outline-5">
+<h5 id="sec-1-3-7-5"><span class="done DONE">DONE</span> 7.1.5 Constraining functions with pre- and postconditions</h5>
+<div class="outline-text-5" id="text-1-3-7-5">
+</div>
+</div>
 </div>
 <div id="outline-container-sec-1-3-8" class="outline-4">
 <h4 id="sec-1-3-8"><span class="todo TODO">TODO</span> Closures</h4>
@@ -377,12 +320,3 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-</div>
-<div id="postamble" class="status">
-<p class="author">Author: Antoine Romain Dumont</p>
-<p class="date">Created: 2014-12-02 Tue 18:42</p>
-<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
-</div>
-</body>
-</html>

@@ -1,146 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-<head>
-<title>Literate org-trello</title>
-<!-- 2014-12-02 Tue 18:41 -->
-<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta  name="generator" content="Org-mode" />
-<meta  name="author" content="Antoine R. Dumont" />
-<meta  name="description" content="literate org-trello tryout"
- />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
-  .title  { text-align: center; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { color: green; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
-    padding: 3px;
-    border: 1px solid black;
-  }
-  pre.src:hover:before { display: inline;}
-  pre.src-sh:before    { content: 'sh'; }
-  pre.src-bash:before  { content: 'sh'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-R:before     { content: 'R'; }
-  pre.src-perl:before  { content: 'Perl'; }
-  pre.src-java:before  { content: 'Java'; }
-  pre.src-sql:before   { content: 'SQL'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.right  { text-align: center;  }
-  th.left   { text-align: center;   }
-  th.center { text-align: center; }
-  td.right  { text-align: right;  }
-  td.left   { text-align: left;   }
-  td.center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara:nth-child(2) { display: inline; }
-  .footpara { display: block; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  /*]]>*/-->
-</style>
-<link rel="stylesheet" href="./other/style.css" type="text/css"/>
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
-</head>
-<body>
-<div id="content">
-<h1 class="title">Literate org-trello</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -160,11 +17,21 @@ for the JavaScript code in this tag.
 <li><a href="#sec-5-2">Namespace</a></li>
 <li><a href="#sec-5-3">org-trello</a>
 <ul>
-<li><a href="#sec-5-3-1">Minor mode</a></li>
+<li><a href="#sec-5-3-1">Minor mode</a>
+<ul>
+<li><a href="#sec-5-3-1-1">Description</a></li>
+<li><a href="#sec-5-3-1-2">Override</a></li>
+</ul>
+</li>
 <li><a href="#sec-5-3-2">Help</a></li>
 <li><a href="#sec-5-3-3">Install the consumer-key and the read/write access token</a></li>
 <li><a href="#sec-5-3-4">Decorator/Controller</a></li>
-<li><a href="#sec-5-3-5">Setup trello</a></li>
+<li><a href="#sec-5-3-5">Setup trello</a>
+<ul>
+<li><a href="#sec-5-3-5-1">Install the board</a></li>
+<li><a href="#sec-5-3-5-2">Create a board</a></li>
+</ul>
+</li>
 <li><a href="#sec-5-3-6">Check the installation</a></li>
 <li><a href="#sec-5-3-7">Sync a simple entity</a></li>
 <li><a href="#sec-5-3-8">Sync a complex entity</a></li>
@@ -177,16 +44,93 @@ for the JavaScript code in this tag.
 <li><a href="#sec-5-4">orgtrello</a>
 <ul>
 <li><a href="#sec-5-4-1">Namespace setup</a></li>
-<li><a href="#sec-5-4-2">Control/setup routines</a></li>
-<li><a href="#sec-5-4-3">Abstraction access routines</a></li>
-<li><a href="#sec-5-4-4">Create simple entity</a></li>
-<li><a href="#sec-5-4-5">Create complex entity</a></li>
+<li><a href="#sec-5-4-2">Control/setup routines</a>
+<ul>
+<li><a href="#sec-5-4-2-1">orgtrello/&#x2013;setup-properties</a></li>
+<li><a href="#sec-5-4-2-2">orgtrello/filtered-kwds</a></li>
+<li><a href="#sec-5-4-2-3">orgtrello/&#x2013;control-encoding</a></li>
+<li><a href="#sec-5-4-2-4">orgtrello/&#x2013;control-properties</a></li>
+<li><a href="#sec-5-4-2-5">orgtrello/&#x2013;control-keys</a></li>
+</ul>
+</li>
+<li><a href="#sec-5-4-3">Abstraction access routines</a>
+<ul>
+<li><a href="#sec-5-4-3-1">orgtrello/&#x2013;keyword</a></li>
+<li><a href="#sec-5-4-3-2">orgtrello/&#x2013;label</a></li>
+<li><a href="#sec-5-4-3-3">orgtrello/&#x2013;id</a></li>
+<li><a href="#sec-5-4-3-4">orgtrello/&#x2013;level</a></li>
+<li><a href="#sec-5-4-3-5">orgtrello/&#x2013;due</a></li>
+</ul>
+</li>
+<li><a href="#sec-5-4-4">Create simple entity</a>
+<ul>
+<li><a href="#sec-5-4-4-1">orgtrello/do-create-simple-entity</a></li>
+<li><a href="#sec-5-4-4-2">creation/update routine</a></li>
+<li><a href="#sec-5-4-4-3">orgtrello/&#x2013;too-deep-level</a></li>
+<li><a href="#sec-5-4-4-4">orgtrello/&#x2013;dispatch-map-creation</a></li>
+<li><a href="#sec-5-4-4-5">orgtrello/&#x2013;set-marker</a></li>
+<li><a href="#sec-5-4-4-6">orgtrello/&#x2013;dispatch-create</a></li>
+</ul>
+</li>
+<li><a href="#sec-5-4-5">Create complex entity</a>
+<ul>
+<li><a href="#sec-5-4-5-1">orgtrello/&#x2013;board-name</a></li>
+<li><a href="#sec-5-4-5-2">orgtrello/do-create-complex-entity</a></li>
+</ul>
+</li>
 <li><a href="#sec-5-4-6">Synchronize full org buffer to trello</a></li>
-<li><a href="#sec-5-4-7">Synchronize full org buffer from trello</a></li>
-<li><a href="#sec-5-4-8">Delete entity</a></li>
-<li><a href="#sec-5-4-9">Install key and token configuration</a></li>
-<li><a href="#sec-5-4-10">Install board and lists configuration</a></li>
-<li><a href="#sec-5-4-11">Create board</a></li>
+<li><a href="#sec-5-4-7">Synchronize full org buffer from trello</a>
+<ul>
+<li><a href="#sec-5-4-7-1">orgtrello/do-sync-full-from-trello</a></li>
+<li><a href="#sec-5-4-7-2">orgtrello/&#x2013;sync-buffer-with-trello-data</a></li>
+<li><a href="#sec-5-4-7-3">orgtrello/&#x2013;update-buffer-with-remaining-trello-data</a></li>
+<li><a href="#sec-5-4-7-4">orgtrello/&#x2013;compute-card-status</a></li>
+<li><a href="#sec-5-4-7-5">orgtrello/&#x2013;compute-card-to-org-entry</a></li>
+<li><a href="#sec-5-4-7-6">orgtrello/&#x2013;compute-checklist-to-org-entry</a></li>
+<li><a href="#sec-5-4-7-7">orgtrello/&#x2013;compute-item-to-org-entry</a></li>
+<li><a href="#sec-5-4-7-8">orgtrello/&#x2013;compute-entity-to-org-entry</a></li>
+<li><a href="#sec-5-4-7-9">orgtrello/&#x2013;do-retrieve-checklists-from-card</a></li>
+<li><a href="#sec-5-4-7-10">orgtrello/&#x2013;do-retrieve-checklists-and-items</a></li>
+<li><a href="#sec-5-4-7-11">orgtrello/&#x2013;compute-full-entities-from-trello</a></li>
+</ul>
+</li>
+<li><a href="#sec-5-4-8">Delete entity</a>
+<ul>
+<li><a href="#sec-5-4-8-1">orgtrello/do-delete-simple</a></li>
+<li><a href="#sec-5-4-8-2">orgtrello/&#x2013;dispatch-map-delete</a></li>
+<li><a href="#sec-5-4-8-3">orgtrello/&#x2013;dispatch-delete</a></li>
+<li><a href="#sec-5-4-8-4">orgtrello/&#x2013;card-delete</a></li>
+<li><a href="#sec-5-4-8-5">orgtrello/&#x2013;checklist-delete</a></li>
+<li><a href="#sec-5-4-8-6">orgtrello/&#x2013;task-delete</a></li>
+</ul>
+</li>
+<li><a href="#sec-5-4-9">Install key and token configuration</a>
+<ul>
+<li><a href="#sec-5-4-9-1">orgtrello/do-install-key-and-token</a></li>
+<li><a href="#sec-5-4-9-2">orgtrello/&#x2013;do-install-config-file</a></li>
+</ul>
+</li>
+<li><a href="#sec-5-4-10">Install board and lists configuration</a>
+<ul>
+<li><a href="#sec-5-4-10-1">orgtrello/do-install-board-and-lists</a></li>
+<li><a href="#sec-5-4-10-2">orgtrello/&#x2013;choose-board</a></li>
+<li><a href="#sec-5-4-10-3">orgtrello/&#x2013;remove-properties-file</a></li>
+<li><a href="#sec-5-4-10-4">orgtrello/update-orgmode-file-with-properties</a></li>
+<li><a href="#sec-5-4-10-5">orgtrello/&#x2013;id-name</a></li>
+<li><a href="#sec-5-4-10-6">orgtrello/&#x2013;name-id</a></li>
+<li><a href="#sec-5-4-10-7">orgtrello/&#x2013;list-boards</a></li>
+<li><a href="#sec-5-4-10-8">orgtrello/&#x2013;list-board-lists</a></li>
+<li><a href="#sec-5-4-10-9">orgtrello/convention-property-name</a></li>
+</ul>
+</li>
+<li><a href="#sec-5-4-11">Create board</a>
+<ul>
+<li><a href="#sec-5-4-11-1">orgtrello/do-create-board-and-lists</a></li>
+<li><a href="#sec-5-4-11-2">orgtrello/&#x2013;create-board</a></li>
+<li><a href="#sec-5-4-11-3">orgtrello/&#x2013;close-lists</a></li>
+<li><a href="#sec-5-4-11-4">orgtrello/&#x2013;create-lists-according-to-keywords</a></li>
+</ul>
+</li>
 <li><a href="#sec-5-4-12">Utility function</a></li>
 </ul>
 </li>
@@ -198,10 +142,43 @@ for the JavaScript code in this tag.
 <li><a href="#sec-5-5-4">orgtrello-query/&#x2013;map-dispatch-http-verb</a></li>
 <li><a href="#sec-5-5-5">orgtrello-query/&#x2013;compute-method</a></li>
 <li><a href="#sec-5-5-6">orgtrello-query/&#x2013;compute-url</a></li>
-<li><a href="#sec-5-5-7">Input request abstraction extract functions</a></li>
-<li><a href="#sec-5-5-8">Output request abstraction extract function</a></li>
-<li><a href="#sec-5-5-9">HTTP request functions</a></li>
-<li><a href="#sec-5-5-10">HTTP callbacks</a></li>
+<li><a href="#sec-5-5-7">Input request abstraction extract functions</a>
+<ul>
+<li><a href="#sec-5-5-7-1">orgtrello-query/&#x2013;method</a></li>
+<li><a href="#sec-5-5-7-2">orgtrello-query/&#x2013;uri</a></li>
+<li><a href="#sec-5-5-7-3">orgtrello-query/&#x2013;sync</a></li>
+<li><a href="#sec-5-5-7-4">orgtrello-query/&#x2013;params</a></li>
+</ul>
+</li>
+<li><a href="#sec-5-5-8">Output request abstraction extract function</a>
+<ul>
+<li><a href="#sec-5-5-8-1">orgtrello-query/&#x2013;id</a></li>
+<li><a href="#sec-5-5-8-2">orgtrello-query/&#x2013;name</a></li>
+<li><a href="#sec-5-5-8-3">orgtrello-query/&#x2013;list-id</a></li>
+<li><a href="#sec-5-5-8-4">orgtrello-query/&#x2013;checklist-ids</a></li>
+<li><a href="#sec-5-5-8-5">orgtrello-query/&#x2013;check-items</a></li>
+<li><a href="#sec-5-5-8-6">orgtrello-query/&#x2013;card-id</a></li>
+<li><a href="#sec-5-5-8-7">orgtrello-query/&#x2013;due</a></li>
+<li><a href="#sec-5-5-8-8">orgtrello-query/&#x2013;state</a></li>
+<li><a href="#sec-5-5-8-9">orgtrello-query/&#x2013;close-property</a></li>
+</ul>
+</li>
+<li><a href="#sec-5-5-9">HTTP request functions</a>
+<ul>
+<li><a href="#sec-5-5-9-1">orgtrello-query/&#x2013;get</a></li>
+<li><a href="#sec-5-5-9-2">orgtrello-query/&#x2013;post-or-put</a></li>
+<li><a href="#sec-5-5-9-3">orgtrello-query/&#x2013;delete</a></li>
+</ul>
+</li>
+<li><a href="#sec-5-5-10">HTTP callbacks</a>
+<ul>
+<li><a href="#sec-5-5-10-1">standard-error-callback</a></li>
+<li><a href="#sec-5-5-10-2">standard-success-callback</a></li>
+<li><a href="#sec-5-5-10-3">simple-error-callback</a></li>
+<li><a href="#sec-5-5-10-4">orgtrello-query/&#x2013;delete-success-callback</a></li>
+<li><a href="#sec-5-5-10-5">orgtrello-query/&#x2013;post-put-success-callback-update-id</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#sec-5-6">orgtrello-api</a>
@@ -593,7 +570,9 @@ As we said in the <i>description</i> step, <a href="http://ardumont.github.io/or
 </p>
 </div>
 
-<ul class="org-ul"><li><a id="sec-5-3-1-1" name="sec-5-3-1-1"></a>Description<br  /><div class="outline-text-5" id="text-5-3-1-1">
+<div id="outline-container-sec-5-3-1-1" class="outline-5">
+<h5 id="sec-5-3-1-1">Description</h5>
+<div class="outline-text-5" id="text-5-3-1-1">
 <p>
 Simply put, we offer a simple interface to the user through a map.
 We declare the minor mode to have 'ot' as the emacs modeline name.
@@ -627,9 +606,11 @@ And we propose default bindings for the user to access the org-trello routine.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-3-1-2" name="sec-5-3-1-2"></a>Override<br  /><div class="outline-text-5" id="text-5-3-1-2">
+<div id="outline-container-sec-5-3-1-2" class="outline-5">
+<h5 id="sec-5-3-1-2">Override</h5>
+<div class="outline-text-5" id="text-5-3-1-2">
 <p>
 If the user is not satisfied with the default bindings, he/she can always override in his/her own setup files.
 I kept the default one but the idea is to replace those bindings by the one you want.
@@ -650,7 +631,7 @@ I kept the default one but the idea is to replace those bindings by the one you 
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 <div id="outline-container-sec-5-3-2" class="outline-4">
 <h4 id="sec-5-3-2">Help</h4>
@@ -797,7 +778,9 @@ In either case, this will do some action and update the org-mode buffer with som
 </ul>
 </div>
 
-<ul class="org-ul"><li><a id="sec-5-3-5-1" name="sec-5-3-5-1"></a>Install the board<br  /><div class="outline-text-5" id="text-5-3-5-1">
+<div id="outline-container-sec-5-3-5-1" class="outline-5">
+<h5 id="sec-5-3-5-1">Install the board</h5>
+<div class="outline-text-5" id="text-5-3-5-1">
 <p>
 To install a trello board, we need:
 </p>
@@ -827,9 +810,11 @@ To install a trello board, we need:
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-3-5-2" name="sec-5-3-5-2"></a>Create a board<br  /><div class="outline-text-5" id="text-5-3-5-2">
+<div id="outline-container-sec-5-3-5-2" class="outline-5">
+<h5 id="sec-5-3-5-2">Create a board</h5>
+<div class="outline-text-5" id="text-5-3-5-2">
 <p>
 To create a trello board from scratch, we need:
 </p>
@@ -859,7 +844,7 @@ To create a trello board from scratch, we need:
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 
 <div id="outline-container-sec-5-3-6" class="outline-4">
@@ -1116,7 +1101,9 @@ Some control/setup important routines because they will permit or not to launch 
 </p>
 </div>
 
-<ul class="org-ul"><li><a id="sec-5-4-2-1" name="sec-5-4-2-1"></a>orgtrello/&#x2013;setup-properties<br  /><div class="outline-text-5" id="text-5-4-2-1">
+<div id="outline-container-sec-5-4-2-1" class="outline-5">
+<h5 id="sec-5-4-2-1">orgtrello/&#x2013;setup-properties</h5>
+<div class="outline-text-5" id="text-5-4-2-1">
 <p>
 This is an important routine in charge of loading the keywords the user want to use.
 Note that this routine reverse the list of org keywords.
@@ -1141,9 +1128,11 @@ This is a trick to help create the list in trello in the right order (assuming t
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-2-2" name="sec-5-4-2-2"></a>orgtrello/filtered-kwds<br  /><div class="outline-text-5" id="text-5-4-2-2">
+<div id="outline-container-sec-5-4-2-2" class="outline-5">
+<h5 id="sec-5-4-2-2">orgtrello/filtered-kwds</h5>
+<div class="outline-text-5" id="text-5-4-2-2">
 <p>
 This is a function in charge of retrieving the specific keywords the user wants to use with trello.
 This will map later as the list in trello and as keyword in emacs's org-mode buffer.
@@ -1157,10 +1146,12 @@ This will map later as the list in trello and as keyword in emacs's org-mode buf
 </pre>
 </div>
 </div>
-</li>
+</div>
 
 
-<li><a id="sec-5-4-2-3" name="sec-5-4-2-3"></a>orgtrello/&#x2013;control-encoding<br  /><div class="outline-text-5" id="text-5-4-2-3">
+<div id="outline-container-sec-5-4-2-3" class="outline-5">
+<h5 id="sec-5-4-2-3">orgtrello/&#x2013;control-encoding</h5>
+<div class="outline-text-5" id="text-5-4-2-3">
 <p>
 A simple message to make the user aware he needs to use utf-8 encoding.
 </p>
@@ -1175,9 +1166,11 @@ A simple message to make the user aware he needs to use utf-8 encoding.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-2-4" name="sec-5-4-2-4"></a>orgtrello/&#x2013;control-properties<br  /><div class="outline-text-5" id="text-5-4-2-4">
+<div id="outline-container-sec-5-4-2-4" class="outline-5">
+<h5 id="sec-5-4-2-4">orgtrello/&#x2013;control-properties</h5>
+<div class="outline-text-5" id="text-5-4-2-4">
 <p>
 An important higher routine to ensure that the setup regarding the trello board is rightly setuped on the org buffer.
 We simply ensure that we have the right amount of properties regarding the org keywords.
@@ -1196,9 +1189,11 @@ If all is ok, we return the :ok value, otherwise, we return an error message ind
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-2-5" name="sec-5-4-2-5"></a>orgtrello/&#x2013;control-keys<br  /><div class="outline-text-5" id="text-5-4-2-5">
+<div id="outline-container-sec-5-4-2-5" class="outline-5">
+<h5 id="sec-5-4-2-5">orgtrello/&#x2013;control-keys</h5>
+<div class="outline-text-5" id="text-5-4-2-5">
 <p>
 Another important check routine to ensure that the user has rightfully setuped his/her consumer-key and read/write access-token.
 If everything is ok, we return :ok.
@@ -1223,7 +1218,7 @@ Otherwise, we return an error message indicating what the user must do.
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 
 <div id="outline-container-sec-5-4-3" class="outline-4">
@@ -1234,7 +1229,9 @@ Those are simple routines to abstract away the representation of the org data we
 </p>
 </div>
 
-<ul class="org-ul"><li><a id="sec-5-4-3-1" name="sec-5-4-3-1"></a>orgtrello/&#x2013;keyword<br  /><div class="outline-text-5" id="text-5-4-3-1">
+<div id="outline-container-sec-5-4-3-1" class="outline-5">
+<h5 id="sec-5-4-3-1">orgtrello/&#x2013;keyword</h5>
+<div class="outline-text-5" id="text-5-4-3-1">
 <p>
 Extract the status/keyword from the current entity (e.g TODO, DONE, etc&#x2026;).
 </p>
@@ -1247,9 +1244,11 @@ Extract the status/keyword from the current entity (e.g TODO, DONE, etc&#x2026;)
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-3-2" name="sec-5-4-3-2"></a>orgtrello/&#x2013;label<br  /><div class="outline-text-5" id="text-5-4-3-2">
+<div id="outline-container-sec-5-4-3-2" class="outline-5">
+<h5 id="sec-5-4-3-2">orgtrello/&#x2013;label</h5>
+<div class="outline-text-5" id="text-5-4-3-2">
 <p>
 To extract the label from the entity.
 This is what's map to the name of the entity on trello.
@@ -1263,9 +1262,11 @@ This is what's map to the name of the entity on trello.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-3-3" name="sec-5-4-3-3"></a>orgtrello/&#x2013;id<br  /><div class="outline-text-5" id="text-5-4-3-3">
+<div id="outline-container-sec-5-4-3-3" class="outline-5">
+<h5 id="sec-5-4-3-3">orgtrello/&#x2013;id</h5>
+<div class="outline-text-5" id="text-5-4-3-3">
 <p>
 The identifier of the entity once it has been synchronized on trello.
 </p>
@@ -1278,9 +1279,11 @@ The identifier of the entity once it has been synchronized on trello.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-3-4" name="sec-5-4-3-4"></a>orgtrello/&#x2013;level<br  /><div class="outline-text-5" id="text-5-4-3-4">
+<div id="outline-container-sec-5-4-3-4" class="outline-5">
+<h5 id="sec-5-4-3-4">orgtrello/&#x2013;level</h5>
+<div class="outline-text-5" id="text-5-4-3-4">
 <p>
 The current level (mapped to the number of stars).
 </p>
@@ -1293,9 +1296,11 @@ The current level (mapped to the number of stars).
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-3-5" name="sec-5-4-3-5"></a>orgtrello/&#x2013;due<br  /><div class="outline-text-5" id="text-5-4-3-5">
+<div id="outline-container-sec-5-4-3-5" class="outline-5">
+<h5 id="sec-5-4-3-5">orgtrello/&#x2013;due</h5>
+<div class="outline-text-5" id="text-5-4-3-5">
 <p>
 The deadline (org notion) mapped to due date (on trello).
 </p>
@@ -1308,13 +1313,15 @@ The deadline (org notion) mapped to due date (on trello).
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 
 <div id="outline-container-sec-5-4-4" class="outline-4">
 <h4 id="sec-5-4-4">Create simple entity</h4>
 <div class="outline-text-4" id="text-5-4-4">
-</div><ul class="org-ul"><li><a id="sec-5-4-4-1" name="sec-5-4-4-1"></a>orgtrello/do-create-simple-entity<br  /><div class="outline-text-5" id="text-5-4-4-1">
+</div><div id="outline-container-sec-5-4-4-1" class="outline-5">
+<h5 id="sec-5-4-4-1">orgtrello/do-create-simple-entity</h5>
+<div class="outline-text-5" id="text-5-4-4-1">
 <p>
 The orchestration to trigger the simple synchronization of an entity (without any arborescence):
 </p>
@@ -1359,9 +1366,11 @@ The orchestration to trigger the simple synchronization of an entity (without an
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-4-2" name="sec-5-4-4-2"></a>creation/update routine<br  /><div class="outline-text-5" id="text-5-4-4-2">
+<div id="outline-container-sec-5-4-4-2" class="outline-5">
+<h5 id="sec-5-4-4-2">creation/update routine</h5>
+<div class="outline-text-5" id="text-5-4-4-2">
 <p>
 Those functions does not actually do any request, they compute the map representing the request.
 </p>
@@ -1854,9 +1863,11 @@ Given a state, compute its org equivalent:
 </div>
 </li></ul>
 </li></ul>
-</li>
+</div>
 
-<li><a id="sec-5-4-4-3" name="sec-5-4-4-3"></a>orgtrello/&#x2013;too-deep-level<br  /><div class="outline-text-5" id="text-5-4-4-3">
+<div id="outline-container-sec-5-4-4-3" class="outline-5">
+<h5 id="sec-5-4-4-3">orgtrello/&#x2013;too-deep-level</h5>
+<div class="outline-text-5" id="text-5-4-4-3">
 <p>
 A function which simply displays that the arborescence depth is too deep.
 We only deal with 3 levels (1 -&gt; card, 2 -&gt; checklist, 3 -&gt; item/task).
@@ -1870,9 +1881,11 @@ We only deal with 3 levels (1 -&gt; card, 2 -&gt; checklist, 3 -&gt; item/task).
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-4-4" name="sec-5-4-4-4"></a>orgtrello/&#x2013;dispatch-map-creation<br  /><div class="outline-text-5" id="text-5-4-4-4">
+<div id="outline-container-sec-5-4-4-4" class="outline-5">
+<h5 id="sec-5-4-4-4">orgtrello/&#x2013;dispatch-map-creation</h5>
+<div class="outline-text-5" id="text-5-4-4-4">
 <p>
 An initialization of the dispatch creation/update function depending on the level (1, 2, 3).
 We use this function to initialize once the <b>MAP-DISPATCH-CREATE-UPDATE</b> which will be use to dispatch on the level of the entity to sync.
@@ -1892,9 +1905,11 @@ We use this function to initialize once the <b>MAP-DISPATCH-CREATE-UPDATE</b> wh
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-4-5" name="sec-5-4-4-5"></a>orgtrello/&#x2013;set-marker<br  /><div class="outline-text-5" id="text-5-4-4-5">
+<div id="outline-container-sec-5-4-4-5" class="outline-5">
+<h5 id="sec-5-4-4-5">orgtrello/&#x2013;set-marker</h5>
+<div class="outline-text-5" id="text-5-4-4-5">
 <p>
 A simple routine to install an orgtrello-marker before launching any synchronization.
 </p>
@@ -1907,9 +1922,11 @@ A simple routine to install an orgtrello-marker before launching any synchroniza
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-4-6" name="sec-5-4-4-6"></a>orgtrello/&#x2013;dispatch-create<br  /><div class="outline-text-5" id="text-5-4-4-6">
+<div id="outline-container-sec-5-4-4-6" class="outline-5">
+<h5 id="sec-5-4-4-6">orgtrello/&#x2013;dispatch-create</h5>
+<div class="outline-text-5" id="text-5-4-4-6">
 <p>
 The function which will extract the current level of the entity and call the function to generate the create/update request for the current entity.
 </p>
@@ -1924,13 +1941,15 @@ The function which will extract the current level of the entity and call the fun
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 
 <div id="outline-container-sec-5-4-5" class="outline-4">
 <h4 id="sec-5-4-5">Create complex entity</h4>
 <div class="outline-text-4" id="text-5-4-5">
-</div><ul class="org-ul"><li><a id="sec-5-4-5-1" name="sec-5-4-5-1"></a>orgtrello/&#x2013;board-name<br  /><div class="outline-text-5" id="text-5-4-5-1">
+</div><div id="outline-container-sec-5-4-5-1" class="outline-5">
+<h5 id="sec-5-4-5-1">orgtrello/&#x2013;board-name</h5>
+<div class="outline-text-5" id="text-5-4-5-1">
 <p>
 Extract the board name from the org buffer's metadata.
 </p>
@@ -1943,9 +1962,11 @@ Extract the board name from the org buffer's metadata.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-5-2" name="sec-5-4-5-2"></a>orgtrello/do-create-complex-entity<br  /><div class="outline-text-5" id="text-5-4-5-2">
+<div id="outline-container-sec-5-4-5-2" class="outline-5">
+<h5 id="sec-5-4-5-2">orgtrello/do-create-complex-entity</h5>
+<div class="outline-text-5" id="text-5-4-5-2">
 <p>
 The main function in charge of synchronizing the entity (with its arborescence):
 </p>
@@ -1971,7 +1992,7 @@ The main function in charge of synchronizing the entity (with its arborescence):
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 
 <div id="outline-container-sec-5-4-6" class="outline-4">
@@ -2007,7 +2028,9 @@ Each data remaining not already present on the buffer are then dumped in the cur
 </p>
 </div>
 
-<ul class="org-ul"><li><a id="sec-5-4-7-1" name="sec-5-4-7-1"></a>orgtrello/do-sync-full-from-trello<br  /><div class="outline-text-5" id="text-5-4-7-1">
+<div id="outline-container-sec-5-4-7-1" class="outline-5">
+<h5 id="sec-5-4-7-1">orgtrello/do-sync-full-from-trello</h5>
+<div class="outline-text-5" id="text-5-4-7-1">
 <p>
 Main function:
 </p>
@@ -2039,9 +2062,11 @@ Main function:
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-7-2" name="sec-5-4-7-2"></a>orgtrello/&#x2013;sync-buffer-with-trello-data<br  /><div class="outline-text-5" id="text-5-4-7-2">
+<div id="outline-container-sec-5-4-7-2" class="outline-5">
+<h5 id="sec-5-4-7-2">orgtrello/&#x2013;sync-buffer-with-trello-data</h5>
+<div class="outline-text-5" id="text-5-4-7-2">
 <p>
 Given a map of entities to sync, update each entry with such data.
 After each entry update, the entity is removed.
@@ -2081,9 +2106,11 @@ Return the map of entities with the sync entry removed.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-7-3" name="sec-5-4-7-3"></a>orgtrello/&#x2013;update-buffer-with-remaining-trello-data<br  /><div class="outline-text-5" id="text-5-4-7-3">
+<div id="outline-container-sec-5-4-7-3" class="outline-5">
+<h5 id="sec-5-4-7-3">orgtrello/&#x2013;update-buffer-with-remaining-trello-data</h5>
+<div class="outline-text-5" id="text-5-4-7-3">
 <p>
 Given a map of entities:
 </p>
@@ -2119,9 +2146,11 @@ Given a map of entities:
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-7-4" name="sec-5-4-7-4"></a>orgtrello/&#x2013;compute-card-status<br  /><div class="outline-text-5" id="text-5-4-7-4">
+<div id="outline-container-sec-5-4-7-4" class="outline-5">
+<h5 id="sec-5-4-7-4">orgtrello/&#x2013;compute-card-status</h5>
+<div class="outline-text-5" id="text-5-4-7-4">
 <p>
 Given a card list id (which represent an org keyword), compute the keywords (this works with the metadata of the file).
 </p>
@@ -2134,9 +2163,11 @@ Given a card list id (which represent an org keyword), compute the keywords (thi
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-7-5" name="sec-5-4-7-5"></a>orgtrello/&#x2013;compute-card-to-org-entry<br  /><div class="outline-text-5" id="text-5-4-7-5">
+<div id="outline-container-sec-5-4-7-5" class="outline-5">
+<h5 id="sec-5-4-7-5">orgtrello/&#x2013;compute-card-to-org-entry</h5>
+<div class="outline-text-5" id="text-5-4-7-5">
 <p>
 Given an entry which represents a card, compute its equivalent org format.
 </p>
@@ -2153,9 +2184,11 @@ Given an entry which represents a card, compute its equivalent org format.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-7-6" name="sec-5-4-7-6"></a>orgtrello/&#x2013;compute-checklist-to-org-entry<br  /><div class="outline-text-5" id="text-5-4-7-6">
+<div id="outline-container-sec-5-4-7-6" class="outline-5">
+<h5 id="sec-5-4-7-6">orgtrello/&#x2013;compute-checklist-to-org-entry</h5>
+<div class="outline-text-5" id="text-5-4-7-6">
 <p>
 Given an entry which represents a checklist, compute its equivalent org format.
 </p>
@@ -2169,9 +2202,11 @@ Given an entry which represents a checklist, compute its equivalent org format.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-7-7" name="sec-5-4-7-7"></a>orgtrello/&#x2013;compute-item-to-org-entry<br  /><div class="outline-text-5" id="text-5-4-7-7">
+<div id="outline-container-sec-5-4-7-7" class="outline-5">
+<h5 id="sec-5-4-7-7">orgtrello/&#x2013;compute-item-to-org-entry</h5>
+<div class="outline-text-5" id="text-5-4-7-7">
 <p>
 Given an entry which represents an item/task, compute its equivalent org format.
 </p>
@@ -2188,9 +2223,11 @@ Given an entry which represents an item/task, compute its equivalent org format.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-7-8" name="sec-5-4-7-8"></a>orgtrello/&#x2013;compute-entity-to-org-entry<br  /><div class="outline-text-5" id="text-5-4-7-8">
+<div id="outline-container-sec-5-4-7-8" class="outline-5">
+<h5 id="sec-5-4-7-8">orgtrello/&#x2013;compute-entity-to-org-entry</h5>
+<div class="outline-text-5" id="text-5-4-7-8">
 <p>
 Given an entry, determine according to its structure the nature of such entity:
 </p>
@@ -2213,9 +2250,11 @@ Given an entry, determine according to its structure the nature of such entity:
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-7-9" name="sec-5-4-7-9"></a>orgtrello/&#x2013;do-retrieve-checklists-from-card<br  /><div class="outline-text-5" id="text-5-4-7-9">
+<div id="outline-container-sec-5-4-7-9" class="outline-5">
+<h5 id="sec-5-4-7-9">orgtrello/&#x2013;do-retrieve-checklists-from-card</h5>
+<div class="outline-text-5" id="text-5-4-7-9">
 <p>
 Given a card, retrieve its full checklist and return a list composed of the card cons'ed to such entities.
 </p>
@@ -2233,9 +2272,11 @@ Given a card, retrieve its full checklist and return a list composed of the card
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-7-10" name="sec-5-4-7-10"></a>orgtrello/&#x2013;do-retrieve-checklists-and-items<br  /><div class="outline-text-5" id="text-5-4-7-10">
+<div id="outline-container-sec-5-4-7-10" class="outline-5">
+<h5 id="sec-5-4-7-10">orgtrello/&#x2013;do-retrieve-checklists-and-items</h5>
+<div class="outline-text-5" id="text-5-4-7-10">
 <p>
 Given a checklist, retrieve its full items/tasks and return a list composed of the checklist cons'ed to such entities.
 </p>
@@ -2248,9 +2289,11 @@ Given a checklist, retrieve its full items/tasks and return a list composed of t
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-7-11" name="sec-5-4-7-11"></a>orgtrello/&#x2013;compute-full-entities-from-trello<br  /><div class="outline-text-5" id="text-5-4-7-11">
+<div id="outline-container-sec-5-4-7-11" class="outline-5">
+<h5 id="sec-5-4-7-11">orgtrello/&#x2013;compute-full-entities-from-trello</h5>
+<div class="outline-text-5" id="text-5-4-7-11">
 <p>
 Given a list of cards, retrieve the full arborescence of such cards (computing their checklists and items/tasks) and return a map of entities.
 </p>
@@ -2276,13 +2319,15 @@ Given a list of cards, retrieve the full arborescence of such cards (computing t
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 
 <div id="outline-container-sec-5-4-8" class="outline-4">
 <h4 id="sec-5-4-8">Delete entity</h4>
 <div class="outline-text-4" id="text-5-4-8">
-</div><ul class="org-ul"><li><a id="sec-5-4-8-1" name="sec-5-4-8-1"></a>orgtrello/do-delete-simple<br  /><div class="outline-text-5" id="text-5-4-8-1">
+</div><div id="outline-container-sec-5-4-8-1" class="outline-5">
+<h5 id="sec-5-4-8-1">orgtrello/do-delete-simple</h5>
+<div class="outline-text-5" id="text-5-4-8-1">
 <p>
 The main function to delete the current entity.
 This checks if the id is present.
@@ -2309,8 +2354,10 @@ Return a message of success.
 </pre>
 </div>
 </div>
-</li>
-<li><a id="sec-5-4-8-2" name="sec-5-4-8-2"></a>orgtrello/&#x2013;dispatch-map-delete<br  /><div class="outline-text-5" id="text-5-4-8-2">
+</div>
+<div id="outline-container-sec-5-4-8-2" class="outline-5">
+<h5 id="sec-5-4-8-2">orgtrello/&#x2013;dispatch-map-delete</h5>
+<div class="outline-text-5" id="text-5-4-8-2">
 <p>
 The computation of the <b>MAP-DISPATCH-DELETE</b> which will be used to dispatch the deletion of an entity.
 </p>
@@ -2329,9 +2376,11 @@ The computation of the <b>MAP-DISPATCH-DELETE</b> which will be used to dispatch
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-8-3" name="sec-5-4-8-3"></a>orgtrello/&#x2013;dispatch-delete<br  /><div class="outline-text-5" id="text-5-4-8-3">
+<div id="outline-container-sec-5-4-8-3" class="outline-5">
+<h5 id="sec-5-4-8-3">orgtrello/&#x2013;dispatch-delete</h5>
+<div class="outline-text-5" id="text-5-4-8-3">
 <p>
 The actual entity deletion using the <b>MAP-DISPATCH-DELETE</b> as a dispatch function.
 </p>
@@ -2345,9 +2394,11 @@ The actual entity deletion using the <b>MAP-DISPATCH-DELETE</b> as a dispatch fu
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-8-4" name="sec-5-4-8-4"></a>orgtrello/&#x2013;card-delete<br  /><div class="outline-text-5" id="text-5-4-8-4">
+<div id="outline-container-sec-5-4-8-4" class="outline-5">
+<h5 id="sec-5-4-8-4">orgtrello/&#x2013;card-delete</h5>
+<div class="outline-text-5" id="text-5-4-8-4">
 <p>
 Specific card deletion request computation.
 </p>
@@ -2361,9 +2412,11 @@ Specific card deletion request computation.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-8-5" name="sec-5-4-8-5"></a>orgtrello/&#x2013;checklist-delete<br  /><div class="outline-text-5" id="text-5-4-8-5">
+<div id="outline-container-sec-5-4-8-5" class="outline-5">
+<h5 id="sec-5-4-8-5">orgtrello/&#x2013;checklist-delete</h5>
+<div class="outline-text-5" id="text-5-4-8-5">
 <p>
 Specific checklist deletion request computation.
 </p>
@@ -2377,9 +2430,11 @@ Specific checklist deletion request computation.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-8-6" name="sec-5-4-8-6"></a>orgtrello/&#x2013;task-delete<br  /><div class="outline-text-5" id="text-5-4-8-6">
+<div id="outline-container-sec-5-4-8-6" class="outline-5">
+<h5 id="sec-5-4-8-6">orgtrello/&#x2013;task-delete</h5>
+<div class="outline-text-5" id="text-5-4-8-6">
 <p>
 Specific task/item deletion request computation.
 </p>
@@ -2394,13 +2449,15 @@ Specific task/item deletion request computation.
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 
 <div id="outline-container-sec-5-4-9" class="outline-4">
 <h4 id="sec-5-4-9">Install key and token configuration</h4>
 <div class="outline-text-4" id="text-5-4-9">
-</div><ul class="org-ul"><li><a id="sec-5-4-9-1" name="sec-5-4-9-1"></a>orgtrello/do-install-key-and-token<br  /><div class="outline-text-5" id="text-5-4-9-1">
+</div><div id="outline-container-sec-5-4-9-1" class="outline-5">
+<h5 id="sec-5-4-9-1">orgtrello/do-install-key-and-token</h5>
+<div class="outline-text-5" id="text-5-4-9-1">
 <p>
 First routine to ask input for the user:
 </p>
@@ -2429,9 +2486,11 @@ First routine to ask input for the user:
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-9-2" name="sec-5-4-9-2"></a>orgtrello/&#x2013;do-install-config-file<br  /><div class="outline-text-5" id="text-5-4-9-2">
+<div id="outline-container-sec-5-4-9-2" class="outline-5">
+<h5 id="sec-5-4-9-2">orgtrello/&#x2013;do-install-config-file</h5>
+<div class="outline-text-5" id="text-5-4-9-2">
 <p>
 Given a consumer-key and an access token, generate a <i>config.el</i> file.
 </p>
@@ -2450,7 +2509,7 @@ Given a consumer-key and an access token, generate a <i>config.el</i> file.
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 
 
@@ -2462,7 +2521,9 @@ The install board and lists configuration. There is an alternative to such setup
 </p>
 </div>
 
-<ul class="org-ul"><li><a id="sec-5-4-10-1" name="sec-5-4-10-1"></a>orgtrello/do-install-board-and-lists<br  /><div class="outline-text-5" id="text-5-4-10-1">
+<div id="outline-container-sec-5-4-10-1" class="outline-5">
+<h5 id="sec-5-4-10-1">orgtrello/do-install-board-and-lists</h5>
+<div class="outline-text-5" id="text-5-4-10-1">
 <p>
 Main routine to ask for the user's input to setup his/her board to attach to his/her current org buffer.
 This:
@@ -2502,9 +2563,11 @@ This:
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-10-2" name="sec-5-4-10-2"></a>orgtrello/&#x2013;choose-board<br  /><div class="outline-text-5" id="text-5-4-10-2">
+<div id="outline-container-sec-5-4-10-2" class="outline-5">
+<h5 id="sec-5-4-10-2">orgtrello/&#x2013;choose-board</h5>
+<div class="outline-text-5" id="text-5-4-10-2">
 <p>
 The routine that asks the user:
 </p>
@@ -2539,9 +2602,11 @@ The routine that asks the user:
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-10-3" name="sec-5-4-10-3"></a>orgtrello/&#x2013;remove-properties-file<br  /><div class="outline-text-5" id="text-5-4-10-3">
+<div id="outline-container-sec-5-4-10-3" class="outline-5">
+<h5 id="sec-5-4-10-3">orgtrello/&#x2013;remove-properties-file</h5>
+<div class="outline-text-5" id="text-5-4-10-3">
 <p>
 Remove some file properties before applying new ones.
 </p>
@@ -2573,9 +2638,11 @@ Remove some file properties before applying new ones.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-10-4" name="sec-5-4-10-4"></a>orgtrello/update-orgmode-file-with-properties<br  /><div class="outline-text-5" id="text-5-4-10-4">
+<div id="outline-container-sec-5-4-10-4" class="outline-5">
+<h5 id="sec-5-4-10-4">orgtrello/update-orgmode-file-with-properties</h5>
+<div class="outline-text-5" id="text-5-4-10-4">
 <p>
 Given a board name, board id, list of list ids, map of list names, insert such informations to the beginning of the org buffer.
 Then save the buffer and restart org-mode.
@@ -2610,9 +2677,11 @@ Then save the buffer and restart org-mode.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-10-5" name="sec-5-4-10-5"></a>orgtrello/&#x2013;id-name<br  /><div class="outline-text-5" id="text-5-4-10-5">
+<div id="outline-container-sec-5-4-10-5" class="outline-5">
+<h5 id="sec-5-4-10-5">orgtrello/&#x2013;id-name</h5>
+<div class="outline-text-5" id="text-5-4-10-5">
 <p>
 Given a list of entities, return a map of (id . name)
 </p>
@@ -2627,9 +2696,11 @@ Given a list of entities, return a map of (id . name)
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-10-6" name="sec-5-4-10-6"></a>orgtrello/&#x2013;name-id<br  /><div class="outline-text-5" id="text-5-4-10-6">
+<div id="outline-container-sec-5-4-10-6" class="outline-5">
+<h5 id="sec-5-4-10-6">orgtrello/&#x2013;name-id</h5>
+<div class="outline-text-5" id="text-5-4-10-6">
 <p>
 Given a list of entities, return a map of (name . id)
 </p>
@@ -2644,9 +2715,11 @@ Given a list of entities, return a map of (name . id)
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-10-7" name="sec-5-4-10-7"></a>orgtrello/&#x2013;list-boards<br  /><div class="outline-text-5" id="text-5-4-10-7">
+<div id="outline-container-sec-5-4-10-7" class="outline-5">
+<h5 id="sec-5-4-10-7">orgtrello/&#x2013;list-boards</h5>
+<div class="outline-text-5" id="text-5-4-10-7">
 <p>
 Execute the query that return a list of boards from the user's current trello account.
 </p>
@@ -2661,9 +2734,11 @@ Execute the query that return a list of boards from the user's current trello ac
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-10-8" name="sec-5-4-10-8"></a>orgtrello/&#x2013;list-board-lists<br  /><div class="outline-text-5" id="text-5-4-10-8">
+<div id="outline-container-sec-5-4-10-8" class="outline-5">
+<h5 id="sec-5-4-10-8">orgtrello/&#x2013;list-board-lists</h5>
+<div class="outline-text-5" id="text-5-4-10-8">
 <p>
 Execute the query that return a list of the board lists from the user's current trello account.
 </p>
@@ -2676,9 +2751,11 @@ Execute the query that return a list of the board lists from the user's current 
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-10-9" name="sec-5-4-10-9"></a>orgtrello/convention-property-name<br  /><div class="outline-text-5" id="text-5-4-10-9">
+<div id="outline-container-sec-5-4-10-9" class="outline-5">
+<h5 id="sec-5-4-10-9">orgtrello/convention-property-name</h5>
+<div class="outline-text-5" id="text-5-4-10-9">
 <p>
 A function to help eventually decorate the name of the keywords.
 Replace the space by dash at the moment.
@@ -2692,7 +2769,7 @@ Replace the space by dash at the moment.
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 
 <div id="outline-container-sec-5-4-11" class="outline-4">
@@ -2703,7 +2780,9 @@ The main function regarding the creation of the board and the org attachment to 
 </p>
 </div>
 
-<ul class="org-ul"><li><a id="sec-5-4-11-1" name="sec-5-4-11-1"></a>orgtrello/do-create-board-and-lists<br  /><div class="outline-text-5" id="text-5-4-11-1">
+<div id="outline-container-sec-5-4-11-1" class="outline-5">
+<h5 id="sec-5-4-11-1">orgtrello/do-create-board-and-lists</h5>
+<div class="outline-text-5" id="text-5-4-11-1">
 <p>
 The main entry.
 We will ask the user to:
@@ -2760,8 +2839,10 @@ This will:
 </pre>
 </div>
 </div>
-</li>
-<li><a id="sec-5-4-11-2" name="sec-5-4-11-2"></a>orgtrello/&#x2013;create-board<br  /><div class="outline-text-5" id="text-5-4-11-2">
+</div>
+<div id="outline-container-sec-5-4-11-2" class="outline-5">
+<h5 id="sec-5-4-11-2">orgtrello/&#x2013;create-board</h5>
+<div class="outline-text-5" id="text-5-4-11-2">
 <p>
 The actual board creation.
 This return a list of board id, board name.
@@ -2778,9 +2859,11 @@ This return a list of board id, board name.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-11-3" name="sec-5-4-11-3"></a>orgtrello/&#x2013;close-lists<br  /><div class="outline-text-5" id="text-5-4-11-3">
+<div id="outline-container-sec-5-4-11-3" class="outline-5">
+<h5 id="sec-5-4-11-3">orgtrello/&#x2013;close-lists</h5>
+<div class="outline-text-5" id="text-5-4-11-3">
 <p>
 The close list routine.
 Given a list of list ids, close each of those list.
@@ -2798,9 +2881,11 @@ Given a list of list ids, close each of those list.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-4-11-4" name="sec-5-4-11-4"></a>orgtrello/&#x2013;create-lists-according-to-keywords<br  /><div class="outline-text-5" id="text-5-4-11-4">
+<div id="outline-container-sec-5-4-11-4" class="outline-5">
+<h5 id="sec-5-4-11-4">orgtrello/&#x2013;create-lists-according-to-keywords</h5>
+<div class="outline-text-5" id="text-5-4-11-4">
 <p>
 Create as much list as the keywords to the board <i>board-id</i>.
 </p>
@@ -2820,7 +2905,7 @@ Create as much list as the keywords to the board <i>board-id</i>.
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 
 <div id="outline-container-sec-5-4-12" class="outline-4">
@@ -3004,7 +3089,9 @@ Some functions around the data stored in the query-map, hiding the implementatio
 </p>
 </div>
 
-<ul class="org-ul"><li><a id="sec-5-5-7-1" name="sec-5-5-7-1"></a>orgtrello-query/&#x2013;method<br  /><div class="outline-text-5" id="text-5-5-7-1">
+<div id="outline-container-sec-5-5-7-1" class="outline-5">
+<h5 id="sec-5-5-7-1">orgtrello-query/&#x2013;method</h5>
+<div class="outline-text-5" id="text-5-5-7-1">
 <p>
 Extract the http method.
 </p>
@@ -3017,9 +3104,11 @@ Extract the http method.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-7-2" name="sec-5-5-7-2"></a>orgtrello-query/&#x2013;uri<br  /><div class="outline-text-5" id="text-5-5-7-2">
+<div id="outline-container-sec-5-5-7-2" class="outline-5">
+<h5 id="sec-5-5-7-2">orgtrello-query/&#x2013;uri</h5>
+<div class="outline-text-5" id="text-5-5-7-2">
 <p>
 Extract the trello api uri.
 </p>
@@ -3032,9 +3121,11 @@ Extract the trello api uri.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-7-3" name="sec-5-5-7-3"></a>orgtrello-query/&#x2013;sync<br  /><div class="outline-text-5" id="text-5-5-7-3">
+<div id="outline-container-sec-5-5-7-3" class="outline-5">
+<h5 id="sec-5-5-7-3">orgtrello-query/&#x2013;sync</h5>
+<div class="outline-text-5" id="text-5-5-7-3">
 <p>
 Retrieve the flag sync or not of the query-map.
 </p>
@@ -3047,9 +3138,11 @@ Retrieve the flag sync or not of the query-map.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-7-4" name="sec-5-5-7-4"></a>orgtrello-query/&#x2013;params<br  /><div class="outline-text-5" id="text-5-5-7-4">
+<div id="outline-container-sec-5-5-7-4" class="outline-5">
+<h5 id="sec-5-5-7-4">orgtrello-query/&#x2013;params</h5>
+<div class="outline-text-5" id="text-5-5-7-4">
 <p>
 Retrieve the params of the query.
 </p>
@@ -3062,7 +3155,7 @@ Retrieve the params of the query.
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 <div id="outline-container-sec-5-5-8" class="outline-4">
 <h4 id="sec-5-5-8">Output request abstraction extract function</h4>
@@ -3071,7 +3164,9 @@ Retrieve the params of the query.
 Some functions around the data stored in the http query response, hiding the implementation details.
 </p>
 </div>
-<ul class="org-ul"><li><a id="sec-5-5-8-1" name="sec-5-5-8-1"></a>orgtrello-query/&#x2013;id<br  /><div class="outline-text-5" id="text-5-5-8-1">
+<div id="outline-container-sec-5-5-8-1" class="outline-5">
+<h5 id="sec-5-5-8-1">orgtrello-query/&#x2013;id</h5>
+<div class="outline-text-5" id="text-5-5-8-1">
 <p>
 Extract the id of the entity from the entity-data.
 </p>
@@ -3084,9 +3179,11 @@ Extract the id of the entity from the entity-data.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-8-2" name="sec-5-5-8-2"></a>orgtrello-query/&#x2013;name<br  /><div class="outline-text-5" id="text-5-5-8-2">
+<div id="outline-container-sec-5-5-8-2" class="outline-5">
+<h5 id="sec-5-5-8-2">orgtrello-query/&#x2013;name</h5>
+<div class="outline-text-5" id="text-5-5-8-2">
 <p>
 Extract the name of the entity from the entity-data.
 </p>
@@ -3099,9 +3196,11 @@ Extract the name of the entity from the entity-data.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-8-3" name="sec-5-5-8-3"></a>orgtrello-query/&#x2013;list-id<br  /><div class="outline-text-5" id="text-5-5-8-3">
+<div id="outline-container-sec-5-5-8-3" class="outline-5">
+<h5 id="sec-5-5-8-3">orgtrello-query/&#x2013;list-id</h5>
+<div class="outline-text-5" id="text-5-5-8-3">
 <p>
 Extract the list identifier from the entity-data.
 </p>
@@ -3114,9 +3213,11 @@ Extract the list identifier from the entity-data.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-8-4" name="sec-5-5-8-4"></a>orgtrello-query/&#x2013;checklist-ids<br  /><div class="outline-text-5" id="text-5-5-8-4">
+<div id="outline-container-sec-5-5-8-4" class="outline-5">
+<h5 id="sec-5-5-8-4">orgtrello-query/&#x2013;checklist-ids</h5>
+<div class="outline-text-5" id="text-5-5-8-4">
 <p>
 Extract the list of checklist ids from the entity-data.
 </p>
@@ -3129,9 +3230,11 @@ Extract the list of checklist ids from the entity-data.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-8-5" name="sec-5-5-8-5"></a>orgtrello-query/&#x2013;check-items<br  /><div class="outline-text-5" id="text-5-5-8-5">
+<div id="outline-container-sec-5-5-8-5" class="outline-5">
+<h5 id="sec-5-5-8-5">orgtrello-query/&#x2013;check-items</h5>
+<div class="outline-text-5" id="text-5-5-8-5">
 <p>
 Extract the list of items/tasks from the entity-data.
 </p>
@@ -3144,9 +3247,11 @@ Extract the list of items/tasks from the entity-data.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-8-6" name="sec-5-5-8-6"></a>orgtrello-query/&#x2013;card-id<br  /><div class="outline-text-5" id="text-5-5-8-6">
+<div id="outline-container-sec-5-5-8-6" class="outline-5">
+<h5 id="sec-5-5-8-6">orgtrello-query/&#x2013;card-id</h5>
+<div class="outline-text-5" id="text-5-5-8-6">
 <p>
 Extract the card id from the entity-data.
 </p>
@@ -3159,9 +3264,11 @@ Extract the card id from the entity-data.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-8-7" name="sec-5-5-8-7"></a>orgtrello-query/&#x2013;due<br  /><div class="outline-text-5" id="text-5-5-8-7">
+<div id="outline-container-sec-5-5-8-7" class="outline-5">
+<h5 id="sec-5-5-8-7">orgtrello-query/&#x2013;due</h5>
+<div class="outline-text-5" id="text-5-5-8-7">
 <p>
 Extract the card id from the entity-data.
 </p>
@@ -3174,9 +3281,11 @@ Extract the card id from the entity-data.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-8-8" name="sec-5-5-8-8"></a>orgtrello-query/&#x2013;state<br  /><div class="outline-text-5" id="text-5-5-8-8">
+<div id="outline-container-sec-5-5-8-8" class="outline-5">
+<h5 id="sec-5-5-8-8">orgtrello-query/&#x2013;state</h5>
+<div class="outline-text-5" id="text-5-5-8-8">
 <p>
 Extract the state from the entity-data.
 </p>
@@ -3189,9 +3298,11 @@ Extract the state from the entity-data.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-8-9" name="sec-5-5-8-9"></a>orgtrello-query/&#x2013;close-property<br  /><div class="outline-text-5" id="text-5-5-8-9">
+<div id="outline-container-sec-5-5-8-9" class="outline-5">
+<h5 id="sec-5-5-8-9">orgtrello-query/&#x2013;close-property</h5>
+<div class="outline-text-5" id="text-5-5-8-9">
 <p>
 Extract the close flag from the entity-data.
 </p>
@@ -3204,7 +3315,7 @@ Extract the close flag from the entity-data.
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 
 <div id="outline-container-sec-5-5-9" class="outline-4">
@@ -3216,7 +3327,9 @@ They are closures on the trello identifier (consumer-key and access-token).
 </p>
 </div>
 
-<ul class="org-ul"><li><a id="sec-5-5-9-1" name="sec-5-5-9-1"></a>orgtrello-query/&#x2013;get<br  /><div class="outline-text-5" id="text-5-5-9-1">
+<div id="outline-container-sec-5-5-9-1" class="outline-5">
+<h5 id="sec-5-5-9-1">orgtrello-query/&#x2013;get</h5>
+<div class="outline-text-5" id="text-5-5-9-1">
 <p>
 The function around the GET http request.
 This will extract the method, uri and sync flag and build the http request.
@@ -3244,9 +3357,11 @@ Otherwise, the 'standard-success-callback or the 'standard-error-callback will b
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-9-2" name="sec-5-5-9-2"></a>orgtrello-query/&#x2013;post-or-put<br  /><div class="outline-text-5" id="text-5-5-9-2">
+<div id="outline-container-sec-5-5-9-2" class="outline-5">
+<h5 id="sec-5-5-9-2">orgtrello-query/&#x2013;post-or-put</h5>
+<div class="outline-text-5" id="text-5-5-9-2">
 <p>
 The function around the POST/PUT verbs.
 This is similar to the get function but does some extract actions:
@@ -3279,9 +3394,11 @@ This is similar to the get function but does some extract actions:
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-9-3" name="sec-5-5-9-3"></a>orgtrello-query/&#x2013;delete<br  /><div class="outline-text-5" id="text-5-5-9-3">
+<div id="outline-container-sec-5-5-9-3" class="outline-5">
+<h5 id="sec-5-5-9-3">orgtrello-query/&#x2013;delete</h5>
+<div class="outline-text-5" id="text-5-5-9-3">
 <p>
 The last verb we deal with, the DELETE action.
 Again similar as GET but does a DELETE.
@@ -3306,7 +3423,7 @@ Again similar as GET but does a DELETE.
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 
 <div id="outline-container-sec-5-5-10" class="outline-4">
@@ -3317,7 +3434,9 @@ Those are actions done at the end of the http request.
 </p>
 </div>
 
-<ul class="org-ul"><li><a id="sec-5-5-10-1" name="sec-5-5-10-1"></a>standard-error-callback<br  /><div class="outline-text-5" id="text-5-5-10-1">
+<div id="outline-container-sec-5-5-10-1" class="outline-5">
+<h5 id="sec-5-5-10-1">standard-error-callback</h5>
+<div class="outline-text-5" id="text-5-5-10-1">
 <p>
 The standard error-callback in charge of removing the orgtrello-marker written before synchronization.
 This display an error message on the minibuffer too.
@@ -3336,9 +3455,11 @@ This display an error message on the minibuffer too.
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-10-2" name="sec-5-5-10-2"></a>standard-success-callback<br  /><div class="outline-text-5" id="text-5-5-10-2">
+<div id="outline-container-sec-5-5-10-2" class="outline-5">
+<h5 id="sec-5-5-10-2">standard-success-callback</h5>
+<div class="outline-text-5" id="text-5-5-10-2">
 <p>
 A standard success callback that displays a simple message "Success." in the minibuffer.
 </p>
@@ -3351,9 +3472,11 @@ A standard success callback that displays a simple message "Success." in the min
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-10-3" name="sec-5-5-10-3"></a>simple-error-callback<br  /><div class="outline-text-5" id="text-5-5-10-3">
+<div id="outline-container-sec-5-5-10-3" class="outline-5">
+<h5 id="sec-5-5-10-3">simple-error-callback</h5>
+<div class="outline-text-5" id="text-5-5-10-3">
 <p>
 A simpler error message callback which simply displays an error message on the minibuffer, indicating the error thrown by the execution of the request.
 </p>
@@ -3366,9 +3489,11 @@ A simpler error message callback which simply displays an error message on the m
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-10-4" name="sec-5-5-10-4"></a>orgtrello-query/&#x2013;delete-success-callback<br  /><div class="outline-text-5" id="text-5-5-10-4">
+<div id="outline-container-sec-5-5-10-4" class="outline-5">
+<h5 id="sec-5-5-10-4">orgtrello-query/&#x2013;delete-success-callback</h5>
+<div class="outline-text-5" id="text-5-5-10-4">
 <p>
 This one is the default delete success callback.
 It needs to synchronize back the buffer to remove the entry we just destroyed on trello.
@@ -3403,9 +3528,11 @@ It needs to synchronize back the buffer to remove the entry we just destroyed on
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="sec-5-5-10-5" name="sec-5-5-10-5"></a>orgtrello-query/&#x2013;post-put-success-callback-update-id<br  /><div class="outline-text-5" id="text-5-5-10-5">
+<div id="outline-container-sec-5-5-10-5" class="outline-5">
+<h5 id="sec-5-5-10-5">orgtrello-query/&#x2013;post-put-success-callback-update-id</h5>
+<div class="outline-text-5" id="text-5-5-10-5">
 <p>
 This one is the default post/put success callback.
 It's in charge of updating the org buffer with the trello id for the entity that has been synchronized.
@@ -3450,7 +3577,7 @@ What it does:
 </pre>
 </div>
 </div>
-</li></ul>
+</div>
 </div>
 </div>
 
@@ -4130,13 +4257,3 @@ source: <a href="https://github.com/org-trello/org-trello/blob/master/org-trello
 </p>
 </div>
 </div>
-</div>
-<div id="postamble" class="status">
-<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2013-08-11 dim. 14:28]</span></span></p>
-<p class="author">Author: Antoine R. Dumont</p>
-<p class="date">Created: 2014-12-02 Tue 18:41</p>
-<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
-</div>
-</body>
-</html>

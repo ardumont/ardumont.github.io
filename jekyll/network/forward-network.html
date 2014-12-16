@@ -1,0 +1,97 @@
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Definition</a></li>
+<li><a href="#sec-2">Static ip addresses</a></li>
+<li><a href="#sec-3">Check packet forwarding</a></li>
+<li><a href="#sec-4">Enable packet forwarding</a></li>
+<li><a href="#sec-5">Enable NAT</a></li>
+<li><a href="#sec-6">Manual ip</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Definition</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>enp0s25 - network device connected to the internet.
+</li>
+<li>wlp3s0 - network device connected to the other machine.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Static ip addresses</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo ip link set up dev wlp3s0
+# arbitrary address
+sudo ip addr add 192.168.123.100/24 dev wlp3s0
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Check packet forwarding</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Check the current packet forwarding settings:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">sysctl -a | grep forward
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Enable packet forwarding</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Enter this command to temporarily enable packet forwarding:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">sysctl net.ipv4.ip_forward=1
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Enable NAT</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Install the package iptables from the official repositories. Use iptables to enable NAT:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo iptables -t nat -A POSTROUTING -o enp0s25 -j MASQUERADE
+sudo iptables -A FORWARD -i wlp3s0 -o enp0s25 -j ACCEPT
+sudo iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Manual ip</h2>
+<div class="outline-text-2" id="text-6">
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo ip addr add 192.168.123.201/24 dev eth0  # arbitrary address, first three blocks must match the address from above
+sudo ip link set up dev eth0
+sudo ip route add default via 192.168.123.100 dev eth0   # same address as in the beginning
+</pre>
+</div>
+</div>
+</div>
