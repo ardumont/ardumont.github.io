@@ -1,11 +1,24 @@
-# safe: true
-# trace: false
-# name: ardumont
-name: Your New Jekyll Site
+# Site settings
+name: tony's blog
+trace: false
+safe: true
+highlighter: pygments
+
+encoding: utf-8
+
+redcarpet:
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
+
+title: tony's blog
+email: eniotna.t@gmail.com
+description: > # this means to ignore newlines until "baseurl:"
+  my notes and articles for the world to enjoy
+
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "https://ardumont.github.io" # the base hostname & protocol for your site
+twitter_username: ardumont
+github_username:  ardumont
+
+# Build settings
+#markdown: kramdown
 markdown: redcarpet
-highlights: pygments
-
-# encoding: utf-8
-
-# redcarpet:
-#   extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
