@@ -1,10 +1,11 @@
-name: ardumont
-trace: false
-safe: true
-pygments: true
+# safe: true
+# trace: false
+# name: ardumont
+name: Your New Jekyll Site
 markdown: redcarpet
+highlights: pygments
 
-encoding: utf-8
+# encoding: utf-8
 
-redcarpet:
-  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
+# redcarpet:
+#   extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
