@@ -1,8 +1,8 @@
 publish:
-	yes no | emacs -Q --batch -l ~/public_html/publish.el --funcall org-publish-all
+	yes no | emacs -Q --batch -l ./publish.el --funcall org-publish-all
 
 clean:
-	rm -rf ~/public_html/*.html ~/public_html/img ~/public_html/other
+	rm -rf ./jekyll/*.html ./jekyll/* ./img ./css ./js
 	rm -rf ~/.org-timestamps
 
 pr:
