@@ -20,4 +20,4 @@ pull:
 	git push origin master
 
 run-dev:
-	bundle exec jekyll serve --watch
+	bundle exec jekyll serve --watch --trace
