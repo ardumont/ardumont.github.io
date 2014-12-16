@@ -17,16 +17,17 @@
                              :base-directory "~/org/"
                              :base-extension "org"
                              ;; :publishing-directory "/ssh:user@host:~/html/notebook/"
-                             :publishing-directory ,(output-directory "")
+                             :publishing-directory ,(output-directory "jekyll")
                              :publishing-function org-html-publish-to-html
-                             ;; :exclude "PrivatePage.org"   ;; regexp
-                             :headline-levels 3
+                             :headline-levels 4
                              :section-numbers nil
                              :with-toc t
-                             :html-head "<link rel=\"stylesheet\" href=\"./other/style.css\" type=\"text/css\"/>"
+                             :html-head "<link rel=\"stylesheet\" href=\"./css/style.css\" type=\"text/css\"/>"
                              :html-preamble t
                              :recursive t
-                             :make-index t)
+                             :make-index t
+                             :html-extension "html"
+                             :body-only t)
 
                             ("images"
                              :base-directory "~/org/img/"
@@ -34,12 +35,18 @@
                              :publishing-directory ,(output-directory "img")
                              :publishing-function org-publish-attachment)
 
-                            ("other"
-                             :base-directory "~/org/other/"
-                             :base-extension "css\\|el"
-                             :publishing-directory ,(output-directory "other")
+                            ("js"
+                             :base-directory "~/org/js/"
+                             :base-extension "js"
+                             :publishing-directory ,(output-directory "js")
                              :publishing-function org-publish-attachment)
 
-                            ("website" :components ("orgfiles" "images" "other"))))))
+                            ("other"
+                             :base-directory "~/org/css/"
+                             :base-extension "css\\|el"
+                             :publishing-directory ,(output-directory "css")
+                             :publishing-function org-publish-attachment)
+
+                            ("website" :components ("orgfiles" "images" "js" "css"))))))
 
 ;;; publish.el ends here
