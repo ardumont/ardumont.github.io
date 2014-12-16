@@ -17,7 +17,7 @@
                              :base-directory "~/org/"
                              :base-extension "org"
                              ;; :publishing-directory "/ssh:user@host:~/html/notebook/"
-                             :publishing-directory ,(output-directory "jekyll")
+                             :publishing-directory ,(output-directory "blog")
                              :publishing-function org-html-publish-to-html
                              :headline-levels 4
                              :section-numbers nil

@@ -2,7 +2,7 @@ publish:
 	yes no | emacs -Q --batch -l ./publish.el --funcall org-publish-all
 
 clean:
-	rm -rf ./jekyll/*.html ./jekyll/* ./img ./css ./js
+	rm -rf ./jekyll/*.html ./blog/* ./img ./css ./js
 	rm -rf ~/.org-timestamps
 
 pr:
