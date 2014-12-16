@@ -21,7 +21,7 @@
                              :publishing-function org-html-publish-to-html
                              :headline-levels 4
                              :section-numbers nil
-                             :with-toc t
+                             :with-toc nil
                              :html-head "<link rel=\"stylesheet\" href=\"./css/style.css\" type=\"text/css\"/>"
                              :html-preamble t
                              :recursive t
