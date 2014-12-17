@@ -1,0 +1,405 @@
+---
+layout: post
+title: Blogging with org-mode/org2blog/wordpress
+date: 2012-12-22
+categories:
+- org-mode
+- emacs
+- wordpress
+- blog
+- org2blog
+- tools
+author: Antoine R. Dumont
+excerpt: Syncing one's org-mode files with one's blog using org2blog
+---
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Statements</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>I'm a feedback addict
+</li>
+</ul>
+<p>
+When I execute something, I want it to answer quickly, no lag is acceptable.
+</p>
+<ul class="org-ul">
+<li>I found out that there is no faster than the keyboard to input quickly (at least as fast as my fingers go)
+</li>
+</ul>
+<p>
+The mouse is slow because you need to break the position of your hands&#x2026;
+</p>
+<ul class="org-ul">
+<li>I love emacs and <a href="http://orgmode.org/">org-mode</a>
+</li>
+<li>I like <a href="http://wordpress.org/">wordpress</a> (simple and user-friendly).
+</li>
+</ul>
+<p>
+But you have too much to do and click to succeed in making one article.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Consequence</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+I have difficulties in blogging directly in <a href="http://wordpress.org/">wordpress</a> (it is in the click world, I'm not anymore).
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">But&#x2026; <b>help me org-mode-wan, you are my only hope</b></h2>
+<div class="outline-text-2" id="text-3">
+<p>
+I know <a href="http://orgmode.org/">org-mode</a>. And as soon as I become aware of <a href="http://orgmode.org/">org-mode</a>'s abilities to export, I used the html export to make my articles.
+</p>
+
+<p>
+You write offline (no network problem then) your article in <a href="http://orgmode.org/">org-mode</a> (simple yet ultra powerfull text dsl).
+Then you export in html (C-c C-e b), this will open a tab in your browser almost immediately.
+</p>
+
+<p>
+It is way cool&#x2026;
+</p>
+
+<p>
+But the html need to be :
+</p>
+<ul class="org-ul">
+<li>copy/paste to <a href="http://wordpress.org/">wordpress</a> the rendered html
+</li>
+<li>the rendering of org-mode table via the copy/past of the exported html is not good
+</li>
+<li>as the exported html is a standalone one, it comes with some css we need to remove too (as <a href="http://wordpress.org/">wordpress</a> already has one)
+</li>
+<li>if images there are, you must upload first one at a time&#x2026; and then remodify the either the org-mode or the html exported
+</li>
+<li>etc&#x2026;
+</li>
+</ul>
+
+<p>
+In short, a lot of manual adaptation needs to be done.
+It's neither feedback oriented nor fun!
+</p>
+
+<p>
+In even shorter, it's not perfect!
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Then along came&#x2026; <a href="https://github.com/punchagan/org2blog">org2blog</a>!</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1">What is it?</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+It's an adapter between <a href="http://orgmode.org/">org-mode</a> files and <a href="http://wordpress.org/">wordpress</a>.
+Given minor setup steps (to do once), you can never leave your <a href="http://orgmode.org/">org-mode</a> buffer until you're done!
+</p>
+
+<p>
+It's the ultimate blogging way for an org-mode user like me!
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2">Advantages?</h3>
+<div class="outline-text-3" id="text-4-2">
+<ul class="org-ul">
+<li>No network needed (at least until the publishing step)
+</li>
+<li>No need to manage the pictures, there will be uploaded and be coherent with the blog
+</li>
+<li>You will be prompted to create the categories if they do not already exist.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3">install?</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+Here we go, add this to your <b>init.el</b>
+This is a snippet of code that permits you to automatically search and install the packages you want at startup.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D; font-weight: bold;">require</span> '<span style="color: #4c83ff; font-weight: bold;">package</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span>add-to-list 'package-archives
+             '<span style="color: #006400;">(</span><span style="color: #61CE3C;">"marmalade"</span> . <span style="color: #61CE3C;">"http://marmalade-repo.org/packages/"</span><span style="color: #006400;">)</span> t<span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span>add-to-list 'package-archives
+             '<span style="color: #006400;">(</span><span style="color: #61CE3C;">"melpa"</span> . <span style="color: #61CE3C;">"http://melpa.milkbox.net/packages/"</span><span style="color: #006400;">)</span> t<span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span>package-initialize<span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D; font-weight: bold;">when</span> <span style="color: #006400;">(</span>not package-archive-contents<span style="color: #006400;">)</span>
+  <span style="color: #006400;">(</span>package-refresh-contents<span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D; font-weight: bold;">defvar</span> <span style="color: #D8FA3C;">my-packages</span> '<span style="color: #006400;">(</span>org
+                      xml-rpc
+                      org2blog<span style="color: #006400;">)</span>
+  <span style="color: #2aa198;">"A list of packages to ensure are installed at launch."</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D; font-weight: bold;">dolist</span> <span style="color: #006400;">(</span>p my-packages<span style="color: #006400;">)</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D; font-weight: bold;">when</span> <span style="color: #ff1493;">(</span>not <span style="color: #ffff00;">(</span>package-installed-p p<span style="color: #ffff00;">)</span><span style="color: #ff1493;">)</span>
+    <span style="color: #ff1493;">(</span>package-install p<span style="color: #ff1493;">)</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+
+<p>
+Here is the details about packages:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">org</td>
+<td class="left">org-mode</td>
+</tr>
+
+<tr>
+<td class="left">xml-rpc</td>
+<td class="left">An elisp implementation of clientside XML-RPC</td>
+</tr>
+
+<tr>
+<td class="left">org2blog</td>
+<td class="left">Blog from Org mode to wordpress</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4" class="outline-3">
+<h3 id="sec-4-4">setup?</h3>
+<div class="outline-text-3" id="text-4-4">
+</div><div id="outline-container-sec-4-5" class="outline-3">
+<h3 id="sec-4-5">~/.netrc</h3>
+<div class="outline-text-3" id="text-4-5">
+<p>
+To setup the credentials to login into the <a href="http://wordpress.org/">wordpress</a>.
+</p>
+
+<p>
+Here is a sample:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-netrc">machine some-dummy-machine login some-login password some-password
+</pre>
+</div>
+
+<p>
+Each line represents one blog.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">machine</td>
+<td class="left">some-dummy-machine (Note that this will be used in the emacs-lisp code)</td>
+</tr>
+
+<tr>
+<td class="left">login</td>
+<td class="left">some-login</td>
+</tr>
+
+<tr>
+<td class="left">password</td>
+<td class="left">some-password</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-4-6" class="outline-3">
+<h3 id="sec-4-6">~/.emacs</h3>
+<div class="outline-text-3" id="text-4-6">
+<p>
+Add this to your <b>~/.emacs</b>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span style="color: #586e75;">;; </span><span style="color: #8B8989; font-style: italic;">depends on netrc, xml-rpc</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D; font-weight: bold;">require</span> '<span style="color: #4c83ff; font-weight: bold;">netrc</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D; font-weight: bold;">require</span> '<span style="color: #4c83ff; font-weight: bold;">org2blog-autoloads</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D; font-weight: bold;">require</span> '<span style="color: #4c83ff; font-weight: bold;">metaweblog</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #586e75;">;; </span><span style="color: #8B8989; font-style: italic;">load the entry 'some-dummy-machine' in the ~/.netrc, we obtain a hash-map wit</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">h the needed data</span>
+<span style="color: #8b0000;">(</span>setq blog <span style="color: #006400;">(</span>netrc-machine <span style="color: #ff1493;">(</span>netrc-parse <span style="color: #61CE3C;">"~/.netrc"</span><span style="color: #ff1493;">)</span> <span style="color: #61CE3C;">"some-dummy-machine"</span> t<span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #586e75;">;; </span><span style="color: #8B8989; font-style: italic;">now enter the data in the org2blog list of blogs</span>
+<span style="color: #8b0000;">(</span>setq org2blog/wp-blog-alist
+      '<span style="color: #006400;">(</span><span style="color: #ff1493;">(</span><span style="color: #61CE3C;">"some-dummy-machine"</span>
+         <span style="color: #FF6400; font-weight: bold;">:url</span> <span style="color: #61CE3C;">"http://your-wordpress-blog/xmlrpc.php"</span>
+         <span style="color: #FF6400; font-weight: bold;">:username</span> <span style="color: #ffff00;">(</span>netrc-get blog <span style="color: #61CE3C;">"login"</span><span style="color: #ffff00;">)</span>
+         <span style="color: #FF6400; font-weight: bold;">:password</span> <span style="color: #ffff00;">(</span>netrc-get blog <span style="color: #61CE3C;">"password"</span><span style="color: #ffff00;">)</span><span style="color: #ff1493;">)</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span>add-hook 'org-mode-hook 'org2blog/wp-mode<span style="color: #8b0000;">)</span>
+</pre>
+</div>
+
+<p>
+This will load your credentials and activate the org2blog/wp-mode each time a <a href="http://orgmode.org/">org-mode</a> file is launched.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-7" class="outline-3">
+<h3 id="sec-4-7">Use</h3>
+<div class="outline-text-3" id="text-4-7">
+<p>
+Here is my way, you can go from this at first and then improve :D
+</p>
+
+<ul class="org-ul">
+<li>Add some metadata on your file
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-org"><span style="color: #8B8989; background-color: #000000;">#+TITLE:</span> <span style="color: #add8e6; background-color: #000000; font-size: 150%; font-weight: bold;">Blogging with org-mode and org2blog to publish on wordpress</span>
+<span style="color: #8B8989; background-color: #000000;">#+AUTHOR:</span> <span style="color: #add8e6; background-color: #000000; font-weight: bold;">Antoine R. Dumont</span>
+<span style="color: #8B8989; font-style: italic;">#+OPTIONS:</span>
+<span style="color: #8B8989; font-style: italic;">#+TAGS: org-mode, emacs, wordpress, blog</span>
+<span style="color: #8B8989; font-style: italic;">#+CATEGORY: org-mode, blog, wordpress</span>
+<span style="color: #8B8989; font-style: italic;">#+DESCRIPTION: Syncing one's org-mode files with one's blog</span>
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Then You edit normally your <a href="http://orgmode.org/">org-mode</a> file article, here is a full example
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-org"><span style="color: #8B8989; font-style: italic;">#+BLOG: tony-blog</span>
+<span style="color: #8B8989; font-style: italic;">#+POSTID: 589</span>
+<span style="color: #8B8989; background-color: #000000;">#+DATE:</span> <span style="color: #add8e6; background-color: #000000; font-weight: bold;">[2012-12-22 Sat 20:00]</span>
+<span style="color: #8B8989; font-style: italic;">#+BLOG: tony-blog</span>
+<span style="color: #8B8989; background-color: #000000;">#+TITLE:</span> <span style="color: #add8e6; background-color: #000000; font-size: 150%; font-weight: bold;">Dummy sample to prove org2blog rocks!</span>
+<span style="color: #8B8989; background-color: #000000;">#+AUTHOR:</span> <span style="color: #add8e6; background-color: #000000; font-weight: bold;">Antoine R. Dumont</span>
+<span style="color: #8B8989; font-style: italic;">#+OPTIONS:</span>
+<span style="color: #8B8989; font-style: italic;">#+TAGS: dummy</span>
+<span style="color: #8B8989; font-style: italic;">#+CATEGORY: dummy</span>
+<span style="color: #8B8989; font-style: italic;">#+DESCRIPTION: a dummy file</span>
+<span style="color: #8B8989; font-style: italic;">#+STARTUP: indent</span>
+<span style="color: #8B8989; font-style: italic;">#+STARTUP: hidestars odd</span>
+
+<span style="color: #ff1493; font-size: 130%;">* some</span>
+<span style="color: #000000;">*</span><span style="color: #ffff00; font-size: 120%;">* dummy</span>
+<span style="color: #000000;">**</span><span style="color: #4c83ff; font-size: 110%;">* org</span>
+<span style="color: #ff1493; font-size: 130%;">* to prove that everything work</span>
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>To check the rendering is ok, export locally your article via <b>C-c C-e b</b> (<b>M-x org-export-as-html-and-open</b>)
+</li>
+</ul>
+
+
+<div class="figure">
+<p><a href="./resources/img/export-dummy.png"><img src="./resources/img/export-dummy.png" alt="export-dummy.png" /></a>
+</p>
+</div>
+
+<ul class="org-ul">
+<li>Once you're almost ready, you can upload a draft to your <a href="http://wordpress.org/">wordpress</a> <b>C-c d</b> (<b>M-x org2blog/wp-post-buffer</b>)
+</li>
+</ul>
+
+
+<div class="figure">
+<p><a href="./resources/img/export-dummy-and-upload-draft.png"><img src="./resources/img/export-dummy-and-upload-draft.png" alt="export-dummy-and-upload-draft.png" /></a>
+</p>
+</div>
+
+<ul class="org-ul">
+<li>New metadata has been generated at the top of your <a href="http://orgmode.org/">org-mode</a> file
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-org"><span style="color: #8B8989; font-style: italic;">#+BLOG: tony-blog</span>
+<span style="color: #8B8989; font-style: italic;">#+POSTID: 589</span>
+<span style="color: #8B8989; background-color: #000000;">#+DATE:</span> <span style="color: #add8e6; background-color: #000000; font-weight: bold;">[2012-12-22 Sat 20:00]</span>
+</pre>
+</div>
+
+<p>
+This will help in updating your post throughout the time.
+</p>
+
+<ul class="org-ul">
+<li>When ready to publish, hit <b>C-c p</b> (or <b>C-u M-x org2blog/wp-post-buffer</b>)
+</li>
+
+<li>Of course, you can republish after updating some errors/typos (hit <b>C-c p</b> again when you're done updating it)
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Enjoy</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+At last, the perfect way of blogging through emacs! At least for me!
+</p>
+
+<p>
+Long live <a href="https://github.com/punchagan/org2blog">org2blog</a>!
+</p>
+
+<p>
+#+./resources/img/export-dummy.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-export-dummy.png" alt="wpid-export-dummy.png" />
+</p>
+
+<p>
+#+./resources/img/export-dummy-as-draft.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-export-dummy-as-draft.png" alt="wpid-export-dummy-as-draft.png" />
+</p>
+
+<p>
+#+./resources/img/export-dummy-as-draft.png"&gt;&lt;img src="./resources/img/export-dummy-and-upload-draft.png" alt="export-dummy-and-upload-draft.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-export-dummy-and-upload-draft.png-altexport-dummy-and-upload-draft.png" alt="wpid-export-dummy-and-upload-draft.png-altexport-dummy-and-upload-draft.png" />
+</p>
+
+<p>
+#+./resources/img/export-dummy-and-upload-draft.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-export-dummy-and-upload-draft.png" alt="wpid-export-dummy-and-upload-draft.png" />
+</p>
+</div>
+</div>
