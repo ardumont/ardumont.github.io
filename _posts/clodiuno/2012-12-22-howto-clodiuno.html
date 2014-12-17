@@ -1,0 +1,257 @@
+---
+layout: post
+title: Arduino/Clodiuno - My first steps
+date: 2012-12-22
+categories:
+- arduino
+- clojure
+- geek
+author: Antoine R. Dumont
+excerpt: What was my difficulties bootstraping arduino/clodiuno.
+---
+<p>
+In this thread, i will describe my difficulties in starting clodiuno.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Arduino</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+I came across a video about <a href="http://arduino.cc/en/">arduino</a> some time ago and this rekindled my ever growing embedded software envy.
+The first thing that crossed my mind at the time was, what if i made the led talk in morse.
+</p>
+
+<p>
+Then i came across <a href="http://nakkaya.com/2010/01/03/clodiuno-a-clojure-api-for-the-firmata-protocol/">one article</a> and this envy was multiplied because it added the <a href="http://clojure.org/">clojure</a> dimension into this.
+</p>
+
+<p>
+Finally, i decided to begin so i bought an arduino board.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Beginning</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Everything is working fine:
+</p>
+
+<ul class="org-ul">
+<li>i received the arduino and all sort of needed stuff (LED, jumpers, resistances, pushbuttons, etc&#x2026;)
+</li>
+
+<li>the arduino ide works out of the box
+</li>
+</ul>
+<p>
+and is pretty simple to install on my machine, cool!
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo aptitude install arduino
+</pre>
+</div>
+
+<p>
+I did a simple tutorial that worked ok instantly <a href="http://arduino.cc/en/Tutorial/Blink">http://arduino.cc/en/Tutorial/Blink</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Now what?</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+But then what's the problem?
+</p>
+
+<p>
+Professionally, i am a java developer and it's difficult enough as it is.
+Now the arduino language is an implementation of <a href="http://wiring.org.co/">wiring</a>, <a href="http://www.infoq.com/presentations/Are-We-There-Yet-Rich-Hickey">it looks like c/c++/java, but it's all the same to me&#x2026;</a>
+</p>
+
+<p>
+To sum up, i do not want to do stuff in imperative language if i can avoid it.
+And me think i can&#x2026;
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Clodiuno</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Anyway, now that i discover the joy of clojure, i want to do most thing in it because i'm convinced i can do more with
+it.
+</p>
+
+<p>
+So here enters <a href="https://github.com/nakkaya/clodiuno">clodiuno</a>.
+</p>
+
+<p>
+Here, i will describe the setup hell. Feel free to dismiss it :D
+</p>
+</div>
+
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1">first try</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+At first, this article seems scary and it is&#x2026;
+You must mess around with java libs&#x2026;
+It's not something i enjoy particularly.
+</p>
+
+<p>
+And indeed, this must be both way because i failed to make it work.
+</p>
+
+<p>
+After all, the author, provided only the jars for OS X and i'm under GNU/Linux.
+</p>
+
+<p>
+Status: failed!
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2">Second try</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+Here i encountered a great article that tries to fill the gaps left by the first article.
+<a href="http://combinate.us/2010/12/27/arduino-and-clojure/">http://combinate.us/2010/12/27/arduino-and-clojure/</a>
+</p>
+
+<p>
+Then again, i failed but there are comments from <a href="https://github.com/samaaron">Sam Aaron</a> that helped!
+He did us a favour and created a <a href="https://clojars.org/org.clojars.samaaron/rxtx/versions/2.2.0.1">clojar archives with the needed deps for every platform</a> (including mine).
+</p>
+
+<p>
+(I am under the impression that everywhere there's something rather on the edge (<a href="https://github.com/quil/quil">quil</a>, <a href="https://github.com/overtone/overtone.git">overtone</a>, etc&#x2026;), he is nearby :D.)
+</p>
+
+<p>
+Status: failed!
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3">Third try</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+Sam Aaron did try to fill the needed steps by providing the missing library for us linuxian.
+But still, it did not work.
+</p>
+
+<p>
+Status: failed!
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4" class="outline-3">
+<h3 id="sec-4-4">Fourth try</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+I found out a library that Sam Aaron did <a href="https://github.com/samaaron/serial-port">https://github.com/samaaron/serial-port</a> on serial devices and how to connect to it.
+I thought this could help me to just try and connect to the board.
+</p>
+
+<p>
+So i went and tried it.
+</p>
+
+<p>
+Alas, failure again.
+</p>
+
+<p>
+I then decided <a href="https://github.com/samaaron/serial-port/issues/3">to ask for the help of Sam Aaron</a>.
+</p>
+
+<p>
+After all, i did everything by the book, or at least, his readme.
+</p>
+
+<p>
+I thought again that this was a good way for me to explain clearly what the problem was.
+It did help but not in finding the solution.
+</p>
+
+<p>
+After seeking out why and failing to find anything, i did get back to the arduino ide.
+</p>
+
+<p>
+Status: failed!
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-5" class="outline-3">
+<h3 id="sec-4-5">Fifth try</h3>
+<div class="outline-text-3" id="text-4-5">
+<p>
+I did succeed <a href="http://arduino.cc/en/Tutorial/Button">what i wanted in the arduino ide</a> but still with a failure taste.
+As it's difficult for me to accept a failure, i took a last shot but this time, differently.
+</p>
+
+<p>
+I decided to play in the repl with the java base code to make it talk.
+</p>
+
+<p>
+That's when i discovered a limitation of the java api - <a href="http://rxtx.qbang.org/wiki/index.php/Discovering_comm_ports">http://rxtx.qbang.org/wiki/index.php/Discovering_comm_ports</a>.
+</p>
+
+<p>
+The java api searches for the serial devices with a certain naming convention '/dev/ttySxx' format and that's all.
+My device is named /dev/ttyACM0!
+</p>
+
+<p>
+That's it, i found out the underlying "bug".
+</p>
+
+<p>
+I tried and made a link and voila! No more bugs.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo ln -s /dev/ttyACM0 /dev/ttyS42
+</pre>
+</div>
+
+<p>
+Status: Success!
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-6" class="outline-3">
+<h3 id="sec-4-6">The end of the story.</h3>
+<div class="outline-text-3" id="text-4-6">
+<p>
+I closed the previously opened issue.
+I added some workaround on the serial-port/README.md and made a pull request on the readme of Sam Aaron.
+</p>
+
+<p>
+Now i can play with my arduino from the comfort of my repl.
+</p>
+
+<p>
+Soon, i will write some real code and post it!
+</p>
+</div>
+</div>
+</div>

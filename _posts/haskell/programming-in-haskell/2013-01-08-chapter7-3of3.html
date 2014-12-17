@@ -1,0 +1,232 @@
+---
+layout: post
+title: PIH - ch7 - Higher-order functions 3/3
+date: 2013-01-08
+categories:
+- haskell
+- exercises
+- functional-programming
+author: Antoine R. Dumont
+excerpt: Higher order functions, function composition, foldr, foldl exercises.
+---
+<p>
+For the first exercises, <a href="http://adumont.fr/blog/pih-ch7-higher-order-functions-12/">see this post</a> and <a href="http://adumont.fr/blog/pih-ch7-higher-order-functions-23/">this one</a>.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">transmitter</h2>
+<div class="outline-text-2" id="text-1">
+<blockquote>
+<p>
+Modify the string transmitter program to detect simple transmission errors using parity bits. That is, each eight-bit binary number produced during encoding is extended with a parity bit, set to one if the number contains an odd number of ones, and to zero otherwise.
+In turn, each resulting nine-bit binary number consumed during decoding is checked to ensure that its parity bit is correct, with the parity bit being discarded if this is the case, and a parity error reported otherwise.
+</p>
+
+<p>
+<b>Hint:</b>
+The library function <code>error :: String → a</code> terminates evaluation and displays the given string as an error message.
+</p>
+</blockquote>
+
+<p>
+Recall the existing functions:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">int2bin</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> [<span style="color: #D8FA3C;">Bit</span>]
+<span style="color: #ff1493;">int2bin</span> 0 <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">int2bin</span> n <span style="color: #D8FA3C;">=</span> int2bin (n <span style="color: #D8FA3C;">`div`</span> 2) <span style="color: #D8FA3C;">++</span> [n <span style="color: #D8FA3C;">`mod`</span> 2]
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">parbit</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+We need the <code>parbit</code> function which add the parity bit at the ninth position:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">parbit</span> <span style="color: #D8FA3C;">::</span> [<span style="color: #D8FA3C;">Bit</span>] <span style="color: #D8FA3C;">-&gt;</span> [<span style="color: #D8FA3C;">Bit</span>]
+<span style="color: #ff1493;">parbit</span> xs <span style="color: #D8FA3C;">|</span> even (sum xs) <span style="color: #D8FA3C;">=</span> xs <span style="color: #D8FA3C;">++</span> [0] <span style="color: #586e75;">-- </span><span style="color: #8B8989; font-style: italic;">even number of ones</span>
+          <span style="color: #D8FA3C;">|</span> otherwise     <span style="color: #D8FA3C;">=</span> xs <span style="color: #D8FA3C;">++</span> [1] <span style="color: #586e75;">-- </span><span style="color: #8B8989; font-style: italic;">odd number of ones</span>
+</pre>
+</div>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> parbit [1,1,0]
+[1,1,0,0]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> parbit [1,1,1]
+[1,1,1,1]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">encode</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Now we need to add in the function the adding of the parity bit.
+After we created the 8 bits portion seems a good idea, so here we go:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">encode</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">String</span> <span style="color: #D8FA3C;">-&gt;</span> [<span style="color: #D8FA3C;">Bit</span>]
+<span style="color: #ff1493;">encode</span> <span style="color: #D8FA3C;">=</span> concat <span style="color: #D8FA3C;">.</span> map (parbit <span style="color: #D8FA3C;">.</span> make8 <span style="color: #D8FA3C;">.</span> int2bin <span style="color: #D8FA3C;">.</span> <span style="color: #d3d3d3; background-color: #000000;">C.ord</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">chop9</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Now we need to be able to chop bits by bucket of 9:
+</p>
+
+<p>
+Using <code>unfold</code>, this goes quite fast:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">chop9</span> <span style="color: #D8FA3C;">::</span> [<span style="color: #D8FA3C;">Bit</span>] <span style="color: #D8FA3C;">-&gt;</span> [[<span style="color: #D8FA3C;">Bit</span>]]
+<span style="color: #ff1493;">chop9</span> <span style="color: #D8FA3C;">=</span> unfold null (take 9) (drop 9)
+</pre>
+</div>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> chop9 (encode <span style="color: #61CE3C;">"haskell"</span>)
+[[0,1,1,0,1,0,0,0,1],[0,1,1,0,0,0,0,1,1],[0,1,1,1,0,0,1,1,1],[0,1,1,0,1,0,1,1,1]<span style="color: #dc8cc3; background-color: #383838;">,[0,1,1,0,0,1,0,1,0],[0,1,1,0,1,1,0,0,0],[0,1,1,0,1,1,0,0,0]]</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">checkParbit</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+I take 8 bits, compute the parity bit and check with the all list, if this matches, then I return the 8th bits, otherwise, i raise an error:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">checkParbit</span> <span style="color: #D8FA3C;">::</span> [<span style="color: #D8FA3C;">Bit</span>] <span style="color: #D8FA3C;">-&gt;</span> [<span style="color: #D8FA3C;">Bit</span>]
+<span style="color: #ff1493;">checkParbit</span> xs <span style="color: #D8FA3C;">|</span> (parbit (take 8 xs) <span style="color: #D8FA3C;">==</span> xs) <span style="color: #D8FA3C;">=</span> (take 8 xs)
+               <span style="color: #D8FA3C;">|</span> otherwise <span style="color: #D8FA3C;">=</span> error <span style="color: #61CE3C;">"Not ok"</span>
+</pre>
+</div>
+
+<p>
+Example:
+#+begin<sub>src</sub> haskell
+*Ch7<sub>2</sub>&gt; checkParbit (encode "a")
+[0,1,0,0,0,0,1,1]
+*Ch7<sub>2</sub>&gt; checkParbit [0,1,0,0,0,0,1,0]
+</p>
+</div>
+<div id="outline-container-sec-1-4-1" class="outline-4">
+<h4 id="sec-1-4-1">Exception: Not ok</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<p>
+#+end<sub>src</sub>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4-2" class="outline-4">
+<h4 id="sec-1-4-2">decode</h4>
+<div class="outline-text-4" id="text-1-4-2">
+<p>
+At last, we can update the decode phase.
+We must first chop by 9 bits the list of bits we receive.
+Then checking the parity bits, then the rest:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">decode</span> <span style="color: #D8FA3C;">::</span> [<span style="color: #D8FA3C;">Bit</span>] <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">String</span>
+<span style="color: #ff1493;">decode</span> <span style="color: #D8FA3C;">=</span> map (<span style="color: #d3d3d3; background-color: #000000;">C.chr</span> <span style="color: #D8FA3C;">.</span> bin2int <span style="color: #D8FA3C;">.</span> checkParbit) <span style="color: #D8FA3C;">.</span> chop9
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Test</h2>
+<div class="outline-text-2" id="text-2">
+<blockquote>
+<p>
+Test your new string transmitter program from the previous exercise using a faulty communication channel that forgets the first bit, which can be modelled using the tail function on lists of bits.
+</p>
+</blockquote>
+</div>
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Without errors</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Recall the transmit function:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">channel</span> <span style="color: #D8FA3C;">::</span> a <span style="color: #D8FA3C;">-&gt;</span> a
+<span style="color: #ff1493;">channel</span> <span style="color: #D8FA3C;">=</span> id
+
+<span style="color: #ff1493;">transmit</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">String</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">String</span>
+<span style="color: #ff1493;">transmit</span> <span style="color: #D8FA3C;">=</span> decode <span style="color: #D8FA3C;">.</span> channel <span style="color: #D8FA3C;">.</span> encode
+</pre>
+</div>
+
+<p>
+Thus, everything works ok:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> transmit <span style="color: #61CE3C;">"haskell is great"</span>
+<span style="color: #61CE3C;">"haskell is great"</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">Errors</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+The transmit function does not need to change. However, the channel one does.
+As the problem states, we can for example use <code>tail</code> for this:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">channel</span> <span style="color: #D8FA3C;">::</span> a <span style="color: #D8FA3C;">-&gt;</span> a
+<span style="color: #ff1493;">channel</span> <span style="color: #D8FA3C;">=</span> tail
+</pre>
+</div>
+
+<p>
+Then all hell breaks loose:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> transmit <span style="color: #61CE3C;">"haskell is great"</span>
+<span style="color: #61CE3C;">"\209\195\231\215\202\216\216A\210\231A\207\228\202\195*** Exception: Not ok</span>
+</pre>
+</div>
+</div>
+</div>
+</div>

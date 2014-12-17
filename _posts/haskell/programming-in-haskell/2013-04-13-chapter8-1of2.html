@@ -1,0 +1,335 @@
+---
+layout: post
+title: PIH - ch8 1/2 - Functional parsers - exercises
+date: 2013-04-13
+categories:
+- haskell
+- exercises
+- functional-programming
+- parsers
+author: Antoine R. Dumont
+excerpt: Learning haskell and solving problems using reasoning and 'repl'ing
+---
+<p>
+Before being able to fool around on this chapter, here are some pre-requisites:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #FBDE2D; font-weight: bold;">import</span> <span style="color: #D8FA3C;">Control.Monad</span>
+<span style="color: #FBDE2D; font-weight: bold;">import</span> <span style="color: #D8FA3C;">Data.Char</span>(isDigit, isUpper, isLower, isAlpha, isAlphaNum, isSpace)
+
+<span style="color: #FBDE2D; font-weight: bold;">newtype</span> <span style="color: #D8FA3C;">Parser</span> a  <span style="color: #D8FA3C;">=</span>  <span style="color: #D8FA3C;">P</span> (<span style="color: #D8FA3C;">String</span> <span style="color: #D8FA3C;">-&gt;</span> [(a,<span style="color: #D8FA3C;">String</span>)])
+
+<span style="color: #ff1493;">parse</span>             <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Parser</span> a <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">String</span> <span style="color: #D8FA3C;">-&gt;</span> [(a,<span style="color: #D8FA3C;">String</span>)]
+<span style="color: #ff1493;">parse</span> (<span style="color: #D8FA3C;">P</span> p) inp   <span style="color: #D8FA3C;">=</span>  p inp
+
+<span style="color: #FBDE2D; font-weight: bold;">instance</span> <span style="color: #D8FA3C;">Monad</span> <span style="color: #D8FA3C;">Parser</span> <span style="color: #FBDE2D; font-weight: bold;">where</span>
+  <span style="color: #586e75;">-- </span><span style="color: #8B8989; font-style: italic;">return parser: always succeeds by returning the result value</span>
+  <span style="color: #586e75;">-- </span><span style="color: #8B8989; font-style: italic;">v without consuming the input</span>
+    return v      <span style="color: #D8FA3C;">=</span>  <span style="color: #D8FA3C;">P</span> (<span style="color: #D8FA3C;">\</span>inp <span style="color: #D8FA3C;">-&gt;</span> [(v,inp)])
+
+  <span style="color: #586e75;">-- </span><span style="color: #8B8989; font-style: italic;">bind</span>
+    p <span style="color: #D8FA3C;">&gt;&gt;=</span> f       <span style="color: #D8FA3C;">=</span>  <span style="color: #D8FA3C;">P</span> (<span style="color: #D8FA3C;">\</span>inp <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #FBDE2D; font-weight: bold;">case</span> parse p inp <span style="color: #FBDE2D; font-weight: bold;">of</span>
+                       <span style="color: #D8FA3C;">[]</span>        <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">[]</span>
+                       [(v,out)] <span style="color: #D8FA3C;">-&gt;</span> parse (f v) out)
+
+<span style="color: #FBDE2D; font-weight: bold;">instance</span> <span style="color: #D8FA3C;">MonadPlus</span> <span style="color: #D8FA3C;">Parser</span> <span style="color: #FBDE2D; font-weight: bold;">where</span>
+  <span style="color: #586e75;">-- </span><span style="color: #8B8989; font-style: italic;">fail</span>
+    mzero         <span style="color: #D8FA3C;">=</span>  <span style="color: #D8FA3C;">P</span> (<span style="color: #D8FA3C;">\</span><span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">[]</span>)
+  <span style="color: #586e75;">-- </span><span style="color: #8B8989; font-style: italic;">choice</span>
+    p <span style="color: #D8FA3C;">`mplus`</span> q   <span style="color: #D8FA3C;">=</span>  <span style="color: #D8FA3C;">P</span> (<span style="color: #D8FA3C;">\</span>inp <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #FBDE2D; font-weight: bold;">case</span> parse p inp <span style="color: #FBDE2D; font-weight: bold;">of</span>
+                       <span style="color: #D8FA3C;">[]</span>        <span style="color: #D8FA3C;">-&gt;</span> parse q inp
+                       [(v,out)] <span style="color: #D8FA3C;">-&gt;</span> [(v,out)])
+</pre>
+</div>
+<p>
+I will not enter into much detail here because <a href="http://hackage.haskell.org/packages/archive/base/latest/doc/html/Prelude.html#t:Monad">monads</a> will be presented later.
+</p>
+
+<p>
+As always, you'll find the <a href="https://github.com/ardumont/haskell-lab/blob/master/src/Parsers.hs">sources on github</a>.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">int :: Parser Int</h2>
+<div class="outline-text-2" id="text-1">
+<blockquote>
+<p>
+The library file also defines a parser <code>int :: Parser Int</code> for an integer. Without looking at this definition, define int.
+</p>
+
+<p>
+<span class="underline">Hint:</span> an integer is either a minus symbol followed by a natural number, or a natural number.
+</p>
+</blockquote>
+
+<p>
+The functions I will use to solve the problem:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">many</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Parser</span> a <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Parser</span> [a]
+<span style="color: #ff1493;">many</span> p <span style="color: #D8FA3C;">=</span> many1 p <span style="color: #D8FA3C;">+++</span> return <span style="color: #D8FA3C;">[]</span>
+
+<span style="color: #ff1493;">many1</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Parser</span> a <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Parser</span> [a]
+<span style="color: #ff1493;">many1</span> p <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D; font-weight: bold;">do</span> v  <span style="color: #D8FA3C;">&lt;-</span> p
+             vs <span style="color: #D8FA3C;">&lt;-</span> many p
+             return (v<span style="color: #D8FA3C;">:</span>vs)
+
+<span style="color: #ff1493;">sat</span> <span style="color: #D8FA3C;">::</span> (<span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Bool</span>) <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Parser</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">sat</span> p <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D; font-weight: bold;">do</span> x <span style="color: #D8FA3C;">&lt;-</span> item; <span style="color: #FBDE2D; font-weight: bold;">if</span> p x <span style="color: #FBDE2D; font-weight: bold;">then</span> return x <span style="color: #FBDE2D; font-weight: bold;">else</span> <span style="color: #d3d3d3; background-color: #000000;">Parsers.fail</span>
+
+<span style="color: #ff1493;">nat</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Parser</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">nat</span> <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D; font-weight: bold;">do</span> xs <span style="color: #D8FA3C;">&lt;-</span> many1 digit
+         return (read xs)
+
+<span style="color: #ff1493;">space</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Parser</span> <span style="color: #D8FA3C;">()</span>
+<span style="color: #ff1493;">space</span> <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D; font-weight: bold;">do</span> many (sat isSpace)
+           return <span style="color: #D8FA3C;">()</span>
+
+<span style="color: #ff1493;">token</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Parser</span> a <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Parser</span> a
+<span style="color: #ff1493;">token</span> p <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D; font-weight: bold;">do</span> space
+             x <span style="color: #D8FA3C;">&lt;-</span> p
+             space
+             return x
+
+<span style="color: #ff1493;">natural</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Parser</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">natural</span> <span style="color: #D8FA3C;">=</span> token nat
+
+<span style="color: #ff1493;">string</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">String</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Parser</span> <span style="color: #D8FA3C;">String</span>
+<span style="color: #ff1493;">string</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> return <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">string</span> (x<span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D; font-weight: bold;">do</span> char x
+                   string xs
+                   return (x<span style="color: #D8FA3C;">:</span>xs)
+
+<span style="color: #ff1493;">symbol</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">String</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Parser</span> <span style="color: #D8FA3C;">String</span>
+<span style="color: #ff1493;">symbol</span> s <span style="color: #D8FA3C;">=</span> token (string s)
+</pre>
+</div>
+
+<p>
+I have a 'choice' between parsing a negative natural number (beginning with '-') or a positive natural number.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">int</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Parser</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">int</span> <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D; font-weight: bold;">do</span> symbol <span style="color: #61CE3C;">"-"</span>
+         n <span style="color: #D8FA3C;">&lt;-</span> natural
+         return (<span style="color: #D8FA3C;">-</span>n)
+         <span style="color: #D8FA3C;">+++</span> natural
+</pre>
+</div>
+
+<p>
+Examples:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Parsers</span><span style="color: #D8FA3C;">&gt;</span> parse int <span style="color: #61CE3C;">"-1"</span>
+[(<span style="color: #D8FA3C;">-</span>1,<span style="color: #61CE3C;">""</span>)]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Parsers</span><span style="color: #D8FA3C;">&gt;</span> parse int <span style="color: #61CE3C;">"-10"</span>
+[(<span style="color: #D8FA3C;">-</span>10,<span style="color: #61CE3C;">""</span>)]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Parsers</span><span style="color: #D8FA3C;">&gt;</span> parse int <span style="color: #61CE3C;">"-101"</span>
+[(<span style="color: #D8FA3C;">-</span>101,<span style="color: #61CE3C;">""</span>)]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Parsers</span><span style="color: #D8FA3C;">&gt;</span> parse int <span style="color: #61CE3C;">"101"</span>
+[(101,<span style="color: #61CE3C;">""</span>)]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Parsers</span><span style="color: #D8FA3C;">&gt;</span> parse int <span style="color: #61CE3C;">" - 101"</span>
+[(<span style="color: #D8FA3C;">-</span>101,<span style="color: #61CE3C;">""</span>)]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">comment :: Parser ()</h2>
+<div class="outline-text-2" id="text-2">
+<blockquote>
+<p>
+Define a parser <code>comment :: Parser ()</code> for ordinary Haskell comments that begin with the symbol &#x2013; and extend to the end of the current line, which is represented by the control character ’\n’.
+</p>
+</blockquote>
+
+<p>
+Here are the functions I will use to answer the question:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">char</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Parser</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">char</span> x <span style="color: #D8FA3C;">=</span> sat (<span style="color: #D8FA3C;">==</span> x)
+
+<span style="color: #ff1493;">alphanum</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Parser</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">alphanum</span> <span style="color: #D8FA3C;">=</span> sat isAlphaNum
+</pre>
+</div>
+
+<p>
+Here is a first naive approach where you specify the characters you can read:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">comment</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Parser</span> <span style="color: #D8FA3C;">()</span>
+<span style="color: #ff1493;">comment</span> <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D; font-weight: bold;">do</span> symbol <span style="color: #61CE3C;">"--"</span>
+             many (alphanum <span style="color: #D8FA3C;">+++</span> char <span style="color: #61CE3C;">' '</span>)
+             char <span style="color: #61CE3C;">'\n'</span>
+             return <span style="color: #D8FA3C;">()</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Parsers</span><span style="color: #D8FA3C;">&gt;</span> parse comment <span style="color: #61CE3C;">"--ignoredcomment\nnotignored"</span>
+[(<span style="color: #D8FA3C;">()</span>,<span style="color: #61CE3C;">"notignored"</span>)]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Parsers</span><span style="color: #D8FA3C;">&gt;</span> parse comment <span style="color: #61CE3C;">"--ignored   comment till\nnotignored"</span>
+[(<span style="color: #D8FA3C;">()</span>,<span style="color: #61CE3C;">"notignored"</span>)]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Parsers</span><span style="color: #D8FA3C;">&gt;</span> parse comment <span style="color: #61CE3C;">"--42 ignoredcomment till\nnotignored"</span>
+[(<span style="color: #D8FA3C;">()</span>,<span style="color: #61CE3C;">"notignored"</span>)]
+</pre>
+</div>
+
+<p>
+Indeed, for some edge cases, this won't work:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Parsers</span><span style="color: #D8FA3C;">&gt;</span> parse comment <span style="color: #61CE3C;">"-- comment!@# that breaks\nnotignored"</span>
+<span style="color: #D8FA3C;">[]</span>
+</pre>
+</div>
+
+<p>
+A simpler and better approach would be to parse anything that's not the ending control char '\n':
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">comment</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Parser</span> <span style="color: #D8FA3C;">()</span>
+<span style="color: #ff1493;">comment</span> <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D; font-weight: bold;">do</span> symbol <span style="color: #61CE3C;">"--"</span>
+             many (sat (<span style="color: #D8FA3C;">/=</span> <span style="color: #61CE3C;">'\n'</span>))
+             char <span style="color: #61CE3C;">'\n'</span>
+             return <span style="color: #D8FA3C;">()</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Parsers</span><span style="color: #D8FA3C;">&gt;</span> parse comment <span style="color: #61CE3C;">"--comment!@# doesnotbreak\nnotignored"</span>
+[(<span style="color: #D8FA3C;">()</span>,<span style="color: #61CE3C;">"notignored"</span>)]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Draw Tree 1/2</h2>
+<div class="outline-text-2" id="text-3">
+<blockquote>
+<p>
+Using our second grammar for arithmetic expressions, draw the two possible parse trees for the expression <code>2 + 3 + 4</code>.
+</p>
+</blockquote>
+
+<p>
+The grammar:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-txt">expr   ::= expr + expr | term
+term   ::= term * term | factor
+factor ::= (expr) | nat
+nat    ::= 0 | 1 | ... |
+</pre>
+</div>
+
+<p>
+<code>2+3+4</code> can be read in 2 ways:
+</p>
+<ul class="org-ul">
+<li><code>(2+3)+4</code>
+</li>
+</ul>
+
+
+<div class="figure">
+<p><img src="./resources/ch8-ex3-1.png" alt="ch8-ex3-1.png" />
+</p>
+</div>
+
+<ul class="org-ul">
+<li><code>2+(3+4)</code>
+</li>
+</ul>
+
+
+<div class="figure">
+<p><img src="./resources/ch8-ex3-2.png" alt="ch8-ex3-2.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Draw Tree 2/2</h2>
+<div class="outline-text-2" id="text-4">
+<blockquote>
+<p>
+Using our third grammar for arithmetic expressions, draw the parse trees for the expressions <code>2 + 3</code>, <code>2 ∗ 3 ∗ 4</code> and <code>(2 + 3) + 4</code>.
+</p>
+</blockquote>
+
+<p>
+The grammar:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-txt">expr   ::= term (+ expr | epsilon)
+term   ::= factor (* term | epsilon)
+factor ::= (expr) | nat
+nat    ::= 0 | 1 | ... |
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><code>2+3</code>
+</li>
+</ul>
+
+
+<div class="figure">
+<p><img src="./resources/ch8-ex4-1.png" alt="ch8-ex4-1.png" />
+</p>
+</div>
+
+<ul class="org-ul">
+<li><code>2*3*4</code>
+</li>
+</ul>
+
+
+<div class="figure">
+<p><img src="./resources/ch8-ex4-2.png" alt="ch8-ex4-2.png" />
+</p>
+</div>
+
+<ul class="org-ul">
+<li><code>(2+3)*4</code>
+</li>
+</ul>
+
+
+<div class="figure">
+<p><img src="./resources/ch8-ex4-3.png" alt="ch8-ex4-3.png" />
+</p>
+</div>
+
+<p>
+#+./resources/ch8-ex3-1.png <img src="http://adumont.fr/blog/wp-content/uploads/2013/04/wpid-ch8-ex3-1.png" alt="wpid-ch8-ex3-1.png" />
+#+./resources/ch8-ex3-2.png <img src="http://adumont.fr/blog/wp-content/uploads/2013/04/wpid-ch8-ex3-2.png" alt="wpid-ch8-ex3-2.png" />
+</p>
+
+<p>
+#+./resources/ch8-ex4-1.png <img src="http://adumont.fr/blog/wp-content/uploads/2013/04/wpid-ch8-ex4-1.png" alt="wpid-ch8-ex4-1.png" />
+#+./resources/ch8-ex4-2.png <img src="http://adumont.fr/blog/wp-content/uploads/2013/04/wpid-ch8-ex4-2.png" alt="wpid-ch8-ex4-2.png" />
+#+./resources/ch8-ex4-3.png <img src="http://adumont.fr/blog/wp-content/uploads/2013/04/wpid-ch8-ex4-3.png" alt="wpid-ch8-ex4-3.png" />
+</p>
+</div>
+</div>

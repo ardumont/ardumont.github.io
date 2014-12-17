@@ -1,0 +1,619 @@
+---
+layout: post
+title: Vagrant tools
+date: 2012-12-24
+categories:
+- vagrant
+- vagrant-snap
+- virtualbox
+- snapshot
+- tools
+author: Antoine R. Dumont
+excerpt: Howto about vagrant tools
+---
+<p>
+In this post, I will describe how to install/setup the <a href="http://vagrantup.com/">vagrant</a> stack I use in my every day work to ease my developments.
+<a href="http://vagrantup.com/v1/docs/getting-started/why.html">For some hints as to why i use vagrant :D</a>.
+</p>
+
+<p>
+As usual, my environment is a <a href="http://www.debian.org/misc/children-distros">debian-based environment</a>.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Pre-requisites</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+I detail the versions for which I know the combo works!
+</p>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">No details</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo aptitude install -y ruby1.9.3 rubygems virtualbox &amp;&amp; <span style="color: #b58900; font-weight: bold;">\</span>
+sudo gem install vagrant vagrant-snap virtualbox
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">Details</h3>
+<div class="outline-text-3" id="text-1-2">
+</div><div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1">ruby (1.9)</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo aptitude install ruby1.9.3 rubygems
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-2" class="outline-4">
+<h4 id="sec-1-2-2"><a href="https://www.virtualbox.org/">virtualbox</a> (4.1)</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo aptitude install virtualbox
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-3" class="outline-4">
+<h4 id="sec-1-2-3"><a href="http://vagrantup.com/">vagrant</a> (1.0.5)</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<p>
+<a href="//Vagrantup.Com/">Vagrant</a> permits to ease the use of <a href="https://www.virtualbox.org/">virtualbox</a> vm from the command line interface.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo gem install vagrant
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-4" class="outline-4">
+<h4 id="sec-1-2-4"><a href="https://github.com/t9md/vagrant-snap">vagrant-snap</a> (0.10)</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<p>
+<a href="https://github.com/t9md/vagrant-snap">Vagrant-snap</a> permits to ease the hot snapshoting of your vm.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo gem install vagrant-snap virtualbox
+</pre>
+</div>
+
+<p>
+<b>Note</b>
+You need to add the <a href="https://www.virtualbox.org/">virtualbox</a> gem dependency because of a <a href="https://github.com/t9md/vagrant-snap/issues/9">vagrant/vagrant-snap dependency issue</a>.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Your first virtual machine (vm)</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Setup</h3>
+<div class="outline-text-3" id="text-2-1">
+</div><div id="outline-container-sec-2-1-1" class="outline-4">
+<h4 id="sec-2-1-1">Default</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #FF6400; font-weight: bold;">cd</span> /your/vm/folder &amp;&amp; vagrant init
+</pre>
+</div>
+
+<p>
+This will generate a template <b>Vagrantfile</b> with a minimal default content (i removed comments):
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-ruby"><span style="color: #D8FA3C;">Vagrant</span>::<span style="color: #D8FA3C;">Config</span>.run <span style="color: #FBDE2D; font-weight: bold;">do</span> |config|
+  config.vm.box = <span style="color: #61CE3C;">"base"</span>
+<span style="color: #FBDE2D; font-weight: bold;">end</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-1-2" class="outline-4">
+<h4 id="sec-2-1-2">Specific setup</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<p>
+Now edit it to suit your need.
+</p>
+
+<p>
+For example, I frequently use something along those lines :
+</p>
+<ul class="org-ul">
+<li>call the vm <b>lucid64</b>
+</li>
+<li>the iso is based on the template box <a href="http://files.vagrantup.com/lucid64.box">http://files.vagrantup.com/lucid64.box</a>
+</li>
+<li>the vm has <b>512Mo</b> of RAM
+</li>
+<li>assign one ip <b>192.168.33.2</b>
+</li>
+<li>assign a hostname to be <b>ubuntu.local.com</b>
+</li>
+<li>as soon as the vm is up, i want it to run the script <code>./scripts/bootstrap.sh</code>
+</li>
+<li>and i want to make a mount point on some folder, here <code>~vagrant/bin/</code> will be mounted on the host's folder <code>./scripts</code>
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-ruby"><span style="color: #D8FA3C;">Vagrant</span>::<span style="color: #D8FA3C;">Config</span>.run <span style="color: #FBDE2D; font-weight: bold;">do</span> |config|
+    config.vm.box = <span style="color: #61CE3C;">"lucid64"</span>
+    config.vm.box_url = <span style="color: #61CE3C;">"http://files.vagrantup.com/lucid64.box"</span>
+    config.vm.customize [<span style="color: #61CE3C;">"modifyvm"</span>, <span style="color: #4c83ff; font-weight: bold;">:id</span>,  <span style="color: #61CE3C;">"--natdnshostresolver1"</span>, <span style="color: #61CE3C;">"on"</span>, <span style="color: #61CE3C;">"--mem</span><span style="color: #dc8cc3; background-color: #383838;">ory"</span><span style="color: #dc8cc3; background-color: #383838;">, 512]</span>
+    config.vm.network <span style="color: #4c83ff; font-weight: bold;">:hostonly</span>, <span style="color: #61CE3C;">"192.168.33.2"</span>
+    config.vm.host_name = <span style="color: #61CE3C;">"ubuntu.local.com"</span>
+    config.vm.provision <span style="color: #4c83ff; font-weight: bold;">:shell</span>, <span style="color: #4c83ff; font-weight: bold;">:path</span> =&gt; <span style="color: #61CE3C;">"./scripts/bootstrap.sh"</span>
+    config.vm.share_folder <span style="color: #61CE3C;">"v-data-1"</span>, <span style="color: #61CE3C;">"/home/vagrant/bin"</span>, <span style="color: #61CE3C;">"./scripts"</span>
+<span style="color: #FBDE2D; font-weight: bold;">end</span>
+</pre>
+</div>
+
+<p>
+<b>Note</b>
+</p>
+<ul class="org-ul">
+<li><a href="http://www.vagrantbox.es/">find some vagrant templates</a>.
+</li>
+<li>You are not limited to one vm.
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">Boot</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Run this command:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">vagrant up
+</pre>
+</div>
+
+<p>
+<b>Note</b>
+The first time around, if you do not have locally the <b>lucid64</b> vm, this will download it for you.
+</p>
+
+<p>
+Then, this will boot the vm respecting the setup you provided in the <b>Vagrantfile</b>.
+</p>
+
+<p>
+Possible output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.36,) 23:03:09 ~/repo/perso/puppet-sync (master) $ v up vm1
+[vm1] VM already created. Booting if it<span style="color: #61CE3C;">'s not already running...</span>
+<span style="color: #61CE3C;">[vm1] Clearing any previously set forwarded ports...</span>
+<span style="color: #61CE3C;">[vm1] Forwarding ports...</span>
+<span style="color: #61CE3C;">[vm1] -- 22 =&gt; 2222 (adapter 1)</span>
+<span style="color: #61CE3C;">[vm1] Creating shared folders metadata...</span>
+<span style="color: #61CE3C;">[vm1] Clearing any previously set network interfaces...</span>
+<span style="color: #61CE3C;">[vm1] Preparing network interfaces based on configuration...</span>
+<span style="color: #61CE3C;">[vm1] Running any VM customizations...</span>
+<span style="color: #61CE3C;">[vm1] Booting VM...</span>
+<span style="color: #61CE3C;">[vm1] Waiting for VM to boot. This can take a few minutes.</span>
+<span style="color: #61CE3C;">[vm1] VM booted and ready for use!</span>
+<span style="color: #61CE3C;">[vm1] Configuring and enabling network interfaces...</span>
+<span style="color: #61CE3C;">[vm1] Setting host name...</span>
+<span style="color: #61CE3C;">[vm1] Mounting shared folders...</span>
+<span style="color: #61CE3C;">[vm1] -- v-root: /vagrant</span>
+<span style="color: #61CE3C;">[vm1] -- v-data-2: /root/bin</span>
+<span style="color: #61CE3C;">[vm1] -- v-data-3: /home/vagrant/bin</span>
+<span style="color: #61CE3C;">[vm1] -- v-data-1: /etc/puppet-mount/</span>
+<span style="color: #61CE3C;">[vm1] -- v-data-4: /usr/local/bin/enc</span>
+<span style="color: #61CE3C;">[vm1] Running provisioner: Vagrant::Provisioners::Shell...</span>
+<span style="color: #61CE3C;">stdin: is not a tty</span>
+<span style="color: #61CE3C;">+ whoami</span>
+<span style="color: #61CE3C;">root</span>
+<span style="color: #61CE3C;">+ '</span>[<span style="color: #61CE3C;">' '</span>!<span style="color: #61CE3C;">' -f ./puppetlabs-release-precise.deb '</span>]<span style="color: #61CE3C;">'</span>
+<span style="color: #61CE3C;">+ grep '</span>export TERM<span style="color: #61CE3C;">' /root/.bashrc</span>
+<span style="color: #61CE3C;">export TERM=xterm</span>
+<span style="color: #61CE3C;">+ '</span>[<span style="color: #61CE3C;">' '</span>!<span style="color: #61CE3C;">' 0 = 0 '</span>]<span style="color: #61CE3C;">'</span>
+</pre>
+</div>
+
+<p>
+<b>Note</b>
+</p>
+<ul class="org-ul">
+<li><code>v</code> stands for <code>vagrant</code> (it's a personal alias)
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">Connect</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+As soon as the vm is up, you get back the prompt.
+It is now time to connect to it:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">vagrant ssh
+</pre>
+</div>
+
+<p>
+Possible output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(1.09,) 23:04:38 (7) ~/repo/perso/puppet-sync (master) $ v ssh vm1
+Welcome to Ubuntu 12.04 LTS (GNU/Linux 3.2.0-23-generic-pae i686)
+
+ * Documentation:  https://help.ubuntu.com/
+Welcome to your Vagrant-built virtual machine.
+Last login: Sun Dec 16 13:22:45 2012 from 10.0.2.2
+vagrant@puppet:~$
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4">Action</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Once you're connected, you can do whatever you want with your vm (even crash it!).
+</p>
+
+<p>
+Imagine:
+</p>
+<ul class="org-ul">
+<li>one vm with your puppet master (to serve the install of your agent)
+</li>
+<li>another vm with a puppet agent (to check that the modules you develop are ok)
+</li>
+<li>one vm with the application you're developing (plugged with the source code on your host machine&#x2026;)
+</li>
+<li>another one with your back end
+</li>
+<li>etc&#x2026;
+</li>
+</ul>
+
+<p>
+To sum up, the sky is the limit (at least, the limit is with your host machine's ram)
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5">Status</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+You can check at any time the status of your vms.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">vagrant status
+</pre>
+</div>
+
+<p>
+Possible output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(1.13,) 23:07:47 ~/repo/perso/puppet-sync (master) $ v status
+Current VM states:
+
+vm1                      running
+vm2                      poweroff
+
+This environment represents multiple VMs. The VMs are all listed
+above with their current state. For more information about a specific
+VM, run <span style="color: #6c71c4; font-weight: bold;">`vagrant status NAME`</span>.
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6">Halt</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+Once you want to halt the vm because you're done doing what you want.
+First, disconnect from the vm (<b>C-d</b> in an empty bash prompt or <b>exit</b> or <b>logout</b>).
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">vagrant@puppet:~$ logout
+Connection to 127.0.0.1 closed.
+tony@dagobah(1.23,) 23:06:07 ~/repo/perso/puppet-sync (master) $
+</pre>
+</div>
+
+<p>
+Now, you can stop the vm:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">vagrant halt
+</pre>
+</div>
+
+<p>
+Possible output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(1.15,) 23:08:50 (130) ~/repo/perso/puppet-sync (master) $ v halt vm<span style="color: #dc8cc3; background-color: #383838;">1</span>
+[vm1] Attempting graceful shutdown of VM...
+tony@dagobah(1.34,) 23:09:03 ~/repo/perso/puppet-sync (master) $
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">A cool functionality: Snapshot</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+The utility of the snapshot must not be under-estimated.
+This can save you plenty of time (of course, you need to take the time to make some at first).
+You can see this as an equivalent to <a href="http://git-scm.com/">git</a> for your vms.
+</p>
+
+<p>
+This permits you to go back at a precise snapshot.
+For example, to redo a failed step by short-circuiting successful steps that you want to skip.
+</p>
+
+<p>
+For this, we will use <a href="https://github.com/t9md/vagrant-snap">vagrant-snap</a>.
+</p>
+</div>
+
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">take</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+To take one snapshot for the vm1:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">vagrant snap take vm1 -n $<span style="color: #D8FA3C;">TAG_YOU_WANT</span> -d $<span style="color: #D8FA3C;">DESCRIPTION_YOU_WANT</span>
+</pre>
+</div>
+
+<p>
+<b>Note</b>
+</p>
+<ul class="org-ul">
+<li>if no name is provided for the vm, all the vms will be snapshoted
+</li>
+<li>the description (-d) is optional but recommended.
+</li>
+<li>Did I mention that the snapshot can be taken when the vm is running?! Fun, ain't it!!!
+</li>
+</ul>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(1.44,) 23:15:51 ~/repo/perso/puppet-sync (master) $ v snap take -n <span style="color: #dc8cc3; background-color: #383838;">master-ready-for-test -d </span><span style="color: #dc8cc3; background-color: #383838;">"master up and ready for testing"</span>
+[vm1]
+0%...10%...20%...30%...40%...50%...60%...70%...80%...90%...100%
+[vm2]
+0%...10%...20%...30%...40%...50%...60%...70%...80%...90%...100%
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2">list</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+List all your snapshots for your vms.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">vagrant snap list
+</pre>
+</div>
+
+<p>
+Here is a possible output with 2 vms:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(1.07,) 23:16:29 ~/repo/perso/puppet-sync (master) $ v snap list
+[vm1]
+ master-ready [ 8 days ] puppet master up and ready
+    <span style="color: #6c71c4; font-weight: bold;">`-- master-ready-for-test [ 43 seconds ] master up and ready for testing</span>
+<span style="color: #6c71c4; font-weight: bold;">[vm2]</span>
+<span style="color: #6c71c4; font-weight: bold;"> agent-ready [ 8 days ] puppet agent up and ready</span>
+<span style="color: #6c71c4; font-weight: bold;">    `</span>-- master-ready-for-test [ 41 seconds ] master up and ready for testing
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3">back to the <del>future</del> past</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+If you take snapshots, you will have eventually want to restore some:
+</p>
+</div>
+
+<div id="outline-container-sec-3-3-1" class="outline-4">
+<h4 id="sec-3-3-1">Suspend (optional)</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<p>
+First, you may need to suspend the vm(s) <code>$VM_NAME</code>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">vagrant $<span style="color: #D8FA3C;">VM_NAME</span> suspend
+</pre>
+</div>
+
+
+
+<p>
+Possible output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.98,) 23:11:05 ~/repo/perso/puppet-sync (master) $ v suspend vm1
+[vm1] Saving VM state and suspending execution...
+tony@dagobah(0.76,) 23:11:50 (130) ~/repo/perso/puppet-sync (master) $ v status
+Current VM states:
+
+vm1                      saved
+vm2                      poweroff
+
+This environment represents multiple VMs. The VMs are all listed
+above with their current state. For more information about a specific
+VM, run <span style="color: #6c71c4; font-weight: bold;">`vagrant status NAME`</span>.
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-3-2" class="outline-4">
+<h4 id="sec-3-3-2">Go back</h4>
+<div class="outline-text-4" id="text-3-3-2">
+<p>
+Then you can go back to the <code>$TAG_YOU_WANT</code>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">vagrant snap go $<span style="color: #D8FA3C;">TAG_YOU_WANT</span> $<span style="color: #D8FA3C;">VM_NAME</span>
+</pre>
+</div>
+
+<p>
+<b>Note</b>
+</p>
+<ul class="org-ul">
+<li><code>$VM_NAME</code> is optional.
+</li>
+<li>If you do not give any name, all your vms will be wired up to the tag <code>$TAG_YOU_WANT</code>.
+</li>
+</ul>
+
+<p>
+For example:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.35,) 23:20:05 ~/repo/perso/puppet-sync (master) $ v snap go maste<span style="color: #dc8cc3; background-color: #383838;">r-ready-for-test vm1</span>
+[vm1]
+VBoxManage: error: Cannot power down a saved virtual machine
+VBoxManage: error: Details: code VBOX_E_INVALID_VM_STATE (0x80bb0002), component<span style="color: #dc8cc3; background-color: #383838;"> Console, interface IConsole, callee nsISupports</span>
+Context: <span style="color: #61CE3C;">"PowerDown(progress.asOutParam())"</span> at line 168 of file VBoxManageContro<span style="color: #dc8cc3; background-color: #383838;">lVM.cpp</span>
+Restoring snapshot 9e8f5514-5745-4abb-925f-a2e38bbf9200
+0%...10%...20%...30%...40%...50%...60%...70%...80%...90%...100%
+Waiting for VM <span style="color: #61CE3C;">"aa8c95dc-571e-4cb2-ae4a-3c57f4c2db8c"</span> to power on...
+VM <span style="color: #61CE3C;">"aa8c95dc-571e-4cb2-ae4a-3c57f4c2db8c"</span> has been successfully started.
+</pre>
+</div>
+
+<p>
+<b>Note</b>
+The error messages are normals and may vary according to the state of your vm(s).
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4">Cleaning Snapshot</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+You can delete snapshots once you do not need them anymore.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">vagrant snap delete $<span style="color: #D8FA3C;">VM_SNAPSHOT</span>
+</pre>
+</div>
+
+<p>
+This may take some time. You can check this via the <code>status</code> call:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(2.82,) 23:27:44 ~/repo/perso/puppet-sync (master) $ v status
+Current VM states:
+
+vm1                      deletingsnapshotlive
+vm2                      poweroff
+
+This environment represents multiple VMs. The VMs are all listed
+above with their current state. For more information about a specific
+VM, run <span style="color: #6c71c4; font-weight: bold;">`vagrant status NAME`</span>.
+</pre>
+</div>
+
+<p>
+Possible output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.47,) 23:23:19 ~/repo/perso/puppet-sync (master) $ v snap delete m<span style="color: #dc8cc3; background-color: #383838;">aster-ready-for-test</span>
+[vm1]
+0%...10%...20%...30%...40%...50%...60%...70%...80%...90%...100%
+[vm2]
+0%...10%...20%...30%...40%...50%...60%...70%...80%...90%...100%
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Conclusion</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+With minor effort from your part, the <span class="underline">Vagrant stack</span> is a great way to empower you for your every day use.
+Use it, you won't regret it!
+</p>
+</div>
+</div>

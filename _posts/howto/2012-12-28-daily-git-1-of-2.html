@@ -1,0 +1,497 @@
+---
+layout: post
+title: Daily git 1/2
+date: 2012-12-28
+categories:
+- emacs
+- git
+- tools
+author: Antoine R. Dumont
+excerpt: How do i use git every day 1/2
+---
+<p>
+In <a href="http://adumont.fr/blog/git-aliasessystem-git-aliases/">another post</a>, I presented my (system) git aliases.
+</p>
+
+<p>
+In this one, I will enter into a little more details about the most basic of those commands.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><code>gbr</code></h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<code>git branch</code>
+</p>
+
+<p>
+To see the list of branches you have on your current repository.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.46,) 15:48:41 ~/repo/perso/dot-files (master) $ gbr
+ * master
+</pre>
+</div>
+<p>
+<span class="underline">Explanation:</span>
+Here, I only have locally the master branch.
+</p>
+
+<p>
+<code>gbr -r</code> or <code>gbr --remote</code> to see the remote branches:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.36,) 16:41:11 ~/repo/perso/dot-files (master) $ gbr --remote
+  origin/HEAD -&gt; origin/master
+  origin/master
+  origin/test
+</pre>
+</div>
+<p>
+<span class="underline">Explanation:</span>
+Remotely I see other branches, here <b>master</b> and <b>test</b>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><code>gco</code></h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Just to move oneself from the current branch to another or creating a new one:
+</p>
+</div>
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Create</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+
+<pre class="src src-sh">gco -b new-branch
+</pre>
+</div>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.33,) 21:31:56 ~/repo/perso/dot-files (master) $ gco -b new-branch
+Switched to a new branch <span style="color: #61CE3C;">'new-branch</span>
+<span style="color: #61CE3C;">tony@dagobah(0.38,) 21:32:03 ~/repo/perso/dot-files (new-branch) $</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">Move</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+
+<pre class="src src-sh">gco master
+</pre>
+</div>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.38,) 21:32:03 ~/repo/perso/dot-files (new-branch) $ gco master
+Switched to branch <span style="color: #61CE3C;">'master'</span>
+Your branch is ahead of <span style="color: #61CE3C;">'origin/master'</span> by 6 commits.
+tony@dagobah(0.35,) 21:32:05 ~/repo/perso/dot-files (master) $
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">Discard changed</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+To discard changes in current directory
+</p>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.13,) 21:33:57 ~/repo/perso/dot-files (master) $ echo <span style="color: #61CE3C;">'toto'</span> &gt;&gt; RE<span style="color: #dc8cc3; background-color: #383838;">ADME.org</span>
+
+tony@dagobah(0.11,) 21:34:05 ~/repo/perso/dot-files (master) $ gst
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">On branch master</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">Your branch is ahead of 'origin/master' by 6 commits.</span>
+<span style="color: #586e75;">#</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">Changes not staged for commit:</span>
+<span style="color: #586e75;">#   </span><span style="color: #8B8989; font-style: italic;">(use "git add &lt;file&gt;..." to update what will be committed)</span>
+<span style="color: #586e75;">#   </span><span style="color: #8B8989; font-style: italic;">(use "git checkout -- &lt;file&gt;..." to discard changes in working directory)</span>
+<span style="color: #586e75;">#</span>
+<span style="color: #586e75;">#       </span><span style="color: #8B8989; font-style: italic;">modified:   README.org</span>
+<span style="color: #586e75;">#</span>
+no changes added to commit (use <span style="color: #61CE3C;">"git add"</span> and/or <span style="color: #61CE3C;">"git commit -a"</span>)
+
+tony@dagobah(0.11,) 21:34:06 ~/repo/perso/dot-files (master) $ gco -- README.org
+
+tony@dagobah(0.09,) 21:34:17 ~/repo/perso/dot-files (master) $ gst
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">On branch master</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">Your branch is ahead of 'origin/master' by 6 commits.</span>
+<span style="color: #586e75;">#</span>
+nothing to commit (working directory clean)
+</pre>
+</div>
+<p>
+<span class="underline">Explanation:</span>
+</p>
+<ul class="org-ul">
+<li>First we create some changes (<code>echo</code>)
+</li>
+<li>Then we check the status, there is one file that has changed (indeed the <b>README.org</b>)
+</li>
+<li>We removed those changes for the file (<code>gco -- README.org</code>)
+</li>
+<li>When we recheck the status, nothing has changed!
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><code>gdf</code></h2>
+<div class="outline-text-2" id="text-3">
+<p>
+<code>git diff</code>
+</p>
+
+<p>
+To see the modifications you developed between your workspace and the commited files.
+</p>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.31,) 18:05:22 ~/repo/perso/dot-files (master) $ gdf
+diff --git a/README.md b/README.md
+index 0358d27..35e6c13 100644
+--- a/README.md
++++ b/README.md
+@@ -12,3 +12,4 @@ Something along those lines should do the trick:
+ <span style="color: #D8FA3C;">REPO</span>=/path/to/your/clones/dot-files
+ <span style="color: #FBDE2D; font-weight: bold;">for</span> i<span style="color: #FBDE2D; font-weight: bold;"> in</span> $(ls $<span style="color: #D8FA3C;">REPO</span>); <span style="color: #FBDE2D; font-weight: bold;">do</span> ln -s $<span style="color: #D8FA3C;">REPO</span>/$<span style="color: #D8FA3C;">i</span> ~; <span style="color: #FBDE2D; font-weight: bold;">done</span>
+ <span style="color: #6c71c4; font-weight: bold;">```</span>
+<span style="color: #6c71c4; font-weight: bold;">+this is a test</span>
+</pre>
+</div>
+
+<p>
+<span class="underline">Explanation:</span>
+Here we can see that the file <i>README.md</i> has one more line <b>this is a test</b>.
+</p>
+
+<p>
+<b>Note</b>
+If you already staged your modifications you can use <code>gdf --cached</code>.
+</p>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.28,) 18:06:36 ~/repo/perso/dot-files (master) $ git add README.md
+tony@dagobah(0.28,) 18:06:38 ~/repo/perso/dot-files (master) $ gdf
+tony@dagobah(0.26,) 18:06:39 ~/repo/perso/dot-files (master) $ gdf --cached
+diff --git a/README.md b/README.md
+index 0358d27..35e6c13 100644
+--- a/README.md
++++ b/README.md
+@@ -12,3 +12,4 @@ Something along those lines should do the trick:
+ <span style="color: #D8FA3C;">REPO</span>=/path/to/your/clones/dot-files
+ <span style="color: #FBDE2D; font-weight: bold;">for</span> i<span style="color: #FBDE2D; font-weight: bold;"> in</span> $(ls $<span style="color: #D8FA3C;">REPO</span>); <span style="color: #FBDE2D; font-weight: bold;">do</span> ln -s $<span style="color: #D8FA3C;">REPO</span>/$<span style="color: #D8FA3C;">i</span> ~; <span style="color: #FBDE2D; font-weight: bold;">done</span>
+ <span style="color: #6c71c4; font-weight: bold;">```</span>
+<span style="color: #6c71c4; font-weight: bold;">+this is a test</span>
+</pre>
+</div>
+<p>
+<span class="underline">Explanation:</span>
+</p>
+<ul class="org-ul">
+<li><code>git add README.md</code> staged your modification
+</li>
+<li><code>gdf</code> did not show any difference because you already staged all modifications
+</li>
+<li><code>gdf --cached</code> activated the comparison including the index.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><code>gst</code></h2>
+<div class="outline-text-2" id="text-4">
+<p>
+<code>git status</code>
+</p>
+
+<p>
+This will list the current status of your index (modification, untracked files):
+</p>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.20,) 17:07:59 ~/repo/perso/dot-files (master) $ gst
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">On branch master</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">Changes not staged for commit:</span>
+<span style="color: #586e75;">#   </span><span style="color: #8B8989; font-style: italic;">(use "git add &lt;file&gt;..." to update what will be committed)</span>
+<span style="color: #586e75;">#   </span><span style="color: #8B8989; font-style: italic;">(use "git checkout -- &lt;file&gt;..." to discard changes in working directory)</span>
+<span style="color: #586e75;">#</span>
+<span style="color: #586e75;">#       </span><span style="color: #8B8989; font-style: italic;">modified:   README.md</span>
+<span style="color: #586e75;">#</span>
+no changes added to commit (use <span style="color: #61CE3C;">"git add"</span> and/or <span style="color: #61CE3C;">"git commit -a"</span>)
+</pre>
+</div>
+
+<p>
+<span class="underline">Explanation:</span>
+You can see that:
+</p>
+<ul class="org-ul">
+<li>the file <i>README.md</i> has been changed.
+</li>
+<li>this has not been staged for commit, that is, I did not added it to the index yet.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><code>git add</code></h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Add modifications into the git index.
+</p>
+
+<p>
+If I add the <i>README.md</i> file to the index and then check the status:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.20,) 17:08:00 ~/repo/perso/dot-files (master) $ git add README.md
+tony@dagobah(0.19,) 17:08:03 ~/repo/perso/dot-files (master) $ gst
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">On branch master</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">Changes to be committed:</span>
+<span style="color: #586e75;">#   </span><span style="color: #8B8989; font-style: italic;">(use "git reset HEAD &lt;file&gt;..." to unstage)</span>
+<span style="color: #586e75;">#</span>
+<span style="color: #586e75;">#       </span><span style="color: #8B8989; font-style: italic;">modified:   README.md</span>
+<span style="color: #586e75;">#</span>
+</pre>
+</div>
+<p>
+<span class="underline">Explanation:</span>
+The index status changed from <b>Changes not staged for commit</b> to <b>Changes to be committed</b>.
+This time I added the <i>README.md</i> to the index. So, now we are ready to commit.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><code>gci</code></h2>
+<div class="outline-text-2" id="text-6">
+<p>
+<code>git commit -v</code>
+</p>
+
+<p>
+Commit the content of the index.
+</p>
+
+<p>
+By typing <code>gci</code> in the CLI, the git <b>core.editor</b> loads itself and asks you for a commit message:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">------&gt; Here you type the commit message &lt;------
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">Please enter the commit message for your changes. Lines starting</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">with '#' will be ignored, and an empty message aborts the commit.</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">On branch master</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">Changes to be committed:</span>
+<span style="color: #586e75;">#   </span><span style="color: #8B8989; font-style: italic;">(use "git reset HEAD &lt;file&gt;..." to unstage)</span>
+<span style="color: #586e75;">#</span>
+<span style="color: #586e75;">#       </span><span style="color: #8B8989; font-style: italic;">modified:   README.md</span>
+<span style="color: #586e75;">#</span>
+diff --git a/README.md b/README.md
+index 0358d27..35e6c13 100644
+--- a/README.md
++++ b/README.md
+@@ -12,3 +12,4 @@ Something along those lines should do the trick:
+ <span style="color: #D8FA3C;">REPO</span>=/path/to/your/clones/dot-files
+ <span style="color: #FBDE2D; font-weight: bold;">for</span> i<span style="color: #FBDE2D; font-weight: bold;"> in</span> $(ls $<span style="color: #D8FA3C;">REPO</span>); <span style="color: #FBDE2D; font-weight: bold;">do</span> ln -s $<span style="color: #D8FA3C;">REPO</span>/$<span style="color: #D8FA3C;">i</span> ~; <span style="color: #FBDE2D; font-weight: bold;">done</span>
+ <span style="color: #6c71c4; font-weight: bold;">```</span>
+<span style="color: #6c71c4; font-weight: bold;">+this is a test</span>
+</pre>
+</div>
+<p>
+<b>Note</b>:
+At the same time, we see the modifications between the index and the already gitted file.
+</p>
+
+<p>
+<span class="underline">Explanation:</span>
+If you type a commit message, for example <b>Temporary commit</b> then save the modifications and close the editor.
+The content of the index is <b>commited</b> (message included).
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.19,) 17:08:04 ~/repo/perso/dot-files (master) $ gci
+[master 05dfb35] Temporary commit
+ 1 file changed, 1 insertion(+)
+tony@dagobah(0.30,) 17:08:16 ~/repo/perso/dot-files (master) $ gst
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><code>gci --amend</code></h2>
+<div class="outline-text-2" id="text-7">
+<p>
+Reedit the content of the last commit, either:
+</p>
+<ul class="org-ul">
+<li>the commit message
+</li>
+<li>or the files that are contained in the commit.
+</li>
+</ul>
+
+<p>
+<code>gci --amend</code> will reopen the editor but this time with your last commit message already typed:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">Temporary commit.
+
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">Please enter the commit message for your changes. Lines starting</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">with '#' will be ignored, and an empty message aborts the commit.</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">On branch master</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">Your branch is ahead of 'origin/master' by 1 commit.</span>
+<span style="color: #586e75;">#</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">Changes to be committed:</span>
+<span style="color: #586e75;">#   </span><span style="color: #8B8989; font-style: italic;">(use "git reset HEAD^1 &lt;file&gt;..." to unstage)</span>
+<span style="color: #586e75;">#</span>
+<span style="color: #586e75;">#       </span><span style="color: #8B8989; font-style: italic;">modified:   README.md</span>
+<span style="color: #586e75;">#</span>
+diff --git a/README.md b/README.md
+index 0358d27..35e6c13 100644
+--- a/README.md
++++ b/README.md
+@@ -12,3 +12,4 @@ Something along those lines should do the trick:
+ <span style="color: #D8FA3C;">REPO</span>=/path/to/your/clones/dot-files
+ <span style="color: #FBDE2D; font-weight: bold;">for</span> i<span style="color: #FBDE2D; font-weight: bold;"> in</span> $(ls $<span style="color: #D8FA3C;">REPO</span>); <span style="color: #FBDE2D; font-weight: bold;">do</span> ln -s $<span style="color: #D8FA3C;">REPO</span>/$<span style="color: #D8FA3C;">i</span> ~; <span style="color: #FBDE2D; font-weight: bold;">done</span>
+ <span style="color: #6c71c4; font-weight: bold;">```</span>
+<span style="color: #6c71c4; font-weight: bold;">+this is a test</span>
+</pre>
+</div>
+
+<p>
+Then edit for example this commit message to <b>This is a temporary commit to demonstrate the power of git</b>.
+Then save and close the editor.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.19,) 17:19:45 ~/repo/perso/dot-files (master) $ gci --amend
+[master 2c40a11] This is a temporary commit to demonstrate the power of git.
+ 1 file changed, 1 insertion(+)
+</pre>
+</div>
+
+<p>
+<a href="http://git-scm.com/book/ch2-4.html#Changing-Your-Last-Commit">for more information</a>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><code>git rm</code></h2>
+<div class="outline-text-2" id="text-8">
+<p>
+Remove files or folders and add those modifications into the git index.
+This is the dual to <code>git add</code>.
+</p>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.55,) 21:47:28 ~/repo/perso/dot-files (master) $ git rm some-test-<span style="color: #dc8cc3; background-color: #383838;">file</span>
+rm <span style="color: #61CE3C;">'some-test-file'</span>
+tony@dagobah(0.51,) 21:47:34 ~/repo/perso/dot-files (master) $ gst
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">On branch master</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">Your branch is ahead of 'origin/master' by 6 commits.</span>
+<span style="color: #586e75;">#</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">Changes to be committed:</span>
+<span style="color: #586e75;">#   </span><span style="color: #8B8989; font-style: italic;">(use "git reset HEAD &lt;file&gt;..." to unstage)</span>
+<span style="color: #586e75;">#</span>
+<span style="color: #586e75;">#       </span><span style="color: #8B8989; font-style: italic;">deleted:    some-test-file</span>
+<span style="color: #586e75;">#</span>
+tony@dagobah(0.51,) 21:47:35 ~/repo/perso/dot-files (master) $ gci
+[master d74715b] Delete useless file.
+ 0 files changed
+ delete mode 100644 some-test-file
+tony@dagobah(0.90,) 21:47:42 ~/repo/perso/dot-files (master) $
+</pre>
+</div>
+<p>
+<span class="underline">Explanation:</span>
+</p>
+<ul class="org-ul">
+<li>Remove the <b>some-test-file</b> (<code>git rm</code>)
+</li>
+<li>Check the status, we see that the destruction of the file is to be commited. (<code>gst</code>)
+</li>
+<li>Commit 'Delete useless file' (<code>gci</code>)
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><code>git mv</code></h2>
+<div class="outline-text-2" id="text-9">
+<p>
+Move one file from one destination to another.
+It's the same as the <b>mv</b> command, but has the advantage to add the move action to the git index too.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.22,) 18:14:29 ~/repo/perso/dot-files (master) $ git mv test some-<span style="color: #dc8cc3; background-color: #383838;">test-file</span>
+tony@dagobah(0.27,) 18:14:38 ~/repo/perso/dot-files (master) $ gst
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">On branch master</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">Your branch is ahead of 'origin/master' by 3 commits.</span>
+<span style="color: #586e75;">#</span>
+<span style="color: #586e75;"># </span><span style="color: #8B8989; font-style: italic;">Changes to be committed:</span>
+<span style="color: #586e75;">#   </span><span style="color: #8B8989; font-style: italic;">(use "git reset HEAD &lt;file&gt;..." to unstage)</span>
+<span style="color: #586e75;">#</span>
+<span style="color: #586e75;">#       </span><span style="color: #8B8989; font-style: italic;">renamed:    test -&gt; some-test-file</span>
+<span style="color: #586e75;">#</span>
+</pre>
+</div>
+<p>
+<span class="underline">Explanation:</span>
+We rename the <b>test</b> file into <b>some-test-file</b>.
+This modification is immediately staged into the index.
+</p>
+</div>
+</div>

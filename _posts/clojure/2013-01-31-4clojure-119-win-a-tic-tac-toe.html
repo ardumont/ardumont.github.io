@@ -1,0 +1,160 @@
+---
+layout: post
+title: 4clojure - win a tic tac toe problem
+date: 2013-01-31
+categories:
+- clojure
+- exercises
+- 4clojure
+- functional-programming
+- tic-tac-toe
+author: nil
+excerpt: One possible solution about the 'win a tic-tac-toe problem' (119) on 4clojure.com
+---
+<blockquote>
+<p>
+As in <a href="http://www.4clojure.com/problem/73">problem 73</a>, a tic-tac-toe board is represented by a two dimensional vector. X is represented by :x, O is represented by :o, and empty is represented by :e.
+</p>
+
+<p>
+Create a function that accepts a game piece and board as arguments, and returns a set (possibly empty) of all valid board placements of the game piece which would result in an immediate win.
+</p>
+
+<p>
+Board coordinates should be as in calls to get-in. For example, [0 1] is the topmost row, center position.
+</p>
+</blockquote>
+<p>
+problem: <a href="http://www.4clojure.com/problem/119">119</a>
+</p>
+
+<p>
+I reused the algorithm <a href="http://adumont.fr/blog/4clojure-analyze-a-tic-tac-toe-problem/">from the previous exercise</a> 73 which, given a board, compute the winner of the board.
+And first, I developed a version to prove the correctness of the algorithm.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Correctness</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+My main idea to solve this is to generate all possible boards by replacing for each :e the player we want to see win.
+Then computing the coordinates for which it indeed worked.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D; font-weight: bold;">defn</span> <span style="color: #ff1493;">win?</span>
+  <span style="color: #006400;">[</span>b<span style="color: #006400;">]</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D; font-weight: bold;">letfn</span> <span style="color: #ff1493;">[</span><span style="color: #ffff00;">(</span>w <span style="color: #00ff00;">[</span><span style="color: #add8e6;">[</span><span style="color: #ffa500;">[</span>a b c<span style="color: #ffa500;">]</span>
+               <span style="color: #ffa500;">[</span>d e f<span style="color: #ffa500;">]</span>
+               <span style="color: #ffa500;">[</span>g h i<span style="color: #ffa500;">]</span><span style="color: #add8e6;">]</span> p<span style="color: #00ff00;">]</span> <span style="color: #00ff00;">(</span><span style="color: #FBDE2D; font-weight: bold;">or</span> <span style="color: #add8e6;">(</span>= p a b c<span style="color: #add8e6;">)</span>
+                               <span style="color: #add8e6;">(</span>= p d e f<span style="color: #add8e6;">)</span>
+                               <span style="color: #add8e6;">(</span>= p g h i<span style="color: #add8e6;">)</span>
+                               <span style="color: #add8e6;">(</span>= p a d g<span style="color: #add8e6;">)</span>
+                               <span style="color: #add8e6;">(</span>= p b e h<span style="color: #add8e6;">)</span>
+                               <span style="color: #add8e6;">(</span>= p c f i<span style="color: #add8e6;">)</span>
+                               <span style="color: #add8e6;">(</span>= p a e i<span style="color: #add8e6;">)</span>
+                               <span style="color: #add8e6;">(</span>= p c e g<span style="color: #add8e6;">)</span><span style="color: #00ff00;">)</span><span style="color: #ffff00;">)</span><span style="color: #ff1493;">]</span>
+    <span style="color: #ff1493;">(</span><span style="color: #FBDE2D; font-weight: bold;">cond</span> <span style="color: #ffff00;">(</span>w b <span style="color: #4c83ff; font-weight: bold;">:x</span><span style="color: #ffff00;">)</span> <span style="color: #4c83ff; font-weight: bold;">:x</span>
+          <span style="color: #ffff00;">(</span>w b <span style="color: #4c83ff; font-weight: bold;">:o</span><span style="color: #ffff00;">)</span> <span style="color: #4c83ff; font-weight: bold;">:o</span>
+          <span style="color: #4c83ff; font-weight: bold;">:else</span> <span style="color: #4c83ff; font-weight: bold;">nil</span><span style="color: #ff1493;">)</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D; font-weight: bold;">defn</span> <span style="color: #ff1493;">win</span>
+  <span style="color: #006400;">[</span>p b<span style="color: #006400;">]</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D; font-weight: bold;">let</span> <span style="color: #ff1493;">[</span>n <span style="color: #ffff00;">(</span><span style="color: #FBDE2D; font-weight: bold;">-&gt;</span> b first count<span style="color: #ffff00;">)</span><span style="color: #ff1493;">]</span>
+    <span style="color: #ff1493;">(</span><span style="color: #FBDE2D; font-weight: bold;">-&gt;&gt;</span> <span style="color: #ffff00;">(</span><span style="color: #FBDE2D; font-weight: bold;">for</span> <span style="color: #00ff00;">[</span>x <span style="color: #add8e6;">(</span>range n<span style="color: #add8e6;">)</span> y <span style="color: #add8e6;">(</span>range n<span style="color: #add8e6;">)</span><span style="color: #00ff00;">]</span> <span style="color: #00ff00;">[</span><span style="color: #add8e6;">(</span>get-in b <span style="color: #ffa500;">[</span>x y<span style="color: #ffa500;">]</span><span style="color: #add8e6;">)</span> <span style="color: #add8e6;">[</span>x y<span style="color: #add8e6;">]</span><span style="color: #00ff00;">]</span><span style="color: #ffff00;">)</span>
+         <span style="color: #ffff00;">(</span>filter <span style="color: #00ff00;">(</span><span style="color: #FBDE2D; font-weight: bold;">fn</span> <span style="color: #add8e6;">[</span><span style="color: #ffa500;">[</span>e _<span style="color: #ffa500;">]</span><span style="color: #add8e6;">]</span> <span style="color: #add8e6;">(</span>= <span style="color: #4c83ff; font-weight: bold;">:e</span> e<span style="color: #add8e6;">)</span><span style="color: #00ff00;">)</span><span style="color: #ffff00;">)</span>
+         <span style="color: #ffff00;">(</span>map <span style="color: #00ff00;">(</span><span style="color: #FBDE2D; font-weight: bold;">fn</span> <span style="color: #add8e6;">[</span><span style="color: #ffa500;">[</span>_ v<span style="color: #ffa500;">]</span><span style="color: #add8e6;">]</span> <span style="color: #add8e6;">[</span><span style="color: #ffa500;">(</span>win? <span style="color: #6a5acd;">(</span>assoc-in b v p<span style="color: #6a5acd;">)</span><span style="color: #ffa500;">)</span> v<span style="color: #add8e6;">]</span><span style="color: #00ff00;">)</span><span style="color: #ffff00;">)</span>
+         <span style="color: #ffff00;">(</span>filter <span style="color: #00ff00;">(</span><span style="color: #FBDE2D; font-weight: bold;">fn</span> <span style="color: #add8e6;">[</span><span style="color: #ffa500;">[</span>w _<span style="color: #ffa500;">]</span><span style="color: #add8e6;">]</span> <span style="color: #add8e6;">(</span>= p w<span style="color: #add8e6;">)</span><span style="color: #00ff00;">)</span><span style="color: #ffff00;">)</span>
+         <span style="color: #ffff00;">(</span>map second<span style="color: #ffff00;">)</span>
+         <span style="color: #ffff00;">(</span>into #<span style="color: #00ff00;">{}</span><span style="color: #ffff00;">)</span><span style="color: #ff1493;">)</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+
+<p>
+Simply, I pipe these different computation steps:
+</p>
+<ul class="org-ul">
+<li>I compute all the values for all possible coordinates
+</li>
+<li>filter on the value :e for each coordinates
+</li>
+<li>replace the empty entries by the current player to play and compute the winner of the result board
+</li>
+<li>filter on the winner which must be the current player
+</li>
+<li>retrieve only the coordinates
+</li>
+<li>reduce them in a set
+</li>
+</ul>
+
+<p>
+and voila, tests ok.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Improvments</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+From this on, I realised that most of those steps could be done directly with the initial list comprehension for.
+So here it goes:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D; font-weight: bold;">defn</span> <span style="color: #ff1493;">w?</span>
+  <span style="color: #006400;">[</span>b<span style="color: #006400;">]</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D; font-weight: bold;">letfn</span> <span style="color: #ff1493;">[</span><span style="color: #ffff00;">(</span>w <span style="color: #00ff00;">[</span><span style="color: #add8e6;">[</span><span style="color: #ffa500;">[</span>a b c<span style="color: #ffa500;">]</span>
+               <span style="color: #ffa500;">[</span>d e f<span style="color: #ffa500;">]</span>
+               <span style="color: #ffa500;">[</span>g h i<span style="color: #ffa500;">]</span><span style="color: #add8e6;">]</span> p<span style="color: #00ff00;">]</span> <span style="color: #00ff00;">(</span><span style="color: #FBDE2D; font-weight: bold;">or</span> <span style="color: #add8e6;">(</span>= p a b c<span style="color: #add8e6;">)</span>
+                               <span style="color: #add8e6;">(</span>= p d e f<span style="color: #add8e6;">)</span>
+                               <span style="color: #add8e6;">(</span>= p g h i<span style="color: #add8e6;">)</span>
+                               <span style="color: #add8e6;">(</span>= p a d g<span style="color: #add8e6;">)</span>
+                               <span style="color: #add8e6;">(</span>= p b e h<span style="color: #add8e6;">)</span>
+                               <span style="color: #add8e6;">(</span>= p c f i<span style="color: #add8e6;">)</span>
+                               <span style="color: #add8e6;">(</span>= p a e i<span style="color: #add8e6;">)</span>
+                               <span style="color: #add8e6;">(</span>= p c e g<span style="color: #add8e6;">)</span><span style="color: #00ff00;">)</span><span style="color: #ffff00;">)</span><span style="color: #ff1493;">]</span>
+    <span style="color: #ff1493;">(</span><span style="color: #FBDE2D; font-weight: bold;">cond</span> <span style="color: #ffff00;">(</span>w b <span style="color: #4c83ff; font-weight: bold;">:x</span><span style="color: #ffff00;">)</span> <span style="color: #4c83ff; font-weight: bold;">:x</span>
+          <span style="color: #ffff00;">(</span>w b <span style="color: #4c83ff; font-weight: bold;">:o</span><span style="color: #ffff00;">)</span> <span style="color: #4c83ff; font-weight: bold;">:o</span>
+          <span style="color: #4c83ff; font-weight: bold;">:else</span> <span style="color: #4c83ff; font-weight: bold;">nil</span><span style="color: #ff1493;">)</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D; font-weight: bold;">defn</span> <span style="color: #ff1493;">win</span> <span style="color: #006400;">[</span>p b<span style="color: #006400;">]</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D; font-weight: bold;">let</span> <span style="color: #ff1493;">[</span>n <span style="color: #ffff00;">(</span><span style="color: #FBDE2D; font-weight: bold;">-&gt;</span> b first count<span style="color: #ffff00;">)</span>
+        r <span style="color: #ffff00;">(</span>range n<span style="color: #ffff00;">)</span><span style="color: #ff1493;">]</span>
+    <span style="color: #ff1493;">(</span>set <span style="color: #ffff00;">(</span><span style="color: #FBDE2D; font-weight: bold;">for</span> <span style="color: #00ff00;">[</span>x r
+               y r
+               <span style="color: #4c83ff; font-weight: bold;">:let</span> <span style="color: #add8e6;">[</span>v <span style="color: #ffa500;">[</span>x y<span style="color: #ffa500;">]</span>
+                     e <span style="color: #ffa500;">(</span>get-in b v<span style="color: #ffa500;">)</span><span style="color: #add8e6;">]</span>
+               <span style="color: #4c83ff; font-weight: bold;">:when</span> <span style="color: #add8e6;">(</span><span style="color: #FBDE2D; font-weight: bold;">and</span> <span style="color: #ffa500;">(</span>= <span style="color: #4c83ff; font-weight: bold;">:e</span> e<span style="color: #ffa500;">)</span> <span style="color: #ffa500;">(</span>= p <span style="color: #6a5acd;">(</span><span style="color: #FBDE2D; font-weight: bold;">-&gt;</span> b <span style="color: #d3d3d3;">(</span>assoc-in v p<span style="color: #d3d3d3;">)</span> w?<span style="color: #6a5acd;">)</span><span style="color: #ffa500;">)</span><span style="color: #add8e6;">)</span><span style="color: #00ff00;">]</span>
+           v<span style="color: #ffff00;">)</span><span style="color: #ff1493;">)</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span>fact <span style="color: #006400;">(</span>win <span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #ff1493;">[</span><span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:o</span> <span style="color: #4c83ff; font-weight: bold;">:e</span> <span style="color: #4c83ff; font-weight: bold;">:e</span><span style="color: #ffff00;">]</span>
+               <span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:o</span> <span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #4c83ff; font-weight: bold;">:o</span><span style="color: #ffff00;">]</span>
+               <span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #4c83ff; font-weight: bold;">:e</span><span style="color: #ffff00;">]</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span> =&gt; #<span style="color: #006400;">{</span><span style="color: #ff1493;">[</span>2 2<span style="color: #ff1493;">]</span> <span style="color: #ff1493;">[</span>0 1<span style="color: #ff1493;">]</span> <span style="color: #ff1493;">[</span>0 2<span style="color: #ff1493;">]</span><span style="color: #006400;">}</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span>fact <span style="color: #006400;">(</span>win <span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #ff1493;">[</span><span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #4c83ff; font-weight: bold;">:o</span> <span style="color: #4c83ff; font-weight: bold;">:o</span><span style="color: #ffff00;">]</span>
+               <span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #4c83ff; font-weight: bold;">:e</span><span style="color: #ffff00;">]</span>
+               <span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:e</span> <span style="color: #4c83ff; font-weight: bold;">:o</span> <span style="color: #4c83ff; font-weight: bold;">:e</span><span style="color: #ffff00;">]</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span> =&gt; #<span style="color: #006400;">{</span><span style="color: #ff1493;">[</span>2 2<span style="color: #ff1493;">]</span> <span style="color: #ff1493;">[</span>1 2<span style="color: #ff1493;">]</span> <span style="color: #ff1493;">[</span>2 0<span style="color: #ff1493;">]</span><span style="color: #006400;">}</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span>fact <span style="color: #006400;">(</span>win <span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #ff1493;">[</span><span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #4c83ff; font-weight: bold;">:e</span> <span style="color: #4c83ff; font-weight: bold;">:x</span><span style="color: #ffff00;">]</span>
+               <span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:o</span> <span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #4c83ff; font-weight: bold;">:o</span><span style="color: #ffff00;">]</span>
+               <span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:e</span> <span style="color: #4c83ff; font-weight: bold;">:o</span> <span style="color: #4c83ff; font-weight: bold;">:e</span><span style="color: #ffff00;">]</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span> =&gt; #<span style="color: #006400;">{</span><span style="color: #ff1493;">[</span>2 2<span style="color: #ff1493;">]</span> <span style="color: #ff1493;">[</span>0 1<span style="color: #ff1493;">]</span> <span style="color: #ff1493;">[</span>2 0<span style="color: #ff1493;">]</span><span style="color: #006400;">}</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span>fact <span style="color: #006400;">(</span>win <span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #ff1493;">[</span><span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #4c83ff; font-weight: bold;">:o</span><span style="color: #ffff00;">]</span>
+               <span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:e</span> <span style="color: #4c83ff; font-weight: bold;">:e</span> <span style="color: #4c83ff; font-weight: bold;">:e</span><span style="color: #ffff00;">]</span>
+               <span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:e</span> <span style="color: #4c83ff; font-weight: bold;">:e</span> <span style="color: #4c83ff; font-weight: bold;">:e</span><span style="color: #ffff00;">]</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span> =&gt; #<span style="color: #006400;">{}</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span>fact <span style="color: #006400;">(</span>win <span style="color: #4c83ff; font-weight: bold;">:o</span> <span style="color: #ff1493;">[</span><span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #4c83ff; font-weight: bold;">:o</span><span style="color: #ffff00;">]</span>
+               <span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:o</span> <span style="color: #4c83ff; font-weight: bold;">:e</span> <span style="color: #4c83ff; font-weight: bold;">:o</span><span style="color: #ffff00;">]</span>
+               <span style="color: #ffff00;">[</span><span style="color: #4c83ff; font-weight: bold;">:x</span> <span style="color: #4c83ff; font-weight: bold;">:e</span> <span style="color: #4c83ff; font-weight: bold;">:e</span><span style="color: #ffff00;">]</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span> =&gt; #<span style="color: #006400;">{</span><span style="color: #ff1493;">[</span>2 2<span style="color: #ff1493;">]</span> <span style="color: #ff1493;">[</span>1 1<span style="color: #ff1493;">]</span><span style="color: #006400;">}</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+
+<p>
+source: <a href="https://github.com/ardumont/my-4clojure-lab/blob/master/src/my_4clojure_lab/149/core119.clj">119</a>
+</p>
+</div>
+</div>

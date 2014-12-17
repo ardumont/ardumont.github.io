@@ -1,0 +1,201 @@
+---
+layout: post
+title: Arduino/Clodiuno - command a LED from the clojure REPL
+date: 2012-12-22
+categories:
+- arduino
+- clojure
+- geek
+author: Antoine R. Dumont
+excerpt: What was my difficulties bootstraping arduino/clodiuno.
+---
+<p>
+Now that the setup hell is gone, here i will describe "my first interaction" to make my arduino uno talk with a simple led.
+</p>
+
+<p>
+Source: <a href="https://github.com/ardumont/arduino-lab">https://github.com/ardumont/arduino-lab</a>
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Circuit</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+First we create a simple circuit.
+</p>
+
+<p>
+Plug your LED on the pin 13 of the arduino board.
+</p>
+
+<p>
+<b>Beware</b>, the LED is polarized, so
+</p>
+<ul class="org-ul">
+<li>the longer branch (+) goes into the 13 pin
+</li>
+<li>and the other one goes inside the GND just beside.
+</li>
+</ul>
+
+<p>
+<b>No Led</b>
+If you have no LED, it's no big deal as there is already one in it.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Pre-requisites</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Plug your arduino board in your usb</h3>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">Upload the firmata sketch</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Open up the arduino IDE and load the appropriate Firmata sketch from File &gt; Examples.
+I used StandardFirmata<sub>2</sub><sub>2</sub><sub>forUNO</sub><sub>0</sub><sub>3</sub> because I have an Uno board, but your version may vary.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">In Ubuntu GNU/Linux</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Make sure you have correctly linked your device with an appropriate name
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.44,) 18:06:22 ~/org/clodiuno (master) $ ls -l /dev/ttyS42
+lrwxrwxrwx 1 root root 12 2012-06-03 15:34 /dev/ttyS42 -&gt; /dev/ttyACM0
+</pre>
+</div>
+
+<p>
+Else it will not be seen.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Setup</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Here is my project's setup:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D; font-weight: bold;">defproject</span> <span style="color: #ff1493;">arduino-lab</span> <span style="color: #61CE3C;">"1.0.0-SNAPSHOT"</span>
+  <span style="color: #4c83ff; font-weight: bold;">:description</span> <span style="color: #61CE3C;">"Mess around with arduino from the comfort of the repl"</span>
+  <span style="color: #4c83ff; font-weight: bold;">:dependencies</span> <span style="color: #006400;">[</span><span style="color: #ff1493;">[</span><span style="color: #D8FA3C;">org.clojure</span>/clojure <span style="color: #61CE3C;">"1.3.0"</span><span style="color: #ff1493;">]</span>
+                 <span style="color: #ff1493;">[</span>clodiuno <span style="color: #61CE3C;">"0.0.3-SNAPSHOT"</span><span style="color: #ff1493;">]</span>
+                 <span style="color: #ff1493;">[</span>serial-port <span style="color: #61CE3C;">"1.1.2"</span><span style="color: #ff1493;">]</span><span style="color: #006400;">]</span>
+  <span style="color: #4c83ff; font-weight: bold;">:native-dependencies</span> <span style="color: #006400;">[</span><span style="color: #ff1493;">[</span><span style="color: #D8FA3C;">org.clojars.samaaron</span>/rxtx <span style="color: #61CE3C;">"2.2.0.1"</span><span style="color: #ff1493;">]</span><span style="color: #006400;">]</span>
+  <span style="color: #4c83ff; font-weight: bold;">:dev-dependencies</span> <span style="color: #006400;">[</span><span style="color: #ff1493;">[</span>native-deps <span style="color: #61CE3C;">"1.0.5"</span><span style="color: #ff1493;">]</span><span style="color: #006400;">]</span>
+  <span style="color: #4c83ff; font-weight: bold;">:jvm-opts</span> <span style="color: #006400;">[</span><span style="color: #61CE3C;">"-Djava.library.path=./native/linux/x86/"</span>
+             <span style="color: #61CE3C;">"-d32"</span><span style="color: #006400;">]</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+
+<p>
+Fetch the dependencies:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">lein deps
+</pre>
+</div>
+
+<p>
+Start emacs and start the repl:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">M-x clojure-jack-in
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Now some reality</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Now i can do light up and down a led on my arduino uno from the repl!
+</p>
+
+<p>
+Open the repl:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">user&gt; <span style="color: #8b0000;">(</span>use '<span style="color: #D8FA3C;">clodiuno.core</span> '<span style="color: #D8FA3C;">clodiuno.firmata</span><span style="color: #8b0000;">)</span>
+<span style="color: #4c83ff; font-weight: bold;">nil</span>
+</pre>
+</div>
+
+<p>
+Open the board:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">user&gt; <span style="color: #8b0000;">(</span><span style="color: #FBDE2D; font-weight: bold;">def</span> <span style="color: #D8FA3C;">board</span> <span style="color: #006400;">(</span>arduino <span style="color: #4c83ff; font-weight: bold;">:firmata</span> <span style="color: #61CE3C;">"/dev/ttyS42"</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+#'<span style="color: #D8FA3C;">user</span>/board
+</pre>
+</div>
+
+<p>
+Now you can see something along the line:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">user&gt; board
+#&lt;Ref@9652e4: <span style="color: #8b0000;">{</span><span style="color: #4c83ff; font-weight: bold;">:digital-in</span> <span style="color: #006400;">{</span>2 <span style="color: #ff1493;">(</span>0 0 0 0 0 0 0 0<span style="color: #ff1493;">)</span>, 1 <span style="color: #ff1493;">(</span>0 0 0 0 0 0 0 0<span style="color: #ff1493;">)</span>, 0 <span style="color: #ff1493;">(</span>0 0 0 0<span style="color: #dc8cc3; background-color: #383838;"> 0 0 0 0</span><span style="color: #ff1493; background-color: #383838;">)</span><span style="color: #006400; background-color: #383838;">}</span><span style="color: #dc8cc3; background-color: #383838;">, </span><span style="color: #dc8cc3; background-color: #383838; font-weight: bold;">:version</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #006400; background-color: #383838;">[</span><span style="color: #dc8cc3; background-color: #383838;">2 2</span><span style="color: #006400; background-color: #383838;">]</span><span style="color: #dc8cc3; background-color: #383838;">, </span><span style="color: #dc8cc3; background-color: #383838; font-weight: bold;">:port</span><span style="color: #dc8cc3; background-color: #383838;"> #&lt;RXTXPort /dev/ttyS42&gt;, </span><span style="color: #dc8cc3; background-color: #383838; font-weight: bold;">:interface</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838; font-weight: bold;">:firmata</span><span style="color: #8b0000; background-color: #383838;">}</span><span style="color: #dc8cc3; background-color: #383838;">&gt;</span>
+</pre>
+</div>
+
+<p>
+We must first set the built-in 13 pin (the led) to OUTPUT mode.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">user&gt; <span style="color: #8b0000;">(</span>pin-mode board 13 <span style="color: #4c83ff; font-weight: bold;">OUTPUT</span><span style="color: #8b0000;">)</span>
+<span style="color: #4c83ff; font-weight: bold;">nil</span>
+</pre>
+</div>
+
+<p>
+Then play with the board, may the light be
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">user&gt; <span style="color: #8b0000;">(</span>digital-write board 13 <span style="color: #4c83ff; font-weight: bold;">HIGH</span><span style="color: #8b0000;">)</span>
+<span style="color: #4c83ff; font-weight: bold;">nil</span>
+</pre>
+</div>
+
+<p>
+&#x2026; or not:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">user&gt; <span style="color: #8b0000;">(</span>digital-write board 13 <span style="color: #4c83ff; font-weight: bold;">LOW</span><span style="color: #8b0000;">)</span>
+<span style="color: #4c83ff; font-weight: bold;">nil</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Result</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+<a href="http://www.youtube.com/watch?v=T3ooJXkHRlg">http://www.youtube.com/watch?v=T3ooJXkHRlg</a>
+</p>
+</div>
+</div>
