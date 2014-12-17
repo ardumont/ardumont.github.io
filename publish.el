@@ -6,11 +6,11 @@
 
 (require 'org)
 
-(defvar source-directory nil "Path to the source directory.")
-(defvar jekyll-directory nil "Path to Jekyll blog.")
-(defvar jekyll-drafts-dir nil "Relative path to drafts directory.")
-(defvar jekyll-posts-dir nil "Relative path to posts directory.")
-(defvar jekyll-post-ext nil "File extension of Jekyll posts.")
+(defvar source-directory     nil "Path to the source directory.")
+(defvar jekyll-directory     nil "Path to Jekyll blog.")
+(defvar jekyll-drafts-dir    nil "Relative path to drafts directory.")
+(defvar jekyll-posts-dir     nil "Relative path to posts directory.")
+(defvar jekyll-post-ext      nil "File extension of Jekyll posts.")
 (defvar jekyll-post-template nil "Default template for Jekyll posts.
 %s will be replace by the post title.")
 
