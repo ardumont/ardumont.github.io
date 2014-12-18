@@ -17,8 +17,9 @@
 
         <div class="site">
           <div class="header">
-            <h1 class="title"><a href="/">{{ site.name }}</a></h1>
-            <a class="extra" href="/">home</a>
+            <h1 class="title"><a href="{{ site.baseUrl }}">{{ site.name }}</a></h1>
+            <a class="extra" href="{{ site.baseUrl }}">home</a>
+            <a class="extra" href="{{ site.baseUrl }}/archives">archives</a>
           </div>
 
           <div class="content">
@@ -33,9 +34,9 @@
 	              <a href="{{ post.url }}">{{ post.title }}</a>
 	              <span>({{ post.date | date:"%Y-%m-%d" }})</span>
                   </li>
-                  <br />
                   <em> {{ post.excerpt }} </em>
               </div>
+              <br />
               {% endfor %}
           </div>
 
