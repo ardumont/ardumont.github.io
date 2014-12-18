@@ -19,26 +19,43 @@
           <div class="header">
             <h1 class="title"><a href="{{ site.baseUrl }}">{{ site.name }}</a></h1>
             <a class="extra" href="{{ site.baseUrl }}">home</a>
-            <a class="extra" href="{{ site.baseUrl }}/archives">archives</a>
+            <a class="extra" href="/blog/archives">archives</a>
           </div>
 
-          <div class="content">
+          <div class="content" style="margin:10">
               {{ content }}
           </div>
+          <br />
 
           <div class="posts">
               <h1 class="title">Latest posts</h1>
               {% for post in site.posts limit: 5 %}
               <div class="post_info">
-                  <li>
-	              <a href="{{ post.url }}">{{ post.title }}</a>
-	              <span>({{ post.date | date:"%Y-%m-%d" }})</span>
-                  </li>
-                  <em> {{ post.excerpt }} </em>
+	          <a href="{{ post.url }}">{{ post.title }}</a>
+	          <span>({{ post.date | date:"%Y-%m-%d" }})</span>
+                  <div>
+                      <em> {{ post.excerpt }} </em>
+                  </div>
               </div>
               <br />
               {% endfor %}
           </div>
+
+          <!-- <div class="archives">
+          <h1 class="title">Archives</h1>
+          {% for post in site.posts %}
+          <div class="post_info">
+          <a href="{{ post.url }}" title="{{ post.title }}">
+          <span class="title">{{ post.title }}</span>
+          <span>
+          <span>{{ post.date | date: '%d' }}</span>
+          <span><abbr>{{ post.date | date: '%b' }}</abbr></span>
+          <span>{{ post.date | date: '%Y' }}</span>
+          </span>
+          </a>
+          </div>
+          {% endfor %}
+          </div> -->
 
           <div class="footer">
             <div class="contact">
