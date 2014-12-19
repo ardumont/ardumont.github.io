@@ -39,7 +39,7 @@
 (defvar jekyll-drafts-dir    nil "Relative path to drafts directory.")
 (defvar jekyll-posts-dir     nil "Relative path to posts directory.")
 (defvar jekyll-post-ext      nil "File extension of Jekyll posts.")
-(defvar jekyll-post-template nil "Default template for Jekyll posts.
+(defvar jekyll-org-post-template nil "Default template for org2jekyll posts.
 %s will be replace by the post title.")
 
 (setq source-directory     (expand-file-name "~/org")
@@ -47,7 +47,7 @@
       jekyll-drafts-dir    "_drafts/"
       jekyll-posts-dir     "_posts/"
       jekyll-post-ext      ".org"
-      jekyll-post-template "#+STARTUP: showall\n#+STARTUP: hidestars\n#+OPTIONS: H:2 num:nil tags:nil toc:1 timestamps:t\n#+BEGIN_HTML\n---\nlayout: post\ntitle: %s\nexcerpt: \ncategories:\n  -  \ntags:\n  -  \npublished: false\n---\n#+END_HTML\n\n** ")
+      jekyll-org-post-template "#+STARTUP: showall\n#+STARTUP: hidestars\n#+OPTIONS: H:2 num:nil tags:nil toc:1 timestamps:t\n#+LAYOUT: post\n#+TITLE: %s\n#+DESCRIPTION: \n#+CATEGORIES:\n\n* ")
 
 (defun input-directory (&optional folder-name)
   "Compute the input folder from the FOLDER-NAME."
@@ -132,32 +132,8 @@
                             jekyll-post-ext)))
     (if (file-exists-p draft-file)
         (find-file draft-file)
-      (find-file draft-file)
-      (insert (format jekyll-post-template (jekyll-yaml-escape title))))))
-
-(defun jekyll-publish-post ()
-  "Move a draft post to the posts directory.
-Rename it so that it contains the date."
-  (interactive)
-  (cond ((not (equal (file-name-directory (buffer-file-name (current-buffer)))
-                     (concat jekyll-directory jekyll-drafts-dir)))
-         (progn
-           (message "This is not a draft post.")
-           (insert (file-name-directory (buffer-file-name (current-buffer))) "\n"
-                   (concat jekyll-directory jekyll-drafts-dir))))
-        ((buffer-modified-p)
-         (message "Can't publish post; buffer has modifications."))
-        (t
-         (let ((filename (concat jekyll-directory jekyll-posts-dir
-                                 (format-time-string "%Y-%m-%d-")
-                                 (file-name-nondirectory
-                                  (buffer-file-name (current-buffer)))))
-               (old-point (point)))
-           (rename-file (buffer-file-name (current-buffer))
-                        filename)
-           (kill-buffer nil)
-           (find-file filename)
-           (set-window-point (selected-window) old-point)))))
+      (progn (find-file draft-file)
+             (insert (format jekyll-org-post-template (jekyll-yaml-escape title)))))))
 
 (defun jekyll-list-posts ()
   "Lists the posts folder."
