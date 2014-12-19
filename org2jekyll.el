@@ -33,6 +33,8 @@
 ;;; Code:
 
 (require 'org)
+(require 'dash)
+(require 's)
 
 (defvar org2jekyll/source-directory         nil "Path to the source directory.")
 (defvar org2jekyll/jekyll-directory         nil "Path to Jekyll blog.")
@@ -57,59 +59,6 @@
 (defun org2jekyll/output-directory (folder-name)
   "Compute the output folder from the FOLDER-NAME."
   (format "%s/%s" org2jekyll/jekyll-directory folder-name))
-
-;; org setup for publishing blog
-(custom-set-variables '(org-publish-project-alist
-                        `(("org"
-                           :base-directory ,(org2jekyll/input-directory)
-                           :base-extension "org"
-                           ;; :publishing-directory "/ssh:user@host:~/html/notebook/"
-                           :publishing-directory ,(org2jekyll/output-directory "blog")
-                           :publishing-function org-html-publish-to-html
-                           :headline-levels 4
-                           :section-numbers nil
-                           :with-toc nil
-                           :html-head "<link rel=\"stylesheet\" href=\"./css/style.css\" type=\"text/css\"/>"
-                           :html-preamble t
-                           :recursive t
-                           :make-index t
-                           :html-extension "html"
-                           :body-only t)
-
-                          ("tony-blog"
-                           :base-directory ,(org2jekyll/input-directory)
-                           :base-extension "org"
-                           :publishing-directory ,(org2jekyll/output-directory "_posts")
-                           :publishing-function org-html-publish-to-html
-                           :headline-levels 4
-                           :section-numbers nil
-                           :with-toc nil
-                           :html-head "<link rel=\"stylesheet\" href=\"./css/style.css\" type=\"text/css\"/>"
-                           :html-preamble t
-                           :recursive t
-                           :make-index t
-                           :html-extension "html"
-                           :body-only t)
-
-                          ("images"
-                           :base-directory ,(org2jekyll/input-directory "img")
-                           :base-extension "jpg\\|gif\\|png"
-                           :publishing-directory ,(org2jekyll/output-directory "img")
-                           :publishing-function org-publish-attachment)
-
-                          ("js"
-                           :base-directory ,(org2jekyll/input-directory "js")
-                           :base-extension "js"
-                           :publishing-directory ,(org2jekyll/output-directory "js")
-                           :publishing-function org-publish-attachment)
-
-                          ("other"
-                           :base-directory ,(org2jekyll/input-directory "css")
-                           :base-extension "css\\|el"
-                           :publishing-directory ,(org2jekyll/output-directory "css")
-                           :publishing-function org-publish-attachment)
-
-                          ("website" :components ("org" "tony-blog" "images" "js" "css")))))
 
 (defun org2jekyll/--make-slug (s)
   "Turn a string S into a slug."
@@ -191,7 +140,7 @@ Depends on the metadata header blog."
                               ("blog" . "blog"))
   "Keys to map from org headers to jekyll's headers.")
 
-(defun org2jekyll/org-to-yaml-metadata (org-metadata)
+(defun org2jekyll/--org-to-yaml-metadata (org-metadata)
   "Given an ORG-METADATA map, return a yaml one with transformed data."
   (--map `(,(assoc-default (car it) org2jekyll/map-keys) . ,(cdr it)) org-metadata))
 
@@ -200,13 +149,10 @@ Depends on the metadata header blog."
   (format-time-string "%Y-%m-%d"
                       (apply 'encode-time (org-parse-time-string timestamp))))
 
-(require 'dash)
-(require 's)
-
-(defun org2jekyll/to-yaml-header (org-metadata)
+(defun org2jekyll/--to-yaml-header (org-metadata)
   "Given a list of ORG-METADATA, compute the yaml header string."
   (--> org-metadata
-    org2jekyll/org-to-yaml-metadata
+    org2jekyll/--org-to-yaml-metadata
     (--map (format "%s: %s" (car it) (cdr it)) it)
     (cons "---" it)
     (cons "#+BEGIN_HTML" it)
@@ -214,7 +160,7 @@ Depends on the metadata header blog."
     (-snoc it "#+END_HTML\n")
     (s-join "\n" it)))
 
-(defun org2jekyll/categories-csv-to-yaml (categories-csv)
+(defun org2jekyll/--categories-csv-to-yaml (categories-csv)
   "Transform a CATEGORIES-CSV entries into a yaml entries."
   (->> categories-csv
     (concat ",")
@@ -234,7 +180,7 @@ Depends on the metadata header blog."
                (yaml-headers             `(("layout"      . "post")
                                            ("title"       . ,(assoc-default "title" org-metadata))
                                            ("date"        . ,date)
-                                           ("categories"  . ,(org2jekyll/categories-csv-to-yaml (assoc-default "categories" org-metadata)))
+                                           ("categories"  . ,(org2jekyll/--categories-csv-to-yaml (assoc-default "categories" org-metadata)))
                                            ("author"      . ,(assoc-default "author" org-metadata))
                                            ("description" . ,(assoc-default "description" org-metadata))))
                (temp-org-jekyll-filename  (format "%s-%s" date (file-name-nondirectory orgfile)))
@@ -243,7 +189,7 @@ Depends on the metadata header blog."
           (with-temp-file temp-postfile                 ;; write temporary file updated with jekyll specifics
             (insert-file-contents orgfile)
             (goto-char (point-min))
-            (insert (org2jekyll/to-yaml-header yaml-headers)))
+            (insert (org2jekyll/--to-yaml-header yaml-headers)))
           (org-publish-file temp-postfile (assoc blog-project org-publish-project-alist)) ;; publish the file with the right projects
           (delete-file temp-postfile))                  ;; remove the temporary file
       (message "This file is not an article, skip."))))
@@ -264,6 +210,59 @@ Depends on the metadata header blog."
 ;; (global-set-key (kbd "C-c b P") 'jekyll-publish-post)
 ;; (global-set-key (kbd "C-c b p") 'org2jekyll/list-posts)
 ;; (global-set-key (kbd "C-c b D") 'jekyll-list-drafs)
+
+;; org setup for publishing blog
+(custom-set-variables '(org-publish-project-alist
+                        `(("org"
+                           :base-directory ,(org2jekyll/input-directory)
+                           :base-extension "org"
+                           ;; :publishing-directory "/ssh:user@host:~/html/notebook/"
+                           :publishing-directory ,(org2jekyll/output-directory "blog")
+                           :publishing-function org-html-publish-to-html
+                           :headline-levels 4
+                           :section-numbers nil
+                           :with-toc nil
+                           :html-head "<link rel=\"stylesheet\" href=\"./css/style.css\" type=\"text/css\"/>"
+                           :html-preamble t
+                           :recursive t
+                           :make-index t
+                           :html-extension "html"
+                           :body-only t)
+
+                          ("tony-blog"
+                           :base-directory ,(org2jekyll/input-directory)
+                           :base-extension "org"
+                           :publishing-directory ,(org2jekyll/output-directory "_posts")
+                           :publishing-function org-html-publish-to-html
+                           :headline-levels 4
+                           :section-numbers nil
+                           :with-toc nil
+                           :html-head "<link rel=\"stylesheet\" href=\"./css/style.css\" type=\"text/css\"/>"
+                           :html-preamble t
+                           :recursive t
+                           :make-index t
+                           :html-extension "html"
+                           :body-only t)
+
+                          ("images"
+                           :base-directory ,(org2jekyll/input-directory "img")
+                           :base-extension "jpg\\|gif\\|png"
+                           :publishing-directory ,(org2jekyll/output-directory "img")
+                           :publishing-function org-publish-attachment)
+
+                          ("js"
+                           :base-directory ,(org2jekyll/input-directory "js")
+                           :base-extension "js"
+                           :publishing-directory ,(org2jekyll/output-directory "js")
+                           :publishing-function org-publish-attachment)
+
+                          ("other"
+                           :base-directory ,(org2jekyll/input-directory "css")
+                           :base-extension "css\\|el"
+                           :publishing-directory ,(org2jekyll/output-directory "css")
+                           :publishing-function org-publish-attachment)
+
+                          ("website" :components ("org" "tony-blog" "images" "js" "css")))))
 
 (provide 'org2jekyll)
 ;;; publish.el ends here
