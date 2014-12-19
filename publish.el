@@ -1,4 +1,4 @@
-;;; org-trello.el --- Minor mode to synchronize org-mode buffer and trello board
+;;; org2jekyll.el --- Minor mode to publish org-mode post to jekyll without specific yaml
 
 ;; Copyright (C) 2013 Antoine R. Dumont <eniotna.t AT gmail.com>
 
@@ -264,5 +264,5 @@ Depends on the metadata header blog."
 ;; (global-set-key (kbd "C-c b p") 'jekyll-list-posts)
 ;; (global-set-key (kbd "C-c b D") 'jekyll-list-drafs)
 
-(provide 'publish)
+(provide 'org2jekyll)
 ;;; publish.el ends here
