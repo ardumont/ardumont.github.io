@@ -1,0 +1,4 @@
+#+title: ardumont.github.io
+#+author: ardumont
+
+Source code for http://ardumont.github.io/blog
