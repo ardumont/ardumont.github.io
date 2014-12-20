@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <title>{{ page.title }}</title>
         <meta name="viewport" content="width=device-width">
         <!-- syntax highlighting CSS -->
@@ -12,32 +12,21 @@
     </head>
     <body>
         <div class="site">
-          <div class="header">
-            <h1 class="title"><a href="https://github.com/ardumont">{{ site.name }}</a></h1>
-            <a class="extra" href="/blog/index.html">home</a>
-            <a class="extra" href="/blog/archives.html">archives</a>
-          </div>
+            <div id="nav" style="margin-bottom:10px">
+                {% include menu.html %}
+            </div>
 
-          <div class="content" style="margin:10">
-              {{ content }}
-          </div>
-          <br />
+            <div class="content" style="margin-bottom:10px">
+                {{ content }}
+            </div>
 
-          <div class="posts">
-              <h1 class="title">Latest posts</h1>
-              {% for post in site.posts limit: 5 %}
-              <div class="post_info">
-	          <a href="{{ post.url }}">{{ post.title }}</a>
-	          <span>({{ post.date | date:"%Y-%m-%d" }})</span>
-                  <div>
-                      <em> {{ post.excerpt }} </em>
-                  </div>
-              </div>
-              <br />
-              {% endfor %}
-          </div>
+            <div id="latest-post">
+                {% include latest-posts.html %}
+            </div>
 
-          {% include footer.html %}
+            <div id="footer">
+                {% include footer.html %}
+            </div>
         </div>
     </body>
 </html>
