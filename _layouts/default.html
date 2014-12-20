@@ -41,37 +41,7 @@
               {% endfor %}
           </div>
 
-          <!-- <div class="archives">
-          <h1 class="title">Archives</h1>
-          {% for post in site.posts %}
-          <div class="post_info">
-          <a href="{{ post.url }}" title="{{ post.title }}">
-          <span class="title">{{ post.title }}</span>
-          <span>
-          <span>{{ post.date | date: '%d' }}</span>
-          <span><abbr>{{ post.date | date: '%b' }}</abbr></span>
-          <span>{{ post.date | date: '%Y' }}</span>
-          </span>
-          </a>
-          </div>
-          {% endfor %}
-          </div> -->
-
-          <div class="footer">
-            <div class="contact">
-              <p>
-                {{ site.name }}<br />
-                {{ site.job }}<br />
-                {{ site.email }}
-              </p>
-            </div>
-            <div class="contact">
-              <p>
-                <a href="https://github.com/{{ site.github_username }}">github.com/{{ site.github_username }}</a><br />
-                <a href="https://twitter.com/{{ site.twitter_username }}">twitter.com/{{ site.twitter_username }}</a><br />
-              </p>
-            </div>
-          </div>
+          {% include footer.html %}
         </div>
 
     </body>
