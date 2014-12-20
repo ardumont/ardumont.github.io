@@ -1,3 +1,19 @@
+---
+layout: default
+title: emacs-live pack - blog-pack
+date: 2013-04-29
+categories:
+- org-mode
+- emacs
+- wordpress
+- blog
+- org2blog
+- tools
+- blog-pack
+- emacs-live
+author: Antoine R. Dumont
+excerpt: emacs-live pack about org2blog - blog-pack
+---
 <p>
 <a href="http://adumont.fr/blog/blogging-with-org-mode-and-org2blog-to-publish-on-wordpress/">I already published an article about org2blog</a>.
 This is another one explaining how to install <a href="https://github.com/punchagan/org2blog">org2blog</a> using simply a <code>~/.netrc</code> file.
@@ -43,8 +59,8 @@ Create the file <code>~/.emacs-live.el</code> and add this line inside:
 </p>
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">;; adding the list of live packs
-(live-add-packs '("/path/to/blog-pack"))
+<pre class="src src-emacs-lisp"><span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">adding the list of live packs</span>
+<span style="color: #8b0000;">(</span>live-add-packs '<span style="color: #006400;">(</span><span style="color: #61CE3C;">"/path/to/blog-pack"</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
 </pre>
 </div>
 
