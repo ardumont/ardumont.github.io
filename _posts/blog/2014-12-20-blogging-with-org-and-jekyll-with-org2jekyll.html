@@ -1,0 +1,180 @@
+---
+layout: post
+title: Blogging with org and jekyll with org2jekyll
+date: 2014-12-20
+categories:
+- org-mode
+- jekyll
+- org2jekyll
+- emacs
+- blog
+- tools
+author: Antoine R. Dumont
+excerpt: org2jekyll, the new kid in town
+---
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Rationale</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+After reading existing tutorials about org-mode and jekyll:
+</p>
+<ul class="org-ul">
+<li><a href="http://orgmode.org/worg/org-tutorials/org-jekyll.html">http://orgmode.org/worg/org-tutorials/org-jekyll.html</a>
+</li>
+<li><a href="http://www.gorgnegre.com/linux/using-emacs-orgmode-to-blog-with-jekyll.html">http://www.gorgnegre.com/linux/using-emacs-orgmode-to-blog-with-jekyll.html</a>
+</li>
+<li><a href="https://pavpanchekha.com/blog/org-mode-publish.html">https://pavpanchekha.com/blog/org-mode-publish.html</a>
+</li>
+</ul>
+
+<p>
+And making them work&#x2026;
+</p>
+
+<p>
+I was not satisfied with the existing solution.
+</p>
+
+<p>
+Why? Because we need to adapt the org-mode file with specific jekyll yaml settings inside an org-mode html block code.
+</p>
+
+<p>
+But here is my thing, I don't want to adapt org with alien yaml or any other strange metadata.
+I'd like to have some standard org metadata, for example:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-org"><span style="color: #8B8989; font-style: italic;">#+LAYOUT: post</span>
+<span style="color: #8B8989; background-color: #000000;">#+AUTHOR:</span> <span style="color: #add8e6; background-color: #000000; font-weight: bold;">ardumont</span>
+<span style="color: #8B8989; background-color: #000000;">#+DATE:</span> <span style="color: #add8e6; background-color: #000000; font-weight: bold;">2014-12-19 Fri 23:49</span>
+<span style="color: #8B8989; font-style: italic;">#+STARTUP: showall</span>
+<span style="color: #8B8989; font-style: italic;">#+STARTUP: hidestars</span>
+<span style="color: #8B8989; font-style: italic;">#+OPTIONS: H:2 num:nil tags:nil toc:1 timestamps:t</span>
+<span style="color: #8B8989; background-color: #000000;">#+TITLE:</span> <span style="color: #add8e6; background-color: #000000; font-size: 150%; font-weight: bold;">hello</span>
+<span style="color: #8B8989; font-style: italic;">#+DESCRIPTION: some description</span>
+<span style="color: #8B8989; font-style: italic;">#+CATEGORIES: some-category</span>
+</pre>
+</div>
+
+<p>
+Then publish the blog post (<i>M-x org2jekyll/publish!</i>).
+</p>
+
+<p>
+Using some emacs-lisp incantation, we can make <i>org-publish</i> and <i>jekyll</i> work together.
+</p>
+
+<p>
+So, here comes <a href="https://github.com/ardumont/org2jekyll">https://github.com/ardumont/org2jekyll</a>&#x2026;
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Setup</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+For this to work, you need to have this ready:
+</p>
+<ul class="org-ul">
+<li>jekyll
+</li>
+<li>org-publish (<i>ox-publish</i> since 24.4)
+</li>
+<li>org2jekyll
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Example</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Here is my working setup:
+</p>
+<ul class="org-ul">
+<li>blog: <a href="http://ardumont.github.io/blog/">http://ardumont.github.io/blog/</a>
+</li>
+<li>source: <a href="https://github.com/ardumont/org2jekyll">https://github.com/ardumont/org2jekyll</a>
+</li>
+<li>setup: <a href="https://github.com/ardumont/blog-pack/blob/master/blog-pack.el">https://github.com/ardumont/blog-pack/blob/master/blog-pack.el</a>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Install</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Ok, I'm sold!
+How do I install org2jekyll?
+</p>
+
+<p>
+Install from <a href="https://marmalade-repo.org/packages/org2jekyll">marmalade</a> available or from <a href="https://github.com/ardumont/org2jekyll/releases">github releases</a>.
+</p>
+</div>
+
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1">Marmalade</h3>
+<div class="outline-text-3" id="text-4-1">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">require</span> '<span style="color: #4c83ff;">package</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span>add-to-list 'package-archives '<span style="color: #006400;">(</span><span style="color: #61CE3C;">"marmalade"</span> . <span style="color: #61CE3C;">"https://marmalade-repo.org/packa</span><span style="color: #dc8cc3; background-color: #383838;">ges/"</span><span style="color: #006400; background-color: #383838;">)</span><span style="color: #dc8cc3; background-color: #383838;"> t</span><span style="color: #8b0000; background-color: #383838;">)</span>
+<span style="color: #8b0000;">(</span>package-initialize<span style="color: #8b0000;">)</span>
+</pre>
+</div>
+
+<p>
+<i>M-x package-install RET org2jekyll RET</i>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2">github</h3>
+<div class="outline-text-3" id="text-4-2">
+<div class="org-src-container">
+
+<pre class="src src-sh">wget https://github.com/ardumont/org2jekyll/releases/download/0.0.7/org2jekyll-0<span style="color: #dc8cc3; background-color: #383838;">.0.7.tar</span>
+</pre>
+</div>
+
+<p>
+<i>M-x package-install-file RET org2jekyll.tar</i>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Contribution/Issues</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+I intend to maintain this as the other solution referenced are no longer.
+</p>
+
+<p>
+As usual, feel free to <a href="https://github.com/ardumont/org2jekyll/issues">open issues on the tracker</a> or <a href="https://github.com/ardumont/org2jekyll/pulls">pull requests</a>.
+</p>
+
+<p>
+As all of you, I have other things to attend to but I'll do my best to answer.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Inspiration</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+I used a lot <a href="https://github.com/punchagan/org2blog.git">the great org2blog (org -&gt; wordpress bridge)</a> and was inspired by the name and the org headers approach.
+</p>
+</div>
+</div>
