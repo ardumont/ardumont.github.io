@@ -1,36 +1,3 @@
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">Exponentiation</a></li>
-<li><a href="#sec-2">evaluated</a>
-<ul>
-<li><a href="#sec-2-1">length</a></li>
-<li><a href="#sec-2-2">drop</a></li>
-<li><a href="#sec-2-3">init</a></li>
-</ul>
-</li>
-<li><a href="#sec-3">functions</a>
-<ul>
-<li><a href="#sec-3-1"><b>and</b></a></li>
-<li><a href="#sec-3-2"><b>concat</b></a></li>
-<li><a href="#sec-3-3"><b>replicate</b></a></li>
-<li><a href="#sec-3-4"><b>(!!)</b></a></li>
-<li><a href="#sec-3-5"><b>elem</b></a></li>
-</ul>
-</li>
-<li><a href="#sec-4">merge</a></li>
-<li><a href="#sec-5">msort</a></li>
-<li><a href="#sec-6">sum</a>
-<ul>
-<li><a href="#sec-6-1"><b>sum</b></a></li>
-<li><a href="#sec-6-2"><b>take</b></a></li>
-<li><a href="#sec-6-3"><b>last</b></a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
 ---
 layout: post
 title: PIH - ch6 - Recursive functions
@@ -39,6 +6,7 @@ categories:
 - haskell
 - exercises
 - functional-programming
+- recursion
 author: Antoine R. Dumont
 excerpt: recursion exercises in Haskell
 ---
@@ -59,7 +27,7 @@ same pattern of recursion as the multiplication operator <code>∗</code>, and s
 <div class="org-src-container">
 
 <pre class="src src-haskell">(<span style="color: #ff1493;">^</span>) <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
-<span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #ff1493;">^</span> 0 <span style="color: #D8FA3C;">=</span> 1
+<span style="color: #FBDE2D;">_</span> <span style="color: #ff1493;">^</span> 0 <span style="color: #D8FA3C;">=</span> 1
 x <span style="color: #ff1493;">^</span> n <span style="color: #D8FA3C;">=</span> x <span style="color: #D8FA3C;">*</span> (x <span style="color: #D8FA3C;">^</span> (n<span style="color: #D8FA3C;">-</span>1))
 </pre>
 </div>
@@ -97,7 +65,7 @@ Given the definition:
 
 <pre class="src src-haskell"><span style="color: #ff1493;">length</span> <span style="color: #D8FA3C;">::</span> [a] <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
 <span style="color: #ff1493;">length</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> 0
-<span style="color: #ff1493;">length</span> (<span style="color: #FBDE2D; font-weight: bold;">_</span><span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">=</span> 1 <span style="color: #D8FA3C;">+</span> length xs
+<span style="color: #ff1493;">length</span> (<span style="color: #FBDE2D;">_</span><span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">=</span> 1 <span style="color: #D8FA3C;">+</span> length xs
 </pre>
 </div>
 
@@ -123,8 +91,8 @@ Given the definition:
 
 <pre class="src src-haskell"><span style="color: #ff1493;">drop</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> [a] <span style="color: #D8FA3C;">-&gt;</span> [a]
 <span style="color: #ff1493;">drop</span> 0 ys <span style="color: #D8FA3C;">=</span> ys
-<span style="color: #ff1493;">drop</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
-<span style="color: #ff1493;">drop</span> n (<span style="color: #FBDE2D; font-weight: bold;">_</span><span style="color: #D8FA3C;">:</span>ys) <span style="color: #D8FA3C;">=</span> drop (n<span style="color: #D8FA3C;">-</span>1) ys
+<span style="color: #ff1493;">drop</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">drop</span> n (<span style="color: #FBDE2D;">_</span><span style="color: #D8FA3C;">:</span>ys) <span style="color: #D8FA3C;">=</span> drop (n<span style="color: #D8FA3C;">-</span>1) ys
 </pre>
 </div>
 
@@ -148,7 +116,7 @@ Given the definition:
 <div class="org-src-container">
 
 <pre class="src src-haskell"><span style="color: #ff1493;">init</span> <span style="color: #D8FA3C;">::</span> [a] <span style="color: #D8FA3C;">-&gt;</span> [a]
-<span style="color: #ff1493;">init</span> [<span style="color: #FBDE2D; font-weight: bold;">_</span>] <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">init</span> [<span style="color: #FBDE2D;">_</span>] <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
 <span style="color: #ff1493;">init</span> (x<span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">=</span> x<span style="color: #D8FA3C;">:</span>(init xs)
 </pre>
 </div>
@@ -256,7 +224,7 @@ Example:
 <div class="org-src-container">
 
 <pre class="src src-haskell"><span style="color: #ff1493;">replicate</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> [a]
-<span style="color: #ff1493;">replicate</span> 0 <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">replicate</span> 0 <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
 <span style="color: #ff1493;">replicate</span> n x <span style="color: #D8FA3C;">=</span> x<span style="color: #D8FA3C;">:</span>(replicate (n<span style="color: #D8FA3C;">-</span>1) x)
 </pre>
 </div>
@@ -286,8 +254,8 @@ Example:
 <div class="org-src-container">
 
 <pre class="src src-haskell">(<span style="color: #ff1493;">!!</span>) <span style="color: #D8FA3C;">::</span> [a] <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> a
-(x<span style="color: #D8FA3C;">:</span><span style="color: #FBDE2D; font-weight: bold;">_</span>) <span style="color: #D8FA3C;">!!</span> 0 <span style="color: #D8FA3C;">=</span> x
-(<span style="color: #FBDE2D; font-weight: bold;">_</span><span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">!!</span> n <span style="color: #D8FA3C;">=</span> xs <span style="color: #D8FA3C;">!!</span> (n<span style="color: #D8FA3C;">-</span>1)
+(x<span style="color: #D8FA3C;">:</span><span style="color: #FBDE2D;">_</span>) <span style="color: #D8FA3C;">!!</span> 0 <span style="color: #D8FA3C;">=</span> x
+(<span style="color: #FBDE2D;">_</span><span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">!!</span> n <span style="color: #D8FA3C;">=</span> xs <span style="color: #D8FA3C;">!!</span> (n<span style="color: #D8FA3C;">-</span>1)
 </pre>
 </div>
 
@@ -317,7 +285,7 @@ Example:
 <div class="org-src-container">
 
 <pre class="src src-haskell"><span style="color: #ff1493;">elem</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Eq</span> a <span style="color: #D8FA3C;">=&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> [a] <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Bool</span>
-<span style="color: #ff1493;">elem</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">False</span>
+<span style="color: #ff1493;">elem</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">False</span>
 <span style="color: #ff1493;">elem</span> x (y<span style="color: #D8FA3C;">:</span>ys) <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">==</span> y    <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
               <span style="color: #D8FA3C;">|</span> otherwise <span style="color: #D8FA3C;">=</span> elem x ys
 </pre>
@@ -439,7 +407,7 @@ Now:
 <span style="color: #ff1493;">msort</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
 <span style="color: #ff1493;">msort</span> [x] <span style="color: #D8FA3C;">=</span> [x]
 <span style="color: #ff1493;">msort</span> xs <span style="color: #D8FA3C;">=</span> merge (msort fh) (msort sh)
-           <span style="color: #FBDE2D; font-weight: bold;">where</span>
+           <span style="color: #FBDE2D;">where</span>
              (fh, sh) <span style="color: #D8FA3C;">=</span> halve xs
 </pre>
 </div>
@@ -603,8 +571,8 @@ Then what are the cases:
 
 <div class="org-src-container">
 
-<pre class="src src-haskell"><span style="color: #ff1493;">take</span> 0 <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">=</span>
-<span style="color: #ff1493;">take</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span>
+<pre class="src src-haskell"><span style="color: #ff1493;">take</span> 0 <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">=</span>
+<span style="color: #ff1493;">take</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span>
 </pre>
 </div>
 </div>
@@ -617,8 +585,8 @@ Either way, we return an empty list.
 </p>
 <div class="org-src-container">
 
-<pre class="src src-haskell"><span style="color: #ff1493;">take</span> 0 <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
-<span style="color: #ff1493;">take</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<pre class="src src-haskell"><span style="color: #ff1493;">take</span> 0 <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">take</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
 </pre>
 </div>
 </div>
@@ -647,8 +615,8 @@ First, what do we got?
 <div class="org-src-container">
 
 <pre class="src src-haskell"><span style="color: #ff1493;">take</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> [a] <span style="color: #D8FA3C;">-&gt;</span> [a]
-<span style="color: #ff1493;">take</span> 0 <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
-<span style="color: #ff1493;">take</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">take</span> 0 <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">take</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
 <span style="color: #ff1493;">take</span> n (x<span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">=</span> x <span style="color: #D8FA3C;">:</span> (take (n<span style="color: #D8FA3C;">-</span>1) xs)
 </pre>
 </div>
@@ -724,7 +692,7 @@ Then defining it:
 <div class="outline-text-4" id="text-6-3-4">
 <div class="org-src-container">
 
-<pre class="src src-haskell"><span style="color: #ff1493;">last</span> (<span style="color: #FBDE2D; font-weight: bold;">_</span><span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">=</span> last xs
+<pre class="src src-haskell"><span style="color: #ff1493;">last</span> (<span style="color: #FBDE2D;">_</span><span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">=</span> last xs
 </pre>
 </div>
 </div>
