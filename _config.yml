@@ -12,6 +12,8 @@ author: "@ardumont"
 twitter_username: ardumont
 github_username:  ardumont
 
+archivelimit: 5
+
 trace: false
 safe: true
 highlighter: pygments
