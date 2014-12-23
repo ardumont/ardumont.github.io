@@ -27,7 +27,13 @@
         </div>
 
         <div class="container">
-            {% include main-site-header.html %}
+            <div class="row">
+                <div class="col-sm-9 blog-main">
+                    <div class="blog-header">
+                        <p class="blog-title">{{ site.title }} <sup class="lead blog-description">{{ site.description }}</sup>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-8 blog-main">
                     {{ content }}
