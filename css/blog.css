@@ -3,7 +3,7 @@
  */
 
 body {
-    font-family: Dejavu Sans, Georgia, Times, serif;
+    font-family: Dejavu Sans Mono, Georgia, Times, serif;
     color: #555;
 }
 
@@ -14,7 +14,6 @@ h4, .h4,
 h5, .h5,
 h6, .h6 {
     margin-top: 0;
-    font-family: Dejavu Sans, Helvetica, Arial, sans-serif;
     font-weight: normal;
     color: #333;
 }
