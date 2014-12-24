@@ -1,0 +1,90 @@
+/* CSS for curriculum-app */
+
+.title {
+    font-weight: bold;
+    text-decoration:underline;
+}
+
+.dash {
+    list-style-type: disc;
+    list-style-position: inside;
+}
+
+/* structure */
+
+#main {
+	width:760px;
+}
+
+.info {
+	width:753px;
+}
+
+#main {
+	margin:30px 0 30px 0;
+	left:50%;
+	position:absolute;
+	margin-left:-390px;
+}
+
+.nom {
+	width:350px;
+}
+
+.photo {
+	width:94px;
+	height:119px;
+	position:absolute;
+	float:left;
+	top:0;
+	right:0;
+}
+
+.info,.nom {
+	padding:5px 0 5px 5px;
+}
+
+td.centre {
+	vertical-align:middle;
+}
+
+/* css */
+
+body {
+	background-color:white;
+	font-family:tahoma, verdana, sans-serif;
+	font-size:1em;
+}
+
+b {
+	text-decoration:underline;
+}
+
+a:link, a:visited {
+	color:#007BB9;
+	background-color:transparent;
+	text-decoration:underline;
+}
+
+th {
+	text-decoration:normal;
+}
+
+.photo, .info,.nom {
+	border:1px solid #29A1DC;
+}
+
+.photo {
+	background:url(antoine.070307.jpg) center no-repeat;
+}
+
+.centre {
+	text-align:center;
+}
+
+.info, .nom {
+	font-size:0.75em;
+	background-color:#B2D8EC;
+	color:black;
+	text-align:left;
+}

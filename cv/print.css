@@ -1,0 +1,21 @@
+body {
+    margin:0;
+    padding:0;
+    line-height: 1.4em;
+    word-spacing:1px;
+    letter-spacing:0.2px;
+    font: Arial, Helvetica,"Lucida Grande", serif;
+    color: #000;
+}
+
+#main {
+    padding-left: 15px;
+}
+
+.photo {
+	right:10px;
+}
+
+.info {
+	width:742px;
+}
