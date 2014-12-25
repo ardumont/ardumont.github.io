@@ -25,22 +25,24 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-sm-9 blog-main">
+                <div class="col-xs-8 blog-main">
                     <div class="blog-header">
-                        <p class="blog-title">{{ site.title }} <sup class="lead blog-description">{{ site.description }}</sup>
+                        <p class="blog-title">{{ site.title }} <sup class="blog-description">{{ site.description }}</sup>
+                    </div>
+                </div>
+                <div class="col-xs-3 blog-sidebar">
+                    <div class="sidebar-module sidebar-module-inset">
+                        {% include hacker-philosophy.html %}
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-8 blog-main">
+                <div class="col-xs-8 blog-main">
                     {{ content }}
                 </div>
-                <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+                <div class="col-xs-4 blog-sidebar">
                     <div class="sidebar-module">
                         {% include twitter-posts.html %}
-                    </div>
-                    <div class="sidebar-module sidebar-module-inset">
-                        {% include hacker-philosophy.html %}
                     </div>
                     <div id="latest-post">
                         {% include latest-posts.html %}
