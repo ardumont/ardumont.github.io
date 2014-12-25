@@ -76,7 +76,7 @@ We'll follow the hint and implement the function <code>remove1</code>:
 <div class="org-src-container">
 
 <pre class="src src-haskell"><span style="color: #ff1493;">remove1</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Eq</span> a <span style="color: #D8FA3C;">=&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> [a] <span style="color: #D8FA3C;">-&gt;</span> [a]
-<span style="color: #ff1493;">remove1</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">remove1</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
 <span style="color: #ff1493;">remove1</span> x (y<span style="color: #D8FA3C;">:</span>ys)
   <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">==</span> y <span style="color: #D8FA3C;">=</span> ys
   <span style="color: #D8FA3C;">|</span> otherwise <span style="color: #D8FA3C;">=</span> y<span style="color: #D8FA3C;">:</span>remove1 x ys
@@ -99,8 +99,8 @@ Now, we can use it to help us implement the <code>isChoice</code> function
 <div class="org-src-container">
 
 <pre class="src src-haskell"><span style="color: #ff1493;">isChoice</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Eq</span> a <span style="color: #D8FA3C;">=&gt;</span> [a] <span style="color: #D8FA3C;">-&gt;</span> [a] <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Bool</span>
-<span style="color: #ff1493;">isChoice</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #FBDE2D; font-weight: bold;">_</span>     <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
-<span style="color: #ff1493;">isChoice</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">[]</span>     <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">False</span>
+<span style="color: #ff1493;">isChoice</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #FBDE2D;">_</span>     <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
+<span style="color: #ff1493;">isChoice</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">[]</span>     <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">False</span>
 <span style="color: #ff1493;">isChoice</span> (x<span style="color: #D8FA3C;">:</span>xs) l <span style="color: #D8FA3C;">=</span> elem x l <span style="color: #D8FA3C;">&amp;&amp;</span> isChoice xs (remove1 x l)
 
 <span style="color: #D8FA3C;">*</span>problem<span style="color: #D8FA3C;">&gt;</span> isChoice [11] [1<span style="color: #D8FA3C;">..</span>10]
@@ -134,7 +134,7 @@ Here is the <code>split</code> function:
 
 <pre class="src src-haskell"><span style="color: #ff1493;">split</span> <span style="color: #D8FA3C;">::</span> [a] <span style="color: #D8FA3C;">-&gt;</span> [([a], [a])]
 <span style="color: #ff1493;">split</span> <span style="color: #D8FA3C;">[]</span>     <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
-<span style="color: #ff1493;">split</span> [<span style="color: #FBDE2D; font-weight: bold;">_</span>]    <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">split</span> [<span style="color: #FBDE2D;">_</span>]    <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
 <span style="color: #ff1493;">split</span> (x<span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">=</span> ([x], xs) <span style="color: #D8FA3C;">:</span> [(x<span style="color: #D8FA3C;">:</span> ls, rs) <span style="color: #D8FA3C;">|</span> (ls, rs) <span style="color: #D8FA3C;">&lt;-</span> split xs]
 
 <span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Problem</span><span style="color: #D8FA3C;">&gt;</span> split [1,3,7,10,25,50]
@@ -220,9 +220,9 @@ Using the basic implementation for <code>valid</code>, we obtain indeed the same
 <div class="org-src-container">
 
 <pre class="src src-haskell"><span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Op</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Bool</span>
-<span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Add</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
+<span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Add</span> <span style="color: #FBDE2D;">_</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
 <span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Sub</span> x y <span style="color: #D8FA3C;">=</span> x <span style="color: #D8FA3C;">&gt;</span> y
-<span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Mul</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
+<span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Mul</span> <span style="color: #FBDE2D;">_</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
 <span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Div</span> x y <span style="color: #D8FA3C;">=</span> y <span style="color: #D8FA3C;">/=</span> 0 <span style="color: #D8FA3C;">&amp;&amp;</span> x <span style="color: #D8FA3C;">`mod`</span> y <span style="color: #D8FA3C;">==</span> 0
 
 <span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Problem</span><span style="color: #D8FA3C;">&gt;</span> length [ es <span style="color: #D8FA3C;">|</span> cs <span style="color: #D8FA3C;">&lt;-</span> choices [1,3,7,10,25,50], es <span style="color: #D8FA3C;">&lt;-</span> exprs cs, eval es <span style="color: #dc8cc3; background-color: #383838;">/=</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">[]</span><span style="color: #dc8cc3; background-color: #383838;">]</span>
@@ -251,9 +251,9 @@ Now modifying the signature of valid to permit no particular filter on those num
 <div class="org-src-container">
 
 <pre class="src src-haskell"><span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Op</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Bool</span>
-<span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Add</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
-<span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Sub</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
-<span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Mul</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
+<span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Add</span> <span style="color: #FBDE2D;">_</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
+<span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Sub</span> <span style="color: #FBDE2D;">_</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
+<span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Mul</span> <span style="color: #FBDE2D;">_</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
 <span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Div</span> x y <span style="color: #D8FA3C;">=</span> y <span style="color: #D8FA3C;">/=</span> 0 <span style="color: #D8FA3C;">&amp;&amp;</span> x <span style="color: #D8FA3C;">`mod`</span> y <span style="color: #D8FA3C;">==</span> 0
 </pre>
 </div>
@@ -292,8 +292,8 @@ We first need to add the exp operation in the data Op:
 </p>
 <div class="org-src-container">
 
-<pre class="src src-haskell"><span style="color: #586e75;">-- </span><span style="color: #8B8989; font-style: italic;">operation</span>
-<span style="color: #FBDE2D; font-weight: bold;">data</span> <span style="color: #D8FA3C;">Op</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Add</span> <span style="color: #D8FA3C;">|</span> <span style="color: #D8FA3C;">Sub</span> <span style="color: #D8FA3C;">|</span> <span style="color: #D8FA3C;">Mul</span> <span style="color: #D8FA3C;">|</span> <span style="color: #D8FA3C;">Div</span> <span style="color: #D8FA3C;">|</span> <span style="color: #D8FA3C;">Exp</span> <span style="color: #FBDE2D; font-weight: bold;">deriving</span> (<span style="color: #D8FA3C;">Show</span>)
+<pre class="src src-haskell"><span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">operation</span>
+<span style="color: #FBDE2D;">data</span> <span style="color: #D8FA3C;">Op</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Add</span> <span style="color: #D8FA3C;">|</span> <span style="color: #D8FA3C;">Sub</span> <span style="color: #D8FA3C;">|</span> <span style="color: #D8FA3C;">Mul</span> <span style="color: #D8FA3C;">|</span> <span style="color: #D8FA3C;">Div</span> <span style="color: #D8FA3C;">|</span> <span style="color: #D8FA3C;">Exp</span> <span style="color: #FBDE2D;">deriving</span> (<span style="color: #D8FA3C;">Show</span>)
 </pre>
 </div>
 
@@ -310,7 +310,7 @@ Thus the following definition:
 <span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Sub</span> x y <span style="color: #D8FA3C;">=</span> x <span style="color: #D8FA3C;">&gt;</span> y
 <span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Mul</span> x y <span style="color: #D8FA3C;">=</span> x <span style="color: #D8FA3C;">&lt;=</span> y <span style="color: #D8FA3C;">&amp;&amp;</span> x <span style="color: #D8FA3C;">/=</span> 1 <span style="color: #D8FA3C;">&amp;&amp;</span> y <span style="color: #D8FA3C;">/=</span> 1
 <span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Div</span> x y <span style="color: #D8FA3C;">=</span> y <span style="color: #D8FA3C;">&gt;</span> 1 <span style="color: #D8FA3C;">&amp;&amp;</span> x <span style="color: #D8FA3C;">`mod`</span> y <span style="color: #D8FA3C;">==</span> 0
-<span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Exp</span> <span style="color: #FBDE2D; font-weight: bold;">_</span> y <span style="color: #D8FA3C;">=</span> y <span style="color: #D8FA3C;">==</span> 0 <span style="color: #D8FA3C;">||</span> y <span style="color: #D8FA3C;">&gt;</span> 1
+<span style="color: #ff1493;">valid</span> <span style="color: #D8FA3C;">Exp</span> <span style="color: #FBDE2D;">_</span> y <span style="color: #D8FA3C;">=</span> y <span style="color: #D8FA3C;">==</span> 0 <span style="color: #D8FA3C;">||</span> y <span style="color: #D8FA3C;">&gt;</span> 1
 
 <span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Problem</span><span style="color: #D8FA3C;">&gt;</span> valid <span style="color: #D8FA3C;">Exp</span> 10 2
 <span style="color: #D8FA3C;">True</span>
@@ -400,7 +400,7 @@ Now we can run the tests.
 <div class="org-src-container">
 
 <pre class="src src-haskell"><span style="color: #ff1493;">test</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">IO</span> <span style="color: #D8FA3C;">()</span>
-<span style="color: #ff1493;">test</span> <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D; font-weight: bold;">do</span>
+<span style="color: #ff1493;">test</span> <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D;">do</span>
   deepCheck prop_solution
 
 <span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Problem</span><span style="color: #D8FA3C;">&gt;</span> test
