@@ -154,7 +154,9 @@ h6, .h6 {
  */
 
 .blog-footer {
-    padding: 40px 0;
+    padding-top: 20px;
+    pagging-bottom: 20px;
+    font-size: 80%;
     color: #999;
     text-align: center;
     background-color: #f9f9f9;

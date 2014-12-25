@@ -30,7 +30,7 @@
                         <p class="blog-title">{{ site.title }} <sup class="blog-description">{{ site.description }}</sup>
                     </div>
                 </div>
-                <div class="col-md-3 blog-sidebar">
+                <div class="col-md-4 blog-sidebar">
                     <div class="sidebar-module sidebar-module-inset">
                         {% include hacker-philosophy.html %}
                     </div>
@@ -55,7 +55,9 @@
         </div>
 
         <div id="footer">
-            {% include footer.html %}
+            <div class="row">
+                {% include footer.html %}
+            </div>
         </div>
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
