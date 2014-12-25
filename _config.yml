@@ -1,4 +1,3 @@
-# Site settings
 name: ardumont
 job: developer/devops
 title: "Tonλ's blog"
@@ -20,11 +19,5 @@ safe: true
 highlighter: pygments
 
 encoding: utf-8
-
-# Build settings
-#markdown: kramdown
 markdown: redcarpet
-# redcarpet:
-#   extensions: [ "no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
-
 permalink: /:title
