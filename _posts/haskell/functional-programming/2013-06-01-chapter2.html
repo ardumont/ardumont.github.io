@@ -1,0 +1,780 @@
+---
+layout: post
+title: Functional Approach in haskell - Ch2 - Exercises
+date: 2013-06-01
+categories:
+- haskell
+- programming
+- functional-programming
+author: Antoine R. Dumont
+excerpt: Functional Approach in Haskell - Ch. 2 - Functional programming in Haskell - exercises
+---
+<p>
+Now that i know a little more about haskell, I can go and refresh my memory about algorithms but the functional way.
+So, I came accross functional approach in haskell which does exactly that.
+</p>
+
+<p>
+Here are the first exercises (focused on haskell for the moment).
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Simple</h2>
+<div class="outline-text-2" id="text-1">
+<blockquote>
+<p>
+Using a haskell interpreter, evaluate the following expressions (try to predict the result):
+(1+2)
+if (2 &gt; 9) then "hello" else "bye"
+let x=(sqrt 16) in x+1
+</p>
+</blockquote>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">(1<span style="color: #D8FA3C;">+</span>2)                               <span style="color: #D8FA3C;">-</span> 3
+<span style="color: #FBDE2D;">if</span> (2 <span style="color: #D8FA3C;">&gt;</span> 9) <span style="color: #FBDE2D;">then</span> <span style="color: #61CE3C;">"hello"</span> <span style="color: #FBDE2D;">else</span> <span style="color: #61CE3C;">"bye"</span>  <span style="color: #D8FA3C;">-</span> <span style="color: #61CE3C;">"bye"</span>
+<span style="color: #FBDE2D;">let</span> x<span style="color: #D8FA3C;">=</span>(sqrt 16) <span style="color: #FBDE2D;">in</span> x<span style="color: #D8FA3C;">+</span>1              <span style="color: #D8FA3C;">-</span>  5<span style="color: #D8FA3C;">.</span>0
+</pre>
+</div>
+
+<p>
+Interpreter:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> 1 <span style="color: #D8FA3C;">+</span> 2
+3
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> <span style="color: #FBDE2D;">if</span> (2 <span style="color: #D8FA3C;">&gt;</span> 9) <span style="color: #FBDE2D;">then</span> <span style="color: #61CE3C;">"hello"</span> <span style="color: #FBDE2D;">else</span> <span style="color: #61CE3C;">"bye"</span>
+<span style="color: #61CE3C;">"bye"</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> <span style="color: #FBDE2D;">let</span> x<span style="color: #D8FA3C;">=</span>(sqrt 16) <span style="color: #FBDE2D;">in</span> x<span style="color: #D8FA3C;">+</span>1
+5<span style="color: #D8FA3C;">.</span>0
+</pre>
+</div>
+
+<p>
+*
+</p>
+<blockquote>
+<p>
+Define and load the following function:
+<code>fact 1 = 1</code>
+<code>fact n = n * fact (n-1)</code>
+</p>
+
+<p>
+a) Using the interpreter, evaluate the expression <code>fact 5</code>
+b) What happens when you try to evaluate <code>fact 0</code>? Alter the above definition to solve this definition.
+c) Modify your definition such that the value -1 is returned when an attempt is made to compute the factorial of a negative value.
+</p>
+</blockquote>
+
+<p>
+a)
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> fact 5
+120
+</pre>
+</div>
+
+<p>
+b)
+</p>
+<ul class="org-ul">
+<li>the function does not terminate
+</li>
+<li>alter:
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">fact</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">fact</span> 0 <span style="color: #D8FA3C;">=</span> 1
+<span style="color: #ff1493;">fact</span> n <span style="color: #D8FA3C;">=</span> n <span style="color: #D8FA3C;">*</span> fact (n<span style="color: #D8FA3C;">-</span>1)
+</pre>
+</div>
+
+<p>
+c)
+Compute factorial of a negative value must render -1:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">fact</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">fact</span> n
+  <span style="color: #D8FA3C;">|</span> n <span style="color: #D8FA3C;">&lt;</span> 0     <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">-</span>1
+  <span style="color: #D8FA3C;">|</span> n <span style="color: #D8FA3C;">==</span> 0    <span style="color: #D8FA3C;">=</span> 1
+  <span style="color: #D8FA3C;">|</span> otherwise <span style="color: #D8FA3C;">=</span> n <span style="color: #D8FA3C;">*</span> fact (n<span style="color: #D8FA3C;">-</span>1)
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> fact 0
+1
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> fact 1
+1
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> fact 5
+120
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> fact (<span style="color: #D8FA3C;">-</span>10)
+<span style="color: #D8FA3C;">-</span>1
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">wrong</h2>
+<div class="outline-text-2" id="text-2">
+<blockquote>
+<p>
+What is wrong with the following expressions? Can you change them to make them valid?
+</p>
+
+<p>
+1:2:3
+[ [2,3] ++ [], [2,3]:[] ]
+"hello" : "world"
+</p>
+</blockquote>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> (1<span style="color: #D8FA3C;">:</span>2<span style="color: #D8FA3C;">:</span>3<span style="color: #D8FA3C;">:[]</span>)
+[1,2,3]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> [[[2,3] <span style="color: #D8FA3C;">++</span> <span style="color: #D8FA3C;">[]</span>], ([2,3]<span style="color: #D8FA3C;">:[]</span>)]
+[[[2,3]],[[2,3]]]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> <span style="color: #61CE3C;">"hello"</span> <span style="color: #D8FA3C;">++</span> <span style="color: #61CE3C;">"world"</span>
+<span style="color: #61CE3C;">"helloworld"</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">reverse</h2>
+<div class="outline-text-2" id="text-3">
+<blockquote>
+<p>
+Given the following function:
+</p>
+</blockquote>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">f</span> l <span style="color: #D8FA3C;">=</span> reverse (f' l <span style="color: #D8FA3C;">[]</span>)
+      <span style="color: #FBDE2D;">where</span> f' <span style="color: #D8FA3C;">[]</span> r     <span style="color: #D8FA3C;">=</span> r
+            f' (x<span style="color: #D8FA3C;">:</span>xs) r <span style="color: #D8FA3C;">=</span> (2<span style="color: #D8FA3C;">*</span>x) <span style="color: #D8FA3C;">:</span> (f' xs r)
+</pre>
+</div>
+<blockquote>
+<p>
+What is the value of <code>f [1,2,3,4])</code> ?
+Check your answer with the haskell interpreter.
+</p>
+</blockquote>
+
+<p>
+Answer step by step:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">f</span> [1,2,3,4] <span style="color: #D8FA3C;">=</span> reverse (f' [1,2,3,4] <span style="color: #D8FA3C;">[]</span>)
+            <span style="color: #D8FA3C;">=</span> reverse ((2<span style="color: #D8FA3C;">*</span>1) <span style="color: #D8FA3C;">:</span> (f' [2,3,4] <span style="color: #D8FA3C;">[]</span>))
+            <span style="color: #D8FA3C;">=</span> reverse (2 <span style="color: #D8FA3C;">:</span> (2<span style="color: #D8FA3C;">*</span>2) <span style="color: #D8FA3C;">:</span> (f' [3,4] <span style="color: #D8FA3C;">[]</span>))
+            <span style="color: #D8FA3C;">=</span> reverse (2 <span style="color: #D8FA3C;">:</span> 4 <span style="color: #D8FA3C;">:</span> (2<span style="color: #D8FA3C;">*</span>3) <span style="color: #D8FA3C;">:</span> (f' [4] <span style="color: #D8FA3C;">[]</span>))
+            <span style="color: #D8FA3C;">=</span> reverse (2 <span style="color: #D8FA3C;">:</span> 4 <span style="color: #D8FA3C;">:</span> 6 <span style="color: #D8FA3C;">:</span> (4<span style="color: #D8FA3C;">*</span>2) <span style="color: #D8FA3C;">:</span> (f' <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">[]</span>))
+            <span style="color: #D8FA3C;">=</span> reverse (2 <span style="color: #D8FA3C;">:</span> 4 <span style="color: #D8FA3C;">:</span> 6 <span style="color: #D8FA3C;">:</span> 8 <span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">[]</span>)
+            <span style="color: #D8FA3C;">=</span> [8,6,4,2]
+</pre>
+</div>
+
+<p>
+Interpreter:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> f [1<span style="color: #D8FA3C;">..</span>4]
+[8,6,4,2]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Predict</h2>
+<div class="outline-text-2" id="text-4">
+<blockquote>
+<p>
+Try to predict the value of the following expressions:
+<code>[1,2,3] ++ [4]</code>
+<code>1:(2:(3:[4]))</code>
+<code>head [1,2,3]</code>
+<code>tail [1,2,3]</code>
+<code>drop 4 [1,2,3,4,5]</code>
+<code>[1,2,3,4] !! 2</code>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">[1,2,3] <span style="color: #D8FA3C;">++</span> [4]          <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">[1,2,3,4]</span>
+1<span style="color: #D8FA3C;">:</span>(2<span style="color: #D8FA3C;">:</span>(3<span style="color: #D8FA3C;">:</span>[4]))           <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">[1,2,3,4]</span>
+<span style="color: #ff1493;">head</span> [1,2,3]            <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">1</span>
+<span style="color: #ff1493;">tail</span> [1,2,3]            <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">[2,3]</span>
+<span style="color: #ff1493;">drop</span> 4 [1,2,3,4,5]      <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">[5]</span>
+[1,2,3,4] <span style="color: #D8FA3C;">!!</span> 2          <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">3</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">functions</h2>
+<div class="outline-text-2" id="text-5">
+<blockquote>
+<p>
+Write Haskell functions for:
+a) computing the average value of a list of numbers;
+b) selecting the middle element in a list (assuming an odd-length list).
+</p>
+</blockquote>
+
+<p>
+a)
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">avg</span> <span style="color: #D8FA3C;">::</span> [<span style="color: #D8FA3C;">Int</span>] <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">avg</span> xs <span style="color: #D8FA3C;">|</span> null xs   <span style="color: #D8FA3C;">=</span> 0
+       <span style="color: #D8FA3C;">|</span> otherwise <span style="color: #D8FA3C;">=</span> (sum xs) <span style="color: #D8FA3C;">`div`</span> (length xs)
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> avg [1<span style="color: #D8FA3C;">..</span>10]
+5
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> avg <span style="color: #D8FA3C;">[]</span>
+0
+</pre>
+</div>
+
+<p>
+b)
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">mdl</span> <span style="color: #D8FA3C;">::</span> [a] <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Maybe</span> a
+<span style="color: #ff1493;">mdl</span> xs <span style="color: #D8FA3C;">|</span> null xs   <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Nothing</span>
+       <span style="color: #D8FA3C;">|</span> otherwise <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Just</span> (xs <span style="color: #D8FA3C;">!!</span> p)
+                     <span style="color: #FBDE2D;">where</span> p <span style="color: #D8FA3C;">=</span> ((subtract 1) <span style="color: #D8FA3C;">.</span> (<span style="color: #D8FA3C;">`div`</span> 2) <span style="color: #D8FA3C;">.</span> length) xs
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> mdl [1<span style="color: #D8FA3C;">..</span>10]
+<span style="color: #D8FA3C;">Just</span> 5
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> mdl [1<span style="color: #D8FA3C;">..</span>20]
+<span style="color: #D8FA3C;">Just</span> 10
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> mdl <span style="color: #D8FA3C;">[]</span>
+<span style="color: #D8FA3C;">Nothing</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">predict</h2>
+<div class="outline-text-2" id="text-6">
+<blockquote>
+<p>
+a) Try to predict the value of each of the following expressions:
+<code>[(x,y) | x &lt;- [1..2], y &lt;- [2..5], (x+y) /</code> 4]=
+<code>[x | x &lt;- [1..10], x `mod` 2 =</code> 0]=
+</p>
+</blockquote>
+
+<p>
+All the couple (x,y), such that x in [1,2] and y in [2,3,4,5) and that x+y is not 4:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">[(x,y) <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> [1<span style="color: #D8FA3C;">..</span>2], y <span style="color: #D8FA3C;">&lt;-</span> [2<span style="color: #D8FA3C;">..</span>5], (x<span style="color: #D8FA3C;">+</span>y) <span style="color: #D8FA3C;">/=</span> 4] <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">[(1,2), (1,4), (1,5),</span>
+                                                   (2,3), (2,4), (2,5)]
+</pre>
+</div>
+
+<p>
+All even numbers in [1..10]:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">[x <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> [1<span style="color: #D8FA3C;">..</span>10], x <span style="color: #D8FA3C;">`mod`</span> 2 <span style="color: #D8FA3C;">==</span> 0] <span style="color: #D8FA3C;">=</span> [2,4,6,8,10]
+</pre>
+</div>
+
+<p>
+Interpreter:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> [(x,y) <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> [1<span style="color: #D8FA3C;">..</span>2], y <span style="color: #D8FA3C;">&lt;-</span> [2<span style="color: #D8FA3C;">..</span>5], (x<span style="color: #D8FA3C;">+</span>y) <span style="color: #D8FA3C;">/=</span> 4]
+[(1,2),(1,4),(1,5),(2,3),(2,4),(2,5)]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> [x <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> [1<span style="color: #D8FA3C;">..</span>10], x <span style="color: #D8FA3C;">`mod`</span> 2 <span style="color: #D8FA3C;">==</span> 0]
+[2,4,6,8,10]
+</pre>
+</div>
+
+<blockquote>
+<p>
+b) Define each of the following lists using a list comprehension:
+[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+[2,-3,4,-5,6,-7,8,-9,10,-11]
+</p>
+</blockquote>
+
+<p>
+Answer:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15] <span style="color: #D8FA3C;">=</span> [1<span style="color: #D8FA3C;">..</span>15]
+                                      <span style="color: #D8FA3C;">=</span>  [x <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> [1<span style="color: #D8FA3C;">..</span>15]]
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> [x <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> [1<span style="color: #D8FA3C;">..</span>15]]
+[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">[2,<span style="color: #D8FA3C;">-</span>3,4,<span style="color: #D8FA3C;">-</span>5,6,<span style="color: #D8FA3C;">-</span>7,8,<span style="color: #D8FA3C;">-</span>9,10,<span style="color: #D8FA3C;">-</span>11] <span style="color: #D8FA3C;">=</span> [ <span style="color: #FBDE2D;">if</span> odd x <span style="color: #FBDE2D;">then</span> <span style="color: #D8FA3C;">-</span>1 <span style="color: #D8FA3C;">*</span> x <span style="color: #FBDE2D;">else</span> x <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> [2<span style="color: #D8FA3C;">..</span>11]]
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> [ <span style="color: #FBDE2D;">if</span> odd x <span style="color: #FBDE2D;">then</span> <span style="color: #D8FA3C;">-</span>1 <span style="color: #D8FA3C;">*</span> x <span style="color: #FBDE2D;">else</span> x <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> [2<span style="color: #D8FA3C;">..</span>11]]
+[2,<span style="color: #D8FA3C;">-</span>3,4,<span style="color: #D8FA3C;">-</span>5,6,<span style="color: #D8FA3C;">-</span>7,8,<span style="color: #D8FA3C;">-</span>9,10,<span style="color: #D8FA3C;">-</span>11]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">list comprehension</h2>
+<div class="outline-text-2" id="text-7">
+<blockquote>
+<p>
+a) Using a list comprehension, define a function neg that counts the number of negative values in a list. For example:
+<code>neg [1, -9, 5, 4, -6, 0] = 3</code>
+b) Using a list comprehension, define the function rep that takes an argument n and returns a list in which 1 occurs one time, 2 occurs 2 two and so one until n occurs n time. For example:
+=rep 4 =&gt; [1,2,2,3,3,3,4,4,4,4]
+</p>
+</blockquote>
+
+<p>
+a)
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">neg</span> <span style="color: #D8FA3C;">::</span> [<span style="color: #D8FA3C;">Int</span>] <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">neg</span> xs <span style="color: #D8FA3C;">=</span> sum [1 <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> xs, x <span style="color: #D8FA3C;">&lt;</span> 0 ]
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> neg [1, <span style="color: #D8FA3C;">-</span>9, <span style="color: #D8FA3C;">-</span>5, 4, <span style="color: #D8FA3C;">-</span>6, 0]
+3
+</pre>
+</div>
+
+<p>
+b)
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">rep</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> [<span style="color: #D8FA3C;">Int</span>]
+<span style="color: #ff1493;">rep</span> n <span style="color: #D8FA3C;">=</span> [ y <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> [1<span style="color: #D8FA3C;">..</span>n], y <span style="color: #D8FA3C;">&lt;-</span> replicate x x]
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> rep 0
+<span style="color: #D8FA3C;">[]</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> rep 1
+[1]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> rep 2
+[1,2,2]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> rep 3
+[1,2,2,3,3,3]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> rep 4
+[1,2,2,3,3,3,4,4,4,4]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8">string2int</h2>
+<div class="outline-text-2" id="text-8">
+<blockquote>
+<p>
+Define a function <code>string2int</code> that converts a string of digits into the corresponding integer.
+For example:
+string2int "3454" = 3454
+string2int "76"   = 76
+</p>
+</blockquote>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">string2int</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">String</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">string2int</span> xs <span style="color: #D8FA3C;">=</span> sum [ ((<span style="color: #D8FA3C;">*</span> u) <span style="color: #D8FA3C;">.</span> digitToInt) x <span style="color: #D8FA3C;">|</span> (u, x) <span style="color: #D8FA3C;">&lt;-</span> zip unit (reverse xs)]
+                <span style="color: #FBDE2D;">where</span> unit <span style="color: #D8FA3C;">=</span> iterate (<span style="color: #D8FA3C;">*</span> 10) 1
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> string2int <span style="color: #61CE3C;">"123"</span>
+123
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> string2int <span style="color: #61CE3C;">"3434"</span>
+3434
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> string2int <span style="color: #61CE3C;">"3454"</span>
+3454
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> string2int <span style="color: #61CE3C;">"76"</span>
+76
+</pre>
+</div>
+
+<p>
+Or we could use the standard function <code>read :: Read a =&gt; String -&gt; a</code>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9">Predict</h2>
+<div class="outline-text-2" id="text-9">
+<blockquote>
+<p>
+Try to predict the values of the following expressions:
+</p>
+</blockquote>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">map</span> fst [(1,2), (3,8), (0,6), (3,1)]
+
+(foldr f 0 l, foldl f 0 l)
+  <span style="color: #FBDE2D;">where</span> l <span style="color: #D8FA3C;">=</span> [6,9,8,3,10]
+        f x y <span style="color: #D8FA3C;">=</span> (x<span style="color: #D8FA3C;">+</span>y) <span style="color: #D8FA3C;">`div`</span> 2
+
+<span style="color: #ff1493;">foldr</span> (<span style="color: #D8FA3C;">++</span>) <span style="color: #D8FA3C;">[]</span> [[1,2,3], [4,5,6], <span style="color: #D8FA3C;">[]</span>, [7]]
+</pre>
+</div>
+
+<p>
+a)
+</p>
+
+<p>
+Recall the definition of:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">fst</span> <span style="color: #D8FA3C;">::</span> (a,b) <span style="color: #D8FA3C;">-&gt;</span> a
+<span style="color: #ff1493;">fst</span> (x,<span style="color: #FBDE2D;">_</span>) <span style="color: #D8FA3C;">=</span> x
+
+<span style="color: #ff1493;">map</span> <span style="color: #D8FA3C;">::</span> (a <span style="color: #D8FA3C;">-&gt;</span> b) <span style="color: #D8FA3C;">-&gt;</span> [a] <span style="color: #D8FA3C;">-&gt;</span> [b]
+<span style="color: #ff1493;">map</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">[]</span>     <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">map</span> f (x<span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">=</span> f x <span style="color: #D8FA3C;">:</span> map f xs
+
+<span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">or using list comprehension:</span>
+<span style="color: #ff1493;">map</span> f xs <span style="color: #D8FA3C;">=</span> [ f x <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> xs]
+</pre>
+</div>
+
+<p>
+We can then conclude:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">map</span> fst [(1,2), (3,8), (0,6), (3,1)] <span style="color: #D8FA3C;">=</span> [1,3,0,3]
+</pre>
+</div>
+
+<p>
+b)
+Again recall the definition of foldr:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">foldr</span> <span style="color: #D8FA3C;">::</span> (a <span style="color: #D8FA3C;">-&gt;</span> b <span style="color: #D8FA3C;">-&gt;</span> b) <span style="color: #D8FA3C;">-&gt;</span> b <span style="color: #D8FA3C;">-&gt;</span> [a] <span style="color: #D8FA3C;">-&gt;</span> b
+<span style="color: #ff1493;">foldr</span> <span style="color: #FBDE2D;">_</span> x <span style="color: #D8FA3C;">[]</span>     <span style="color: #D8FA3C;">=</span> x
+<span style="color: #ff1493;">foldr</span> f x (y<span style="color: #D8FA3C;">:</span>ys) <span style="color: #D8FA3C;">=</span> f y <span style="color: #D8FA3C;">$</span> foldr f x ys
+</pre>
+</div>
+
+<p>
+Thus:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">foldr</span> f 0 l <span style="color: #D8FA3C;">=</span> foldr f 0 [6,9,8,3,10]
+            <span style="color: #D8FA3C;">=</span> f 6 (foldr f 0 [9,8,3,10])
+            <span style="color: #D8FA3C;">=</span> f 6 (f 9 (foldr f 0 [8,3,10]))
+            <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">...</span>
+            <span style="color: #D8FA3C;">=</span> f 6 (f 9 (f 8 (f 3 (f 10 0))))
+            <span style="color: #D8FA3C;">=</span> f 6 (f 9 (f 8 (f 3 (10<span style="color: #D8FA3C;">+</span>0 <span style="color: #D8FA3C;">`div`</span> 2))))
+            <span style="color: #D8FA3C;">=</span> f 6 (f 9 (f 8 (f 3 5)))
+            <span style="color: #D8FA3C;">=</span> f 6 (f 9 (f 8 (3 <span style="color: #D8FA3C;">+</span> 4 <span style="color: #D8FA3C;">`div`</span> 2)))
+            <span style="color: #D8FA3C;">=</span> f 6 (f 9 (f 8 3))
+            <span style="color: #D8FA3C;">=</span> f 6 (f 9 5)
+            <span style="color: #D8FA3C;">=</span> f 6 7
+            <span style="color: #D8FA3C;">=</span> 6
+</pre>
+</div>
+
+<p>
+Now the right operand, using foldl as operations:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">foldl</span> <span style="color: #D8FA3C;">::</span> (a <span style="color: #D8FA3C;">-&gt;</span> b <span style="color: #D8FA3C;">-&gt;</span> a) <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> [b] <span style="color: #D8FA3C;">-&gt;</span> a
+<span style="color: #ff1493;">foldl</span> <span style="color: #FBDE2D;">_</span> x <span style="color: #D8FA3C;">[]</span>     <span style="color: #D8FA3C;">=</span> x
+<span style="color: #ff1493;">foldl</span> f x (y<span style="color: #D8FA3C;">:</span>ys) <span style="color: #D8FA3C;">=</span> foldl f (f x y) ys
+</pre>
+</div>
+
+<p>
+Thus (I do not forget that haskell is lazy, just bear with me)
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">foldl</span> f 0 l <span style="color: #D8FA3C;">=</span> foldl f 0        [6,9,8,3,10]
+            <span style="color: #D8FA3C;">=</span> foldl f (f 0 6)  [9,8,3,10]
+            <span style="color: #D8FA3C;">=</span> foldl f (f 1 9)  [8,3,10]
+            <span style="color: #D8FA3C;">=</span> foldl f (f 5 8)  [3,10]
+            <span style="color: #D8FA3C;">=</span> foldl f (f 6 3)  [10]
+            <span style="color: #D8FA3C;">=</span> foldl f (f 5 10) <span style="color: #D8FA3C;">[]</span>
+            <span style="color: #D8FA3C;">=</span> foldl f 7        <span style="color: #D8FA3C;">[]</span>
+            <span style="color: #D8FA3C;">=</span> 7
+</pre>
+</div>
+
+<p>
+to conclude:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">(foldr f 0 l, foldl f 0 l)
+  <span style="color: #FBDE2D;">where</span> l <span style="color: #D8FA3C;">=</span> [6,9,8,3,10]
+        f x y <span style="color: #D8FA3C;">=</span> (x<span style="color: #D8FA3C;">+</span>y) <span style="color: #D8FA3C;">`div`</span> 2 <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">(6,7)</span>
+</pre>
+</div>
+
+<p>
+Indeed:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">tmp</span> <span style="color: #D8FA3C;">::</span> (<span style="color: #D8FA3C;">Integer</span>, <span style="color: #D8FA3C;">Integer</span>)
+<span style="color: #ff1493;">tmp</span> <span style="color: #D8FA3C;">=</span> (foldr f 0 l, foldl f 0 l)
+  <span style="color: #FBDE2D;">where</span> l <span style="color: #D8FA3C;">=</span> [6,9,8,3,10]
+        f x y <span style="color: #D8FA3C;">=</span> (x<span style="color: #D8FA3C;">+</span>y) <span style="color: #D8FA3C;">`div`</span> 2
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> tmp
+(6,7)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10">type</h2>
+<div class="outline-text-2" id="text-10">
+<blockquote>
+<p>
+What is the type of the following function?
+<code>compose f g x = f (g x)</code>
+</p>
+</blockquote>
+
+<p>
+As we can see from the definition of compose:
+</p>
+<ul class="org-ul">
+<li>f and g takes one parameter each.
+</li>
+<li>f takes the output type of g as input.
+</li>
+</ul>
+
+<p>
+We can sum up the definition of g and f:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">g</span> <span style="color: #D8FA3C;">::</span> a <span style="color: #D8FA3C;">-&gt;</span> b
+<span style="color: #ff1493;">f</span> <span style="color: #D8FA3C;">::</span> b <span style="color: #D8FA3C;">-&gt;</span> c
+</pre>
+</div>
+
+<p>
+Thus:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">compose</span> <span style="color: #D8FA3C;">::</span> (b <span style="color: #D8FA3C;">-&gt;</span> c) <span style="color: #D8FA3C;">-&gt;</span> (a <span style="color: #D8FA3C;">-&gt;</span> b) <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> c
+</pre>
+</div>
+
+<p>
+Check:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">compose</span> <span style="color: #D8FA3C;">::</span> (b <span style="color: #D8FA3C;">-&gt;</span> c) <span style="color: #D8FA3C;">-&gt;</span> (a <span style="color: #D8FA3C;">-&gt;</span> b) <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> c
+<span style="color: #ff1493;">compose</span> f g x <span style="color: #D8FA3C;">=</span> f (g x)
+</pre>
+</div>
+
+<p>
+Using <code>compose</code>, we could redefine the <code>string2int</code> function from earlier:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">string2int'</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">String</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">string2int'</span> xs <span style="color: #D8FA3C;">=</span> sum [ compose (<span style="color: #D8FA3C;">*</span> u) digitToInt x <span style="color: #D8FA3C;">|</span> (u, x) <span style="color: #D8FA3C;">&lt;-</span> zip unit (reverse <span style="color: #dc8cc3; background-color: #383838;">xs)]</span>
+                 <span style="color: #FBDE2D;">where</span> unit <span style="color: #D8FA3C;">=</span> iterate (<span style="color: #D8FA3C;">*</span> 10) 1
+</pre>
+</div>
+
+<p>
+The standard composition function is (.)
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> <span style="color: #D8FA3C;">:</span>t (<span style="color: #D8FA3C;">.</span>)
+(<span style="color: #ff1493;">.</span>) <span style="color: #D8FA3C;">::</span> (b <span style="color: #D8FA3C;">-&gt;</span> c) <span style="color: #D8FA3C;">-&gt;</span> (a <span style="color: #D8FA3C;">-&gt;</span> b) <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> c
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11">matrix</h2>
+<div class="outline-text-2" id="text-11">
+<blockquote>
+<p>
+Given the matrix:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">2 3 4</td>
+</tr>
+
+<tr>
+<td class="left">5 6 7</td>
+</tr>
+
+<tr>
+<td class="left">8 9 10</td>
+</tr>
+</tbody>
+</table>
+<p>
+a) Define a function that transposes a square matrix of size 3.
+If applied to the previous matrix, the result should be:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">2 5 8</td>
+</tr>
+
+<tr>
+<td class="left">3 6 9</td>
+</tr>
+
+<tr>
+<td class="left">4 7 10</td>
+</tr>
+</tbody>
+</table>
+<p>
+b) Extends this definition for a matrix of any size
+</p>
+</blockquote>
+
+<p>
+a)
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">transpose3</span> <span style="color: #D8FA3C;">::</span> [[a]] <span style="color: #D8FA3C;">-&gt;</span> [[a]]
+<span style="color: #ff1493;">transpose3</span> xs <span style="color: #D8FA3C;">=</span> map (<span style="color: #D8FA3C;">\</span> n <span style="color: #D8FA3C;">-&gt;</span> map (<span style="color: #D8FA3C;">!!</span> n) xs) [0<span style="color: #D8FA3C;">..</span>2]
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> transpose3 [[1,2,3], [4,5,6], [7,8,9]]
+[[1,4,7],[2,5,8],[3,6,9]]
+</pre>
+</div>
+
+<p>
+b)
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">transpose</span> <span style="color: #D8FA3C;">::</span> [[a]] <span style="color: #D8FA3C;">-&gt;</span> [[a]]
+<span style="color: #ff1493;">transpose</span> xs <span style="color: #D8FA3C;">=</span> map (<span style="color: #D8FA3C;">\</span> n <span style="color: #D8FA3C;">-&gt;</span> map (<span style="color: #D8FA3C;">!!</span> n) xs) [0<span style="color: #D8FA3C;">..</span>l]
+               <span style="color: #FBDE2D;">where</span> l <span style="color: #D8FA3C;">=</span> length xs <span style="color: #D8FA3C;">-</span> 1
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> transpose [[1,2,3], [4,5,6], [7,8,9]]
+[[1,4,7],[2,5,8],[3,6,9]]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch1</span><span style="color: #D8FA3C;">&gt;</span> transpose [[1,2,3,4], [5,6,7,8], [9,10,11,12], [13,14,15,16]]
+[[1,5,9,13],[2,6,10,14],[3,7,11,15],[4,8,12,16]]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12">type</h2>
+<div class="outline-text-2" id="text-12">
+<p>
+Determine the type definitions (with the context) of the following functions:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">cube</span> x <span style="color: #D8FA3C;">=</span> x <span style="color: #D8FA3C;">*</span> x <span style="color: #D8FA3C;">*</span> x
+
+<span style="color: #ff1493;">maxi</span> x y <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&gt;=</span> y <span style="color: #D8FA3C;">=</span> x
+         <span style="color: #D8FA3C;">|</span> otherwise <span style="color: #D8FA3C;">=</span> y
+
+<span style="color: #ff1493;">sumAtoB</span> a b <span style="color: #D8FA3C;">=</span> sum [a<span style="color: #D8FA3C;">..</span>b]
+</pre>
+</div>
+
+<p>
+We must be able to compute the multiplication on x, so this must be of type Num.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">cube</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Num</span> a <span style="color: #D8FA3C;">=&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> a
+<span style="color: #ff1493;">cube</span> x <span style="color: #D8FA3C;">=</span> x <span style="color: #D8FA3C;">*</span> x <span style="color: #D8FA3C;">*</span> x
+</pre>
+</div>
+
+<p>
+We must be able to compare the number, so type Ord.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">maxi</span> <span style="color: #D8FA3C;">::</span> (<span style="color: #D8FA3C;">Ord</span> a) <span style="color: #D8FA3C;">=&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> a
+<span style="color: #ff1493;">maxi</span> x y <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&gt;=</span> y <span style="color: #D8FA3C;">=</span> x
+         <span style="color: #D8FA3C;">|</span> otherwise <span style="color: #D8FA3C;">=</span> y
+</pre>
+</div>
+
+<p>
+We must be able to compute the sum, so Num type and use a list comprehension, so Enum type.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">sumAtoB</span> <span style="color: #D8FA3C;">::</span> (<span style="color: #D8FA3C;">Num</span> a, <span style="color: #D8FA3C;">Enum</span> a) <span style="color: #D8FA3C;">=&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> a
+<span style="color: #ff1493;">sumAtoB</span> a b <span style="color: #D8FA3C;">=</span> sum [a<span style="color: #D8FA3C;">..</span>b]
+</pre>
+</div>
+</div>
+</div>
