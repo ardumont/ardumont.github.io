@@ -1,0 +1,706 @@
+---
+layout: post
+title: Howto install stumpwm and little more
+date: 2012-12-22
+categories:
+- stumpwm
+- howto
+- tools
+author: Antoine R. Dumont
+excerpt: howto install/setup/use stumpwm + my stumpwm configuration
+---
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Introduction</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">For just install, skip the intro</h3>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">What is stumpwm?</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+A tiling, keyboard driven X11 window manager.
+Simply put, it permits you to choose what you do at any given time with key-bindings.
+Another simple way to sum up: Less is more :d.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">Why?</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+I was lost with all the shining catch-eyes effects everywhere.
+</p>
+
+<p>
+With a friend, <a href="https://twitter.com/#!/denislab">Denis Labaye</a>, we search for simpler.
+We found stumpwm and it was mind blowing.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">How do i use it?</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+Personally, i choose to work with only one window at a time and ask for the one i want when i want it.
+It's my way of seeing it but stumpwm does not limit you in this way.
+</p>
+
+<p>
+For me, stump empowers you with the choice of doing anything you want your way.
+</p>
+
+<p>
+The small price to pay is learning key-bindings.
+Small price because you can override them so the sky is really the limit.
+</p>
+
+<p>
+It's the computer that adapts to you and not the other way around.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5">Goal of the article</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+This howto explains how to install stumpwm and the little things you have to do to login with it in the gnome display manager.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6">Limits of the article</h3>
+<div class="outline-text-3" id="text-1-6">
+</div><div id="outline-container-sec-1-7" class="outline-3">
+<h3 id="sec-1-7">Targeted platform</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+This article is clearly oriented for a debian based distribution using a gnome display manager as the login manager.
+You may use some part with other distribution but i do not know how because i didn't have the problem to solve.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-8" class="outline-3">
+<h3 id="sec-1-8">Targeted audience</h3>
+<div class="outline-text-3" id="text-1-8">
+<p>
+Geeky/Nerdy people who likes to make computer adapts to them and not the other way around.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-9" class="outline-3">
+<h3 id="sec-1-9">What is stumpwm in details.</h3>
+<div class="outline-text-3" id="text-1-9">
+<p>
+<a href="http://www.nongnu.org/stumpwm/">What is it?</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">How to install</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Install stumpwm from CLI</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo apt-get install stumpwm
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">Add a new entry to gdm</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+We need to add an entry menu to gdm for stumpwm so that we can log in with it.
+</p>
+
+<p>
+For this we add the file /usr/share/xsessions/stumpwm.desktop
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo emacs -nw /usr/share/xsessions/stumpwm.desktop
+</pre>
+</div>
+
+<p>
+Content of the file:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-txt">[Desktop Entry]
+        Exec=stumpwm
+        TryExec=stumpwm
+        Name=stumpwm
+        Comment=The Mouseless Window Manager!
+</pre>
+</div>
+
+<p>
+Here is a simple script to do that in one shot (feel free to patch):
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #8B8989; font-style: italic;">#</span><span style="color: #8B8989; font-style: italic;">!/usr/bin/</span><span style="color: #FBDE2D;">env</span><span style="color: #8B8989; font-style: italic;"> bash</span>
+
+$(dirname $<span style="color: #D8FA3C;">0</span>)/deploy-wm.sh stumpwm
+</pre>
+</div>
+
+<p>
+src: <a href="https://github.com/ardumont/sh/blob/master/deploy/deploy-stumpwm.sh">deploy-stumpwm.sh</a>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">Logout from gdm</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Gdm will reload.
+At next login, when you'll choose your user to log in, you will be proposed a new entry "stumpwm" at the bottom of the screen (it may depend on your theme).
+Choose it and log in.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4">Stumpwm starts</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+At the top right corner, you'll only see a help message inviting you to type "CTRL-t ?" (Control and t pressed at the same time followed by a pressure on 't') for a presentation of all the simple commands you need to start.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">How to improve itb</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">Some simple commands</h3>
+<div class="outline-text-3" id="text-3-1">
+</div><div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2">Syntax</h3>
+<div class="outline-text-3" id="text-3-2">
+</div><div id="outline-container-sec-3-2-1" class="outline-4">
+<h4 id="sec-3-2-1">C for Control</h4>
+</div>
+<div id="outline-container-sec-3-2-2" class="outline-4">
+<h4 id="sec-3-2-2">&lt;l&gt; for a letter</h4>
+</div>
+<div id="outline-container-sec-3-2-3" class="outline-4">
+<h4 id="sec-3-2-3">combination C-t for Control + t pressed together</h4>
+</div>
+<div id="outline-container-sec-3-2-4" class="outline-4">
+<h4 id="sec-3-2-4">C-t x for Control+t pressed together followed by a pressure on x.</h4>
+</div>
+</div>
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3">C-t ?</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+List the basic commands
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4">C-t c</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+To launch a terminal instance (xterm or gnome-terminal)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-5" class="outline-3">
+<h3 id="sec-3-5">C-t e</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+To launch emacs or if it is already launched, call it to display before every other window.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-6" class="outline-3">
+<h3 id="sec-3-6">C-t t</h3>
+<div class="outline-text-3" id="text-3-6">
+<p>
+To make the window behind the current one pass before and vice-versa
+Inside the browser, you need to escape the t to add a tab (i gives a C-t t t).
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-7" class="outline-3">
+<h3 id="sec-3-7">C-t s</h3>
+<div class="outline-text-3" id="text-3-7">
+<p>
+Split the screen horizontally in two frames of equal size (emacs way).
+You can move the window inside each frame the same way that when you have only one frame.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-8" class="outline-3">
+<h3 id="sec-3-8">C-t Q</h3>
+<div class="outline-text-3" id="text-3-8">
+<p>
+Cancel all the split screen.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-9" class="outline-3">
+<h3 id="sec-3-9">C-t k</h3>
+<div class="outline-text-3" id="text-3-9">
+<p>
+To kill a window not responding
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-10" class="outline-3">
+<h3 id="sec-3-10">C-t !</h3>
+<div class="outline-text-3" id="text-3-10">
+<p>
+To launch a shell command not mapped yet on any binding.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-11" class="outline-3">
+<h3 id="sec-3-11">etc&#x2026;</h3>
+<div class="outline-text-3" id="text-3-11">
+<p>
+cf. C-t ?
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-12" class="outline-3">
+<h3 id="sec-3-12">Stumpwm is really cool</h3>
+<div class="outline-text-3" id="text-3-12">
+<p>
+You can override commands simply by putting a '.stumpwmrc' at the root of your home.
+</p>
+
+<p>
+Granted, the file is in lisp.
+But you can understand it anyway.
+</p>
+
+<p>
+Plus you can search the web for solution to your problems.
+You will find some geek who already has the answer.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-13" class="outline-3">
+<h3 id="sec-3-13">My setup</h3>
+<div class="outline-text-3" id="text-3-13">
+<p>
+The run or raise means that it only turns with one instance which is sufficient.
+</p>
+</div>
+<div id="outline-container-sec-3-14" class="outline-3">
+<h3 id="sec-3-14">C-t f</h3>
+<div class="outline-text-3" id="text-3-14">
+<p>
+Run or raise (only one instance at a time) firefox (f stands for firefox).
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-15" class="outline-3">
+<h3 id="sec-3-15">C-t b</h3>
+<div class="outline-text-3" id="text-3-15">
+<p>
+Run or raise chromium (b stands for browser).
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-16" class="outline-3">
+<h3 id="sec-3-16">C-t i</h3>
+<div class="outline-text-3" id="text-3-16">
+<p>
+Run or raise eclipse (i for ide)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-17" class="outline-3">
+<h3 id="sec-3-17">C-t x</h3>
+<div class="outline-text-3" id="text-3-17">
+<p>
+Run or raise gnome-terminal (x stands for xterm or any x terminal)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-18" class="outline-3">
+<h3 id="sec-3-18">C-t o</h3>
+<div class="outline-text-3" id="text-3-18">
+<p>
+To add a label (a letter) to each frame to move directly to this frame by typing the letter
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-19" class="outline-3">
+<h3 id="sec-3-19">C-t C-e</h3>
+<div class="outline-text-3" id="text-3-19">
+<p>
+Launch the pdf reader (evince here)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-20" class="outline-3">
+<h3 id="sec-3-20">C-t I</h3>
+<div class="outline-text-3" id="text-3-20">
+<p>
+Display <b>ifconfig</b> result and display it inside a small window
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-21" class="outline-3">
+<h3 id="sec-3-21">C-t H</h3>
+<div class="outline-text-3" id="text-3-21">
+<p>
+Display the content of <b>/etc/hosts</b> inside a small window
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-22" class="outline-3">
+<h3 id="sec-3-22">C-t B</h3>
+<div class="outline-text-3" id="text-3-22">
+<p>
+Display the content of <b>acpi -b</b>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-23" class="outline-3">
+<h3 id="sec-3-23">C-t K</h3>
+<div class="outline-text-3" id="text-3-23">
+<p>
+Display the keys the ssh-agents holds.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-24" class="outline-3">
+<h3 id="sec-3-24">C-t A</h3>
+<div class="outline-text-3" id="text-3-24">
+<p>
+Launch the scripts <b>ssh-add-identities</b> that adds the keys i work with to the ssh-agent
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-25" class="outline-3">
+<h3 id="sec-3-25">C-t C-o</h3>
+<div class="outline-text-3" id="text-3-25">
+<p>
+Launch the image reader (here <b>eog</b>)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-26" class="outline-3">
+<h3 id="sec-3-26">C-t n</h3>
+<div class="outline-text-3" id="text-3-26">
+<p>
+Launch nautilus
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-27" class="outline-3">
+<h3 id="sec-3-27">C-t C-s</h3>
+<div class="outline-text-3" id="text-3-27">
+<p>
+Launch a window screenshot.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-28" class="outline-3">
+<h3 id="sec-3-28">etc&#x2026;</h3>
+</div>
+</div>
+<div id="outline-container-sec-3-29" class="outline-3">
+<h3 id="sec-3-29">~/.stumpwmrc</h3>
+<div class="outline-text-3" id="text-3-29">
+<p>
+Here is my setup:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">-*- stumpwm -*-</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">========================== Loading dependency libraries</span>
+
+<span style="color: #8b0000;">(</span>load <span style="color: #61CE3C;">"~/quicklisp/setup.lisp"</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">========================== Debugging properties (uncomment first)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(ql:quickload :swank)</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(ql:quickload :clx)</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(ql:quickload :clx-truetype)</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(ql:quickload :cl-ppcre)</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(ql:quickload :cl-xembed)</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(ql:quickload :stumpwm)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(defun swank ()</span>
+<span style="color: #8B8989; font-style: italic;">;;   </span><span style="color: #8B8989; font-style: italic;">(setf *top-level-error-action* :break)</span>
+<span style="color: #8B8989; font-style: italic;">;;   </span><span style="color: #8B8989; font-style: italic;">(swank:create-server :port 4005</span>
+<span style="color: #8B8989; font-style: italic;">;;                        </span><span style="color: #8B8989; font-style: italic;">:style swank:*communication-style*</span>
+<span style="color: #8B8989; font-style: italic;">;;                        </span><span style="color: #8B8989; font-style: italic;">:dont-close t)</span>
+<span style="color: #8B8989; font-style: italic;">;;   </span><span style="color: #8B8989; font-style: italic;">(echo-string (current-screen)</span>
+<span style="color: #8B8989; font-style: italic;">;;                </span><span style="color: #8B8989; font-style: italic;">"Starting swank. M-x slime-connect RET RET, then (in-package s</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">tumpwm)."))</span>
+
+<span style="color: #8B8989; font-style: italic;">;;</span><span style="color: #8B8989; font-style: italic;">(swank)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">========================== Beginning setup of stumpwm</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">in-package</span> <span style="color: #FF6400;">:stumpwm</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span>use-package <span style="color: #FF6400;">:ql-clj</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span>load <span style="color: #61CE3C;">"~/.stumpwm-functions.lisp"</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span>set-prefix-key <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"C-;"</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span>setf *contrib-dir* <span style="color: #61CE3C;">"~/repo/perso/stumpwm/contrib/"</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">load a few modules</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(mapcar #'load-module '("cpu"</span>
+<span style="color: #8B8989; font-style: italic;">;;                         </span><span style="color: #8B8989; font-style: italic;">"mem"</span>
+<span style="color: #8B8989; font-style: italic;">;;                         </span><span style="color: #8B8989; font-style: italic;">"battery-portable"</span>
+<span style="color: #8B8989; font-style: italic;">;;                         </span><span style="color: #8B8989; font-style: italic;">"net"</span>
+<span style="color: #8B8989; font-style: italic;">;;                         </span><span style="color: #8B8989; font-style: italic;">"wifi"</span>
+<span style="color: #8B8989; font-style: italic;">;;                         </span><span style="color: #8B8989; font-style: italic;">"disk"))</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">up the debug level (see ~/.xsession-errors)</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(setf stumpwm::*debug-level* 0)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">set the font for the message bar and input bar</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(set-font "-*-FreeMono-medium-r-*-*-6*")</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(set-font "-adobe-helvetica-medium-r-normal--1*")</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(set-font "-xos4-terminus-medium-r-normal--14-140-72-72-c-80-iso8859-7")</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(set-font "-xos4-terminus-medium-r-normal--0-0-72-72-c-0-iso8859-7")</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(set-font "-*-dina-medium-r-normal-*-*-*-*-*-*-*-*-*")</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(set-font "-lispm-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*")</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(set-font "-artwiz-smoothansi-medium-r-normal--13-130-75-75-m-60-iso8859-1")</span>
+<span style="color: #8b0000;">(</span>set-font <span style="color: #61CE3C;">"-unknown-DejaVu Sans Mono-normal-normal-normal-*-16-*-*-*-m-0-iso1064</span><span style="color: #dc8cc3; background-color: #383838;">6-1"</span><span style="color: #8b0000; background-color: #383838;">)</span>
+
+<span style="color: #8b0000;">(</span>set-normal-gravity <span style="color: #FF6400;">:bottom</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span>setf *message-window-gravity* <span style="color: #FF6400;">:bottom-left</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span>setf *input-window-gravity* <span style="color: #FF6400;">:bottom-left</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span>setf *frame-number-map* <span style="color: #61CE3C;">"abcdefghijklmnopqrst"</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span>setf *window-format* <span style="color: #61CE3C;">"%m%n%s nm=%50t cl=%c id=%i"</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;;; </span><span style="color: #8B8989; font-style: italic;">Window Appearance</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">The width in pixels given to the borders of regular windows.</span>
+<span style="color: #8b0000;">(</span>setf *normal-border-width* 0<span style="color: #8b0000;">)</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">The width in pixels given to the borders of windows with maxsize or ratio hin</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">ts.</span>
+<span style="color: #8b0000;">(</span>setf *maxsize-border-width* 0<span style="color: #8b0000;">)</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">The width in pixels given to the borders of transient or pop-up windows.</span>
+<span style="color: #8b0000;">(</span>setf *transient-border-width* 0<span style="color: #8b0000;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;;</span><span style="color: #8B8989; font-style: italic;">(run-commands "restore-from-file ~/.stumpwm.screendump")</span>
+
+<span style="color: #8B8989; font-style: italic;">;;</span><span style="color: #8B8989; font-style: italic;">Set the mouse focus policy to ignore the mouse</span>
+<span style="color: #8b0000;">(</span>setf *mouse-focus-policy* <span style="color: #FF6400;">:click</span><span style="color: #8b0000;">)</span> <span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">:click, :ignore, :sloppy</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">defun</span> <span style="color: #ff1493;">key-seq-msg</span> <span style="color: #006400;">(</span>key key-seq cmd<span style="color: #006400;">)</span>
+  <span style="color: #61CE3C;">"Show a message with current incomplete key sequence."</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D;">declare</span> <span style="color: #ff1493;">(</span>ignore key<span style="color: #ff1493;">)</span><span style="color: #006400;">)</span>
+  <span style="color: #006400;">(</span>or <span style="color: #ff1493;">(</span>eq *top-map* *resize-map*<span style="color: #ff1493;">)</span>
+      <span style="color: #ff1493;">(</span>stringp cmd<span style="color: #ff1493;">)</span>
+      <span style="color: #ff1493;">(</span><span style="color: #FBDE2D;">let</span> <span style="color: #ffff00;">(</span><span style="color: #00ff00;">(</span>*message-window-gravity* <span style="color: #FF6400;">:bottom-right</span><span style="color: #00ff00;">)</span><span style="color: #ffff00;">)</span>
+        <span style="color: #ffff00;">(</span>message <span style="color: #61CE3C;">"~A"</span> <span style="color: #00ff00;">(</span>print-key-seq <span style="color: #add8e6;">(</span>reverse key-seq<span style="color: #add8e6;">)</span><span style="color: #00ff00;">)</span><span style="color: #ffff00;">)</span><span style="color: #ff1493;">)</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span>add-hook *key-press-hook* 'key-seq-msg<span style="color: #8b0000;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">========================== setup</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">xenity - shell command with output inside a zenity popup window</span>
+<span style="color: #8b0000;">(</span>zenity-category
+ <span style="color: #006400;">(</span><span style="color: #ff1493;">(</span>ssh-add-list         <span style="color: #61CE3C;">"List the keys the user-agent holds"</span>      <span style="color: #61CE3C;">"ssh-add -l"</span>  <span style="color: #dc8cc3; background-color: #383838;">         </span><span style="color: #dc8cc3; background-color: #383838;">"K"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>cat-etc-environment  <span style="color: #61CE3C;">"Display the content of /etc/environment"</span> <span style="color: #61CE3C;">"cat /etc/envi</span><span style="color: #dc8cc3; background-color: #383838;">ronment"</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">"E"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>cat-etc-hosts        <span style="color: #61CE3C;">"Display the content of /etc/hosts"</span>       <span style="color: #61CE3C;">"cat /etc/host</span><span style="color: #dc8cc3; background-color: #383838;">s"</span><span style="color: #dc8cc3; background-color: #383838;">       </span><span style="color: #dc8cc3; background-color: #383838;">"H"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>sbin-ifconfig        <span style="color: #61CE3C;">"/sbin/ifconfig"</span>                          <span style="color: #61CE3C;">"/sbin/ifconfi</span><span style="color: #dc8cc3; background-color: #383838;">g"</span><span style="color: #dc8cc3; background-color: #383838;">       </span><span style="color: #dc8cc3; background-color: #383838;">"I"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>acpi-cmd             <span style="color: #61CE3C;">"Display battery"</span>                         <span style="color: #61CE3C;">"/usr/bin/acpi</span><span style="color: #dc8cc3; background-color: #383838;"> -b"</span><span style="color: #dc8cc3; background-color: #383838;">     </span><span style="color: #dc8cc3; background-color: #383838;">"B"</span><span style="color: #ff1493; background-color: #383838;">)</span><span style="color: #006400; background-color: #383838;">)</span><span style="color: #8b0000; background-color: #383838;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">run-or-raise application based on the class name of the window + deactivating</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;"> the touchpad</span>
+<span style="color: #8b0000;">(</span>ror-tpd-off-category
+ <span style="color: #006400;">(</span><span style="color: #ff1493;">(</span>terminal             <span style="color: #61CE3C;">"terminal"</span> <span style="color: #61CE3C;">"gnome-terminal --hide-menubar -x tmux -2"</span> <span style="color: #61CE3C;">"G</span><span style="color: #dc8cc3; background-color: #383838;">nome-terminal"</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">"x"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>myemacs              <span style="color: #61CE3C;">"emacs"</span>    <span style="color: #61CE3C;">"~/bin/emacs/emacs.sh"</span>                     <span style="color: #61CE3C;">"E</span><span style="color: #dc8cc3; background-color: #383838;">macs"</span><span style="color: #dc8cc3; background-color: #383838;">          </span><span style="color: #dc8cc3; background-color: #383838;">"e"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>conkeror             <span style="color: #61CE3C;">"conkeror"</span> <span style="color: #61CE3C;">"conkeror"</span>                                 <span style="color: #61CE3C;">"C</span><span style="color: #dc8cc3; background-color: #383838;">onkeror"</span><span style="color: #dc8cc3; background-color: #383838;">       </span><span style="color: #dc8cc3; background-color: #383838;">"c"</span><span style="color: #ff1493; background-color: #383838;">)</span><span style="color: #006400; background-color: #383838;">)</span><span style="color: #8b0000; background-color: #383838;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">run-or-raise application based on the class name of the window + activating t</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">he touchpad</span>
+<span style="color: #8b0000;">(</span>ror-tpd-on-category
+ <span style="color: #006400;">(</span><span style="color: #ff1493;">(</span>firefox              <span style="color: #61CE3C;">"firefox"</span>                 <span style="color: #61CE3C;">"firefox"</span>                     <span style="color: #dc8cc3; background-color: #383838;">                            </span><span style="color: #dc8cc3; background-color: #383838;">"Firefox"</span><span style="color: #dc8cc3; background-color: #383838;">                     </span><span style="color: #dc8cc3; background-color: #383838;">"f"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+<span style="color: #8B8989; font-style: italic;">;;</span><span style="color: #8B8989; font-style: italic;">(gnome-control-center "gnome-control-center"    "gnome-control-center"        </span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">                            "Gnome-Control-Center"        ",")</span>
+<span style="color: #8B8989; font-style: italic;">;;</span><span style="color: #8B8989; font-style: italic;">(control-center       "cinnamon-control-center" "cinnamon-control-center"     </span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">                            "Cinnamon-control-Center"     ",")</span>
+  <span style="color: #ff1493;">(</span>settings             <span style="color: #61CE3C;">"cinnamon-settings"</span>       <span style="color: #61CE3C;">"cinnamon-settings"</span>           <span style="color: #dc8cc3; background-color: #383838;">                            </span><span style="color: #dc8cc3; background-color: #383838;">"Cinnamon-settings.py"</span><span style="color: #dc8cc3; background-color: #383838;">        </span><span style="color: #dc8cc3; background-color: #383838;">","</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>video-player         <span style="color: #61CE3C;">"totem"</span>                   <span style="color: #61CE3C;">"totem"</span>                       <span style="color: #dc8cc3; background-color: #383838;">                            </span><span style="color: #dc8cc3; background-color: #383838;">"Totem"</span><span style="color: #dc8cc3; background-color: #383838;">                       </span><span style="color: #dc8cc3; background-color: #383838;">"."</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>evince               <span style="color: #61CE3C;">"evince"</span>                  <span style="color: #61CE3C;">"evince"</span>                      <span style="color: #dc8cc3; background-color: #383838;">                            </span><span style="color: #dc8cc3; background-color: #383838;">"Evince"</span><span style="color: #dc8cc3; background-color: #383838;">                      </span><span style="color: #dc8cc3; background-color: #383838;">"C-e"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>eog                  <span style="color: #61CE3C;">"eog"</span>                     <span style="color: #61CE3C;">"eog"</span>                         <span style="color: #dc8cc3; background-color: #383838;">                            </span><span style="color: #dc8cc3; background-color: #383838;">"Eog"</span><span style="color: #dc8cc3; background-color: #383838;">                         </span><span style="color: #dc8cc3; background-color: #383838;">"C-i"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>pinta                <span style="color: #61CE3C;">"pinta"</span>                   <span style="color: #61CE3C;">"pinta"</span>                       <span style="color: #dc8cc3; background-color: #383838;">                            </span><span style="color: #dc8cc3; background-color: #383838;">"Pinta"</span><span style="color: #dc8cc3; background-color: #383838;">                       </span><span style="color: #dc8cc3; background-color: #383838;">"d"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>gimp                 <span style="color: #61CE3C;">"gimp"</span>                    <span style="color: #61CE3C;">"gimp"</span>                        <span style="color: #dc8cc3; background-color: #383838;">                            </span><span style="color: #dc8cc3; background-color: #383838;">"Gimp"</span><span style="color: #dc8cc3; background-color: #383838;">                        </span><span style="color: #dc8cc3; background-color: #383838;">"I"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>audacious            <span style="color: #61CE3C;">"audacious"</span>               <span style="color: #61CE3C;">"/usr/bin/audacious"</span>          <span style="color: #dc8cc3; background-color: #383838;">                            </span><span style="color: #dc8cc3; background-color: #383838;">"Audacious"</span><span style="color: #dc8cc3; background-color: #383838;">                   </span><span style="color: #dc8cc3; background-color: #383838;">"C-a"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>jconsole             <span style="color: #61CE3C;">"jconsole"</span>                <span style="color: #61CE3C;">"/usr/bin/jconsole"</span>           <span style="color: #dc8cc3; background-color: #383838;">                            </span><span style="color: #dc8cc3; background-color: #383838;">"sun-tools-jconsole-JConsole"</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">"C-j"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>jvisualvm            <span style="color: #61CE3C;">"visualvm"</span>                <span style="color: #61CE3C;">"~/applications/visualvm/bin/v</span><span style="color: #dc8cc3; background-color: #383838;">isualvm"</span><span style="color: #dc8cc3; background-color: #383838;">                    </span><span style="color: #dc8cc3; background-color: #383838;">"java-lang-Thread"</span><span style="color: #dc8cc3; background-color: #383838;">            </span><span style="color: #dc8cc3; background-color: #383838;">"j"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>arduino              <span style="color: #61CE3C;">"arduino ide"</span>             <span style="color: #61CE3C;">"arduino"</span>                     <span style="color: #dc8cc3; background-color: #383838;">                            </span><span style="color: #dc8cc3; background-color: #383838;">"processing-appBase"</span><span style="color: #dc8cc3; background-color: #383838;">          </span><span style="color: #dc8cc3; background-color: #383838;">"C-c"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+<span style="color: #8B8989; font-style: italic;">;;</span><span style="color: #8B8989; font-style: italic;">(intellij-idea        "intellij-idea"           "~/bin/ide/idea.sh"           </span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">                            "jetbrains-idea-ce"           "j")</span>
+<span style="color: #8B8989; font-style: italic;">;;</span><span style="color: #8B8989; font-style: italic;">(eclipse              "eclipse ide"             "~/bin/ide/eclipse.sh"        </span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">                            "Eclipse"                     "i")</span>
+  <span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">run-or-raise application based on the instance of the window + activating the</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;"> touchpad</span>
+<span style="color: #8b0000;">(</span>ror-id-tpd-on-category
+ <span style="color: #006400;">(</span><span style="color: #ff1493;">(</span>xephyr-gnome         <span style="color: #61CE3C;">"xephyr - gnome"</span>  <span style="color: #61CE3C;">"~/bin/xephyr/xephyr.sh gnome"</span>        <span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">"Xephyr"</span><span style="color: #dc8cc3; background-color: #383838;">                 </span><span style="color: #dc8cc3; background-color: #383838;">"C-x"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>xephyr-xmonad        <span style="color: #61CE3C;">"xephyr - xmonad"</span> <span style="color: #61CE3C;">"~/bin/xephyr/xephyr.sh xmonad"</span>       <span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">"Xephyr"</span><span style="color: #dc8cc3; background-color: #383838;">                 </span><span style="color: #dc8cc3; background-color: #383838;">"C-X"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>wireshark            <span style="color: #61CE3C;">"wireshark"</span>        <span style="color: #61CE3C;">"gksudo wireshark"</span>                   <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"wireshark"</span><span style="color: #dc8cc3; background-color: #383838;">              </span><span style="color: #dc8cc3; background-color: #383838;">"C-w"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(nautilus             "nautilus"         "nautilus"                        </span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">     "nautilus"               "n")</span>
+  <span style="color: #ff1493;">(</span>nemo                 <span style="color: #61CE3C;">"nemo"</span>             <span style="color: #61CE3C;">"nemo"</span>                               <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"nemo"</span><span style="color: #dc8cc3; background-color: #383838;">                   </span><span style="color: #dc8cc3; background-color: #383838;">"n"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>thunar               <span style="color: #61CE3C;">"thunar"</span>           <span style="color: #61CE3C;">"thunar"</span>                             <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"thunar"</span><span style="color: #dc8cc3; background-color: #383838;">                 </span><span style="color: #dc8cc3; background-color: #383838;">"N"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>yEd                  <span style="color: #61CE3C;">"yed"</span>              <span style="color: #61CE3C;">"~/bin/app/yed.sh"</span>                   <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"sun-awt-X11-XFramePeer"</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">"y"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>filezilla            <span style="color: #61CE3C;">"filezilla"</span>        <span style="color: #61CE3C;">"/usr/bin/filezilla"</span>                 <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"filezilla"</span><span style="color: #dc8cc3; background-color: #383838;">              </span><span style="color: #dc8cc3; background-color: #383838;">"C-f"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>virtualbox           <span style="color: #61CE3C;">"virtualbox"</span>       <span style="color: #61CE3C;">"virtualbox"</span>                         <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"Qt-subapplication"</span><span style="color: #dc8cc3; background-color: #383838;">      </span><span style="color: #dc8cc3; background-color: #383838;">"C-v"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>unetbootin           <span style="color: #61CE3C;">"unetbootin"</span>       <span style="color: #61CE3C;">"unetbootin"</span>                         <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"unetbootin"</span><span style="color: #dc8cc3; background-color: #383838;">             </span><span style="color: #dc8cc3; background-color: #383838;">"u"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>transmission         <span style="color: #61CE3C;">"transmission-gtk"</span> <span style="color: #61CE3C;">"/usr/bin/transmission-gtk"</span>          <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"transmission-gtk"</span><span style="color: #dc8cc3; background-color: #383838;">       </span><span style="color: #dc8cc3; background-color: #383838;">"/"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>gparted              <span style="color: #61CE3C;">"gparted"</span>          <span style="color: #61CE3C;">"gksudo /usr/sbin/gparted"</span>           <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"gpartedbin"</span><span style="color: #dc8cc3; background-color: #383838;">             </span><span style="color: #dc8cc3; background-color: #383838;">"G"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>file-progress        <span style="color: #61CE3C;">"file progress"</span>    <span style="color: #61CE3C;">""</span>                                   <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"file_progress"</span><span style="color: #dc8cc3; background-color: #383838;">          </span><span style="color: #dc8cc3; background-color: #383838;">"F"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>xosview              <span style="color: #61CE3C;">"xosview"</span>          <span style="color: #61CE3C;">"xosview"</span>                            <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"xosview"</span><span style="color: #dc8cc3; background-color: #383838;">                </span><span style="color: #dc8cc3; background-color: #383838;">"X"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>baobab               <span style="color: #61CE3C;">"baobab"</span>           <span style="color: #61CE3C;">"baobab"</span>                             <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"baobab"</span><span style="color: #dc8cc3; background-color: #383838;">                 </span><span style="color: #dc8cc3; background-color: #383838;">"b"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>gitk                 <span style="color: #61CE3C;">"gitk"</span>             <span style="color: #61CE3C;">"gitk"</span>                               <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"gitk"</span><span style="color: #dc8cc3; background-color: #383838;">                   </span><span style="color: #dc8cc3; background-color: #383838;">"z"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>fbreader             <span style="color: #61CE3C;">"fbreader"</span>         <span style="color: #61CE3C;">"fbreader"</span>                           <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"fbreader"</span><span style="color: #dc8cc3; background-color: #383838;">               </span><span style="color: #dc8cc3; background-color: #383838;">"C-f"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>lighttable           <span style="color: #61CE3C;">"LightTable"</span>       <span style="color: #61CE3C;">"~/applications/LightTable/LightTable</span><span style="color: #dc8cc3; background-color: #383838;">"</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">"ltbin"</span><span style="color: #dc8cc3; background-color: #383838;">                  </span><span style="color: #dc8cc3; background-color: #383838;">"C"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>tux-guitar           <span style="color: #61CE3C;">"TuxGuitar"</span>        <span style="color: #61CE3C;">"/usr/bin/tuxguitar"</span>                 <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"TuxGuitar"</span><span style="color: #dc8cc3; background-color: #383838;">              </span><span style="color: #dc8cc3; background-color: #383838;">"M-t"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>skype                <span style="color: #61CE3C;">"skype"</span>            <span style="color: #61CE3C;">"/usr/bin/skype"</span>                     <span style="color: #dc8cc3; background-color: #383838;">  </span><span style="color: #dc8cc3; background-color: #383838;">"skype"</span><span style="color: #dc8cc3; background-color: #383838;">                  </span><span style="color: #dc8cc3; background-color: #383838;">"C-c"</span><span style="color: #ff1493; background-color: #383838;">)</span><span style="color: #006400; background-color: #383838;">)</span><span style="color: #8b0000; background-color: #383838;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">run shell command - Simply execute shell command</span>
+<span style="color: #8b0000;">(</span>run-shell-command-category
+ <span style="color: #006400;">(</span><span style="color: #ff1493;">(</span>suspend              <span style="color: #61CE3C;">"Suspend"</span>                              <span style="color: #61CE3C;">"gksudo pm-suspen</span><span style="color: #dc8cc3; background-color: #383838;">d"</span><span style="color: #dc8cc3; background-color: #383838;">                                                                   </span><span style="color: #dc8cc3; background-color: #383838;">"C-S"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>hibernate            <span style="color: #61CE3C;">"Hibernate"</span>                            <span style="color: #61CE3C;">"gksudo pm-hibern</span><span style="color: #dc8cc3; background-color: #383838;">ate"</span><span style="color: #dc8cc3; background-color: #383838;">                                                                 </span><span style="color: #dc8cc3; background-color: #383838;">"C-H"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>ssh-add-identities   <span style="color: #61CE3C;">"Load ssh identities in ssh-agent"</span>     <span style="color: #61CE3C;">"~/bin/ssh/ssh-ad</span><span style="color: #dc8cc3; background-color: #383838;">d.sh"</span><span style="color: #dc8cc3; background-color: #383838;">                                                                </span><span style="color: #dc8cc3; background-color: #383838;">"A"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>switch-to-proxy      <span style="color: #61CE3C;">"Switch to proxy."</span>                     <span style="color: #61CE3C;">"gksudo ~/bin/pro</span><span style="color: #dc8cc3; background-color: #383838;">xy/proxy.sh on &amp;&amp; ~/bin/wifi/nm-applet.sh stop"</span><span style="color: #dc8cc3; background-color: #383838;">                      </span><span style="color: #dc8cc3; background-color: #383838;">"p"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>switch-to-no-proxy   <span style="color: #61CE3C;">"Switch to no proxy."</span>                  <span style="color: #61CE3C;">"gksudo ~/bin/pro</span><span style="color: #dc8cc3; background-color: #383838;">xy/proxy.sh off &amp;&amp; ~/bin/wifi/nm-applet.sh stop"</span><span style="color: #dc8cc3; background-color: #383838;">                     </span><span style="color: #dc8cc3; background-color: #383838;">"P"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>dec-brightness       <span style="color: #61CE3C;">"Brightness decrement"</span>                 <span style="color: #61CE3C;">"~/bin/brightness</span><span style="color: #dc8cc3; background-color: #383838;">/dec-brightness.sh 5"</span><span style="color: #dc8cc3; background-color: #383838;">                                                </span><span style="color: #dc8cc3; background-color: #383838;">"C-b"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>inc-brightness       <span style="color: #61CE3C;">"Brightness increment"</span>                 <span style="color: #61CE3C;">"~/bin/brightness</span><span style="color: #dc8cc3; background-color: #383838;">/inc-brightness.sh 5"</span><span style="color: #dc8cc3; background-color: #383838;">                                                </span><span style="color: #dc8cc3; background-color: #383838;">"C-f"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>min-brightness       <span style="color: #61CE3C;">"Minimum screen brightness"</span>            <span style="color: #61CE3C;">"~/bin/brightness</span><span style="color: #dc8cc3; background-color: #383838;">/min-brightness.sh"</span><span style="color: #dc8cc3; background-color: #383838;">                                                  </span><span style="color: #dc8cc3; background-color: #383838;">"m"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>half-brightness      <span style="color: #61CE3C;">"Half screen brightness"</span>               <span style="color: #61CE3C;">"~/bin/brightness</span><span style="color: #dc8cc3; background-color: #383838;">/half-brightness.sh"</span><span style="color: #dc8cc3; background-color: #383838;">                                                 </span><span style="color: #dc8cc3; background-color: #383838;">"C-M"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>max-brightness       <span style="color: #61CE3C;">"Maximum screen brightness"</span>            <span style="color: #61CE3C;">"~/bin/brightness</span><span style="color: #dc8cc3; background-color: #383838;">/max-brightness.sh"</span><span style="color: #dc8cc3; background-color: #383838;">                                                  </span><span style="color: #dc8cc3; background-color: #383838;">"M"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>inc-sound            <span style="color: #61CE3C;">"Increase sound"</span>                       <span style="color: #61CE3C;">"exec amixer set </span><span style="color: #dc8cc3; background-color: #383838;">Master 5%+"</span><span style="color: #dc8cc3; background-color: #383838;">                                                          </span><span style="color: #dc8cc3; background-color: #383838;">"M-f"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>dec-sound            <span style="color: #61CE3C;">"Decrease sound"</span>                       <span style="color: #61CE3C;">"exec amixer set </span><span style="color: #dc8cc3; background-color: #383838;">Master 5%-"</span><span style="color: #dc8cc3; background-color: #383838;">                                                          </span><span style="color: #dc8cc3; background-color: #383838;">"M-b"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>toggle-sound         <span style="color: #61CE3C;">"Toggle sound"</span>                         <span style="color: #61CE3C;">"exec amixer set </span><span style="color: #dc8cc3; background-color: #383838;">Master toggle"</span><span style="color: #dc8cc3; background-color: #383838;">                                                       </span><span style="color: #dc8cc3; background-color: #383838;">"M-m"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>wifi-off             <span style="color: #61CE3C;">"wifi off"</span>                             <span style="color: #61CE3C;">"~/bin/wifi/wifi-</span><span style="color: #dc8cc3; background-color: #383838;">off.sh"</span><span style="color: #dc8cc3; background-color: #383838;">                                                              </span><span style="color: #dc8cc3; background-color: #383838;">"C-o"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>wifi-on              <span style="color: #61CE3C;">"wifi on"</span>                              <span style="color: #61CE3C;">"~/bin/wifi/wifi-</span><span style="color: #dc8cc3; background-color: #383838;">on.sh"</span><span style="color: #dc8cc3; background-color: #383838;">                                                               </span><span style="color: #dc8cc3; background-color: #383838;">"O"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>lock-session         <span style="color: #61CE3C;">"Lock the session"</span>                     <span style="color: #61CE3C;">"~/bin/session/lo</span><span style="color: #dc8cc3; background-color: #383838;">ck.sh"</span><span style="color: #dc8cc3; background-color: #383838;">                                                               </span><span style="color: #dc8cc3; background-color: #383838;">"C-M-l"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>evince-haskell-prog  <span style="color: #61CE3C;">"read functional approach in haskell"</span>  <span style="color: #61CE3C;">"evince ~/books/h</span><span style="color: #dc8cc3; background-color: #383838;">askell/algorithms-a-functional-programming-haskell-approach.pdf"</span><span style="color: #dc8cc3; background-color: #383838;">      </span><span style="color: #dc8cc3; background-color: #383838;">"'"</span><span style="color: #ff1493; background-color: #383838;">)</span><span style="color: #006400; background-color: #383838;">)</span><span style="color: #8b0000; background-color: #383838;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">shell command - Simply execute shell command and possibly output the result i</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">n the screen</span>
+<span style="color: #8b0000;">(</span>shell-command-category
+ <span style="color: #006400;">(</span><span style="color: #ff1493;">(</span>top              <span style="color: #61CE3C;">"Display a single 'top' frame."</span>             <span style="color: #61CE3C;">"top -b -n 1 -c </span><span style="color: #dc8cc3; background-color: #383838;">-d 1"</span><span style="color: #dc8cc3; background-color: #383838;">                                                                                              </span><span style="color: #dc8cc3; background-color: #383838;">"^"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>screenshot       <span style="color: #61CE3C;">"Take a screenshot for the current window."</span> <span style="color: #61CE3C;">"/usr/bin/scrot </span><span style="color: #dc8cc3; background-color: #383838;">-u $HOME/Pictures/screenshot_$(date +%F_%H-%M-%S).png"</span><span style="color: #dc8cc3; background-color: #383838;">                                             </span><span style="color: #dc8cc3; background-color: #383838;">"C-s"</span><span style="color: #ff1493; background-color: #383838;">)</span>
+  <span style="color: #ff1493;">(</span>screenshot-mouse <span style="color: #61CE3C;">"Take a screenshot with mouse selection."</span>   <span style="color: #61CE3C;">"~/bin/touchpad/</span><span style="color: #dc8cc3; background-color: #383838;">toggle-touchpad-manual.sh 1; /usr/bin/scrot -s $HOME/Pictures/screenshot_$(date +%F_%H-%M-%S).png"</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">"M-s"</span><span style="color: #ff1493; background-color: #383838;">)</span><span style="color: #006400; background-color: #383838;">)</span><span style="color: #8b0000; background-color: #383838;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">========================== simple binding</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"o"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"fselect"</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"M-r"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"exec"</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"Q"</span><span style="color: #006400;">)</span>   <span style="color: #61CE3C;">"loadrc"</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"M-q"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"quit"</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"C-u"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"move-window up"</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"C-r"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"move-window right"</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"C-d"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"move-window down"</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"C-l"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"move-window left"</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"-"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"vsplit"</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"|"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"hsplit"</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"M-x"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"colon"</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *input-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"C-h"</span><span style="color: #006400;">)</span>   'input-delete-backward-char<span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *input-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"C-M-h"</span><span style="color: #006400;">)</span> 'input-backward-kill-word<span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *input-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"C-j"</span><span style="color: #006400;">)</span>   'input-submit<span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *input-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"C-m"</span><span style="color: #006400;">)</span>   'input-submit<span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *input-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"C-i"</span><span style="color: #006400;">)</span>   'input-complete-forward<span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *input-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"M-p"</span><span style="color: #006400;">)</span>   'input-history-back<span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *input-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"M-n"</span><span style="color: #006400;">)</span>   'input-history-forward<span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span>defcommand scroll-forward-browser <span style="color: #006400;">()</span> <span style="color: #006400;">()</span>
+  <span style="color: #61CE3C;">"Scroll forward in firefox"</span>
+  <span style="color: #006400;">(</span>play-commands <span style="color: #61CE3C;">"firefox"</span> <span style="color: #ff1493;">(</span>kbd <span style="color: #61CE3C;">"C-v"</span><span style="color: #ff1493;">)</span> <span style="color: #61CE3C;">"myemacs"</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"C-M-]"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"scroll-forward-browser"</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span>defcommand scroll-backward-browser <span style="color: #006400;">()</span> <span style="color: #006400;">()</span>
+  <span style="color: #61CE3C;">"Scroll backward in firefox"</span>
+  <span style="color: #006400;">(</span>play-commands <span style="color: #61CE3C;">"firefox"</span> <span style="color: #ff1493;">(</span>kbd <span style="color: #61CE3C;">"M-v"</span><span style="color: #ff1493;">)</span> <span style="color: #61CE3C;">"myemacs"</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"C-M-["</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"scroll-backward-browser"</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">========================== Help</span>
+
+<span style="color: #8b0000;">(</span>setf *help-map*
+      <span style="color: #006400;">(</span><span style="color: #FBDE2D;">let</span> <span style="color: #ff1493;">(</span><span style="color: #ffff00;">(</span>m <span style="color: #00ff00;">(</span>make-sparse-keymap<span style="color: #00ff00;">)</span><span style="color: #ffff00;">)</span><span style="color: #ff1493;">)</span>
+        <span style="color: #ff1493;">(</span><span style="color: #FBDE2D;">define-key</span> m <span style="color: #ffff00;">(</span>kbd <span style="color: #61CE3C;">"m"</span><span style="color: #ffff00;">)</span> <span style="color: #61CE3C;">"man"</span><span style="color: #ff1493;">)</span>
+        <span style="color: #ff1493;">(</span><span style="color: #FBDE2D;">define-key</span> m <span style="color: #ffff00;">(</span>kbd <span style="color: #61CE3C;">"i"</span><span style="color: #ffff00;">)</span> <span style="color: #61CE3C;">"info"</span><span style="color: #ff1493;">)</span>
+        <span style="color: #ff1493;">(</span><span style="color: #FBDE2D;">define-key</span> m <span style="color: #ffff00;">(</span>kbd <span style="color: #61CE3C;">"v"</span><span style="color: #ffff00;">)</span> <span style="color: #61CE3C;">"describe-variable"</span><span style="color: #ff1493;">)</span>
+        <span style="color: #ff1493;">(</span><span style="color: #FBDE2D;">define-key</span> m <span style="color: #ffff00;">(</span>kbd <span style="color: #61CE3C;">"f"</span><span style="color: #ffff00;">)</span> <span style="color: #61CE3C;">"describe-function"</span><span style="color: #ff1493;">)</span>
+        <span style="color: #ff1493;">(</span><span style="color: #FBDE2D;">define-key</span> m <span style="color: #ffff00;">(</span>kbd <span style="color: #61CE3C;">"k"</span><span style="color: #ffff00;">)</span> <span style="color: #61CE3C;">"describe-key"</span><span style="color: #ff1493;">)</span>
+        <span style="color: #ff1493;">(</span><span style="color: #FBDE2D;">define-key</span> m <span style="color: #ffff00;">(</span>kbd <span style="color: #61CE3C;">"w"</span><span style="color: #ffff00;">)</span> <span style="color: #61CE3C;">"where-is"</span><span style="color: #ff1493;">)</span>
+        m<span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">gimp</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-frame-preference</span> <span style="color: #61CE3C;">"gimp"</span>
+  <span style="color: #006400;">(</span>1 t t <span style="color: #FF6400;">:create</span> <span style="color: #61CE3C;">"gimp-dump"</span> <span style="color: #FF6400;">:class</span> <span style="color: #61CE3C;">"Gimp"</span> <span style="color: #FF6400;">:title</span> nil <span style="color: #FF6400;">:role</span> nil<span style="color: #006400;">)</span>
+  <span style="color: #006400;">(</span>0 t t <span style="color: #FF6400;">:create</span> <span style="color: #61CE3C;">"gimp-dump"</span> <span style="color: #FF6400;">:class</span> <span style="color: #61CE3C;">"Gimp"</span> <span style="color: #FF6400;">:title</span> nil <span style="color: #FF6400;">:role</span> <span style="color: #61CE3C;">"gimp-toolbox"</span><span style="color: #006400;">)</span>
+  <span style="color: #006400;">(</span>2 t t <span style="color: #FF6400;">:create</span> <span style="color: #61CE3C;">"gimp-dump"</span> <span style="color: #FF6400;">:class</span> <span style="color: #61CE3C;">"Gimp"</span> <span style="color: #FF6400;">:title</span> nil <span style="color: #FF6400;">:role</span> <span style="color: #61CE3C;">"gimp-dock"</span><span style="color: #006400;">)</span>
+  <span style="color: #006400;">(</span>1 t t <span style="color: #FF6400;">:create</span> <span style="color: #61CE3C;">"gimp-dump"</span> <span style="color: #FF6400;">:class</span> <span style="color: #61CE3C;">"Gimp"</span> <span style="color: #FF6400;">:title</span> nil <span style="color: #FF6400;">:role</span> <span style="color: #61CE3C;">"gimp-image-window"</span><span style="color: #006400;">)</span><span style="color: #8b0000; background-color: #383838;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">courtesy of Peter Seibel</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(defmacro with-gensyms ((&amp;rest names) &amp;body body)</span>
+<span style="color: #8B8989; font-style: italic;">;;   </span><span style="color: #8B8989; font-style: italic;">`(let ,(loop for n in names collect `(,n (gensym)))</span>
+<span style="color: #8B8989; font-style: italic;">;;      </span><span style="color: #8B8989; font-style: italic;">,@body))</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(defmacro program-with-layout (name &amp;key (command (string-downcase (string na</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">me)))</span>
+<span style="color: #8B8989; font-style: italic;">;;                                     </span><span style="color: #8B8989; font-style: italic;">(props `'(:class ,(string-capitalize comm</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">and))))</span>
+<span style="color: #8B8989; font-style: italic;">;;   </span><span style="color: #8B8989; font-style: italic;">(with-gensyms (s w h files-path layout rules)</span>
+<span style="color: #8B8989; font-style: italic;">;;                 </span><span style="color: #8B8989; font-style: italic;">`(defcommand ,name () ()</span>
+<span style="color: #8B8989; font-style: italic;">;;                    </span><span style="color: #8B8989; font-style: italic;">(let* ((,s (current-screen))</span>
+<span style="color: #8B8989; font-style: italic;">;;                           </span><span style="color: #8B8989; font-style: italic;">(,w (prin1-to-string (screen-width ,s)))</span>
+<span style="color: #8B8989; font-style: italic;">;;                           </span><span style="color: #8B8989; font-style: italic;">(,h (prin1-to-string (screen-height ,s)))</span>
+<span style="color: #8B8989; font-style: italic;">;;                           </span><span style="color: #8B8989; font-style: italic;">(,files-path "/home/tony/.gimp")</span>
+<span style="color: #8B8989; font-style: italic;">;;                           </span><span style="color: #8B8989; font-style: italic;">(,layout (concat ,files-path ,command "-layout-" ,w</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;"> "x" ,h))</span>
+<span style="color: #8B8989; font-style: italic;">;;                           </span><span style="color: #8B8989; font-style: italic;">(,rules (concat ,files-path ,command "-rules")))</span>
+<span style="color: #8B8989; font-style: italic;">;;                      </span><span style="color: #8B8989; font-style: italic;">(gnew ,command)</span>
+<span style="color: #8B8989; font-style: italic;">;;                      </span><span style="color: #8B8989; font-style: italic;">(restore-from-file ,layout)</span>
+<span style="color: #8B8989; font-style: italic;">;;                      </span><span style="color: #8B8989; font-style: italic;">(restore-window-placement-rules ,rules)</span>
+<span style="color: #8B8989; font-style: italic;">;;                      </span><span style="color: #8B8989; font-style: italic;">(run-or-raise ,command ,props)</span>
+<span style="color: #8B8989; font-style: italic;">;;                      </span><span style="color: #8B8989; font-style: italic;">(place-existing-windows)))))</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(program-with-layout gimp)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">defun</span> <span style="color: #ff1493;">hostname</span> <span style="color: #006400;">()</span> <span style="color: #006400;">(</span>run-shell-command <span style="color: #61CE3C;">"/bin/hostname"</span> t<span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">========================== cursor - https://github.com/stumpwm/stumpwm/wiki/G</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">rabbedPointer</span>
+
+<span style="color: #8b0000;">(</span>setf *grab-pointer-foreground* <span style="color: #006400;">(</span>xlib:make-color <span style="color: #FF6400;">:red</span> 0.1 <span style="color: #FF6400;">:green</span> 0.25 <span style="color: #FF6400;">:blue</span> 0.5<span style="color: #006400;">)</span><span style="color: #8b0000; background-color: #383838;">)</span>
+<span style="color: #8b0000;">(</span>setf *grab-pointer-background* <span style="color: #006400;">(</span>lookup-color <span style="color: #ff1493;">(</span>current-screen<span style="color: #ff1493;">)</span> <span style="color: #61CE3C;">"DeepSkyBlue"</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span>setf *grab-pointer-character* 88<span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span>setf *grab-pointer-character-mask* 88<span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span>setf *grab-pointer-font* <span style="color: #61CE3C;">"fixed"</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+<p>
+src: <a href="https://github.com/ardumont/dot-files/blob/master/.stumpwmrc">.stumpwmrc</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Last points</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+It's "emacs compatible". The prefix key is C-t whereas the prefix key of emacs is mostly C-x.
+They work well together and they have a lot in common in their usability.
+</p>
+
+<p>
+Here is a <a href="http://www.archive.org/details/TheStumpWMExperience">screencast</a> which presents rapidly how to use it.
+</p>
+</div>
+</div>

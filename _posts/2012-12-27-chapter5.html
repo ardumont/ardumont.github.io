@@ -1,0 +1,542 @@
+---
+layout: post
+title: Programming in haskell - ch5 - Lists comprehension
+date: 2012-12-27
+categories:
+- haskell
+- exercises
+- functional-programming
+author: Antoine R. Dumont
+excerpt: Learning haskell and solving problems using reasoning and 'repl'ing
+---
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">List comprehension</h2>
+<div class="outline-text-2" id="text-1">
+<blockquote>
+<p>
+Using a list comprehension, give an expression that calculates the sum <br  />
+ <b>1<sup>2</sup> + 2<sup>2</sup> + . . . 100<sup>2</sup></b>.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #FBDE2D;">let</span> ss100 <span style="color: #D8FA3C;">=</span> sum [ x<span style="color: #D8FA3C;">^</span>2 <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> [1<span style="color: #D8FA3C;">..</span>100]]
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><b>replicate</b></h2>
+<div class="outline-text-2" id="text-2">
+<blockquote>
+<p>
+In a similar way to the function <b>length</b>, show how the library function <br  />
+<b>replicate :: Int → a → [ a ]</b> that produces a list of identical elements can be defined using a list comprehension.
+</p>
+
+<p>
+For example:
+&gt; replicate 3 True
+</p>
+
+<p>
+[True, True, True]
+</p>
+</blockquote>
+
+<p>
+It's like generating n times the same input.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">replicate</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> [a]
+<span style="color: #ff1493;">replicate</span> n x <span style="color: #D8FA3C;">=</span> [x <span style="color: #D8FA3C;">|</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">&lt;-</span> [1<span style="color: #D8FA3C;">..</span>n]]
+</pre>
+</div>
+
+<p>
+Here are some examples:
+</p>
+
+<pre class="example">
+*Ch5&gt; replicate 10 'a'
+"aaaaaaaaaa"
+*Ch5&gt; replicate 10 1
+[1,1,1,1,1,1,1,1,1,1]
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><b>pyths</b></h2>
+<div class="outline-text-2" id="text-3">
+<blockquote>
+<p>
+A triple <b>(x, y, z)</b> of positive integers is pythagorean if <b>x<sup>2</sup> + y<sup>2</sup> = z<sup>2</sup></b>.
+</p>
+
+<p>
+Using a list comprehension, define a function <b>pyths :: Int → [(Int, Int, Int)]</b> that
+returns the list of all pythagorean triples whose components are at most a given limit.
+</p>
+
+<p>
+For example:
+&gt; pyths 10
+</p>
+
+<p>
+[(3, 4, 5), (4, 3, 5), (6, 8, 10), (8, 6, 10)]
+</p>
+</blockquote>
+
+<p>
+We search all the triplets (x, y, z) such as (x,y,z) in [1..n]<sup>3</sup> and x<sup>2</sup>+y<sup>2</sup>=z<sup>2</sup>:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">pyths</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> [(<span style="color: #D8FA3C;">Int</span>, <span style="color: #D8FA3C;">Int</span>, <span style="color: #D8FA3C;">Int</span>)]
+<span style="color: #ff1493;">pyths</span> n <span style="color: #D8FA3C;">=</span> [(x, y, z) <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> m,
+                       y <span style="color: #D8FA3C;">&lt;-</span> m,
+                       z <span style="color: #D8FA3C;">&lt;-</span> m,
+                       x<span style="color: #D8FA3C;">^</span>2 <span style="color: #D8FA3C;">+</span> y<span style="color: #D8FA3C;">^</span>2 <span style="color: #D8FA3C;">==</span> z<span style="color: #D8FA3C;">^</span>2 ]
+          <span style="color: #FBDE2D;">where</span> m <span style="color: #D8FA3C;">=</span> [1<span style="color: #D8FA3C;">..</span>n]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">perfect numbers</h2>
+<div class="outline-text-2" id="text-4">
+<blockquote>
+<p>
+A positive integer is perfect if it equals the sum of its factors, excluding the number itself.
+</p>
+
+<p>
+Using a list comprehension and the function <b>factors</b>, define a function <br  />
+<b>perfects :: Int → [ Int ]</b> that returns the list of all perfect numbers up to a given limit.
+</p>
+
+<p>
+For example:
+&gt; perfects 500
+</p>
+
+<p>
+[6, 28, 496]
+</p>
+</blockquote>
+
+<p>
+We are first given the definition for a perfect number so we implement it:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">perfect</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Bool</span>
+<span style="color: #ff1493;">perfect</span> m <span style="color: #D8FA3C;">=</span> sum [ y <span style="color: #D8FA3C;">|</span> y <span style="color: #D8FA3C;">&lt;-</span> factors m, y <span style="color: #D8FA3C;">/=</span> m ] <span style="color: #D8FA3C;">==</span> m
+</pre>
+</div>
+
+<p>
+<b>Note</b>
+We can iterate over the <b>perfect</b> implementation and change it using the <b>init</b> function (drops the last element of a list):
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">perfect</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Bool</span>
+<span style="color: #ff1493;">perfect</span> m <span style="color: #D8FA3C;">=</span> sum (init (factors m)) <span style="color: #D8FA3C;">==</span> m
+</pre>
+</div>
+
+<p>
+<b>Note</b>
+</p>
+<ul class="org-ul">
+<li>The implementation is litteraly the definition.
+</li>
+<li>we have the <b>factors</b> function that already computes the factors of a number, so we reuse it.
+</li>
+</ul>
+
+<p>
+We can now define the main function using the previous <b>perfect</b> function:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">perfects</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> [<span style="color: #D8FA3C;">Int</span>]
+<span style="color: #ff1493;">perfects</span> n <span style="color: #D8FA3C;">=</span> [x <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> [1<span style="color: #D8FA3C;">..</span>n], perfect x]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Comprehension</h2>
+<div class="outline-text-2" id="text-5">
+<blockquote>
+<p>
+Show how the single comprehension <b>[(x, y) | x ← [1, 2, 3], y ← [4, 5, 6]]</b> with two
+generators can be re-expressed using two comprehensions with single generators.
+</p>
+
+<p>
+<b>Hint:</b>
+Make use of the library function <b>concat</b> and nest one comprehension within the other.
+</p>
+</blockquote>
+
+<p>
+Apparently, from the <b>hint</b>, is possible to nest the list comprehensions.
+</p>
+
+<p>
+We will go one step at a time, first nesting:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">Prelude</span><span style="color: #ff1493;">&gt;</span> [[(x,y) <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> [1,2,3]] <span style="color: #D8FA3C;">|</span> y <span style="color: #D8FA3C;">&lt;-</span> [4,5,6]]
+[[(1,4),(2,4),(3,4)],[(1,5),(2,5),(3,5)],[(1,6),(2,6),(3,6)]]
+</pre>
+</div>
+
+<p>
+Indeed, now if we use <b>concat</b>, this will give us what we want:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">Prelude</span><span style="color: #ff1493;">&gt;</span> concat [[(x,y) <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> [1,2,3]] <span style="color: #D8FA3C;">|</span> y <span style="color: #D8FA3C;">&lt;-</span> [4,5,6]]
+[(1,4),(2,4),(3,4),(1,5),(2,5),(3,5),(1,6),(2,6),(3,6)]
+</pre>
+</div>
+
+<p>
+which is equal to the first result if we do not consider the list order:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">Prelude</span><span style="color: #ff1493;">&gt;</span> [(x, y) <span style="color: #D8FA3C;">|</span> x <span style="color: #D8FA3C;">&lt;-</span> [1, 2, 3], y <span style="color: #D8FA3C;">&lt;-</span> [4, 5, 6]]
+[(1,4),(1,5),(1,6),(2,4),(2,5),(2,6),(3,4),(3,5),(3,6)]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><b>positions</b></h2>
+<div class="outline-text-2" id="text-6">
+<blockquote>
+<p>
+Redefine the function <b>positions</b> using the function <b>find</b>.
+</p>
+</blockquote>
+
+<p>
+Recall the <b>find</b> definition:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">find</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Eq</span> a <span style="color: #D8FA3C;">=&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> [(a,a)] <span style="color: #D8FA3C;">-&gt;</span> [a]
+<span style="color: #ff1493;">find</span> k hs <span style="color: #D8FA3C;">=</span> [v <span style="color: #D8FA3C;">|</span> (k', v) <span style="color: #D8FA3C;">&lt;-</span> hs, k <span style="color: #D8FA3C;">==</span> k']
+</pre>
+</div>
+
+<p>
+We will generate the list of couples <b>(value, position)</b> then feed this to the <b>find</b> function.
+This will then compute all the values associated (their position) to the search value <b>v</b>:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">positions2</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> [<span style="color: #D8FA3C;">Int</span>] <span style="color: #D8FA3C;">-&gt;</span> [<span style="color: #D8FA3C;">Int</span>]
+<span style="color: #ff1493;">positions2</span> v vs <span style="color: #D8FA3C;">=</span> find v (zip vs [0<span style="color: #D8FA3C;">..</span>n])
+                  <span style="color: #FBDE2D;">where</span>
+                    n <span style="color: #D8FA3C;">=</span> (length vs) <span style="color: #D8FA3C;">-</span> 1
+</pre>
+</div>
+
+<p>
+Here is the comparison between the first implementation and the new one:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch5</span><span style="color: #D8FA3C;">&gt;</span> positions2 1 [0,1,3,4,2,1,3]
+[1,5]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">scalarproduct</h2>
+<div class="outline-text-2" id="text-7">
+<blockquote>
+<p>
+The scalar product of two lists of integers xs and ys of length n
+is given by the sum of the products of corresponding integers:
+<code>sum i=0..n−1 (xsi ∗ ysi)</code>
+</p>
+
+<p>
+In a similar manner to the function <b>chisqr</b>, show how a list comprehension
+can be used to define a function <b>scalarproduct :: [ Int ] → [ Int ] → Int</b>
+that returns the scalar product of two lists.
+</p>
+
+<p>
+For example:
+&gt; scalarproduct [1, 2, 3] [4, 5, 6]
+32
+</p>
+</blockquote>
+
+<p>
+We first create the list containing the couple <code>(x, y)</code> then we (lazily) compute the product for each couple, then sum them all:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">scalarproduct</span> <span style="color: #D8FA3C;">::</span> [<span style="color: #D8FA3C;">Int</span>] <span style="color: #D8FA3C;">-&gt;</span> [<span style="color: #D8FA3C;">Int</span>] <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">scalarproduct</span> xs ys <span style="color: #D8FA3C;">=</span> sum [x <span style="color: #D8FA3C;">*</span> y <span style="color: #D8FA3C;">|</span> (x, y) <span style="color: #D8FA3C;">&lt;-</span> zip xs ys]
+</pre>
+</div>
+
+<p>
+As an example:
+</p>
+
+<pre class="example">
+*Ch5&gt; scalarproduct [1,2,3] [4,5,6]
+32
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8">Caesar cipher</h2>
+<div class="outline-text-2" id="text-8">
+<blockquote>
+<p>
+Modify the Caesar cipher program to also handle upper-case letters.
+</p>
+</blockquote>
+</div>
+
+<div id="outline-container-sec-8-1" class="outline-3">
+<h3 id="sec-8-1">caesar program</h3>
+<div class="outline-text-3" id="text-8-1">
+<p>
+Recall the caesar program:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">low2int</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">low2int</span> c <span style="color: #D8FA3C;">=</span> <span style="color: #d3d3d3; background-color: #000000;">C.ord</span> c <span style="color: #D8FA3C;">-</span> <span style="color: #d3d3d3; background-color: #000000;">C.ord</span> <span style="color: #61CE3C;">'a'</span>
+
+<span style="color: #ff1493;">int2low</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">int2low</span> l <span style="color: #D8FA3C;">=</span> <span style="color: #d3d3d3; background-color: #000000;">C.chr</span> (<span style="color: #d3d3d3; background-color: #000000;">C.ord</span> <span style="color: #61CE3C;">'a'</span> <span style="color: #D8FA3C;">+</span> l)
+
+<span style="color: #ff1493;">shift</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">shift</span> n c <span style="color: #D8FA3C;">|</span> <span style="color: #d3d3d3; background-color: #000000;">C.isLower</span> c <span style="color: #D8FA3C;">=</span> int2low ((n <span style="color: #D8FA3C;">+</span> low2int c) <span style="color: #D8FA3C;">`mod`</span> 26)
+          <span style="color: #D8FA3C;">|</span> otherwise <span style="color: #D8FA3C;">=</span> c
+
+<span style="color: #ff1493;">encode</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">String</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">String</span>
+<span style="color: #ff1493;">encode</span> n cs <span style="color: #D8FA3C;">=</span> [shift n c <span style="color: #D8FA3C;">|</span> c <span style="color: #D8FA3C;">&lt;-</span> cs]
+</pre>
+</div>
+
+<p>
+Here is a sample or executing the first implementation:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch5</span><span style="color: #D8FA3C;">&gt;</span> encode 3 <span style="color: #61CE3C;">"functional programming rocks!"</span>
+<span style="color: #61CE3C;">"ixqfwlrqdo surjudpplqj urfnv!"</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-8-2" class="outline-3">
+<h3 id="sec-8-2">Upper</h3>
+<div class="outline-text-3" id="text-8-2">
+<p>
+We then have to add functions that deals with upper case too.
+</p>
+</div>
+
+<div id="outline-container-sec-8-2-1" class="outline-4">
+<h4 id="sec-8-2-1"><b>upp2int</b></h4>
+<div class="outline-text-4" id="text-8-2-1">
+<p>
+For this, we can add functions <b>upp2int</b> (dual of <b>low2int</b>) and <b>int2upp</b> (dual of <b>int2low</b>).
+</p>
+
+<p>
+As their behaviour is similar, we can extract a <b>char2Int</b> function which takes the char c to transform and a reference char.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">char2int</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">char2int</span> c cr <span style="color: #D8FA3C;">=</span> <span style="color: #d3d3d3; background-color: #000000;">C.ord</span> c <span style="color: #D8FA3C;">-</span> <span style="color: #d3d3d3; background-color: #000000;">C.ord</span> cr
+</pre>
+</div>
+
+<p>
+The definition of <b>low2int</b> and <b>upp2int</b> becomes:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">low2int</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">low2int</span> c <span style="color: #D8FA3C;">=</span> char2int c <span style="color: #61CE3C;">'a'</span>
+
+<span style="color: #ff1493;">upp2int</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">upp2int</span> c <span style="color: #D8FA3C;">=</span> char2int c <span style="color: #61CE3C;">'A'</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-8-2-2" class="outline-4">
+<h4 id="sec-8-2-2"><b>int2upp</b></h4>
+<div class="outline-text-4" id="text-8-2-2">
+<p>
+The same thing can be tell for the <b>int 2 letter</b> transformation:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">int2char</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">int2char</span> l c <span style="color: #D8FA3C;">=</span> <span style="color: #d3d3d3; background-color: #000000;">C.chr</span> (<span style="color: #d3d3d3; background-color: #000000;">C.ord</span> c <span style="color: #D8FA3C;">+</span> l)
+
+<span style="color: #ff1493;">int2low</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">int2low</span> l <span style="color: #D8FA3C;">=</span> int2char l <span style="color: #61CE3C;">'a'</span>
+
+<span style="color: #ff1493;">int2upp</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">int2upp</span> l <span style="color: #D8FA3C;">=</span> int2char l <span style="color: #61CE3C;">'A'</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-8-2-3" class="outline-4">
+<h4 id="sec-8-2-3"><b>shift</b></h4>
+<div class="outline-text-4" id="text-8-2-3">
+<p>
+The function <b>shift</b> evolves to add a guardian entry to check on the Upper case property of a char.
+Again the behaviour is similar, only the reference char changes.
+</p>
+
+<p>
+So we can extract a higher order function <b>shiftchar</b>:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">shiftchar</span> <span style="color: #D8FA3C;">::</span> (<span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span>) <span style="color: #D8FA3C;">-&gt;</span> (<span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>) <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">shiftchar</span> i2c c2i n c <span style="color: #D8FA3C;">=</span> i2c ((n <span style="color: #D8FA3C;">+</span> c2i c) <span style="color: #D8FA3C;">`mod`</span> 26)
+</pre>
+</div>
+
+<p>
+The function <b>shift</b> becomes then:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">shift</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">shift</span> n c <span style="color: #D8FA3C;">|</span> <span style="color: #d3d3d3; background-color: #000000;">C.isLower</span> c <span style="color: #D8FA3C;">=</span> shiftchar int2low low2int n c
+          <span style="color: #D8FA3C;">|</span> <span style="color: #d3d3d3; background-color: #000000;">C.isUpper</span> c <span style="color: #D8FA3C;">=</span> shiftchar int2upp upp2int n c
+          <span style="color: #D8FA3C;">|</span> otherwise <span style="color: #D8FA3C;">=</span> c
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-8-2-4" class="outline-4">
+<h4 id="sec-8-2-4"><b>encode</b></h4>
+<div class="outline-text-4" id="text-8-2-4">
+<p>
+At last the function <b>encode</b> does not change.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-8-2-5" class="outline-4">
+<h4 id="sec-8-2-5">Check</h4>
+<div class="outline-text-4" id="text-8-2-5">
+<p>
+And the encoding final with upper case:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch5</span><span style="color: #D8FA3C;">&gt;</span> encode 3 <span style="color: #61CE3C;">"Functional programming ROCKS!"</span>
+<span style="color: #61CE3C;">"Ixqfwlrqdo surjudpplqj URFNV!"</span>
+</pre>
+</div>
+
+<p>
+Which is definitely the same as before but with upper letters.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-8-3" class="outline-3">
+<h3 id="sec-8-3">final</h3>
+<div class="outline-text-3" id="text-8-3">
+<p>
+Here is the final result:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">char2int</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">char2int</span> c cr <span style="color: #D8FA3C;">=</span> <span style="color: #d3d3d3; background-color: #000000;">C.ord</span> c <span style="color: #D8FA3C;">-</span> <span style="color: #d3d3d3; background-color: #000000;">C.ord</span> cr
+
+<span style="color: #ff1493;">low2int</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">low2int</span> c <span style="color: #D8FA3C;">=</span> char2int c <span style="color: #61CE3C;">'a'</span>
+
+<span style="color: #ff1493;">upp2int</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">upp2int</span> c <span style="color: #D8FA3C;">=</span> char2int c <span style="color: #61CE3C;">'A'</span>
+
+<span style="color: #ff1493;">int2char</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">int2char</span> l c <span style="color: #D8FA3C;">=</span> <span style="color: #d3d3d3; background-color: #000000;">C.chr</span> (<span style="color: #d3d3d3; background-color: #000000;">C.ord</span> c <span style="color: #D8FA3C;">+</span> l)
+
+<span style="color: #ff1493;">int2low</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">int2low</span> l <span style="color: #D8FA3C;">=</span> int2char l <span style="color: #61CE3C;">'a'</span>
+
+<span style="color: #ff1493;">int2upp</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">int2upp</span> l <span style="color: #D8FA3C;">=</span> int2char l <span style="color: #61CE3C;">'A'</span>
+
+<span style="color: #ff1493;">shiftchar</span> <span style="color: #D8FA3C;">::</span> (<span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span>) <span style="color: #D8FA3C;">-&gt;</span> (<span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>) <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">shiftchar</span> i2c c2i n c <span style="color: #D8FA3C;">=</span> i2c ((n <span style="color: #D8FA3C;">+</span> c2i c) <span style="color: #D8FA3C;">`mod`</span> 26)
+
+<span style="color: #ff1493;">shift</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Char</span>
+<span style="color: #ff1493;">shift</span> n c <span style="color: #D8FA3C;">|</span> <span style="color: #d3d3d3; background-color: #000000;">C.isLower</span> c <span style="color: #D8FA3C;">=</span> shiftchar int2low low2int n c
+          <span style="color: #D8FA3C;">|</span> <span style="color: #d3d3d3; background-color: #000000;">C.isUpper</span> c <span style="color: #D8FA3C;">=</span> shiftchar int2upp upp2int n c
+          <span style="color: #D8FA3C;">|</span> otherwise <span style="color: #D8FA3C;">=</span> c
+
+<span style="color: #ff1493;">encode</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">String</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">String</span>
+<span style="color: #ff1493;">encode</span> n cs <span style="color: #D8FA3C;">=</span> [shift n c <span style="color: #D8FA3C;">|</span> c <span style="color: #D8FA3C;">&lt;-</span> cs]
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9">Source</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+<a href="https://github.com/ardumont/haskell-lab/blob/master/src/programming-in-haskell/ch5.hs">ch5.hs</a>
+</p>
+</div>
+</div>

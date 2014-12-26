@@ -1,0 +1,151 @@
+---
+layout: post
+title: How to install emacs 24
+date: 2012-12-22
+categories:
+- emacs
+- howto
+author: Antoine R. Dumont
+excerpt: how to install emacs 24 in ubuntu based box
+---
+<p>
+This article will show how to install rapidly emacs 24 on ubuntu based system (linuxmint 13/14 for example) from 11.10 to 12.10.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">ubuntu based 12.10</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+It's now in the main repository so just:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo aptitude install emacs24
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">ubuntu based 11.10/12.04</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Pre-requisites:</h3>
+<div class="outline-text-3" id="text-2-1">
+</div><div id="outline-container-sec-2-1-1" class="outline-4">
+<h4 id="sec-2-1-1">ubuntu 11.10/12.04</h4>
+</div>
+<div id="outline-container-sec-2-1-2" class="outline-4">
+<h4 id="sec-2-1-2">internet access</h4>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">What will be installed?</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+<a href="http://www.gnu.org/software/emacs/">emacs</a> 24 with <a href="https://github.com/overtone/emacs-live">emacs-live</a>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">How to?</h3>
+<div class="outline-text-3" id="text-2-3">
+</div><div id="outline-container-sec-2-3-1" class="outline-4">
+<h4 id="sec-2-3-1">Install</h4>
+<div class="outline-text-4" id="text-2-3-1">
+<p>
+Here are the scripts to download:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">wget https://github.com/ardumont/sh/blob/master/deploy/deploy-emacs24.sh
+chmod +x deploy-emacs24.sh &amp;&amp; deploy-emacs24.sh
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-3-2" class="outline-4">
+<h4 id="sec-2-3-2">Start emacs</h4>
+<div class="outline-text-4" id="text-2-3-2">
+<div class="org-src-container">
+
+<pre class="src src-sh">emacs
+</pre>
+</div>
+<p>
+This will automatically search and install the asked packages (cf. next chapter for some more details).
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4">Some more details</h3>
+<div class="outline-text-3" id="text-2-4">
+</div><div id="outline-container-sec-2-4-1" class="outline-4">
+<h4 id="sec-2-4-1">deploy</h4>
+<div class="outline-text-4" id="text-2-4-1">
+</div><div id="outline-container-sec-2-4-2" class="outline-4">
+<h4 id="sec-2-4-2">deploy-emacs24.sh</h4>
+</div>
+<div id="outline-container-sec-2-4-3" class="outline-4">
+<h4 id="sec-2-4-3">Content</h4>
+<div class="outline-text-4" id="text-2-4-3">
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #8B8989; font-style: italic;">#</span><span style="color: #8B8989; font-style: italic;">!/usr/bin/</span><span style="color: #FBDE2D;">env</span><span style="color: #8B8989; font-style: italic;"> bash</span>
+
+<span style="color: #D8FA3C;">WDIR</span>=$(dirname $(readlink -f $<span style="color: #D8FA3C;">0</span>))
+
+$<span style="color: #D8FA3C;">WDIR</span>/add-apt-repository.sh ppa:cassou/emacs
+
+$<span style="color: #D8FA3C;">WDIR</span>/install.sh emacs-snapshot-el emacs-snapshot-gtk emacs-snapshot emacs24-el
+
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">check for updates</span>
+sudo aptitude safe-upgrade -y
+
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">check version</span>
+emacs --version
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-4-4" class="outline-4">
+<h4 id="sec-2-4-4">Details</h4>
+<div class="outline-text-4" id="text-2-4-4">
+</div><div id="outline-container-sec-2-4-4-1" class="outline-5">
+<h5 id="sec-2-4-4-1">Setup the script</h5>
+</div>
+<div id="outline-container-sec-2-4-4-2" class="outline-5">
+<h5 id="sec-2-4-4-2">Add the repository <b>ppa:cassou/emacs</b></h5>
+</div>
+<div id="outline-container-sec-2-4-4-3" class="outline-5">
+<h5 id="sec-2-4-4-3">Install emacs 24</h5>
+</div>
+<div id="outline-container-sec-2-4-4-4" class="outline-5">
+<h5 id="sec-2-4-4-4">Check that the version is ok</h5>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-4-5" class="outline-4">
+<h4 id="sec-2-4-5">Setup</h4>
+<div class="outline-text-4" id="text-2-4-5">
+<p>
+Launch the installation process of a default setup that comes from the <a href="https://github.com/overtone/emacs-live">emacs-live</a> page:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">bash &lt;(curl -fksSL https://raw.github.com/overtone/emacs-live/master/installer/i<span style="color: #dc8cc3; background-color: #383838;">nstall-emacs-live.sh)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5">Sources:</h3>
+<div class="outline-text-3" id="text-2-5">
+</div><div id="outline-container-sec-2-5-1" class="outline-4">
+<h4 id="sec-2-5-1"><a href="https://github.com/ardumont/sh/blob/master/setup-emacs24.sh">setup-emacs24.sh</a></h4>
+</div>
+</div>
+</div>

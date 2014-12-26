@@ -1,0 +1,210 @@
+---
+layout: post
+title: Euler 26 - recurring cycles
+date: 2013-05-20
+categories:
+- clojure
+- functional-programming
+- recurring-cycles
+- euler-project
+author:
+excerpt: Counting the greatest recurring cycles inside a fraction - euler 26.
+---
+<p>
+Another euler problem about counting the greatest recurring cycle inside a fraction.
+</p>
+
+<blockquote>
+<p>
+Problem 26 - <a href="http://projecteuler.net/problem=26">http://projecteuler.net/problem=26</a>
+A unit fraction contains 1 in the numerator. The decimal representation of the unit fractions with denominators 2 to 10 are given:
+    1/2  =         0.5
+    1/3  =         0.(3)
+    1/4  =         0.25
+    1/5  =         0.2
+    1/6  =         0.1(6)
+    1/7  =         0.(142857)
+    1/8  =         0.125
+    1/9  =         0.(1)
+    1/10 =         0.1
+Where 0.1(6) means 0.166666&#x2026;, and has a 1-digit recurring cycle. It can be seen that 1/7 has a 6-digit recurring cycle.
+Find the value of d &lt; 1000 for which 1/d contains the longest recurring cycle in its decimal fraction part.
+</p>
+</blockquote>
+
+<p>
+As usual, we will add facts just below the functions to document the function.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">take-while and 1</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+We need to be able to capture elements that satisfies the first element plus the first element which falsifies the predicate.
+So for this, we will use the standard take-while and add the next element. It's a take-while and 1.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">defn</span> <span style="color: #ff1493;">tw</span>
+  <span style="color: #61CE3C;">"'take-while pred coll' with the first element that wrong the predicate pred."</span>
+  <span style="color: #006400;">[</span>pred coll<span style="color: #006400;">]</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D;">let</span> <span style="color: #ff1493;">[</span><span style="color: #ffff00;">[</span>h t<span style="color: #ffff00;">]</span> <span style="color: #ffff00;">(</span>split-with pred coll<span style="color: #ffff00;">)</span><span style="color: #ff1493;">]</span>
+    <span style="color: #ff1493;">(</span>concat h <span style="color: #ffff00;">[</span><span style="color: #00ff00;">(</span>first t<span style="color: #00ff00;">)</span><span style="color: #ffff00;">]</span><span style="color: #ff1493;">)</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #D8FA3C;">m</span>/fact
+  <span style="color: #006400;">(</span>tw even? <span style="color: #ff1493;">[</span>0 2 4 6 8 9 10 11 12<span style="color: #ff1493;">]</span><span style="color: #006400;">)</span> =&gt; <span style="color: #006400;">[</span>0 2 4 6 8 9<span style="color: #006400;">]</span>
+  <span style="color: #006400;">(</span>tw even? <span style="color: #ff1493;">[</span>1 2 3 4<span style="color: #ff1493;">]</span><span style="color: #006400;">)</span>              =&gt; <span style="color: #006400;">[</span>1<span style="color: #006400;">]</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">division</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+We compute the division as we learnt it in elementary school.
+We'll use the iterate function to benefit from lazyness.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">defn</span> <span style="color: #ff1493;">division</span>
+  <span style="color: #61CE3C;">"Compute the division the elementary school way :D (D is denominator, N numera</span><span style="color: #dc8cc3; background-color: #383838;">tor, R remains, Q quotient)."</span>
+  <span style="color: #006400;">[</span><span style="color: #4c83ff;">N</span> <span style="color: #4c83ff;">D</span><span style="color: #006400;">]</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D;">-&gt;&gt;</span> <span style="color: #ff1493;">{</span><span style="color: #4c83ff;">:c?</span> <span style="color: #4c83ff;">true</span> <span style="color: #4c83ff;">:n</span> <span style="color: #4c83ff;">N</span><span style="color: #ff1493;">}</span>
+       <span style="color: #ff1493;">(</span>iterate
+        <span style="color: #ffff00;">(</span><span style="color: #FBDE2D;">fn</span> <span style="color: #00ff00;">[</span><span style="color: #add8e6;">{</span><span style="color: #4c83ff;">:keys</span> <span style="color: #ffa500;">[</span>n<span style="color: #ffa500;">]</span><span style="color: #add8e6;">}</span><span style="color: #00ff00;">]</span>
+          <span style="color: #00ff00;">(</span><span style="color: #FBDE2D;">let</span> <span style="color: #add8e6;">[</span><span style="color: #4c83ff;">R</span> <span style="color: #ffa500;">(</span>rem n <span style="color: #4c83ff;">D</span><span style="color: #ffa500;">)</span>
+                <span style="color: #4c83ff;">Q</span> <span style="color: #ffa500;">(</span>quot n <span style="color: #4c83ff;">D</span><span style="color: #ffa500;">)</span><span style="color: #add8e6;">]</span>
+            <span style="color: #add8e6;">(</span><span style="color: #FBDE2D;">cond</span> <span style="color: #ffa500;">(</span><span style="color: #FBDE2D;">or</span> <span style="color: #6a5acd;">(</span>= 0 <span style="color: #4c83ff;">R</span><span style="color: #6a5acd;">)</span> <span style="color: #6a5acd;">(</span>= <span style="color: #4c83ff;">R</span> <span style="color: #4c83ff;">D</span><span style="color: #6a5acd;">)</span><span style="color: #ffa500;">)</span> <span style="color: #ffa500;">{</span><span style="color: #4c83ff;">:c?</span> <span style="color: #4c83ff;">false</span> <span style="color: #4c83ff;">:n</span> 0        <span style="color: #4c83ff;">:q</span> <span style="color: #4c83ff;">Q</span><span style="color: #ffa500;">}</span>
+                  <span style="color: #ffa500;">(</span>&lt; <span style="color: #4c83ff;">R</span> <span style="color: #4c83ff;">D</span><span style="color: #ffa500;">)</span>              <span style="color: #ffa500;">{</span><span style="color: #4c83ff;">:c?</span> <span style="color: #4c83ff;">true</span>  <span style="color: #4c83ff;">:n</span> <span style="color: #6a5acd;">(</span>* 10 <span style="color: #4c83ff;">R</span><span style="color: #6a5acd;">)</span> <span style="color: #4c83ff;">:q</span> <span style="color: #4c83ff;">Q</span><span style="color: #ffa500;">}</span>
+                  <span style="color: #4c83ff;">:else</span>                <span style="color: #ffa500;">{</span><span style="color: #4c83ff;">:c?</span> <span style="color: #4c83ff;">true</span>  <span style="color: #4c83ff;">:n</span> <span style="color: #4c83ff;">R</span>        <span style="color: #4c83ff;">:q</span> <span style="color: #4c83ff;">Q</span><span style="color: #ffa500;">}</span><span style="color: #add8e6;">)</span><span style="color: #00ff00;">)</span><span style="color: #ffff00;">)</span><span style="color: #ff1493;">)</span>
+       <span style="color: #ff1493;">(</span>drop 1<span style="color: #ff1493;">)</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #D8FA3C;">m</span>/fact <span style="color: #4c83ff;">:now-we-have-a-way-to-divide-infinitely</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D;">-&gt;&gt;</span> <span style="color: #ff1493;">(</span>division 1 8<span style="color: #ff1493;">)</span>
+       <span style="color: #ff1493;">(</span>tw <span style="color: #4c83ff;">:c?</span><span style="color: #ff1493;">)</span>
+       <span style="color: #ff1493;">(</span>map <span style="color: #4c83ff;">:q</span><span style="color: #ff1493;">)</span><span style="color: #006400;">)</span> =&gt; <span style="color: #006400;">[</span>0 1 2 5<span style="color: #006400;">]</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D;">-&gt;&gt;</span> <span style="color: #ff1493;">(</span>division 1 20<span style="color: #ff1493;">)</span>
+       <span style="color: #ff1493;">(</span>tw <span style="color: #4c83ff;">:c?</span><span style="color: #ff1493;">)</span>
+       <span style="color: #ff1493;">(</span>map <span style="color: #4c83ff;">:q</span><span style="color: #ff1493;">)</span><span style="color: #006400;">)</span> =&gt; <span style="color: #006400;">[</span>0 0 5<span style="color: #006400;">]</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D;">-&gt;&gt;</span> <span style="color: #ff1493;">(</span>division 1 7<span style="color: #ff1493;">)</span>
+       <span style="color: #ff1493;">(</span>take 20<span style="color: #ff1493;">)</span>
+       <span style="color: #ff1493;">(</span>map <span style="color: #4c83ff;">:q</span><span style="color: #ff1493;">)</span><span style="color: #006400;">)</span> =&gt; <span style="color: #006400;">[</span>0 1 4 2 8 5 7 1 4 2 8 5 7 1 4 2 8 5 7 1<span style="color: #006400;">]</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D;">-&gt;&gt;</span> <span style="color: #ff1493;">(</span>division 1 7<span style="color: #ff1493;">)</span>
+       <span style="color: #ff1493;">(</span>take 20<span style="color: #ff1493;">)</span>
+       <span style="color: #ff1493;">(</span>map <span style="color: #4c83ff;">:n</span><span style="color: #ff1493;">)</span><span style="color: #006400;">)</span> =&gt; <span style="color: #006400;">[</span>10 30 20 60 40 50 10 30 20 60 40 50 10 30 20 60 40 50 10 30<span style="color: #006400; background-color: #383838;">]</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D;">-&gt;&gt;</span> <span style="color: #ff1493;">(</span>division 1 13<span style="color: #ff1493;">)</span>
+       <span style="color: #ff1493;">(</span>take 20<span style="color: #ff1493;">)</span>
+       <span style="color: #ff1493;">(</span>map <span style="color: #4c83ff;">:q</span><span style="color: #ff1493;">)</span><span style="color: #006400;">)</span> =&gt; <span style="color: #006400;">[</span>0 0 7 6 9 2 3 0 7 6 9 2 3 0 7 6 9 2 3 0<span style="color: #006400;">]</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">recurring-cycle-count</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Now I want to be able to count the recurring cycles inside a sequence.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">defn</span> <span style="color: #ff1493;">recurring-cycle-count</span>
+  <span style="color: #61CE3C;">"Compute the size of a recurring cycle in a sequence."</span>
+  <span style="color: #006400;">[</span>s<span style="color: #006400;">]</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D;">-&gt;&gt;</span> <span style="color: #ff1493;">{</span><span style="color: #4c83ff;">:v</span> s <span style="color: #4c83ff;">:m</span> <span style="color: #ffff00;">{}</span> <span style="color: #4c83ff;">:i</span> 0<span style="color: #ff1493;">}</span>
+       <span style="color: #ff1493;">(</span>iterate
+        <span style="color: #ffff00;">(</span><span style="color: #FBDE2D;">fn</span> <span style="color: #00ff00;">[</span><span style="color: #add8e6;">{</span><span style="color: #4c83ff;">:keys</span> <span style="color: #ffa500;">[</span>v m i<span style="color: #ffa500;">]</span> <span style="color: #4c83ff;">:as</span> cp<span style="color: #add8e6;">}</span><span style="color: #00ff00;">]</span>
+          <span style="color: #00ff00;">(</span><span style="color: #FBDE2D;">let</span> <span style="color: #add8e6;">[</span><span style="color: #ffa500;">[</span>h &amp; t<span style="color: #ffa500;">]</span> v
+                p       <span style="color: #ffa500;">(</span>m h<span style="color: #ffa500;">)</span><span style="color: #add8e6;">]</span>
+            <span style="color: #add8e6;">(</span><span style="color: #FBDE2D;">if</span> p
+              <span style="color: #ffa500;">(</span>assoc cp <span style="color: #4c83ff;">:r</span> <span style="color: #6a5acd;">(</span>- i p<span style="color: #6a5acd;">)</span><span style="color: #ffa500;">)</span>
+              <span style="color: #ffa500;">{</span><span style="color: #4c83ff;">:v</span> t <span style="color: #4c83ff;">:m</span> <span style="color: #6a5acd;">(</span>assoc m h i<span style="color: #6a5acd;">)</span> <span style="color: #4c83ff;">:i</span> <span style="color: #6a5acd;">(</span>+ 1 i<span style="color: #6a5acd;">)</span><span style="color: #ffa500;">}</span><span style="color: #add8e6;">)</span><span style="color: #00ff00;">)</span><span style="color: #ffff00;">)</span><span style="color: #ff1493;">)</span>
+       <span style="color: #ff1493;">(</span>drop-while #<span style="color: #ffff00;">(</span>nil? <span style="color: #00ff00;">(</span><span style="color: #4c83ff;">:r</span> <span style="color: #D8FA3C;">%</span><span style="color: #00ff00;">)</span><span style="color: #ffff00;">)</span><span style="color: #ff1493;">)</span>
+       first
+       <span style="color: #4c83ff;">:r</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #D8FA3C;">m</span>/fact
+  <span style="color: #006400;">(</span>recurring-cycle-count <span style="color: #ff1493;">[</span>10 30 20 60 40 50 10 30 20 60 40 50 10 30 20 60 40 50 <span style="color: #dc8cc3; background-color: #383838;">10 30</span><span style="color: #ff1493; background-color: #383838;">]</span><span style="color: #006400; background-color: #383838;">)</span><span style="color: #dc8cc3; background-color: #383838;"> =&gt; 6</span>
+  <span style="color: #006400;">(</span>recurring-cycle-count <span style="color: #ff1493;">[</span>0 1 4 2 8 5 7 1 4 2 8 5 7 1 4 2 8 5 7 1<span style="color: #ff1493;">]</span><span style="color: #006400;">)</span>             <span style="color: #dc8cc3; background-color: #383838;">        =&gt; 6</span>
+  <span style="color: #006400;">(</span>recurring-cycle-count <span style="color: #ff1493;">[</span>0 1 2 3 4 1 2 3 4<span style="color: #ff1493;">]</span><span style="color: #006400;">)</span>                                   <span style="color: #dc8cc3; background-color: #383838;">        =&gt; 4</span>
+  <span style="color: #006400;">(</span>recurring-cycle-count <span style="color: #ff1493;">[</span>0 1 2 5 2 5 2 5<span style="color: #ff1493;">]</span><span style="color: #006400;">)</span>                                     <span style="color: #dc8cc3; background-color: #383838;">        =&gt; 2</span><span style="color: #8b0000; background-color: #383838;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">recurring-cycle</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Now that We have a way to infinitely divide a number by another and a function to compute the recurring-cycle count, we can compute what we want and ensure it's ok according to the problem's facts.
+</p>
+
+<p>
+For this, we can create a function which will divide the number by 1, then retrieve the sequence of rest from that division and compute the recurring cycle count from this sequence.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">def</span> <span style="color: #D8FA3C;">recurring-cycle</span> ^<span style="color: #006400;">{</span><span style="color: #4c83ff;">:doc</span> <span style="color: #61CE3C;">"Compute the recurring cycle from a division by 1"</span><span style="color: #006400;">}</span>
+  <span style="color: #006400;">(</span>comp recurring-cycle-count
+        <span style="color: #ff1493;">(</span>partial map <span style="color: #4c83ff;">:n</span><span style="color: #ff1493;">)</span>
+        <span style="color: #ff1493;">(</span>partial division 1<span style="color: #ff1493;">)</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #D8FA3C;">m</span>/tabular
+ <span style="color: #006400;">(</span><span style="color: #D8FA3C;">m</span>/fact
+   <span style="color: #ff1493;">(</span>recurring-cycle ?n<span style="color: #ff1493;">)</span> =&gt; ?r<span style="color: #006400;">)</span>
+    ?n ?r
+    2  1
+    3  1
+    4  1
+    5  1
+    6  1
+    7  6
+    8  1
+    9  1
+    10 1
+    13 6<span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Result</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+So, from 0 to 1000, we compute the recurring cycle count for each number then determine the max.
+The number 983 is the number with the longest recurring-cycle 982.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">defn</span> <span style="color: #ff1493;">max-recurring-cycle</span>
+  <span style="color: #61CE3C;">"Given a limit l, return the couple [longest-recurring-cycle number] from 1 to</span><span style="color: #dc8cc3; background-color: #383838;"> (l-1), which corresponds to the number for which 1/number has the longest recurring cycle."</span>
+  <span style="color: #006400;">[</span>l<span style="color: #006400;">]</span>
+  <span style="color: #006400;">(</span><span style="color: #FBDE2D;">-&gt;&gt;</span> <span style="color: #ff1493;">(</span>range 1 l<span style="color: #ff1493;">)</span>
+       <span style="color: #ff1493;">(</span>map <span style="color: #ffff00;">(</span>juxt recurring-cycle identity<span style="color: #ffff00;">)</span><span style="color: #ff1493;">)</span>
+       <span style="color: #ff1493;">(</span>into <span style="color: #ffff00;">(</span>sorted-map<span style="color: #ffff00;">)</span><span style="color: #ff1493;">)</span>
+       last<span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #D8FA3C;">m</span>/fact
+  <span style="color: #006400;">(</span>max-recurring-cycle 1000<span style="color: #006400;">)</span> =&gt; <span style="color: #006400;">[</span>982 983<span style="color: #006400;">]</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+
+<p>
+Some small check on time:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #D8FA3C;">euler-lab.core26</span>&gt; <span style="color: #8b0000;">(</span>time <span style="color: #006400;">(</span>max-recurring-cycle 1000<span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+<span style="color: #61CE3C;">"Elapsed time: 237.337448 msecs"</span>
+<span style="color: #8b0000;">[</span>982 983<span style="color: #8b0000;">]</span>
+</pre>
+</div>
+</div>
+</div>

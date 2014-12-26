@@ -1,0 +1,234 @@
+---
+layout: post
+title: Polipo setup
+date: 2013-01-12
+categories:
+- proxy
+- tools
+author: Antoine R. Dumont
+excerpt: Possible setup for polipo proxy
+---
+<p>
+I have got some speed troubles with my network from some time now.
+So here is one solution my team and I think of to overcome it.
+</p>
+
+<p>
+We first created a <a href="http://vagrantup.com/">vagrant machine</a> with <a href="http://www.pps.univ-paris-diderot.fr/~jch/software/polipo/polipo.html">polipo</a> inside.
+Now we moved on to a central machine to avoid the centralization of one person.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Install</h2>
+<div class="outline-text-2" id="text-1">
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo aptitude install polipo
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Make it a service</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo aptitude install chkconfig
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo chkconfig polipo on
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Setup</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+First, we will install the server part, then the client.
+</p>
+</div>
+
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">Server</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+When installing via ubuntu, the default setup is admittedly good.
+After all, so they say if we're confident with the first lines of the <code>/etc/polipo/config</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">Sample configuration file for Polipo. -*-sh-*-</span>
+
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">You should not need to edit this configuration file; all configuration</span>
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">variables have reasonable defaults.</span>
+</pre>
+</div>
+
+<p>
+I'm confident with those default but I need to make some modifications regarding who is gonna use our proxy.
+</p>
+</div>
+
+<div id="outline-container-sec-3-1-1" class="outline-4">
+<h4 id="sec-3-1-1">Open the proxy</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+We permit remote connections to the proxy.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #D8FA3C;">proxyAddress</span>=0.0.0.0
+<span style="color: #8B8989; font-style: italic;">#</span><span style="color: #8B8989; font-style: italic;">allowedClients = 127.0.0.1, 192.168.0.0/24, 192.168.33.0/24</span>
+</pre>
+</div>
+
+<p>
+<b>Note</b>
+No access restriction regarding IP is done yet because I shamefully admit that I did not succeed yet.
+</p>
+
+<p>
+(It's the second line where you can detail the ip or the range of ips you authorize to use the proxy)
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-1-2" class="outline-4">
+<h4 id="sec-3-1-2">Adding authentication</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<p>
+I want machine to authenticate in the proxy to use it.
+For this, add the <code>authCredentials</code> variable.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #D8FA3C;">authCredentials</span>=some-user:some-pass
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-1-3" class="outline-4">
+<h4 id="sec-3-1-3">Restart</h4>
+<div class="outline-text-4" id="text-3-1-3">
+<p>
+At the end of the setup, restart the service.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo service polipo restart
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2">Client</h3>
+<div class="outline-text-3" id="text-3-2">
+</div><div id="outline-container-sec-3-2-1" class="outline-4">
+<h4 id="sec-3-2-1">Setup</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+Personally, I use the <code>/etc/environment</code> file.
+</p>
+
+<p>
+My personal setup:
+</p>
+<ul class="org-ul">
+<li>proxy is on the <code>192.168.33.2</code> machine
+</li>
+<li>proxy listens on port <code>8123</code>.
+</li>
+<li>credentials: <code>some-user:some-pass</code>.
+</li>
+</ul>
+
+<p>
+Resulting to this, you can add the equivalent lines to your <code>/etc/environment</code>:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #FF6400;">export</span> <span style="color: #D8FA3C;">http_proxy</span>=<span style="color: #61CE3C;">"http://some-user:some-pass@192.168.33.2:8123"</span>
+<span style="color: #FF6400;">export</span> <span style="color: #D8FA3C;">https_proxy</span>=<span style="color: #61CE3C;">"http://some-user:some-pass@192.168.33.2:8123"</span>
+<span style="color: #FF6400;">export</span> <span style="color: #D8FA3C;">ftp_proxy</span>=<span style="color: #61CE3C;">"http://some-user:some-pass@192.168.33.2:8123"</span>
+<span style="color: #FF6400;">export</span> <span style="color: #D8FA3C;">no_proxy</span>=<span style="color: #61CE3C;">"localhost,192.168.33.2,localaddress,.localdomain.com"</span>
+<span style="color: #FF6400;">export</span> <span style="color: #D8FA3C;">HTTP_PROXY</span>=<span style="color: #61CE3C;">"http://some-user:some-pass@192.168.33.2:8123"</span>
+<span style="color: #FF6400;">export</span> <span style="color: #D8FA3C;">HTTPS_PROXY</span>=<span style="color: #61CE3C;">"http://some-user:some-pass@192.168.33.2:8123"</span>
+<span style="color: #FF6400;">export</span> <span style="color: #D8FA3C;">FTP_PROXY</span>=<span style="color: #61CE3C;">"http://some-user:some-pass@192.168.33.2:8123"</span>
+</pre>
+</div>
+
+<p>
+Then reload your environment.
+You may need to logout and login again.
+</p>
+
+<p>
+<b>Note</b>
+</p>
+
+<p>
+As I use stumpwm, I personally only need to reload my stumpwm setup file (<b>C-t ;</b> then <b>loadrc</b>, or just as my settings goes, <b>C-t L</b>).
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2-2" class="outline-4">
+<h4 id="sec-3-2-2">Check</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<p>
+Load a terminal and execute the command <code>env | grep -i proxy</code>, you should see something along those lines:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #D8FA3C;">http_proxy</span>=http://some-user:some-pass@192.168.33.2:8123
+<span style="color: #D8FA3C;">ftp_proxy</span>=http://some-user:some-pass@192.168.33.2:8123
+<span style="color: #D8FA3C;">FTP_PROXY</span>=http://some-user:some-pass@192.168.33.2:8123
+<span style="color: #D8FA3C;">HTTPS_PROXY</span>=http://some-user:some-pass@192.168.33.2:8123
+<span style="color: #D8FA3C;">https_proxy</span>=http://some-user:some-pass@192.168.33.2:8123
+<span style="color: #D8FA3C;">no_proxy</span>=localhost,192.168.33.2,localaddress,.localdomain.com
+<span style="color: #D8FA3C;">HTTP_PROXY</span>=http://some-user:some-pass@192.168.33.2:8123
+</pre>
+</div>
+
+<p>
+Then requesting to wget google, you should see something along those lines too:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0,09,) 17:01:11 ~/repo/perso/vms/vagrant-http-proxy $ wget http://g<span style="color: #dc8cc3; background-color: #383838;">oogle.fr</span>
+--2012-12-26 17:01:21--  http://google.fr/
+Connecting to 192.168.33.2:8123... connected.
+Proxy request sent, awaiting response... 301 Moved Permanently
+Location: http://www.google.fr/ [following]
+--2012-12-26 17:01:21--  http://www.google.fr/
+Reusing existing connection to 192.168.33.2:8123.
+Proxy request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: <span style="color: #fa8072;">`index.html'</span>
+
+<span style="color: #fa8072;">    [ &lt;=&gt;                                                                       </span><span style="color: #dc8cc3; background-color: #383838;">                                                    ] 13 918      --.-K/s   in 0,04s</span>
+
+<span style="color: #fa8072;">2012-12-26 17:01:21 (323 KB/s) - `</span>index.html<span style="color: #61CE3C;">' saved [13918]</span>
+</pre>
+</div>
+
+<p>
+We see that we connect to the proxy <code>192.168.33.2</code> before requesting google.
+Victory!
+</p>
+</div>
+</div>
+</div>
+</div>

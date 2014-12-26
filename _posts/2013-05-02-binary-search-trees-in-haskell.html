@@ -1,0 +1,512 @@
+---
+layout: post
+title: Binary Search Trees
+date: 2013-05-02
+categories:
+- haskell
+- sets
+- functional-programming
+author:
+excerpt: Having fun implementing some binary search trees functions
+---
+<blockquote>
+<p>
+Given the following binary Tree data type <code>data (Ord a) =&gt; Tree a = Empty | Node a (Tree a) (Tree a)</code>, provide an implementation of all functions defined in this file.
+</p>
+
+<p>
+To enforce the property of Binary Search Trees, functions that insert elements in the given Tree must be implemented in such a way that the invariant of a binary search tree always hold.
+</p>
+</blockquote>
+
+<p>
+<span class="underline">Note</span> To avoid repetition, we will add directly some haskell sample computed in the repl and add them directly after the function definition.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Binary Search Tree</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">Type</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+A tree is either an emtpy node or a node composed of a left tree and a right tree.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #FBDE2D;">data</span> (<span style="color: #D8FA3C;">Ord</span> a) <span style="color: #D8FA3C;">=&gt;</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">|</span> <span style="color: #D8FA3C;">Node</span> a (<span style="color: #D8FA3C;">Tree</span> a) (<span style="color: #D8FA3C;">Tree</span> a)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">Utility</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+A utility function to create easily a leaf.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">leaf</span> <span style="color: #D8FA3C;">::</span> a <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Tree</span> a
+<span style="color: #ff1493;">leaf</span> x <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Node</span> x <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">Sample trees</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Here are the 2 trees we will use to check the functions:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">t1</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Tree</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">t1</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Node</span> 4 (leaf 3) (<span style="color: #D8FA3C;">Node</span> 7 (leaf 5) (leaf 10))
+
+<span style="color: #ff1493;">t2</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Tree</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">t2</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Node</span> 20 (<span style="color: #D8FA3C;">Node</span> 15 (<span style="color: #D8FA3C;">Node</span> 8 (leaf 7) (leaf 11)) (leaf 18))
+             (<span style="color: #D8FA3C;">Node</span> 118
+                     (<span style="color: #D8FA3C;">Node</span> 35 (leaf 33) (<span style="color: #D8FA3C;">Node</span> 49 <span style="color: #D8FA3C;">Empty</span> (leaf 60)))
+                     (leaf 166))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">Size</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+The size of the tree is taken to be the number n of internal nodes
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">those</span> with two children)
+<span style="color: #ff1493;">size</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Num</span> a <span style="color: #D8FA3C;">=&gt;</span> <span style="color: #D8FA3C;">Tree</span> b <span style="color: #D8FA3C;">-&gt;</span> a
+<span style="color: #ff1493;">size</span> <span style="color: #D8FA3C;">Empty</span>        <span style="color: #D8FA3C;">=</span> 0
+<span style="color: #ff1493;">size</span> (<span style="color: #D8FA3C;">Node</span> <span style="color: #FBDE2D;">_</span> l r) <span style="color: #D8FA3C;">=</span> 1 <span style="color: #D8FA3C;">+</span> size l <span style="color: #D8FA3C;">+</span> size r
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> size t1
+5
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> size t2
+12
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5">toList</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+Returns an unsorted list of all values in the given Tree
+A supplementary constraint is that we need to be able to rebuild the tree from the list.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">toList</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">-&gt;</span> [a]
+<span style="color: #ff1493;">toList</span> <span style="color: #D8FA3C;">Empty</span>        <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">toList</span> (<span style="color: #D8FA3C;">Node</span> x l r) <span style="color: #D8FA3C;">=</span> [x] <span style="color: #D8FA3C;">++</span> (toList l) <span style="color: #D8FA3C;">++</span> (toList r)
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> toList t1
+[4,3,7,5,10]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> toList t2
+[20,15,8,7,11,18,118,35,33,49,60,166]
+</pre>
+</div>
+
+<p>
+To check that we can rebuild the tree from the previous output, we will create a function fromList that creates a Tree from a list:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">fromList</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Ord</span> a <span style="color: #D8FA3C;">=&gt;</span> [a] <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Tree</span> a
+<span style="color: #ff1493;">fromList</span> <span style="color: #D8FA3C;">[]</span>     <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Empty</span>
+<span style="color: #ff1493;">fromList</span> (x<span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Node</span> x (fromList lefts) (fromList rights)
+                  <span style="color: #FBDE2D;">where</span> p      <span style="color: #D8FA3C;">=</span> (<span style="color: #D8FA3C;">&lt;=</span> x)
+                        lefts  <span style="color: #D8FA3C;">=</span> takeWhile p xs
+                        rights <span style="color: #D8FA3C;">=</span> dropWhile p xs
+</pre>
+</div>
+
+<p>
+We can now check that we can rebuild the tree from the list computed from the toList function.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> (fromList <span style="color: #D8FA3C;">.</span> toList) t1 <span style="color: #D8FA3C;">==</span> t1
+<span style="color: #D8FA3C;">True</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> (fromList <span style="color: #D8FA3C;">.</span> toList) t1 <span style="color: #D8FA3C;">==</span> (leaf 1)
+<span style="color: #D8FA3C;">False</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> (fromList <span style="color: #D8FA3C;">.</span> toList) t2 <span style="color: #D8FA3C;">==</span> t2
+<span style="color: #D8FA3C;">True</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> (fromList <span style="color: #D8FA3C;">.</span> toList) t2 <span style="color: #D8FA3C;">==</span> (leaf 1)
+<span style="color: #D8FA3C;">False</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6">Sorted List</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+Returns a sorted list of all elements of the given Tree.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">toSortedList</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">-&gt;</span> [a]
+<span style="color: #ff1493;">toSortedList</span> <span style="color: #D8FA3C;">Empty</span>        <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">toSortedList</span> (<span style="color: #D8FA3C;">Node</span> x l r) <span style="color: #D8FA3C;">=</span> toSortedList l <span style="color: #D8FA3C;">++</span> [x] <span style="color: #D8FA3C;">++</span> toSortedList r
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> toSortedList t1
+[3,4,5,7,10]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> toSortedList t2
+[7,8,11,15,18,20,33,35,49,60,118,166]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-7" class="outline-3">
+<h3 id="sec-1-7">Smallest value</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+Returns the smallest value in the given Tree.
+Given the nature of the tree, as long as the tree has left branches, we continue the computation from the left branch.
+When no left branch remains, we have the smallest value.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">smallValue</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">-&gt;</span>  <span style="color: #D8FA3C;">Maybe</span> a
+<span style="color: #ff1493;">smallValue</span> <span style="color: #D8FA3C;">Empty</span>            <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Nothing</span>
+<span style="color: #ff1493;">smallValue</span> (<span style="color: #D8FA3C;">Node</span> x <span style="color: #D8FA3C;">Empty</span> <span style="color: #FBDE2D;">_</span>) <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Just</span> x
+<span style="color: #ff1493;">smallValue</span> (<span style="color: #D8FA3C;">Node</span> <span style="color: #FBDE2D;">_</span> l <span style="color: #FBDE2D;">_</span>)     <span style="color: #D8FA3C;">=</span> smallValue l
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> smallValue t1 <span style="color: #D8FA3C;">==</span> <span style="color: #D8FA3C;">Just</span> (head (toSortedList t1))
+<span style="color: #D8FA3C;">True</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> smallValue t2 <span style="color: #D8FA3C;">==</span> <span style="color: #D8FA3C;">Just</span> (head (toSortedList t2))
+<span style="color: #D8FA3C;">True</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> smallValue <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">==</span> <span style="color: #D8FA3C;">Nothing</span>
+<span style="color: #D8FA3C;">True</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-8" class="outline-3">
+<h3 id="sec-1-8">Greatest values</h3>
+<div class="outline-text-3" id="text-1-8">
+<p>
+Returns the greatest value in the given Tree.
+Symmetrically, we continue the computation from the right branch.
+When no right branch remains, we have the greatest value.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">Returns</span> the greatest value <span style="color: #FBDE2D;">in</span> the the given <span style="color: #D8FA3C;">Tree</span>
+<span style="color: #ff1493;">greatValue</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Maybe</span> a
+<span style="color: #ff1493;">greatValue</span> <span style="color: #D8FA3C;">Empty</span>            <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Nothing</span>
+<span style="color: #ff1493;">greatValue</span> (<span style="color: #D8FA3C;">Node</span> x <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">Empty</span>) <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Just</span> x
+<span style="color: #ff1493;">greatValue</span> (<span style="color: #D8FA3C;">Node</span> <span style="color: #FBDE2D;">_</span> <span style="color: #FBDE2D;">_</span> r)     <span style="color: #D8FA3C;">=</span> greatValue r
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> greatValue t1 <span style="color: #D8FA3C;">==</span> <span style="color: #D8FA3C;">Just</span> (last (toSortedList t1))
+<span style="color: #D8FA3C;">True</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> greatValue t2 <span style="color: #D8FA3C;">==</span> <span style="color: #D8FA3C;">Just</span> (last (toSortedList t2))
+<span style="color: #D8FA3C;">True</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> greatValue <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">==</span> <span style="color: #D8FA3C;">Nothing</span>
+<span style="color: #D8FA3C;">True</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-9" class="outline-3">
+<h3 id="sec-1-9">Mirror</h3>
+<div class="outline-text-3" id="text-1-9">
+<p>
+Returns the mirror of the given Tree.
+The mirror tree is a tree where all left and right branches are permuted and this recursively.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">mirror</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Tree</span> a
+<span style="color: #ff1493;">mirror</span> <span style="color: #D8FA3C;">Empty</span>        <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Empty</span>
+<span style="color: #ff1493;">mirror</span> (<span style="color: #D8FA3C;">Node</span> x l r) <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Node</span> x (mirror r) (mirror l)
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> t1
+<span style="color: #D8FA3C;">Node</span> 4 (<span style="color: #D8FA3C;">Node</span> 3 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 7 (<span style="color: #D8FA3C;">Node</span> 5 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 10 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>))
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> mirror t1
+<span style="color: #D8FA3C;">Node</span> 4 (<span style="color: #D8FA3C;">Node</span> 7 (<span style="color: #D8FA3C;">Node</span> 10 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 5 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>)) (<span style="color: #D8FA3C;">Node</span> 3 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>)
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> t2
+<span style="color: #D8FA3C;">Node</span> 20 (<span style="color: #D8FA3C;">Node</span> 15 (<span style="color: #D8FA3C;">Node</span> 8 (<span style="color: #D8FA3C;">Node</span> 7 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 11 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>)) (<span style="color: #D8FA3C;">Node</span> 18 <span style="color: #D8FA3C;">Em</span><span style="color: #dc8cc3; background-color: #383838;">pty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">)) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 118 (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 35 (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 33 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 49 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 60 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">))) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 166 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">))</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> mirror t2
+<span style="color: #D8FA3C;">Node</span> 20 (<span style="color: #D8FA3C;">Node</span> 118 (<span style="color: #D8FA3C;">Node</span> 166 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 35 (<span style="color: #D8FA3C;">Node</span> 49 (<span style="color: #D8FA3C;">Node</span> 60 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>)<span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 33 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">))) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 15 (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 18 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 8 (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 11 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 7 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">)))</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-10" class="outline-3">
+<h3 id="sec-1-10">Contains</h3>
+<div class="outline-text-3" id="text-1-10">
+<p>
+Returns whether the given Tree contains the given element or not.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">contains</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Ord</span> a <span style="color: #D8FA3C;">=&gt;</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Bool</span>
+<span style="color: #ff1493;">contains</span> <span style="color: #D8FA3C;">Empty</span> <span style="color: #FBDE2D;">_</span>        <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">False</span>
+<span style="color: #ff1493;">contains</span> (<span style="color: #D8FA3C;">Node</span> x l r) y <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D;">case</span> compare y x <span style="color: #FBDE2D;">of</span>
+  <span style="color: #D8FA3C;">EQ</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">True</span>
+  <span style="color: #D8FA3C;">LT</span> <span style="color: #D8FA3C;">-&gt;</span> contains l y
+  <span style="color: #D8FA3C;">GT</span> <span style="color: #D8FA3C;">-&gt;</span> contains r y
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> contains t1 3
+<span style="color: #D8FA3C;">True</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> contains t1 4
+<span style="color: #D8FA3C;">True</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> contains t1 7
+<span style="color: #D8FA3C;">True</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> contains t1 5
+<span style="color: #D8FA3C;">True</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> contains t1 10
+<span style="color: #D8FA3C;">True</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> contains t1 11
+<span style="color: #D8FA3C;">False</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> contains t1 1
+<span style="color: #D8FA3C;">False</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-11" class="outline-3">
+<h3 id="sec-1-11">Right son</h3>
+<div class="outline-text-3" id="text-1-11">
+<p>
+Returns the right son of the given Tree.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">rightSon</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Tree</span> a
+<span style="color: #ff1493;">rightSon</span> <span style="color: #D8FA3C;">Empty</span>        <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Empty</span>
+<span style="color: #ff1493;">rightSon</span> (<span style="color: #D8FA3C;">Node</span> <span style="color: #FBDE2D;">_</span> <span style="color: #FBDE2D;">_</span> r) <span style="color: #D8FA3C;">=</span> r
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> t1
+<span style="color: #D8FA3C;">Node</span> 4 (<span style="color: #D8FA3C;">Leaf</span> 3) (<span style="color: #D8FA3C;">Node</span> 7 (<span style="color: #D8FA3C;">Leaf</span> 5) (<span style="color: #D8FA3C;">Leaf</span> 10))
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> rightSon t1
+<span style="color: #D8FA3C;">Node</span> 7 (<span style="color: #D8FA3C;">Leaf</span> 5) (<span style="color: #D8FA3C;">Leaf</span> 10)
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> t2
+<span style="color: #D8FA3C;">Node</span> 20 (<span style="color: #D8FA3C;">Node</span> 15 (<span style="color: #D8FA3C;">Node</span> 8 (<span style="color: #D8FA3C;">Leaf</span> 7) (<span style="color: #D8FA3C;">Leaf</span> 11)) (<span style="color: #D8FA3C;">Leaf</span> 18)) (<span style="color: #D8FA3C;">Node</span> 118 (<span style="color: #D8FA3C;">Node</span> 35 (<span style="color: #D8FA3C;">Leaf</span><span style="color: #dc8cc3; background-color: #383838;"> 33) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 49 (</span><span style="color: #dc8cc3; background-color: #383838;">Leaf</span><span style="color: #dc8cc3; background-color: #383838;"> 48) (</span><span style="color: #dc8cc3; background-color: #383838;">Leaf</span><span style="color: #dc8cc3; background-color: #383838;"> 60))) (</span><span style="color: #dc8cc3; background-color: #383838;">Leaf</span><span style="color: #dc8cc3; background-color: #383838;"> 166))</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> rightSon t2
+<span style="color: #D8FA3C;">Node</span> 118 (<span style="color: #D8FA3C;">Node</span> 35 (<span style="color: #D8FA3C;">Leaf</span> 33) (<span style="color: #D8FA3C;">Node</span> 49 (<span style="color: #D8FA3C;">Leaf</span> 48) (<span style="color: #D8FA3C;">Leaf</span> 60))) (<span style="color: #D8FA3C;">Leaf</span> 166)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-12" class="outline-3">
+<h3 id="sec-1-12">Left son</h3>
+<div class="outline-text-3" id="text-1-12">
+<p>
+Returns the left son of the given Tree.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">leftSon</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Tree</span> a
+<span style="color: #ff1493;">leftSon</span> <span style="color: #D8FA3C;">Empty</span>        <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Empty</span>
+<span style="color: #ff1493;">leftSon</span> (<span style="color: #D8FA3C;">Node</span> <span style="color: #FBDE2D;">_</span> l <span style="color: #FBDE2D;">_</span>) <span style="color: #D8FA3C;">=</span> l
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-13" class="outline-3">
+<h3 id="sec-1-13">Insert</h3>
+<div class="outline-text-3" id="text-1-13">
+<p>
+Insert a new ordered value into the tree.
+Note that it preserves the Binary Search Tree properties.
+This insert implementation does not need to keep the balanced properties.
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">insert</span> <span style="color: #D8FA3C;">::</span> (<span style="color: #D8FA3C;">Ord</span> a) <span style="color: #D8FA3C;">=&gt;</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Tree</span> a
+<span style="color: #ff1493;">insert</span> <span style="color: #D8FA3C;">Empty</span> x <span style="color: #D8FA3C;">=</span> leaf x
+<span style="color: #ff1493;">insert</span> (<span style="color: #D8FA3C;">Node</span> x l r) y <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D;">case</span> compare y x <span style="color: #FBDE2D;">of</span>
+  <span style="color: #D8FA3C;">GT</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Node</span> x l (insert r y)
+  <span style="color: #FBDE2D;">_</span>  <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Node</span> x (insert l y) r
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> insert t1 10
+<span style="color: #D8FA3C;">Node</span> 4 (<span style="color: #D8FA3C;">Leaf</span> 3) (<span style="color: #D8FA3C;">Node</span> 7 (<span style="color: #D8FA3C;">Leaf</span> 5) (<span style="color: #D8FA3C;">Node</span> 10 (<span style="color: #D8FA3C;">Leaf</span> 10) <span style="color: #D8FA3C;">Empty</span>))
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> insert t2 200
+<span style="color: #D8FA3C;">Node</span> 20 (<span style="color: #D8FA3C;">Node</span> 15 (<span style="color: #D8FA3C;">Node</span> 8 (<span style="color: #D8FA3C;">Leaf</span> 7) (<span style="color: #D8FA3C;">Leaf</span> 11)) (<span style="color: #D8FA3C;">Leaf</span> 18)) (<span style="color: #D8FA3C;">Node</span> 118 (<span style="color: #D8FA3C;">Node</span> 35 (<span style="color: #D8FA3C;">Leaf</span><span style="color: #dc8cc3; background-color: #383838;"> 33) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 49 (</span><span style="color: #dc8cc3; background-color: #383838;">Leaf</span><span style="color: #dc8cc3; background-color: #383838;"> 48) (</span><span style="color: #dc8cc3; background-color: #383838;">Leaf</span><span style="color: #dc8cc3; background-color: #383838;"> 60))) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 200 (</span><span style="color: #dc8cc3; background-color: #383838;">Leaf</span><span style="color: #dc8cc3; background-color: #383838;"> 166) </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">))</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-14" class="outline-3">
+<h3 id="sec-1-14">isBSearchTree</h3>
+<div class="outline-text-3" id="text-1-14">
+<p>
+Is this tree a binary search one?
+</p>
+
+<p>
+For this, I created a utility function to retrieve the value of a node.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">value</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Maybe</span> a
+<span style="color: #ff1493;">value</span> <span style="color: #D8FA3C;">Empty</span>        <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Nothing</span>
+<span style="color: #ff1493;">value</span> (<span style="color: #D8FA3C;">Node</span> x <span style="color: #FBDE2D;">_</span> <span style="color: #FBDE2D;">_</span>) <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Just</span> x
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> value (<span style="color: #D8FA3C;">Node</span> 10 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>)
+<span style="color: #D8FA3C;">Just</span> 10
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> value (<span style="color: #D8FA3C;">Leaf</span> 10)
+<span style="color: #D8FA3C;">Just</span> 10
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> value <span style="color: #D8FA3C;">Empty</span>
+<span style="color: #D8FA3C;">Nothing</span>
+
+<span style="color: #ff1493;">isBSearchTree</span> <span style="color: #D8FA3C;">::</span> (<span style="color: #D8FA3C;">Ord</span> a) <span style="color: #D8FA3C;">=&gt;</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Bool</span>
+<span style="color: #ff1493;">isBSearchTree</span> <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
+<span style="color: #ff1493;">isBSearchTree</span> (<span style="color: #D8FA3C;">Node</span> x l r) <span style="color: #D8FA3C;">=</span>
+  <span style="color: #FBDE2D;">case</span> [value l, value r] <span style="color: #FBDE2D;">of</span>
+    [<span style="color: #D8FA3C;">Nothing</span>, <span style="color: #D8FA3C;">Nothing</span>] <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">True</span>
+    [<span style="color: #D8FA3C;">Nothing</span>, <span style="color: #D8FA3C;">Just</span> z]  <span style="color: #D8FA3C;">-&gt;</span> and [x <span style="color: #D8FA3C;">&lt;</span> z, isBSearchTree l, isBSearchTree r]
+    [<span style="color: #D8FA3C;">Just</span> y, <span style="color: #D8FA3C;">Nothing</span>]  <span style="color: #D8FA3C;">-&gt;</span> and [y <span style="color: #D8FA3C;">&lt;=</span> x, isBSearchTree l, isBSearchTree r]
+    [<span style="color: #D8FA3C;">Just</span> y, <span style="color: #D8FA3C;">Just</span> z]   <span style="color: #D8FA3C;">-&gt;</span> and [y <span style="color: #D8FA3C;">&lt;=</span> x, x <span style="color: #D8FA3C;">&lt;</span> z, isBSearchTree l, isBSearchTree r]
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> isBSearchTree (<span style="color: #D8FA3C;">Node</span> 10 t2 t1)
+<span style="color: #D8FA3C;">False</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> isBSearchTree t1
+<span style="color: #D8FA3C;">True</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> isBSearchTree t2
+<span style="color: #D8FA3C;">True</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> isBSearchTree (insert t2 1)
+<span style="color: #D8FA3C;">True</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> isBSearchTree (insert (insert t2 1) 100)
+<span style="color: #D8FA3C;">True</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-15" class="outline-3">
+<h3 id="sec-1-15">deleteMax</h3>
+<div class="outline-text-3" id="text-1-15">
+<p>
+Delete the maximal value from a tree.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">deleteMax</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">-&gt;</span> (<span style="color: #D8FA3C;">Maybe</span> a, <span style="color: #D8FA3C;">Tree</span> a)
+<span style="color: #ff1493;">deleteMax</span> <span style="color: #D8FA3C;">Empty</span>            <span style="color: #D8FA3C;">=</span> (<span style="color: #D8FA3C;">Nothing</span>, <span style="color: #D8FA3C;">Empty</span>)
+<span style="color: #ff1493;">deleteMax</span> (<span style="color: #D8FA3C;">Node</span> x <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">Empty</span>) <span style="color: #D8FA3C;">=</span> (<span style="color: #D8FA3C;">Just</span> x, <span style="color: #D8FA3C;">Empty</span>)
+<span style="color: #ff1493;">deleteMax</span> (<span style="color: #D8FA3C;">Node</span> x l r)     <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D;">let</span> (y, t) <span style="color: #D8FA3C;">=</span> deleteMax r <span style="color: #FBDE2D;">in</span>
+                             (y, (<span style="color: #D8FA3C;">Node</span> x l t))
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> t1
+<span style="color: #D8FA3C;">Node</span> 4 (<span style="color: #D8FA3C;">Node</span> 3 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 7 (<span style="color: #D8FA3C;">Node</span> 5 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 10 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>))
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> deleteMax t1
+(<span style="color: #D8FA3C;">Just</span> 10,<span style="color: #D8FA3C;">Node</span> 4 (<span style="color: #D8FA3C;">Node</span> 3 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 7 (<span style="color: #D8FA3C;">Node</span> 5 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) <span style="color: #D8FA3C;">Empty</span>))
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> t2
+<span style="color: #D8FA3C;">Node</span> 20 (<span style="color: #D8FA3C;">Node</span> 15 (<span style="color: #D8FA3C;">Node</span> 8 (<span style="color: #D8FA3C;">Node</span> 7 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 11 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>)) (<span style="color: #D8FA3C;">Node</span> 18 <span style="color: #D8FA3C;">Em</span><span style="color: #dc8cc3; background-color: #383838;">pty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">)) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 118 (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 35 (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 33 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 49 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 60 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">))) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 166 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">))</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> deleteMax t2
+(<span style="color: #D8FA3C;">Just</span> 166,<span style="color: #D8FA3C;">Node</span> 20 (<span style="color: #D8FA3C;">Node</span> 15 (<span style="color: #D8FA3C;">Node</span> 8 (<span style="color: #D8FA3C;">Node</span> 7 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 11 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>)) (<span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 18 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">)) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 118 (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 35 (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 33 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 49 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 60 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">))) </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">))</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-16" class="outline-3">
+<h3 id="sec-1-16">deleteMin</h3>
+<div class="outline-text-3" id="text-1-16">
+<p>
+Delete the minimal value from a tree.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">deleteMin</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">-&gt;</span> (<span style="color: #D8FA3C;">Maybe</span> a, <span style="color: #D8FA3C;">Tree</span> a)
+<span style="color: #ff1493;">deleteMin</span> <span style="color: #D8FA3C;">Empty</span>            <span style="color: #D8FA3C;">=</span> (<span style="color: #D8FA3C;">Nothing</span>, <span style="color: #D8FA3C;">Empty</span>)
+<span style="color: #ff1493;">deleteMin</span> (<span style="color: #D8FA3C;">Node</span> x <span style="color: #D8FA3C;">Empty</span> <span style="color: #FBDE2D;">_</span>) <span style="color: #D8FA3C;">=</span> (<span style="color: #D8FA3C;">Just</span> x, <span style="color: #D8FA3C;">Empty</span>)
+<span style="color: #ff1493;">deleteMin</span> (<span style="color: #D8FA3C;">Node</span> x l r)     <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D;">let</span> (y, t) <span style="color: #D8FA3C;">=</span> deleteMin l <span style="color: #FBDE2D;">in</span>
+                             (y, (<span style="color: #D8FA3C;">Node</span> x t r))
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> t1
+<span style="color: #D8FA3C;">Node</span> 4 (<span style="color: #D8FA3C;">Node</span> 3 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 7 (<span style="color: #D8FA3C;">Node</span> 5 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 10 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>))
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> deleteMin t1
+(<span style="color: #D8FA3C;">Just</span> 3,<span style="color: #D8FA3C;">Node</span> 4 <span style="color: #D8FA3C;">Empty</span> (<span style="color: #D8FA3C;">Node</span> 7 (<span style="color: #D8FA3C;">Node</span> 5 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 10 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>)))
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> t2
+<span style="color: #D8FA3C;">Node</span> 20 (<span style="color: #D8FA3C;">Node</span> 15 (<span style="color: #D8FA3C;">Node</span> 8 (<span style="color: #D8FA3C;">Node</span> 7 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 11 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>)) (<span style="color: #D8FA3C;">Node</span> 18 <span style="color: #D8FA3C;">Em</span><span style="color: #dc8cc3; background-color: #383838;">pty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">)) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 118 (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 35 (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 33 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 49 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 60 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">))) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 166 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">))</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> deleteMin t2
+(<span style="color: #D8FA3C;">Just</span> 7,<span style="color: #D8FA3C;">Node</span> 20 (<span style="color: #D8FA3C;">Node</span> 15 (<span style="color: #D8FA3C;">Node</span> 8 <span style="color: #D8FA3C;">Empty</span> (<span style="color: #D8FA3C;">Node</span> 11 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>)) (<span style="color: #D8FA3C;">Node</span> 18 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Emp</span><span style="color: #dc8cc3; background-color: #383838;">ty</span><span style="color: #dc8cc3; background-color: #383838;">)) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 118 (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 35 (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 33 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 49 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 60 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">))) (</span><span style="color: #dc8cc3; background-color: #383838;">Node</span><span style="color: #dc8cc3; background-color: #383838;"> 166 </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;"> </span><span style="color: #dc8cc3; background-color: #383838;">Empty</span><span style="color: #dc8cc3; background-color: #383838;">)))</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-17" class="outline-3">
+<h3 id="sec-1-17">Remove</h3>
+<div class="outline-text-3" id="text-1-17">
+<p>
+Given a tree and an entry, remove the node from the tree.
+This must only delete the node targeted and not all the branch from the node.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">remove</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Ord</span> a <span style="color: #D8FA3C;">=&gt;</span> <span style="color: #D8FA3C;">Tree</span> a <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Tree</span> a
+<span style="color: #ff1493;">remove</span> <span style="color: #D8FA3C;">Empty</span> <span style="color: #FBDE2D;">_</span>        <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Empty</span>
+<span style="color: #ff1493;">remove</span> (<span style="color: #D8FA3C;">Node</span> x l r) y <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D;">case</span> compare y x <span style="color: #FBDE2D;">of</span>
+  <span style="color: #D8FA3C;">LT</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Node</span> x (remove l y) r
+  <span style="color: #D8FA3C;">GT</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Node</span> x l (remove r y)
+  <span style="color: #D8FA3C;">EQ</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #FBDE2D;">case</span> deleteMax l <span style="color: #FBDE2D;">of</span>
+    (<span style="color: #D8FA3C;">Just</span> z, t) <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Node</span> z t r
+    (<span style="color: #D8FA3C;">Nothing</span>, <span style="color: #FBDE2D;">_</span>) <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #FBDE2D;">case</span> deleteMin r <span style="color: #FBDE2D;">of</span>
+      (<span style="color: #D8FA3C;">Just</span> w, s) <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Node</span> w l s
+      (<span style="color: #D8FA3C;">Nothing</span>, <span style="color: #FBDE2D;">_</span>) <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Empty</span>
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> t1
+<span style="color: #D8FA3C;">Node</span> 4 (<span style="color: #D8FA3C;">Node</span> 3 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 7 (<span style="color: #D8FA3C;">Node</span> 5 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 10 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>))
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> remove t1 4
+<span style="color: #D8FA3C;">Node</span> 3 <span style="color: #D8FA3C;">Empty</span> (<span style="color: #D8FA3C;">Node</span> 7 (<span style="color: #D8FA3C;">Node</span> 5 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 10 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>))
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> remove t1 10
+<span style="color: #D8FA3C;">Node</span> 4 (<span style="color: #D8FA3C;">Node</span> 3 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 7 (<span style="color: #D8FA3C;">Node</span> 5 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) <span style="color: #D8FA3C;">Empty</span>)
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">BinarySearchTree</span><span style="color: #D8FA3C;">&gt;</span> remove t1 7
+<span style="color: #D8FA3C;">Node</span> 4 (<span style="color: #D8FA3C;">Node</span> 3 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>) (<span style="color: #D8FA3C;">Node</span> 5 <span style="color: #D8FA3C;">Empty</span> (<span style="color: #D8FA3C;">Node</span> 10 <span style="color: #D8FA3C;">Empty</span> <span style="color: #D8FA3C;">Empty</span>))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Sources</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+<a href="https://github.com/ardumont/my-haskell-lab/blob/master/src/BinarySearchTree.hs">BinarySearchTree.hs</a>
+</p>
+</div>
+</div>

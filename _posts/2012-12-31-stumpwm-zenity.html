@@ -1,0 +1,321 @@
+---
+layout: post
+title: Stumpwm - Display result of bash commands using zenity
+date: 2012-12-31
+categories:
+- stumpwm
+- howto
+- tools
+author: Antoine R. Dumont
+excerpt: Display results of bash commands in stumpwm using zenity
+---
+<p>
+It has been <a href="http://adumont.fr/blog/howto-install-stumpwm-and-little-more/">some time now</a> since i talked about <a href="http://www.nongnu.org/stumpwm/">stumpwm</a>.
+</p>
+
+<p>
+I wanted to do an update since I added/modified/upgraded some stuff in my setup.
+</p>
+
+<p>
+But first of all, let me tell you something, <a href="http://www.nongnu.org/stumpwm/">stumpwm</a> is <b>really</b> a great tool.
+After using it for almost 1,5 year, I did not regret one moment, It's:
+</p>
+<ul class="org-ul">
+<li>like emacs but for managing your windows :D
+</li>
+<li>highly configurable
+</li>
+<li>lightweight (from a battery standpoint, it's kinda cool :D)
+</li>
+</ul>
+
+<p>
+In this post, I will show how I use zenity to display the result of bash commands I use often.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">pre-requisite</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+The package <b>zenity</b> is available in the ubuntu repository:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo aptitude install zenity
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Why?</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+I often need to see the content of some files or some setup in my environment:
+</p>
+<ul class="org-ul">
+<li><code>/etc/hosts</code>
+</li>
+<li><code>/etc/environment</code>
+</li>
+<li><code>/sbin/ifconfig</code>
+</li>
+<li><code>ssh-add -L</code>
+</li>
+<li>etc&#x2026;
+</li>
+</ul>
+
+<p>
+I already knew <a href="http://library.gnome.org/users/zenity/stable/">zenity</a> but did not use it a lot.
+</p>
+
+<p>
+In my case, <a href="http://library.gnome.org/users/zenity/stable/">zenity</a> permits to display stuff inside small pop-up window.
+I also wanted to be able to copy/paste from it.
+</p>
+
+<p>
+So it was time for some tinkering.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">How?</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+My snippet of code that permits to wrap calls to zenity:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">defun</span> <span style="color: #ff1493;">run-shl</span> <span style="color: #006400;">(</span><span style="color: #D8FA3C;">&amp;rest</span> cmd<span style="color: #006400;">)</span>
+  <span style="color: #61CE3C;">"A simpler command to run-shell-command with multiple params"</span>
+  <span style="color: #006400;">(</span>run-shell-command <span style="color: #ff1493;">(</span>apply #'concatenate 'string cmd<span style="color: #ff1493;">)</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">(defcommand name (args) (interactive-args) "doc-string" (body))</span>
+<span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #8B8989; font-style: italic;">wrapper around the zenity cli</span>
+<span style="color: #8b0000;">(</span>defcommand zenity <span style="color: #006400;">(</span>command<span style="color: #006400;">)</span> <span style="color: #006400;">()</span>
+   <span style="color: #61CE3C;">"Wrap a call to the cli and output the result into a zenity window"</span>
+   <span style="color: #006400;">(</span>run-shl <span style="color: #61CE3C;">"zenity --info --text \"$("</span> command <span style="color: #61CE3C;">")\""</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><b>run-shl</b>
+</li>
+</ul>
+<p>
+Function to help in reading the shell command we want to launch.
+</p>
+
+<ul class="org-ul">
+<li><b>zenity</b>
+</li>
+</ul>
+<p>
+Main function, wrap the call to the zenity shell command and tell it to display the result.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Example</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+With a good separation of concern, we can now call the command we want to display its result:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span style="color: #8b0000;">(</span>defcommand sbin-ifconfig <span style="color: #006400;">()</span> <span style="color: #006400;">()</span>
+  <span style="color: #61CE3C;">"/sbin/ifconfig"</span>
+  <span style="color: #006400;">(</span>zenity <span style="color: #61CE3C;">"/sbin/ifconfig"</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+
+<p>
+And binds the key, here <b>I</b> to it:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"I"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"sbin-ifconfig"</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Setup</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1">C-t K - Display the keys the user-agent holds</h3>
+<div class="outline-text-3" id="text-5-1">
+</div><div id="outline-container-sec-5-1-1" class="outline-4">
+<h4 id="sec-5-1-1">code</h4>
+<div class="outline-text-4" id="text-5-1-1">
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span style="color: #8b0000;">(</span>defcommand ssh-add-list <span style="color: #006400;">()</span> <span style="color: #006400;">()</span>
+  <span style="color: #61CE3C;">"run the ~/bin/ssh-add.sh script."</span>
+  <span style="color: #006400;">(</span>zenity <span style="color: #61CE3C;">"ssh-add -L"</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"K"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"ssh-add-list"</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5-1-2" class="outline-4">
+<h4 id="sec-5-1-2">Result</h4>
+<div class="outline-text-4" id="text-5-1-2">
+<p>
+I won't show anything here, just know that I display the result of the command <code>ssh-add -L</code>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-man">-L      Lists public key parameters of all identities currently represented by the agent.
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2">C-t E - Display the contents of the /etc/environment</h3>
+<div class="outline-text-3" id="text-5-2">
+</div><div id="outline-container-sec-5-2-1" class="outline-4">
+<h4 id="sec-5-2-1">code</h4>
+<div class="outline-text-4" id="text-5-2-1">
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span style="color: #8b0000;">(</span>defcommand cat-etc-environment <span style="color: #006400;">()</span> <span style="color: #006400;">()</span>
+  <span style="color: #61CE3C;">"Display the content of the file /etc/environment."</span>
+  <span style="color: #006400;">(</span>zenity <span style="color: #61CE3C;">"cat /etc/environment"</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"E"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"cat-etc-environment"</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-5-2-2" class="outline-4">
+<h4 id="sec-5-2-2">result</h4>
+<div class="outline-text-4" id="text-5-2-2">
+
+<div class="figure">
+<p><img src="./resources/stumpwm/cat-environment.png" alt="cat-environment.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5-3" class="outline-3">
+<h3 id="sec-5-3">C-t H - Display the contents of /etc/hosts</h3>
+<div class="outline-text-3" id="text-5-3">
+</div><div id="outline-container-sec-5-3-1" class="outline-4">
+<h4 id="sec-5-3-1">code</h4>
+<div class="outline-text-4" id="text-5-3-1">
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span style="color: #8b0000;">(</span>defcommand cat-etc-hosts <span style="color: #006400;">()</span> <span style="color: #006400;">()</span>
+  <span style="color: #61CE3C;">"cat /etc/hosts"</span>
+  <span style="color: #006400;">(</span>zenity <span style="color: #61CE3C;">"cat /etc/hosts"</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"H"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"cat-etc-hosts"</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5-3-2" class="outline-4">
+<h4 id="sec-5-3-2">result</h4>
+<div class="outline-text-4" id="text-5-3-2">
+
+<div class="figure">
+<p><img src="./resources/stumpwm/cat-etc-hosts.png" alt="cat-etc-hosts.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5-4" class="outline-3">
+<h3 id="sec-5-4">C-t I - Display the network properties</h3>
+<div class="outline-text-3" id="text-5-4">
+</div><div id="outline-container-sec-5-4-1" class="outline-4">
+<h4 id="sec-5-4-1">code</h4>
+<div class="outline-text-4" id="text-5-4-1">
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span style="color: #8b0000;">(</span>defcommand sbin-ifconfig <span style="color: #006400;">()</span> <span style="color: #006400;">()</span>
+  <span style="color: #61CE3C;">"/sbin/ifconfig"</span>
+  <span style="color: #006400;">(</span>zenity <span style="color: #61CE3C;">"/sbin/ifconfig"</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"I"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"sbin-ifconfig"</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5-4-2" class="outline-4">
+<h4 id="sec-5-4-2">result</h4>
+<div class="outline-text-4" id="text-5-4-2">
+
+<div class="figure">
+<p><img src="./resources/stumpwm/ifconfig.png" alt="ifconfig.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5-5" class="outline-3">
+<h3 id="sec-5-5">C-t B - Display the battery stat</h3>
+<div class="outline-text-3" id="text-5-5">
+</div><div id="outline-container-sec-5-5-1" class="outline-4">
+<h4 id="sec-5-5-1">code</h4>
+<div class="outline-text-4" id="text-5-5-1">
+<p>
+You have to install the package <b>acpi</b> on your machine first.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span style="color: #8b0000;">(</span>defcommand acpi-cmd <span style="color: #006400;">()</span> <span style="color: #006400;">()</span>
+  <span style="color: #61CE3C;">"acpi -b"</span>
+  <span style="color: #006400;">(</span>zenity <span style="color: #61CE3C;">"/usr/bin/acpi -b"</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">define-key</span> *root-map* <span style="color: #006400;">(</span>kbd <span style="color: #61CE3C;">"B"</span><span style="color: #006400;">)</span> <span style="color: #61CE3C;">"acpi-cmd"</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5-5-2" class="outline-4">
+<h4 id="sec-5-5-2">result</h4>
+<div class="outline-text-4" id="text-5-5-2">
+
+<div class="figure">
+<p><img src="./resources/stumpwm/acpi.png" alt="acpi.png" />
+</p>
+</div>
+
+<p>
+#+./resources/stumpwm/cat-environment.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-cat-environment.png" alt="wpid-cat-environment.png" />
+#+./resources/stumpwm/cat-etc-hosts.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-cat-etc-hosts.png" alt="wpid-cat-etc-hosts.png" />
+#+./resources/stumpwm/ifconfig.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-ifconfig.png" alt="wpid-ifconfig.png" />
+#+./resources/stumpwm/acpi.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-acpi.png" alt="wpid-acpi.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Global setup</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+<a href="https://github.com/ardumont/dot-files/blob/master/.stumpwmrc">.stumpwmrc</a>
+</p>
+</div>
+</div>

@@ -1,0 +1,349 @@
+---
+layout: post
+title: PIH - ch7 - Higher-order functions 2/3
+date: 2013-01-05
+categories:
+- haskell
+- exercises
+- functional-programming
+author: Antoine R. Dumont
+excerpt: Higher order functions, function composition, foldr, foldl exercises.
+---
+<p>
+For the first exercises, <a href="http://adumont.fr/blog/pih-ch7-higher-order-functions-12/">see this post</a>.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">curry/uncurry</h2>
+<div class="outline-text-2" id="text-1">
+<blockquote>
+<p>
+Without looking at the standard prelude, define the higher-order library function <b>curry</b> that converts a function on pairs into a curried function, and, conversely, the function <b>uncurry</b> that converts a curried function with two arguments into a function on pairs.
+</p>
+
+<p>
+<b>Hint:</b>
+First write down the types of the two functions.
+</p>
+</blockquote>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">curry</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+First the type:
+</p>
+
+<p>
+A function that takes a pair as parameter and output something is typed: <code>((a,b) -&gt; c)</code>
+A currified function that takes 2 parameters and output something is typed: <code>a -&gt; b -&gt; c</code>
+Thus the final type:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">curry</span> <span style="color: #D8FA3C;">::</span> ((a,b) <span style="color: #D8FA3C;">-&gt;</span> c) <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> b <span style="color: #D8FA3C;">-&gt;</span> c
+</pre>
+</div>
+
+<p>
+Now the definition:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">curry</span> <span style="color: #D8FA3C;">::</span> ((a,b) <span style="color: #D8FA3C;">-&gt;</span> c) <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> b <span style="color: #D8FA3C;">-&gt;</span> c
+<span style="color: #ff1493;">curry</span> f <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">\</span>x <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">\</span>y <span style="color: #D8FA3C;">-&gt;</span> f (x,y)
+</pre>
+</div>
+
+<p>
+Simpler
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">curry</span> <span style="color: #D8FA3C;">::</span> ((a,b) <span style="color: #D8FA3C;">-&gt;</span> c) <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> b <span style="color: #D8FA3C;">-&gt;</span> c
+<span style="color: #ff1493;">curry</span> f x y <span style="color: #D8FA3C;">=</span> f (x,y)
+</pre>
+</div>
+
+<p>
+Examples:
+</p>
+
+<p>
+We need a function that takes a pair as parameter:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">add</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Num</span> a <span style="color: #D8FA3C;">=&gt;</span> (a,a) <span style="color: #D8FA3C;">-&gt;</span> a
+<span style="color: #ff1493;">add</span> (x,y) <span style="color: #D8FA3C;">=</span> x <span style="color: #D8FA3C;">+</span> y
+</pre>
+</div>
+
+<p>
+Here is how is used the function <code>add</code>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> add (1,2)
+3
+</pre>
+</div>
+
+<p>
+Given that, a simple scenario to currify <code>add</code> is:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> (curry add) 1 2
+3
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> ((curry add) 1) 2
+3
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">uncurry</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Conversely, the uncurrified function's type:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">uncurry</span> <span style="color: #D8FA3C;">::</span> a <span style="color: #D8FA3C;">-&gt;</span> b <span style="color: #D8FA3C;">-&gt;</span> c <span style="color: #D8FA3C;">-&gt;</span> (a, b) <span style="color: #D8FA3C;">-&gt;</span> c
+</pre>
+</div>
+
+<p>
+Now the definition:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">uncurry</span> <span style="color: #D8FA3C;">::</span> (a <span style="color: #D8FA3C;">-&gt;</span> b <span style="color: #D8FA3C;">-&gt;</span> c) <span style="color: #D8FA3C;">-&gt;</span> (a, b) <span style="color: #D8FA3C;">-&gt;</span> c
+<span style="color: #ff1493;">uncurry</span> f <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">\</span> (x, y) <span style="color: #D8FA3C;">-&gt;</span> (f x y)
+</pre>
+</div>
+
+<p>
+Simpler
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">uncurry</span> <span style="color: #D8FA3C;">::</span> (a <span style="color: #D8FA3C;">-&gt;</span> b <span style="color: #D8FA3C;">-&gt;</span> c) <span style="color: #D8FA3C;">-&gt;</span> (a, b) <span style="color: #D8FA3C;">-&gt;</span> c
+<span style="color: #ff1493;">uncurry</span> f (x, y) <span style="color: #D8FA3C;">=</span> f x y
+</pre>
+</div>
+
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> add (1,2)
+3
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> (curry add) 1 2
+3
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> uncurry (curry add) (1,2)
+3
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">unfold</h2>
+<div class="outline-text-2" id="text-2">
+<blockquote>
+<p>
+A higher-order function <b>unfold</b> that encapsulates a simple pattern of recursion for producing a list can be defined as follows:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">unfold</span> p h t x <span style="color: #D8FA3C;">|</span> p x <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+               <span style="color: #D8FA3C;">|</span> otherwise <span style="color: #D8FA3C;">=</span> h x <span style="color: #D8FA3C;">:</span> unfold p h t (t x)
+</pre>
+</div>
+
+<p>
+That is, the function <code>unfold p h t</code> produces the empty list if the predicate <code>p</code> is true of the argument, and otherwise produces a non-empty list by applying the function <code>h</code> to give the head, and the function <code>t</code> to generate another argument that is recursively processed in the same way to produce the tail of the list.
+</p>
+
+<p>
+For example, the function <b>int2bin</b> can be rewritten more compactly using <b>unfold</b> as follows:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">int2bin</span> <span style="color: #D8FA3C;">=</span> unfold (<span style="color: #D8FA3C;">==</span> 0) (<span style="color: #D8FA3C;">`mod`</span> 2) (<span style="color: #D8FA3C;">`div`</span> 2)
+</pre>
+</div>
+
+<p>
+Redefine the functions <b>chop8</b>, <b>map f</b> and <b>iterate f</b> using unfold.
+</p>
+</blockquote>
+</div>
+
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">chop8</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+<i>Split a bits list into a list of 8-bits list.</i>
+</p>
+
+<p>
+Recall the definition of the chop8 function:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">chop8</span> <span style="color: #D8FA3C;">::</span> [<span style="color: #D8FA3C;">Bit</span>] <span style="color: #D8FA3C;">-&gt;</span> [[<span style="color: #D8FA3C;">Bit</span>]]
+<span style="color: #ff1493;">chop8</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">chop8</span> bits <span style="color: #D8FA3C;">=</span> take 8 bits <span style="color: #D8FA3C;">:</span> (chop8 (drop 8 bits))
+</pre>
+</div>
+
+<p>
+Here is the 3 functions needed:
+</p>
+<ul class="org-ul">
+<li>predicate: check if a list is empty, we can use the <code>null</code> function for that
+</li>
+<li>head: we take 8 bits
+</li>
+<li>tail: we drop 8 bits
+</li>
+</ul>
+
+<p>
+Using <code>unfold</code>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">chop8</span> <span style="color: #D8FA3C;">::</span> [<span style="color: #D8FA3C;">Bit</span>] <span style="color: #D8FA3C;">-&gt;</span> [[<span style="color: #D8FA3C;">Bit</span>]]
+<span style="color: #ff1493;">chop8</span> <span style="color: #D8FA3C;">=</span> unfold null (take 8) (drop 8)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">map f</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+<i>Map a function <code>f</code> to a list</i>
+</p>
+
+<p>
+Recall the recursive definition of <code>map</code>:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">map</span> <span style="color: #D8FA3C;">::</span> (a <span style="color: #D8FA3C;">-&gt;</span> b) <span style="color: #D8FA3C;">-&gt;</span> [a] <span style="color: #D8FA3C;">-&gt;</span> [b]
+<span style="color: #ff1493;">map</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">map</span> f (x<span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">=</span> f x<span style="color: #D8FA3C;">:</span>(map f xs)
+</pre>
+</div>
+
+<p>
+From this we deduce the 3 needed functions:
+</p>
+<ul class="org-ul">
+<li>predicate: check if a list is empty
+</li>
+<li>head: <code>f . head</code> (first extracting head, then applying <code>f</code> to it)
+</li>
+<li>tail: extracting the tail, <code>tail</code>.
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">map</span> <span style="color: #D8FA3C;">::</span> (a <span style="color: #D8FA3C;">-&gt;</span> b) <span style="color: #D8FA3C;">-&gt;</span> [a] <span style="color: #D8FA3C;">-&gt;</span> [b]
+<span style="color: #ff1493;">map</span> f <span style="color: #D8FA3C;">=</span> unfold null (f <span style="color: #D8FA3C;">.</span> head) tail
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> map (<span style="color: #D8FA3C;">+</span>1) [1,2,4]
+[2,3,5]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> map even [1,2,4]
+[<span style="color: #D8FA3C;">False</span>,<span style="color: #D8FA3C;">True</span>,<span style="color: #D8FA3C;">True</span>]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> map int2bin [1,2,4,8,16]
+[[1],[0,1],[0,0,1],[0,0,0,1],[0,0,0,0,1]]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">iterate f</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+<i>lazy and infinite iteration over f=</i>
+</p>
+
+<p>
+A recursive definition of <code>iterate</code> can be:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">iterate</span> <span style="color: #D8FA3C;">::</span> (a <span style="color: #D8FA3C;">-&gt;</span> a) <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> [a]
+<span style="color: #ff1493;">iterate</span> f x <span style="color: #D8FA3C;">=</span> x <span style="color: #D8FA3C;">:</span> iterate f (f x)
+</pre>
+</div>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> take 10 (iter (<span style="color: #D8FA3C;">+</span>1) 10)
+[10,11,12,13,14,15,16,17,18,19]
+</pre>
+</div>
+
+<p>
+Given this, here are the needed functions:
+</p>
+<ul class="org-ul">
+<li>predicate: we want an infinite function, so a function that takes a parameter and returns False, <code>(\ _ -&gt; False)</code> is a good default
+</li>
+<li>head: as we always return false, we'll never pass here, so identity is a good shot
+</li>
+<li>tail: at last, it's where all the work is done, we want <code>f</code> to be applied
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">iterate</span> <span style="color: #D8FA3C;">::</span> (a <span style="color: #D8FA3C;">-&gt;</span> a) <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> [a]
+<span style="color: #ff1493;">iterate</span> f <span style="color: #D8FA3C;">=</span> unfold (<span style="color: #D8FA3C;">\</span> <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">False</span>) id f
+</pre>
+</div>
+
+<p>
+<b>Note</b>
+I discovered the function <code>const</code>
+So we can replace this definition by this one:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">iterate</span> <span style="color: #D8FA3C;">::</span> (a <span style="color: #D8FA3C;">-&gt;</span> a) <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> [a]
+<span style="color: #ff1493;">iterate</span> f <span style="color: #D8FA3C;">=</span> unfold (const <span style="color: #D8FA3C;">False</span>) id f
+</pre>
+</div>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch7_2</span><span style="color: #D8FA3C;">&gt;</span> take 10 (iterate (<span style="color: #D8FA3C;">+</span>2) 0)
+[0,2,4,6,8,10,12,14,16,18]
+</pre>
+</div>
+</div>
+</div>
+</div>

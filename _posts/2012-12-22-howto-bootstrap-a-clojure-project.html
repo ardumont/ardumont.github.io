@@ -1,0 +1,537 @@
+---
+layout: post
+title: How to bootstrap a clojure project
+date: 2012-12-22
+categories:
+- clojure
+author: Antoine R. Dumont
+excerpt: howto rapidly startup a clojuroe project using leiningen
+---
+<p>
+In this article, we will see how to rapidly startup a <a href="http://clojure.org/">clojure</a> project using <a href="https://github.com/technomancy/leiningen">leiningen</a>.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Pre-requisites</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><a href="http://www.gnu.org/software/emacs/">emacs</a></h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+See this <a href="http://adumont.fr/blog/how-to-install-emacs-24/">previous post for installing it</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><a href="http://clojure.org/">clojure</a> environment</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+See this <a href="http://adumont.fr/blog/how-to-install-the-clojure-development-environment/">previous post</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">a network to fetch dependencies</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Create a new clojure project</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+
+<pre class="src src-sh">lein new hello
+</pre>
+</div>
+
+<p>
+This will create an arborescence like this:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">/home/tony/repositories/test/hello/
+&#9500;&#9472;&#9472; .gitignore
+&#9500;&#9472;&#9472; project.clj
+&#9500;&#9472;&#9472; README
+&#9500;&#9472;&#9472; src
+&#9474;   &#9492;&#9472;&#9472; hello
+&#9474;       &#9492;&#9472;&#9472; core.clj
+&#9492;&#9472;&#9472; test
+    &#9492;&#9472;&#9472; hello
+        &#9492;&#9472;&#9472; test
+            &#9492;&#9472;&#9472; core.clj
+
+5 directories, 4 files
+</pre>
+</div>
+
+<p>
+I usually initialize a git project to hold my modifications.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">git init &amp;&amp; git add . &amp;&amp; git commit -m <span style="color: #61CE3C;">"Bootstrap clojure project"</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Launch a <a href="http://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">repl</a></h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><a href="https://github.com/technomancy/swank-clojure">clojure-jack-in</a></h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+As we <a href="http://adumont.fr/blog/how-to-install-emacs-24/">already installed emacs</a>, we can launch the repl by doing simply:
+</p>
+<ul class="org-ul">
+<li><code>M-x cd</code> to change the current folder emacs runs into the <code>hello folder</code> (the one containing the <code>project.clj</code> file)
+</li>
+<li><code>M-x clojure-jack-in</code> to launch the repl.
+</li>
+</ul>
+
+<p>
+A new <a href="http://www.cs.utah.edu/dept/old/texinfo/emacs18/emacs_20.html">buffer</a> must have launched itself (may take some time the first time).
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">; SLIME 20100404
+user&gt;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2">Basic check</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Launch some basic operations and hit enter to check that the repl reacts:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">; SLIME 20100404
+user&gt; (+ 1 1)
+2
+user&gt; (reduce + [ 1 2 3 4])
+10
+user&gt;
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Setup dependencies</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1">project.clj</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+The <code>project.clj</code> file is the <a href="https://github.com/technomancy/leiningen">leiningen</a> file holding the metadata of your project.
+This is this file that you want to edit to add dependencies or dev-dependencies.
+</p>
+
+<p>
+By default, here is the content:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lein">(defproject hello "1.0.0-SNAPSHOT"
+  :description "FIXME: write description"
+  :dependencies [[org.clojure/clojure "1.3.0"]])
+</pre>
+</div>
+
+<p>
+This describes that the project :
+</p>
+<ul class="org-ul">
+<li>if packaged, the version will be 1.0.0-SNAPSHOT
+</li>
+<li>a simple description to update
+</li>
+<li>holds only one runtime dependencies, clojure in its version 1.3.0 (currently, the 1.4.0
+</li>
+</ul>
+<p>
+has been released).
+</p>
+
+<p>
+<b>Note</b>
+For those from the java world, you can see it as the equivalent of the maven pom.xml with less verbosity!
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2">Add dependencies</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+As i'm a <a href="http://en.wikipedia.org/wiki/Test-driven_development">tdd</a> fanboy, i like to add <a href="https://github.com/marick/Midje">midje</a>, an excellent unit test framework for clojure.
+</p>
+</div>
+
+<div id="outline-container-sec-4-2-1" class="outline-4">
+<h4 id="sec-4-2-1">dev-dependencies</h4>
+<div class="outline-text-4" id="text-4-2-1">
+<p>
+To add some dev-dependencies, add the :dev-dependencies in this file, like this:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lein">(defproject hello "1.0.0-SNAPSHOT"
+  :description "A simple hello world from clojure"
+  :dependencies [[org.clojure/clojure "1.3.0"]]
+  :dev-dependencies [[midje "1.3.1"]])
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-2" class="outline-4">
+<h4 id="sec-4-2-2">or dependencies</h4>
+<div class="outline-text-4" id="text-4-2-2">
+<p>
+As midje is a unit test framework, this must be a dev-dependencies (to avoid having it in the jar at runtime).
+</p>
+
+<p>
+But, considering that clojure is extremely expressive, i'd rather make midje a runtime dependencies so that my facts
+(unit test in midje) stays with the code they tests.
+</p>
+
+<p>
+Thus, my facts are another level of documentation (it's quite clear when using <a href="https://github.com/fogus/marginalia">marginalia</a> to generate documentations from the code).
+</p>
+
+<p>
+If you're like me, then you can change the previous block into this
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lein">(defproject hello "1.0.0-SNAPSHOT"
+  :description "A simple hello world from clojure"
+  :dependencies [[org.clojure/clojure "1.3.0"]
+                 [midje "1.3.1"]])
+</pre>
+</div>
+
+<p>
+<b>Note</b>
+Another plus side, we do not have any problems concerning the visibility of the functions.
+A function private is still testable (you do have trouble otherwise).
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3">Update the dependencies</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+Now that we modify this file, we need to update the jars locally.
+To do this, we will tell leiningen "go fetch my dependencies" with the <code>deps</code> commands.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">lein deps
+</pre>
+</div>
+
+<p>
+This will use the <a href="http://clojars.org/">clojars</a> and/or <a href="http://maven.apache.org/">maven</a> artifacts around the world to satisfy my demands.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Setup environment</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1">Rapid check</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+Launch the unit tests, <code>lein midje</code>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.08,) 09:31:10 ~/repositories/test/hello $ lein midje
+&gt;&gt;&gt; Output from clojure.test tests:
+
+FAIL<span style="color: #FBDE2D;"> in</span> (replace-me) (core.clj:6)
+No tests have been written.
+expected: false
+  actual: false
+
+&gt;&gt;&gt; clojure.test summary:
+Ran 1 tests containing 1 assertions.
+1 failures, 0 errors.
+&gt;&gt;&gt; Midje summary:
+All claimed facts (0) have been confirmed.
+</pre>
+</div>
+
+<p>
+This is a success.
+</p>
+
+<p>
+It's normal that the test fail as there is a default false claim in the file <code>test/hello/test/core.clj</code>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">ns</span> <span style="color: #D8FA3C;">hello.test.core</span>
+  <span style="color: #006400;">(</span><span style="color: #4c83ff;">:use</span> <span style="color: #ff1493;">[</span><span style="color: #D8FA3C;">hello.core</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span>
+  <span style="color: #006400;">(</span><span style="color: #4c83ff;">:use</span> <span style="color: #ff1493;">[</span><span style="color: #D8FA3C;">clojure.test</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">deftest</span> <span style="color: #ff1493;">replace-me</span> <span style="color: #8B8989; font-style: italic;">;; </span><span style="color: #ff69b4;">FIXME:</span><span style="color: #8B8989; font-style: italic;"> write</span>
+  <span style="color: #006400;">(</span>is <span style="color: #4c83ff;">false</span> <span style="color: #61CE3C;">"No tests have been written."</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+
+<p>
+You can remove this file as we will write:
+</p>
+<ul class="org-ul">
+<li>our tests in the source file directly.
+</li>
+<li>using midje (and not clojure.test, default one)
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2">Add a midje fact</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+Open the file <code>src/hello/core.clj</code>.
+This contains only the <code>ns</code> declaration without any dependencies yet.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">ns</span> <span style="color: #D8FA3C;">hello.core</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+
+<p>
+First of all, we want to solve this problem in tdd.
+So a first step, is to add a framework that permits that, i chose to use midje.
+</p>
+
+<p>
+For this, we add this namespace like this
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">ns</span> <span style="color: #D8FA3C;">hello.core</span>
+    <span style="color: #006400;">(</span><span style="color: #4c83ff;">:use</span> <span style="color: #ff1493;">[</span><span style="color: #D8FA3C;">midje.sweet</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+
+<p>
+To check that all is ok, we can add a false fact the midje way.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8b0000;">(</span>fact <span style="color: #006400;">(</span>+ 1 1<span style="color: #006400;">)</span> =&gt; 3<span style="color: #8b0000;">)</span>
+</pre>
+</div>
+
+<p>
+<b>Note</b>: We can read this fact like this: "This is a fact that (+ 1 1) gives 3"
+We all know it's false but bare with me.
+</p>
+
+<p>
+In the terminal, launch <code>lein midje</code> again
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.14,) 10:21:37 ~/repositories/test/hello (master) $ lein midje
+
+FAIL at (core.clj:4)
+    Expected: 3
+      Actual: 2
+FAILURE: 1 fact was not confirmed.
+</pre>
+</div>
+
+<p>
+Ok, the test is failing but it's ok, that's what we want.
+</p>
+
+<p>
+Now, the ultimate test, check the output when the test is ok.
+</p>
+
+<p>
+For this, change the fact with the right result.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8b0000;">(</span>fact <span style="color: #006400;">(</span>+ 1 1<span style="color: #006400;">)</span> =&gt; 2<span style="color: #8b0000;">)</span>
+</pre>
+</div>
+<p>
+<b>Note</b>
+This is a fact that (+ 1 1) gives 2.
+</p>
+
+<p>
+Now launch <code>lein midje</code>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">tony@dagobah(0.53,) 10:21:58 (1) ~/repositories/test/hello (master) $ lein midje
+All claimed facts (1) have been confirmed.
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5-3" class="outline-3">
+<h3 id="sec-5-3">Another way of checking midje facts</h3>
+<div class="outline-text-3" id="text-5-3">
+</div><div id="outline-container-sec-5-3-1" class="outline-4">
+<h4 id="sec-5-3-1">Compilation</h4>
+<div class="outline-text-4" id="text-5-3-1">
+<p>
+When in the <code>core.clj</code> buffer, <code>C-c C-k</code> launches the compilation of all the clj file.
+The output of this compilation appears in the repl.
+</p>
+
+<p>
+When in error:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">; SLIME 20100404
+&#27;[31mFAIL&#27;[0m at (core.clj:4)
+    Expected: 3
+      Actual: 2
+
+user&gt;
+</pre>
+</div>
+
+<p>
+When there is no error, nothing appears (except if there are prints in your code).
+</p>
+</div>
+</div>
+<div id="outline-container-sec-5-3-2" class="outline-4">
+<h4 id="sec-5-3-2">Check one fact</h4>
+<div class="outline-text-4" id="text-5-3-2">
+<p>
+When in the <code>core.clj</code> buffer, =C-c ,= launch the evaluation of the fact.
+If the fact is true, there will be a quotation just before the fact.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8B8989; font-style: italic;">;</span><span style="color: #8B8989; font-style: italic;">.;. Any intelligent fool can make things bigger, more complex, and more violent</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">. It takes a touch of genius -- and a lot of</span>
+<span style="color: #8B8989; font-style: italic;">;</span><span style="color: #8B8989; font-style: italic;">.;. courage -- to move in the opposite direction. -- Schumacher</span>
+<span style="color: #8b0000;">(</span>fact <span style="color: #006400;">(</span>+ 1 1<span style="color: #006400;">)</span> =&gt; 2<span style="color: #8b0000;">)</span>
+</pre>
+</div>
+
+<p>
+Else, there will be a summary of the error
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8B8989; font-style: italic;">;</span><span style="color: #8B8989; font-style: italic;">.;. FAIL at (NO_SOURCE_FILE:1)</span>
+<span style="color: #8B8989; font-style: italic;">;</span><span style="color: #8B8989; font-style: italic;">.;.     Expected: 3</span>
+<span style="color: #8B8989; font-style: italic;">;</span><span style="color: #8B8989; font-style: italic;">.;.       Actual: 2</span>
+<span style="color: #8b0000;">(</span>fact <span style="color: #006400;">(</span>+ 1 1<span style="color: #006400;">)</span> =&gt; 3<span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5-3-3" class="outline-4">
+<h4 id="sec-5-3-3">Ultimate way</h4>
+<div class="outline-text-4" id="text-5-3-3">
+<p>
+There is an ultimate way for testing with midje that i prefer above all <code>lein midje --lazytest</code>
+</p>
+
+<p>
+At the moment, it seems there is a problem with my platform around the leiningen 1.7.1 version (by downgrading it to leiningen 1.6.2, this works) that i was not yet able to solve.
+</p>
+
+<p>
+This mode permits to relaunch the facts after a modification on the file system has been done.
+This is quite handy to avoid the manual compilation.
+The output is the same as previously described.
+</p>
+
+<p>
+When this work on my machine, I use it by opening a terminal buffer (<code>M-x multi-term</code>) in emacs in which i launch the
+<code>lein midje --lazytest</code> command.
+</p>
+</div>
+
+<div id="outline-container-sec-5-3-3-1" class="outline-5">
+<h5 id="sec-5-3-3-1">Try lazytest</h5>
+<div class="outline-text-5" id="text-5-3-3-1">
+<p>
+For those with leiningen 1.6.2 who wants to try it.
+</p>
+
+<ul class="org-ul">
+<li>Change the project.clj file to this
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #8b0000;">(</span><span style="color: #FBDE2D;">defproject</span> <span style="color: #ff1493;">hello</span> <span style="color: #61CE3C;">"1.0.0-SNAPSHOT"</span>
+  <span style="color: #4c83ff;">:description</span> <span style="color: #61CE3C;">"A simple project"</span>
+  <span style="color: #4c83ff;">:dependencies</span> <span style="color: #006400;">[</span><span style="color: #ff1493;">[</span><span style="color: #D8FA3C;">org.clojure</span>/clojure <span style="color: #61CE3C;">"1.3.0"</span><span style="color: #ff1493;">]</span>
+                 <span style="color: #ff1493;">[</span>midje <span style="color: #61CE3C;">"1.3.1"</span><span style="color: #ff1493;">]</span><span style="color: #006400;">]</span>
+  <span style="color: #4c83ff;">:dev-dependencies</span> <span style="color: #006400;">[</span><span style="color: #ff1493;">[</span><span style="color: #D8FA3C;">com.intelie</span>/lazytest <span style="color: #61CE3C;">"1.0.0-SNAPSHOT"</span> <span style="color: #4c83ff;">:exclusions</span> <span style="color: #ffff00;">[</span>swank-c<span style="color: #dc8cc3; background-color: #383838;">lojure</span><span style="color: #ffff00; background-color: #383838;">]</span><span style="color: #ff1493; background-color: #383838;">]</span><span style="color: #006400; background-color: #383838;">]</span><span style="color: #8b0000; background-color: #383838;">)</span>
+</pre>
+</div>
+<ul class="org-ul">
+<li>Relaunch <code>lein deps</code>.
+</li>
+<li>Restart <code>emacs</code> and <code>clojure-jack-in</code>
+</li>
+<li>Open a new buffer with <code>multi-term</code> or <code>shell</code> or <code>eshell</code> or whatever (<code>M-x the-mode-you-chose</code>).
+</li>
+<li>Then launch the command in the terminal as said previously
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Conclusion</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+You're now able to setup a project in clojure and knows a little about midje.
+</p>
+
+<p>
+In a near future, i intend to make some other blog posts to focus on:
+</p>
+<ul class="org-ul">
+<li>a simple problem resolution using top down tdd in clojure with midje
+</li>
+<li>continued integration with <a href="http://about.travis-ci.org/docs/user/getting-started/">travis-ci</a>
+</li>
+<li><a href="http://www.heroku.com/">heroku</a> for the deploying part
+</li>
+<li><a href="https://github.com/fogus/marginalia">marginalia</a> for the documentation generation and the <i>github</i> integration.
+</li>
+</ul>
+</div>
+</div>

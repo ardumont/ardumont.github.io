@@ -1,0 +1,137 @@
+---
+layout: post
+title: Personal Generic Service Wrapper 2/2
+date: 2014-03-06
+categories:
+- script
+- GNU/Linux
+- feedback
+- service
+- personal
+author: ardumont
+excerpt: Generic need to start/stop/status/restart command (which can take arguments)
+---
+<p>
+In a <a href="http://adumont.fr/blog/personal-generic-service-wrapper/">previous article</a>, I presented a generic service wrapper.
+This script was limited in one point, we could not wrap call to command with arguments.
+</p>
+
+<p>
+I suggested that we could make an evolution to deal with it (without proposing one at a time).
+</p>
+
+<p>
+A simple but yet elegant approach is to switch arguments position:
+</p>
+<ul class="org-ul">
+<li>first one becomes the action we want the service command to execute (start, stop, etc&#x2026;)
+</li>
+<li>second one becomes the application's name we deal with (to stop the application we want simply its name, for example <code>stalonetray</code>, <code>emacs</code>, etc&#x2026;)
+</li>
+<li>the remaining arguments are the actual arguments for the full command. We simply transit them to the original command when we need to start the process (for example <code>-t --window-type=normal</code>, <code>--daemon</code>, etc&#x2026;)
+</li>
+</ul>
+
+<p>
+Here it goes:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #8B8989; font-style: italic;">#</span><span style="color: #8B8989; font-style: italic;">!/bin/</span><span style="color: #FBDE2D;">bash</span>
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">Use: $0 {start|stop|restart|status} &lt;APP&gt;</span>
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">Generic Service Wrapper</span>
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">Example:</span>
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">$0 {start|stop|status|restart} &lt;htop|nm-applet|some-personal-script&gt;</span>
+
+<span style="color: #8B8989; font-style: italic;">### </span><span style="color: #8B8989; font-style: italic;">functions</span>
+
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">Application that this service wraps</span>
+<span style="color: #D8FA3C;">ACTION</span>=$<span style="color: #D8FA3C;">1</span>
+<span style="color: #D8FA3C;">APP</span>=$<span style="color: #D8FA3C;">2</span>
+<span style="color: #FF6400;">shift</span>
+<span style="color: #FF6400;">shift</span>
+<span style="color: #D8FA3C;">CMD</span>=<span style="color: #61CE3C;">"$APP $*"</span>
+
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">Send a signal to the nm-applet pid (KILL to kill, 0 to know if it's alive)</span>
+<span style="color: #ff1493;">app-send</span>() {
+    <span style="color: #D8FA3C;">SIG</span>=$<span style="color: #D8FA3C;">1</span>
+    <span style="color: #D8FA3C;">mypid</span>=$(pidof $<span style="color: #D8FA3C;">APP</span>)
+    [ -z <span style="color: #61CE3C;">"$mypid"</span> ] &amp;&amp; <span style="color: #FBDE2D;">exit</span> 1   <span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">no pid so not running</span>
+    <span style="color: #FF6400;">kill</span> -$<span style="color: #D8FA3C;">SIG</span> $<span style="color: #D8FA3C;">mypid</span> &amp;&amp; <span style="color: #FBDE2D;">exit</span> 0 <span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">if pid exists and the process exists, will ret</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">urn 0</span>
+    <span style="color: #FBDE2D;">exit</span> 1 <span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">otherwise problem</span>
+}
+
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">Stop application</span>
+<span style="color: #ff1493;">app-stop</span>() {
+    $(app-send KILL)
+}
+
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">Start application</span>
+<span style="color: #ff1493;">app-start</span>() {
+    $<span style="color: #D8FA3C;">CMD</span>
+}
+
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">status</span>
+<span style="color: #ff1493;">app-status</span>() {
+    $(app-send 0)
+    ( [ $<span style="color: #D8FA3C;">?</span> = 0 ] &amp;&amp; <span style="color: #FF6400;">echo</span> <span style="color: #61CE3C;">"$APP is running!"</span> ) || <span style="color: #FF6400;">echo</span> <span style="color: #61CE3C;">"$APP is not running!"</span>
+}
+
+<span style="color: #8B8989; font-style: italic;">### </span><span style="color: #8B8989; font-style: italic;">run</span>
+
+<span style="color: #FBDE2D;">case</span> <span style="color: #61CE3C;">"$ACTION"</span><span style="color: #FBDE2D;"> in</span>
+    start)
+        app-start
+        app-status
+        ;;
+
+    stop)
+        app-stop
+        app-status
+        ;;
+
+    restart)
+        app-stop
+        app-start
+        ;;
+
+    status)
+        app-status
+        ;;
+
+    *)
+        <span style="color: #FF6400;">echo</span> <span style="color: #61CE3C;">"Usage: $0 {start|stop|restart|status} &lt;APP&gt;"</span> &gt;&amp;2
+        <span style="color: #FBDE2D;">exit</span> 1
+        ;;
+<span style="color: #FBDE2D;">esac</span>
+</pre>
+</div>
+
+<p>
+<a href="https://github.com/ardumont/sh/blob/master/service/service.sh">Source</a>
+</p>
+
+<p>
+Usage example:
+</p>
+
+<ul class="org-ul">
+<li>Restarting the daemon emacs
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh">~/bin/service/service.sh restart emacs --daemon
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Restarting stalonetray
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh">~/bin/service/service.sh restart stalonetray -t --window-type=normal
+</pre>
+</div>
