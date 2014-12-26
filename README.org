@@ -1,4 +1,16 @@
 #+title: ardumont.github.io
 #+author: ardumont
 
-Source code for http://ardumont.github.io/blog
+Source code for [[http://ardumont.github.io/]]
+
+Content by [[https://github.com/ardumont][@ardumont]] under [[https://i.creativecommons.org/l/by-sa/4.0/88x31.png]] (http://creativecommons.org/licenses/by-sa/4.0/)
+
+Written in [[http://orgmode.org/][org-mode]].
+
+Exported by [[https://github.com/ardumont/org2jekyll.git][org2jekyll]].
+
+Powered by [[http://github.com/jekyll/jekyll/][jekyll]].
+
+Hosted on [[http://github.com][github]].
+
+Style with [[http://getbootstrap.com][bootstrap]].
