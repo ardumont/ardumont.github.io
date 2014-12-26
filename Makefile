@@ -1,8 +1,10 @@
 publish:
-	yes no | emacs -Q --batch -l ./publish.el --funcall org-publish-all
+	cask exec emacs -Q --batch \
+		-l ~/.prelude-packs/blog-pack/blog-pack.el \
+		--funcall org2jekyll/publish-posts!
 
 clean:
-	rm -rf ./jekyll/*.html ./blog/* ./img ./css ./js
+	rm -rf ./_posts/* ./img ./css ./js
 	rm -rf ~/.org-timestamps
 
 pr:

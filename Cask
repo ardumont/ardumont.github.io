@@ -1,0 +1,10 @@
+(source gnu)
+(source marmalade)
+
+(depends-on "s")
+(depends-on "dash")
+(depends-on "dash-functional")
+(depends-on "deferred")
+(depends-on "org2jekyll")
+(depends-on "org")
+(depends-on "ox-publish")
