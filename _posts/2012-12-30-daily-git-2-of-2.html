@@ -10,7 +10,7 @@ author: Antoine R. Dumont
 excerpt: How do i use git every day 2/2
 ---
 <p>
-On <a href="http://adumont.fr/blog/daily-git-12/">this article</a>, I presented the most basics of the command I use.
+On <a href="http://ardumont.github.io/daily-git-1-of-2/#notebook">this article</a>, I presented the most basics of the command I use.
 </p>
 
 <p>
@@ -305,7 +305,7 @@ Example:
 </ul>
 
 <div class="figure">
-<p><img src="./resources/git/rebase/status.png" alt="status.png" />
+<p><img src="../img/dayly-git/rebase/status.png" alt="status.png" />
 </p>
 </div>
 <ul class="org-ul">
@@ -328,7 +328,7 @@ Here I use the merge to only fast-forward the branch master according to <b>some
 
 
 <div class="figure">
-<p><img src="./resources/git/rebase/master-synced-with-some-other-dev.png" alt="master-synced-with-some-other-dev.png" />
+<p><img src="../img/dayly-git/rebase/master-synced-with-some-other-dev.png" alt="master-synced-with-some-other-dev.png" />
 </p>
 </div>
 
@@ -347,7 +347,7 @@ git rebase master
 
 <p>
 I first got a conflict because both the first commit of the branch does the same modifications
-<img src="./resources/git/rebase/conflict.png" alt="conflict.png" />
+<img src="../img/dayly-git/rebase/conflict.png" alt="conflict.png" />
 </p>
 
 <ul class="org-ul">
@@ -370,7 +370,7 @@ git rebase --continue
 </ul>
 
 <div class="figure">
-<p><img src="./resources/git/rebase/rebased-final.png" alt="rebased-final.png" />
+<p><img src="../img/dayly-git/rebase/rebased-final.png" alt="rebased-final.png" />
 </p>
 </div>
 
@@ -380,7 +380,7 @@ git rebase --continue
 </ul>
 
 <div class="figure">
-<p><img src="./resources/git/rebase/master-ff.png" alt="master-ff.png" />
+<p><img src="../img/dayly-git/rebase/master-ff.png" alt="master-ff.png" />
 </p>
 </div>
 
@@ -439,7 +439,7 @@ I will squash all the commits I've done until now into one.
 
 
 <div class="figure">
-<p><img src="./resources/git/rebase/before-squash.png" alt="before-squash.png" />
+<p><img src="../img/dayly-git/rebase/before-squash.png" alt="before-squash.png" />
 </p>
 </div>
 
@@ -534,24 +534,11 @@ Successfully rebased and updated refs/heads/master.
 
 <p>
 Here is the final result:
-<img src="./resources/git/rebase/after-squash.png" alt="after-squash.png" />
+<img src="../img/dayly-git/rebase/after-squash.png" alt="after-squash.png" />
 </p>
 
 <p>
 <a href="http://git-scm.com/book/en/Git-Tools-Rewriting-History#Changing-Multiple-Commit-Messages">For more information</a>
-</p>
-
-<p>
-#+./resources/git/rebase/status.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-status.png" alt="wpid-status.png" />
-#+./resources/git/rebase/master-synced-with-some-other-dev.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-master-synced-with-some-other-dev.png" alt="wpid-master-synced-with-some-other-dev.png" />
-#+./resources/git/rebase/conflict.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-conflict.png" alt="wpid-conflict.png" />
-#+./resources/git/rebase/rebased-final.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-rebased-final.png" alt="wpid-rebased-final.png" />
-#+./resources/git/rebase/master-ff.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-master-ff.png" alt="wpid-master-ff.png" />
-</p>
-
-<p>
-#+./resources/git/rebase/before-squash.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-before-squash.png" alt="wpid-before-squash.png" />
-#+./resources/git/rebase/after-squash.png <img src="http://adumont.fr/blog/wp-content/uploads/2012/12/wpid-after-squash.png" alt="wpid-after-squash.png" />
 </p>
 </div>
 </div>
