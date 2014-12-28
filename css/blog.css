@@ -171,3 +171,7 @@ h6, .h6 {
 .blog-quote {
     font-size: 85%;
 }
+
+#disqus_thread {
+    margin-top: 15px;
+}
