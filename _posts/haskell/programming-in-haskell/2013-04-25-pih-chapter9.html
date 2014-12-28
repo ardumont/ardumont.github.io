@@ -1,0 +1,387 @@
+---
+layout: post
+title: PIH - ch9 - Interactive programs - exercises
+date: 2013-04-25
+categories:
+- haskell
+- exercises
+- functional-programming
+- IO
+- Integractive programs
+author: Antoine R. Dumont
+excerpt: Learning haskell and solving problems using reasoning and 'repl'ing
+---
+<p>
+Here are the exercises from the chapter 9 of the book <a href="http://www.cs.nott.ac.uk/~gmh/book.html">Programming in Haskell</a>.
+As there were some compatibilities issues between the content of the book and my realities, We will only concentrate the efforts on the nim one.
+</p>
+
+<p>
+Anyway, enough chit chat, here is the exercise:
+</p>
+
+<blockquote>
+<p>
+Nim is a game that is played on a board comprising five numbered rows of stars, which is initially set up as follows:
+</p>
+
+<p>
+1:∗∗∗∗∗
+</p>
+
+<p>
+2:∗∗∗∗
+</p>
+
+<p>
+3:∗∗∗
+</p>
+
+<p>
+4:∗∗
+</p>
+
+<p>
+5:∗
+</p>
+
+<p>
+Two players take it in turn to remove one or more stars from the end of a single row.
+The winner is the player who removes the last star or stars from the board.
+Implement the game of nim in Haskell.
+</p>
+
+<p>
+<span class="underline">Hint:</span> represent the board as a list comprising the number of stars remaining on each row, with the initial board being <code>[5, 4, 3, 2, 1]</code>.
+</p>
+</blockquote>
+
+<p>
+We will begin simply by representing a board following the recommandations.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #FBDE2D;">type</span> <span style="color: #D8FA3C;">Board</span> <span style="color: #D8FA3C;">=</span> [<span style="color: #D8FA3C;">Int</span>]
+</pre>
+</div>
+
+<p>
+I'm creating a utility function to create a board:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">makeBoard</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Board</span>
+<span style="color: #ff1493;">makeBoard</span> n <span style="color: #D8FA3C;">=</span> [n, n<span style="color: #D8FA3C;">-</span>1<span style="color: #D8FA3C;">..</span>1]
+</pre>
+</div>
+
+<p>
+For example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> makeBoard 5
+[5,4,3,2,1]
+</pre>
+</div>
+
+<p>
+Now we can compute the stars to display on board:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">computeStars</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Board</span> <span style="color: #D8FA3C;">-&gt;</span> [(<span style="color: #D8FA3C;">Int</span>, <span style="color: #D8FA3C;">String</span>)]
+<span style="color: #ff1493;">computeStars</span> b <span style="color: #D8FA3C;">=</span> zip [0<span style="color: #D8FA3C;">..</span>(length b <span style="color: #D8FA3C;">-</span> 1)] (map (flip replicate <span style="color: #61CE3C;">'*'</span>) b)
+</pre>
+</div>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> computeStars board
+[(0,<span style="color: #61CE3C;">"*****"</span>),(1,<span style="color: #61CE3C;">"****"</span>),(2,<span style="color: #61CE3C;">"***"</span>),(3,<span style="color: #61CE3C;">"**"</span>),(4,<span style="color: #61CE3C;">"*"</span>)]
+</pre>
+</div>
+
+<p>
+Now, we can show the board:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">showBoard</span> <span style="color: #D8FA3C;">::</span> [(<span style="color: #D8FA3C;">Int</span>, <span style="color: #D8FA3C;">String</span>)] <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">IO</span> <span style="color: #D8FA3C;">()</span>
+<span style="color: #ff1493;">showBoard</span> b <span style="color: #D8FA3C;">=</span> mapM_ putStrLn [ show x <span style="color: #D8FA3C;">++</span> <span style="color: #61CE3C;">": "</span> <span style="color: #D8FA3C;">++</span> s <span style="color: #D8FA3C;">|</span> (x, s) <span style="color: #D8FA3C;">&lt;-</span> b ]
+</pre>
+</div>
+
+<p>
+Possible output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> showBoard <span style="color: #D8FA3C;">$</span> computeStars board
+0<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">*****</span>
+1<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">****</span>
+2<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">***</span>
+3<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">**</span>
+4<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">*</span>
+</pre>
+</div>
+
+<p>
+We will also need some utility function to deal silently with error.
+That is if we want to remove more stars than exists, then we no longer have stars.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">wrap</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">wrap</span> n <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D;">if</span> n <span style="color: #D8FA3C;">&gt;=</span> 0 <span style="color: #FBDE2D;">then</span> n <span style="color: #FBDE2D;">else</span> 0
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> wrap 0
+0
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> wrap (<span style="color: #D8FA3C;">-</span>1)
+0
+</pre>
+</div>
+
+<p>
+Same idea for dealing with stars.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">wrapStars</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">wrapStars</span> r l <span style="color: #D8FA3C;">|</span> r <span style="color: #D8FA3C;">&lt;</span> 0 <span style="color: #D8FA3C;">=</span> 0
+              <span style="color: #D8FA3C;">|</span> l <span style="color: #D8FA3C;">&lt;=</span> r <span style="color: #D8FA3C;">=</span> l
+              <span style="color: #D8FA3C;">|</span> otherwise <span style="color: #D8FA3C;">=</span> r
+</pre>
+</div>
+
+<p>
+Output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> wrapStars 10 12
+10
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> wrapStars 13 12
+12
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> wrapStars (<span style="color: #D8FA3C;">-</span>1) 12
+0
+</pre>
+</div>
+
+<p>
+Now we need some function to help in removing stars.
+Simply, I split at the index r and retrieve the head of the second list (which then correponds to the value we want to decrement).
+Then we update the new value by decrementing the value by n. We wrap the result to return 0 at the worst case scenario.
+Then we recreate the list with the new value.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">remove</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Board</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Board</span>
+<span style="color: #ff1493;">remove</span> r n b <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D;">let</span> (h, (v<span style="color: #D8FA3C;">:</span>t)) <span style="color: #D8FA3C;">=</span> splitAt r b
+                   ns <span style="color: #D8FA3C;">=</span> wrap (v <span style="color: #D8FA3C;">-</span> n) <span style="color: #FBDE2D;">in</span>
+               h <span style="color: #D8FA3C;">++</span> (ns<span style="color: #D8FA3C;">:</span>t)
+</pre>
+</div>
+
+<p>
+Output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> remove 0 2 board
+[3,4,3,2,1]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> remove 0 10 board
+[0,4,3,2,1]
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> remove 0 5 board
+[0,4,3,2,1]
+</pre>
+</div>
+
+<p>
+The game is finished if the board no longer has stars.
+As the board is represented by a list of int, we simply compute the sum of the list.
+It the rest is zero, there is no more stars.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">win</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Board</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Bool</span>
+<span style="color: #ff1493;">win</span> <span style="color: #D8FA3C;">=</span> (<span style="color: #D8FA3C;">==</span> 0) <span style="color: #D8FA3C;">.</span> sum
+</pre>
+</div>
+
+<p>
+Output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> win [4,4,3,2,1]
+<span style="color: #D8FA3C;">False</span>
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> win [0,0,0,0,0]
+<span style="color: #D8FA3C;">True</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">turn</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Board</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">IO</span> <span style="color: #D8FA3C;">Board</span>
+<span style="color: #ff1493;">turn</span> p b <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D;">do</span> showBoard <span style="color: #D8FA3C;">$</span> computeStars b
+              putStrLn <span style="color: #D8FA3C;">$</span> <span style="color: #61CE3C;">"Player "</span> <span style="color: #D8FA3C;">++</span> (show p) <span style="color: #D8FA3C;">++</span> <span style="color: #61CE3C;">", on which row do you want to</span><span style="color: #dc8cc3; background-color: #383838;"> remove stars?"</span>
+              x <span style="color: #D8FA3C;">&lt;-</span> getLine
+              <span style="color: #FBDE2D;">let</span> r <span style="color: #D8FA3C;">=</span> read x <span style="color: #FBDE2D;">in</span>
+                <span style="color: #FBDE2D;">do</span> putStrLn <span style="color: #61CE3C;">"How many stars?"</span>
+                   s <span style="color: #D8FA3C;">&lt;-</span> getLine
+                   <span style="color: #FBDE2D;">let</span> n <span style="color: #D8FA3C;">=</span> wrapStars (read s) (length b) <span style="color: #FBDE2D;">in</span>
+                     return <span style="color: #D8FA3C;">$</span> remove r n b
+</pre>
+</div>
+
+<p>
+Output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> turn 1 board
+<span style="color: #D8FA3C;">*****</span>
+<span style="color: #D8FA3C;">****</span>
+<span style="color: #D8FA3C;">***</span>
+<span style="color: #D8FA3C;">**</span>
+<span style="color: #D8FA3C;">*</span>
+<span style="color: #D8FA3C;">Player</span> 1, what stars <span style="color: #FBDE2D;">do</span> you want to remove<span style="color: #D8FA3C;">?</span>
+1
+[5,3,3,2,1]
+</pre>
+</div>
+
+<p>
+Here is a small function to compute the next player:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">nextplayer</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">nextplayer</span> p <span style="color: #D8FA3C;">=</span> ((p<span style="color: #D8FA3C;">+</span>1) <span style="color: #D8FA3C;">`mod`</span> 2)
+</pre>
+</div>
+
+<p>
+Output:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> nextplayer 1
+0
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> nextplayer 0
+1
+</pre>
+</div>
+
+<p>
+The main function which, given a player and a board, launches the game:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">game</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Board</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">IO</span> <span style="color: #D8FA3C;">()</span>
+<span style="color: #ff1493;">game</span> p b <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D;">do</span> nb <span style="color: #D8FA3C;">&lt;-</span> turn p b
+              <span style="color: #FBDE2D;">if</span> win nb
+                <span style="color: #FBDE2D;">then</span> putStrLn <span style="color: #D8FA3C;">$</span> <span style="color: #61CE3C;">"p"</span> <span style="color: #D8FA3C;">++</span> (show p) <span style="color: #D8FA3C;">++</span> <span style="color: #61CE3C;">" won!"</span>
+                <span style="color: #FBDE2D;">else</span> game (nextplayer p) nb
+</pre>
+</div>
+
+<p>
+A small utility function to setup the game regarding the size of the board and which player starts:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">setupGame</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">IO</span> (<span style="color: #D8FA3C;">Int</span>, <span style="color: #D8FA3C;">Int</span>)
+<span style="color: #ff1493;">setupGame</span> <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D;">do</span> putStrLn <span style="color: #61CE3C;">"What size for the board?"</span>
+               n <span style="color: #D8FA3C;">&lt;-</span> getLine
+               <span style="color: #FBDE2D;">let</span> size <span style="color: #D8FA3C;">=</span> read n <span style="color: #FBDE2D;">in</span>
+                 <span style="color: #FBDE2D;">do</span> putStrLn <span style="color: #61CE3C;">"What player first? (0 or 1)"</span>
+                    p <span style="color: #D8FA3C;">&lt;-</span> getLine
+                    <span style="color: #FBDE2D;">let</span> player <span style="color: #D8FA3C;">=</span> read p <span style="color: #FBDE2D;">in</span>
+                      return (size, player)
+</pre>
+</div>
+
+<p>
+At last, the main function which launches the game:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">main</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">IO</span> <span style="color: #D8FA3C;">()</span>
+<span style="color: #ff1493;">main</span> <span style="color: #D8FA3C;">=</span> <span style="color: #FBDE2D;">do</span> (size, player) <span style="color: #D8FA3C;">&lt;-</span> setupGame
+          game player (makeBoard size)
+</pre>
+</div>
+
+<p>
+A sample run:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">Ch9</span><span style="color: #D8FA3C;">&gt;</span> main
+<span style="color: #D8FA3C;">What</span> size for the board<span style="color: #D8FA3C;">?</span>
+3
+<span style="color: #D8FA3C;">What</span> player first<span style="color: #D8FA3C;">?</span> (0 or 1)
+1
+0<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">***</span>
+1<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">**</span>
+2<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">*</span>
+<span style="color: #D8FA3C;">Player</span> 1, on which row <span style="color: #FBDE2D;">do</span> you want to remove stars<span style="color: #D8FA3C;">?</span>
+0
+<span style="color: #D8FA3C;">How</span> many stars<span style="color: #D8FA3C;">?</span>
+3
+0<span style="color: #D8FA3C;">:</span>
+1<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">**</span>
+2<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">*</span>
+<span style="color: #D8FA3C;">Player</span> 0, on which row <span style="color: #FBDE2D;">do</span> you want to remove stars<span style="color: #D8FA3C;">?</span>
+1
+<span style="color: #D8FA3C;">How</span> many stars<span style="color: #D8FA3C;">?</span>
+1
+0<span style="color: #D8FA3C;">:</span>
+1<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">*</span>
+2<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">*</span>
+<span style="color: #D8FA3C;">Player</span> 1, on which row <span style="color: #FBDE2D;">do</span> you want to remove stars<span style="color: #D8FA3C;">?</span>
+0
+<span style="color: #D8FA3C;">How</span> many stars<span style="color: #D8FA3C;">?</span>
+1
+0<span style="color: #D8FA3C;">:</span>
+1<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">*</span>
+2<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">*</span>
+<span style="color: #D8FA3C;">Player</span> 0, on which row <span style="color: #FBDE2D;">do</span> you want to remove stars<span style="color: #D8FA3C;">?</span>
+2
+<span style="color: #D8FA3C;">How</span> many stars<span style="color: #D8FA3C;">?</span>
+1
+0<span style="color: #D8FA3C;">:</span>
+1<span style="color: #D8FA3C;">:</span> <span style="color: #D8FA3C;">*</span>
+2<span style="color: #D8FA3C;">:</span>
+<span style="color: #D8FA3C;">Player</span> 1, on which row <span style="color: #FBDE2D;">do</span> you want to remove stars<span style="color: #D8FA3C;">?</span>
+1
+<span style="color: #D8FA3C;">How</span> many stars<span style="color: #D8FA3C;">?</span>
+1
+<span style="color: #ff1493;">p1</span> won<span style="color: #D8FA3C;">!</span>
+</pre>
+</div>
+
+<p>
+As usual, here is the complete <a href="https://github.com/ardumont/haskell-lab/blob/master/src/Nim.hs">source</a>.
+</p>

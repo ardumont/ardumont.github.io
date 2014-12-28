@@ -1,0 +1,541 @@
+---
+layout: post
+title: PIH - ch13 - Reasoning about programs - exercises
+date: 2013-06-04
+categories:
+- haskell
+- exercises
+- functional-programming
+- induction
+- proof
+author: Antoine R. Dumont
+excerpt: The last chapter of programming in haskell - exercises.
+---
+<p>
+At last, the last chapter exercises.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Overlapping patterns</h2>
+<div class="outline-text-2" id="text-1">
+<blockquote>
+<p>
+Give an example of a function from the standard library in appendix A that is defined using overlapping patterns.
+</p>
+</blockquote>
+
+<p>
+Example using overlapping patterns:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">null</span> <span style="color: #D8FA3C;">::</span> [a] <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Bool</span>
+<span style="color: #ff1493;">null</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
+<span style="color: #ff1493;">null</span> (<span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">:</span> <span style="color: #FBDE2D;">_</span>) <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">False</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Proof by induction</h2>
+<div class="outline-text-2" id="text-2">
+<blockquote>
+<p>
+Show that <code>add n (Succ m) = Succ (add n m)</code>, by induction on n.
+</p>
+</blockquote>
+
+<p>
+Recall the definition:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #FBDE2D;">data</span> <span style="color: #D8FA3C;">Nat</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Zero</span> <span style="color: #D8FA3C;">|</span> <span style="color: #D8FA3C;">Succ</span> <span style="color: #D8FA3C;">Nat</span>
+
+<span style="color: #ff1493;">add</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Nat</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Nat</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Nat</span>
+<span style="color: #ff1493;">add</span> <span style="color: #D8FA3C;">Zero</span> m <span style="color: #D8FA3C;">=</span> m                  <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">(1)</span>
+<span style="color: #ff1493;">add</span> (<span style="color: #D8FA3C;">Succ</span> n) m <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Succ</span> (add n m) <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">(2)</span>
+</pre>
+</div>
+
+<p>
+To prove by induction on n the asked properties, we'll begin by the base case:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">add</span> <span style="color: #D8FA3C;">Zero</span> (<span style="color: #D8FA3C;">Succ</span> m) <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Succ</span> m            <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by definition of (1)</span>
+                  <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Succ</span> (add <span style="color: #D8FA3C;">Zero</span> m) <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">(2)</span>
+</pre>
+</div>
+<p>
+Ok, the base case is sound.
+</p>
+
+<p>
+Now, we can focus on the inductive case:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">add</span> (<span style="color: #D8FA3C;">Succ</span> n) (<span style="color: #D8FA3C;">Succ</span> m) <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Succ</span> (add n (<span style="color: #D8FA3C;">Succ</span> m)) <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">using the induction hypothesis</span>
+                      <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Succ</span> (<span style="color: #D8FA3C;">Succ</span> (add n m))
+                      <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Succ</span> (add (<span style="color: #D8FA3C;">Succ</span> n) m)
+</pre>
+</div>
+<p>
+So the property holds.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">commutativity</h2>
+<div class="outline-text-2" id="text-3">
+<blockquote>
+<p>
+Using this property, together with <code>add n Zero = n</code>, show that addition is commutative, <code>add n m = add m n</code>, by induction on n.
+</p>
+</blockquote>
+
+<p>
+Again, base case first:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">add</span> <span style="color: #D8FA3C;">Zero</span> m <span style="color: #D8FA3C;">=</span> m
+           <span style="color: #D8FA3C;">=</span> add m <span style="color: #D8FA3C;">Zero</span> <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">property of add in the previous exercise.</span>
+</pre>
+</div>
+<p>
+ok.
+</p>
+
+<p>
+Now, inductive case:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">add</span> (<span style="color: #D8FA3C;">Succ</span> n) m <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Succ</span> (add n m) <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by hypothesis</span>
+               <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Succ</span> (add m n)
+               <span style="color: #D8FA3C;">=</span> add m (<span style="color: #D8FA3C;">Succ</span> n) <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">using property add n (Succ m) = Succ (add n m</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">)</span>
+</pre>
+</div>
+<p>
+The property holds.
+</p>
+
+<p>
+The base case is ok and the inductive case holds the property.
+So by induction, the hypothesis is sound, add is commutative.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">all true</h2>
+<div class="outline-text-2" id="text-4">
+<blockquote>
+<p>
+Using the following definition for the library function that decides if all elements of a list satisfy a predicate:
+</p>
+
+<p>
+<code>all p [] = True</code>
+</p>
+
+<p>
+<code>all p (x : xs) = p x &amp;&amp; all p xs</code>
+</p>
+
+<p>
+Complete the proof of the correctness of <code>replicate</code> by showing that it produces a list with identical elements, <code>all (=</code> x) (replicate n x)=, by induction on n ≥ 0.
+</p>
+
+<p>
+<span class="underline">Hint:</span> show that the property is always True.
+</p>
+</blockquote>
+
+<p>
+Recall replicate's definition:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">replicate</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">-&gt;</span> a <span style="color: #D8FA3C;">-&gt;</span> [a]
+<span style="color: #ff1493;">replicate</span> 0 <span style="color: #FBDE2D;">_</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+<span style="color: #ff1493;">replicate</span> n x <span style="color: #D8FA3C;">=</span> x<span style="color: #D8FA3C;">:</span>replicate (n<span style="color: #D8FA3C;">-</span>1) x
+</pre>
+</div>
+
+<p>
+base case:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">all</span> (<span style="color: #D8FA3C;">==</span> x) (replicate 0 x) <span style="color: #D8FA3C;">=</span> all (<span style="color: #D8FA3C;">==</span> x) <span style="color: #D8FA3C;">[]</span> <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by definition of replicate</span>
+                           <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>          <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by definition of all</span>
+</pre>
+</div>
+<p>
+ok.
+</p>
+
+<p>
+Inductive case:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">all</span> (<span style="color: #D8FA3C;">==</span> x) (replicate (n<span style="color: #D8FA3C;">+</span>1) x) <span style="color: #D8FA3C;">=</span> all (<span style="color: #D8FA3C;">==</span> x) (x<span style="color: #D8FA3C;">:</span>replicate n x)             <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by </span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">definition of all</span>
+                               <span style="color: #D8FA3C;">=</span> ((<span style="color: #D8FA3C;">==</span> x) x) <span style="color: #D8FA3C;">&amp;&amp;</span> all (<span style="color: #D8FA3C;">==</span> x) (replicate n x)
+                               <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span> <span style="color: #D8FA3C;">&amp;&amp;</span> all (<span style="color: #D8FA3C;">==</span> x) (replicate n x)       <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by </span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">hypothesis</span>
+                               <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">True</span>
+</pre>
+</div>
+<p>
+ok.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Checks</h2>
+<div class="outline-text-2" id="text-5">
+<blockquote>
+<p>
+Using the definition
+</p>
+
+<p>
+<code>[] ++ ys = ys</code> (1)
+</p>
+
+<p>
+<code>(x:xs) ++ ys = x:(xs ++ ys)</code> (2)
+</p>
+
+<p>
+verify the following two properties, by induction on xs:
+</p>
+
+<p>
+<code>xs ++ [] = xs</code>
+</p>
+
+<p>
+<code>xs ++ (ys ++ zs) = (xs ++ ys) ++ zs</code>
+</p>
+
+<p>
+<span class="underline">Hint:</span> the proofs are similar to those for the add function.
+</p>
+</blockquote>
+
+<p>
+base case:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">++</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>                       <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">using 1)</span>
+
+<span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">++</span> (ys <span style="color: #D8FA3C;">++</span> zs) <span style="color: #D8FA3C;">=</span> ys <span style="color: #D8FA3C;">++</span> zs         <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">using 1)</span>
+                 <span style="color: #D8FA3C;">=</span> (<span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">++</span> ys) <span style="color: #D8FA3C;">++</span> zs
+</pre>
+</div>
+<p>
+ok
+</p>
+
+<p>
+Inductive case:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">(x<span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">++</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> x<span style="color: #D8FA3C;">:</span>(xs <span style="color: #D8FA3C;">++</span> <span style="color: #D8FA3C;">[]</span>) <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">using induction hypothesis</span>
+             <span style="color: #D8FA3C;">=</span> (x<span style="color: #D8FA3C;">:</span>xs)
+
+(x<span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">++</span> (ys <span style="color: #D8FA3C;">++</span> zs) <span style="color: #D8FA3C;">=</span> x<span style="color: #D8FA3C;">:</span>(xs <span style="color: #D8FA3C;">++</span> (ys <span style="color: #D8FA3C;">++</span> zs)) <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">induction hypothesis</span>
+                     <span style="color: #D8FA3C;">=</span> x<span style="color: #D8FA3C;">:</span>((xs <span style="color: #D8FA3C;">++</span> ys) <span style="color: #D8FA3C;">++</span> zs
+                     <span style="color: #D8FA3C;">=</span> (x<span style="color: #D8FA3C;">:</span>(xs <span style="color: #D8FA3C;">++</span> ys) <span style="color: #D8FA3C;">++</span> zs
+                     <span style="color: #D8FA3C;">=</span> ((x<span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">++</span> ys) <span style="color: #D8FA3C;">++</span> zs
+</pre>
+</div>
+<p>
+ok.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Proof on map and composition of functions</h2>
+<div class="outline-text-2" id="text-6">
+<blockquote>
+<p>
+Using the definitions
+</p>
+
+<p>
+<code>map f [] = []</code>
+</p>
+
+<p>
+<code>map f (x : xs) = f x : map f xs</code>
+</p>
+
+<p>
+<code>(f . g) x = f (g x)</code>
+</p>
+
+<p>
+show that <code>map f (map g xs) = map (f . g) xs</code>, by induction on xs.
+</p>
+</blockquote>
+
+<p>
+base case:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">map</span> f (map g <span style="color: #D8FA3C;">[]</span>) <span style="color: #D8FA3C;">=</span> map f <span style="color: #D8FA3C;">[]</span>       <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by definition of map</span>
+                 <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>             <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by definition of map</span>
+                 <span style="color: #D8FA3C;">=</span> map (f <span style="color: #D8FA3C;">.</span> g) <span style="color: #D8FA3C;">[]</span>
+</pre>
+</div>
+
+<p>
+inductive case:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">map</span> f (map g (x<span style="color: #D8FA3C;">:</span>xs)) <span style="color: #D8FA3C;">=</span> map f ((g x)<span style="color: #D8FA3C;">:</span>(map g xs))    <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by definition of map</span>
+                     <span style="color: #D8FA3C;">=</span> f (g x)<span style="color: #D8FA3C;">:</span>(map f (map g xs))  <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by hypothesis</span>
+                     <span style="color: #D8FA3C;">=</span> f (g x)<span style="color: #D8FA3C;">:</span>(map (f <span style="color: #D8FA3C;">.</span> g) xs)    <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by definition of (f . g)</span>
+                     <span style="color: #D8FA3C;">=</span> (f <span style="color: #D8FA3C;">.</span> g) x)<span style="color: #D8FA3C;">:</span>(map (f <span style="color: #D8FA3C;">.</span> g) xs) <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by definition of map</span>
+                     <span style="color: #D8FA3C;">=</span> map (f <span style="color: #D8FA3C;">.</span> g) (x<span style="color: #D8FA3C;">:</span>xs)
+</pre>
+</div>
+<p>
+ok.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">take'n drop</h2>
+<div class="outline-text-2" id="text-7">
+<blockquote>
+<p>
+Using the definition for <code>++</code> given above, together with:
+</p>
+
+<p>
+<code>take 0 _ = []</code>
+</p>
+
+<p>
+<code>take _ [] = []</code>
+</p>
+
+<p>
+<code>take n (x:xs) = x:take (n-1) xs</code>
+</p>
+
+<p>
+<code>drop 0 xs = xs</code>
+</p>
+
+<p>
+<code>drop _ [] = []</code>
+</p>
+
+<p>
+<code>drop n (_:xs) = drop (n-1) xs</code>
+</p>
+
+<p>
+show that <code>take n xs ++ drop n xs = xs</code> , by simultaneous induction on the integer n ≥ 0 and the list xs.
+</p>
+
+<p>
+<span class="underline">Hint:</span> there are three cases, one for each pattern of arguments in the definitions of <code>take</code> and <code>drop</code>.
+</p>
+</blockquote>
+
+<p>
+base cases:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">take</span> 0 xs <span style="color: #D8FA3C;">++</span> drop 0 xs <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">++</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by definition of take and drop</span>
+                       <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>       <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">this is true for all xs, including []</span>
+
+<span style="color: #ff1493;">take</span> n <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">++</span> drop n <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span> <span style="color: #D8FA3C;">++</span> <span style="color: #D8FA3C;">[]</span>
+                       <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">[]</span>
+</pre>
+</div>
+
+<p>
+inductive cases:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">take</span> (n<span style="color: #D8FA3C;">+</span>1) (x<span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">++</span> drop (n<span style="color: #D8FA3C;">+</span>1) (x<span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">=</span> (x<span style="color: #D8FA3C;">:</span>take n xs) <span style="color: #D8FA3C;">++</span> (drop n xs)   <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by de</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">finition of take and drop</span>
+                                       <span style="color: #D8FA3C;">=</span> x<span style="color: #D8FA3C;">:</span>((take n xs) <span style="color: #D8FA3C;">++</span> (drop n xs)) <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">by in</span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">duction hypothesis</span>
+                                       <span style="color: #D8FA3C;">=</span> (x<span style="color: #D8FA3C;">:</span>xs)
+</pre>
+</div>
+<p>
+ok.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8">Tree</h2>
+<div class="outline-text-2" id="text-8">
+<blockquote>
+<p>
+Given the type declaration <code>data Tree = Leaf Int | Node Tree Tree</code>, show that the number of leaves in such a tree is always one greater than the number of nodes, by induction on trees.
+</p>
+
+<p>
+<span class="underline">Hint:</span> start by defining functions that count the number of leaves and nodes in a tree.
+</p>
+</blockquote>
+
+<p>
+First the definitions:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">leaves</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Tree</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">leaves</span> (<span style="color: #D8FA3C;">Leaf</span> <span style="color: #FBDE2D;">_</span>) <span style="color: #D8FA3C;">=</span> 1
+<span style="color: #ff1493;">leaves</span> (<span style="color: #D8FA3C;">Node</span> l r) <span style="color: #D8FA3C;">=</span> leaves l <span style="color: #D8FA3C;">+</span> leaves r
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">C12</span><span style="color: #D8FA3C;">&gt;</span> leaves (<span style="color: #D8FA3C;">Node</span> (<span style="color: #D8FA3C;">Node</span> (<span style="color: #D8FA3C;">Leaf</span> 0) (<span style="color: #D8FA3C;">Node</span> (<span style="color: #D8FA3C;">Leaf</span> 1) (<span style="color: #D8FA3C;">Leaf</span> 2))) (<span style="color: #D8FA3C;">Leaf</span> 3))
+4
+
+<span style="color: #ff1493;">nodes</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Tree</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">nodes</span> (<span style="color: #D8FA3C;">Leaf</span> <span style="color: #FBDE2D;">_</span>) <span style="color: #D8FA3C;">=</span> 0
+<span style="color: #ff1493;">nodes</span> (<span style="color: #D8FA3C;">Node</span> l r) <span style="color: #D8FA3C;">=</span> 1 <span style="color: #D8FA3C;">+</span> nodes l <span style="color: #D8FA3C;">+</span> nodes r
+
+<span style="color: #D8FA3C;">*</span><span style="color: #D8FA3C;">C12</span><span style="color: #D8FA3C;">&gt;</span> nodes (<span style="color: #D8FA3C;">Node</span> (<span style="color: #D8FA3C;">Node</span> (<span style="color: #D8FA3C;">Leaf</span> 0) (<span style="color: #D8FA3C;">Node</span> (<span style="color: #D8FA3C;">Leaf</span> 1) (<span style="color: #D8FA3C;">Leaf</span> 2))) (<span style="color: #D8FA3C;">Leaf</span> 3))
+3
+</pre>
+</div>
+
+<p>
+Now, we must prove that the relation between the number of nodes and leaves is the following:
+<code>(leaves t) - (nodes t) = 1</code>
+</p>
+
+<p>
+Beginning with base case:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">leaves</span> (<span style="color: #D8FA3C;">Leaf</span> x) <span style="color: #D8FA3C;">-</span> nodes (<span style="color: #D8FA3C;">Leaf</span> x) <span style="color: #D8FA3C;">=</span> 1 <span style="color: #D8FA3C;">-</span> 0 <span style="color: #8B8989; font-style: italic;">-- </span><span style="color: #8B8989; font-style: italic;">following the definitions</span>
+                                 <span style="color: #D8FA3C;">=</span> 1
+</pre>
+</div>
+<p>
+ok.
+</p>
+
+<p>
+Inductive case:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">leaves</span> (<span style="color: #D8FA3C;">Node</span> l r) <span style="color: #D8FA3C;">-</span> nodes (<span style="color: #D8FA3C;">Node</span> l r) <span style="color: #D8FA3C;">=</span> (leaves l <span style="color: #D8FA3C;">+</span> leaves r) <span style="color: #D8FA3C;">-</span> (1 <span style="color: #D8FA3C;">+</span> nodes l <span style="color: #D8FA3C;">+</span> no<span style="color: #dc8cc3; background-color: #383838;">des r)</span>
+                                     <span style="color: #D8FA3C;">=</span> (leaves l <span style="color: #D8FA3C;">-</span> nodes l) <span style="color: #D8FA3C;">+</span> (leaves r <span style="color: #D8FA3C;">-</span> nodes <span style="color: #dc8cc3; background-color: #383838;">r) </span><span style="color: #dc8cc3; background-color: #383838;">-</span><span style="color: #dc8cc3; background-color: #383838;"> 1 </span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">-- </span><span style="color: #dc8cc3; background-color: #383838; font-style: italic;">by induction hypothesis</span>
+                                     <span style="color: #D8FA3C;">=</span> 1 <span style="color: #D8FA3C;">+</span> 1 <span style="color: #D8FA3C;">-</span> 1
+                                     <span style="color: #D8FA3C;">=</span> 1
+</pre>
+</div>
+<p>
+ok.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9">comp</h2>
+<div class="outline-text-2" id="text-9">
+<blockquote>
+<p>
+Given the equation <code>comp' e c = comp e ++ c</code>, show how to construct the recursive definition for comp', by induction on e.
+</p>
+</blockquote>
+
+<p>
+Recall the definition of expression:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #FBDE2D;">data</span> <span style="color: #D8FA3C;">Expr</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">Val</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">|</span> <span style="color: #D8FA3C;">Add</span> <span style="color: #D8FA3C;">Expr</span> <span style="color: #D8FA3C;">Expr</span>
+
+<span style="color: #ff1493;">eval</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Expr</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Int</span>
+<span style="color: #ff1493;">eval</span> (<span style="color: #D8FA3C;">Val</span> x)   <span style="color: #D8FA3C;">=</span> x
+<span style="color: #ff1493;">eval</span> (<span style="color: #D8FA3C;">Add</span> x y) <span style="color: #D8FA3C;">=</span> eval x <span style="color: #D8FA3C;">+</span> eval y
+
+<span style="color: #FBDE2D;">type</span> <span style="color: #D8FA3C;">Stack</span> <span style="color: #D8FA3C;">=</span> [<span style="color: #D8FA3C;">Int</span>]
+<span style="color: #FBDE2D;">type</span> <span style="color: #D8FA3C;">Code</span> <span style="color: #D8FA3C;">=</span> [<span style="color: #D8FA3C;">Op</span>]
+<span style="color: #FBDE2D;">data</span> <span style="color: #D8FA3C;">Op</span> <span style="color: #D8FA3C;">=</span> <span style="color: #D8FA3C;">PUSH</span> <span style="color: #D8FA3C;">Int</span> <span style="color: #D8FA3C;">|</span> <span style="color: #D8FA3C;">ADD</span> <span style="color: #FBDE2D;">deriving</span> (<span style="color: #D8FA3C;">Show</span>)
+
+<span style="color: #ff1493;">exec</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Code</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Stack</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Stack</span>
+<span style="color: #ff1493;">exec</span> <span style="color: #D8FA3C;">[]</span> s             <span style="color: #D8FA3C;">=</span> s
+<span style="color: #ff1493;">exec</span> (<span style="color: #D8FA3C;">PUSH</span> x<span style="color: #D8FA3C;">:</span>c) s     <span style="color: #D8FA3C;">=</span> exec c (x<span style="color: #D8FA3C;">:</span>s)
+<span style="color: #ff1493;">exec</span> (<span style="color: #D8FA3C;">ADD:</span>c) (x<span style="color: #D8FA3C;">:</span>y<span style="color: #D8FA3C;">:</span>xs) <span style="color: #D8FA3C;">=</span> exec c (x<span style="color: #D8FA3C;">+</span>y<span style="color: #D8FA3C;">:</span>xs)
+
+<span style="color: #61CE3C;">-- *C12&gt; exec [PUSH 1,PUSH 2,ADD] []</span>
+<span style="color: #61CE3C;">-- [3]</span>
+<span style="color: #61CE3C;">-- *C12&gt; exec [PUSH 10,PUSH 11,PUSH 12,ADD,ADD] []</span>
+<span style="color: #61CE3C;">-- [33]</span>
+
+<span style="color: #ff1493;">comp</span> <span style="color: #D8FA3C;">::</span> <span style="color: #D8FA3C;">Expr</span> <span style="color: #D8FA3C;">-&gt;</span> <span style="color: #D8FA3C;">Code</span>
+<span style="color: #ff1493;">comp</span> (<span style="color: #D8FA3C;">Val</span> x)   <span style="color: #D8FA3C;">=</span> [<span style="color: #D8FA3C;">PUSH</span> x]
+<span style="color: #ff1493;">comp</span> (<span style="color: #D8FA3C;">Add</span> l r) <span style="color: #D8FA3C;">=</span> (comp l) <span style="color: #D8FA3C;">++</span> (comp r) <span style="color: #D8FA3C;">++</span> [<span style="color: #D8FA3C;">ADD</span>]
+</pre>
+</div>
+
+<p>
+Now the construction.
+</p>
+
+<p>
+base case:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">comp'</span> (<span style="color: #D8FA3C;">Val</span> x) c <span style="color: #D8FA3C;">=</span> comp (<span style="color: #D8FA3C;">Val</span> x) <span style="color: #D8FA3C;">++</span> c
+                <span style="color: #D8FA3C;">=</span> [<span style="color: #D8FA3C;">PUSH</span> x] <span style="color: #D8FA3C;">++</span> c
+                <span style="color: #D8FA3C;">=</span> (<span style="color: #D8FA3C;">PUSH</span> x<span style="color: #D8FA3C;">:</span>c)
+</pre>
+</div>
+
+<p>
+inductive case:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">comp'</span> (<span style="color: #D8FA3C;">Add</span> l r) c <span style="color: #D8FA3C;">=</span> comp (<span style="color: #D8FA3C;">Add</span> l r) <span style="color: #D8FA3C;">++</span> c
+                  <span style="color: #D8FA3C;">=</span> (comp l) <span style="color: #D8FA3C;">++</span> (comp r) <span style="color: #D8FA3C;">++</span> [<span style="color: #D8FA3C;">ADD</span>] <span style="color: #D8FA3C;">++</span> c
+                  <span style="color: #D8FA3C;">=</span> comp l <span style="color: #D8FA3C;">++</span> (comp r <span style="color: #D8FA3C;">++</span> (<span style="color: #D8FA3C;">ADD:</span>c))
+                  <span style="color: #D8FA3C;">=</span> comp l <span style="color: #D8FA3C;">++</span> (comp' r (<span style="color: #D8FA3C;">ADD:</span>c))
+                  <span style="color: #D8FA3C;">=</span> comp' l (comp' r (<span style="color: #D8FA3C;">ADD:</span>c))
+</pre>
+</div>
+
+<p>
+We obtain the definition of comp':
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #ff1493;">comp'</span> (<span style="color: #D8FA3C;">Val</span> x) c <span style="color: #D8FA3C;">=</span> (<span style="color: #D8FA3C;">PUSH</span> x<span style="color: #D8FA3C;">:</span>c)
+<span style="color: #ff1493;">comp'</span> (<span style="color: #D8FA3C;">Add</span> l r) c <span style="color: #D8FA3C;">=</span> comp' l (comp' r (<span style="color: #D8FA3C;">ADD:</span>c))
+</pre>
+</div>
+</div>
+</div>
