@@ -1,0 +1,355 @@
+---
+layout: post
+title: Atreus keyboard
+date: 2015-02-26
+categories:
+- atreus
+- keyboard
+- diy
+author: Antoine R. Dumont
+excerpt: My Atreus keyboard journey
+---
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Assemble</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+First assemble it using the excellent documentation from <a href="http://atreus.technomancy.us/assembly.pdf">http://atreus.technomancy.us/assembly.pdf</a>.
+</p>
+
+
+<div class="figure">
+<p><img src="../img/atreus/01-start-atreus-kit.jpg" alt="01-start-atreus-kit.jpg" width="500px" />
+</p>
+</div>
+
+<p>
+This can take some time.
+It took me more time than anticipated, one night with lots of coffee + some extra hours of debugging.
+But it was awesome!
+</p>
+
+<p>
+It took me some time because:
+</p>
+<ul class="org-ul">
+<li>I'm not a solder iron expert (last time I manipulated one was at least 15 years ago).
+</li>
+<li>I did not have an unsoldering pump (it's a good idea to have if like me you're kind of first timer).
+</li>
+<li>I used a too large iron diameter (1.5 mm). Soldering got better with 1mm.
+</li>
+<li>I did miscomprehend some parts of the documentation. This lead to some unsoldering and soldering back session (not that easy without the right tool).
+</li>
+</ul>
+
+<p>
+So let's go for some details after that - the firmware installation and the investigation on the improper behavior.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Pre-requisite</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Tools</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Install pre-requisite dependencies:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">nix-env -i avrdude avr-gcc-libc
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">Firmware</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Clone technomancy's repository:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">git clone git@github.com:technomancy/atreus-firmware.git
+</pre>
+</div>
+
+<p>
+<b>Note</b>
+There is another repository which is a fork of <code>tmk/tmk_keyboard</code> (branch atreus).
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">git clone git@github.com:technomancy/tmk_keyboard.git
+git checkout atreus
+</pre>
+</div>
+
+<p>
+Hard reset the first time by connecting RST and GND 2 times in less than 1 second (with a wire for example).
+If you succeeded, the LED will start blinking differently for 8 seconds.
+</p>
+
+<p>
+Which is the time you have to try and upload the firmware you chose.
+Type `make upload` in the terminal from technomancy's fork folder.
+</p>
+
+<p>
+Something along those lines will appear.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">tony at dagobah in ~/repo/perso/atreus-firmware on git:master o [4:17:54]</span>
+$ make upload
+<span style="color: #FBDE2D;">while</span> [ ! -r /dev/ttyACM0 ]; <span style="color: #FBDE2D;">do</span> sleep 1; <span style="color: #FBDE2D;">done</span>; <span style="color: #61CE3C;">\</span>
+avrdude -p atmega32u4 -c avr109 -U flash:w:atreus.hex -P /dev/ttyACM0
+
+Connecting to programmer: .
+Found programmer: <span style="color: #D8FA3C;">Id</span> = <span style="color: #61CE3C;">"CATERIN"</span>; <span style="color: #D8FA3C;">type</span> = S
+    Software <span style="color: #D8FA3C;">Version</span> = 1.0; No Hardware Version given.
+Programmer supports auto addr increment.
+Programmer supports buffered memory access with <span style="color: #D8FA3C;">buffersize</span>=128 bytes.
+
+Programmer supports the following devices:
+    Device code: 0x44
+
+avrdude: AVR device initialized and ready to accept instructions
+
+Reading | <span style="color: #8B8989; font-style: italic;">################################################## </span><span style="color: #8B8989; font-style: italic;">| 100% 0.00s</span>
+
+avrdude: Device <span style="color: #D8FA3C;">signature</span> = 0x1e9587
+avrdude: NOTE: <span style="color: #61CE3C;">"flash"</span> memory has been specified, an erase cycle will be perform<span style="color: #dc8cc3; background-color: #383838;">ed</span>
+         To disable this feature, specify the -D option.
+avrdude: erasing chip
+avrdude: reading input file <span style="color: #61CE3C;">"atreus.hex"</span>
+avrdude: input file atreus.hex auto detected as Intel Hex
+avrdude: writing flash (3278 bytes):
+
+Writing | <span style="color: #8B8989; font-style: italic;">################################################## </span><span style="color: #8B8989; font-style: italic;">| 100% 0.25s</span>
+
+avrdude: 3278 bytes of flash written
+avrdude: verifying flash memory against atreus.hex:
+avrdude: load data flash data from input file atreus.hex:
+avrdude: input file atreus.hex auto detected as Intel Hex
+avrdude: input file atreus.hex contains 3278 bytes
+avrdude: reading on-chip flash data:
+
+Reading | <span style="color: #8B8989; font-style: italic;">################################################## </span><span style="color: #8B8989; font-style: italic;">| 100% 0.03s</span>
+
+avrdude: verifying ...
+avrdude: 3278 bytes of flash verified
+
+avrdude: safemode: Fuses OK (E:C8, H:D0, L:FF)
+
+avrdude done.  Thank you.
+</pre>
+</div>
+
+<p>
+Looking at dmesg, the keyboard is disconnected and reconnected:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">[234924.640433] cdc_acm 1-2:1.0: ttyACM0: USB ACM device
+[234931.190801] usb 1-2: USB disconnect, device number 17
+[234931.473927] usb 1-2: new full-speed USB device number 18 using xhci_hcd
+[234931.639206] usb 1-2: New USB device found, <span style="color: #D8FA3C;">idVendor</span>=16c0, <span style="color: #D8FA3C;">idProduct</span>=047c
+[234931.639215] usb 1-2: New USB device strings: <span style="color: #D8FA3C;">Mfr</span>=1, <span style="color: #D8FA3C;">Product</span>=2, <span style="color: #D8FA3C;">SerialNumber</span>=<span style="color: #dc8cc3; background-color: #383838;">0</span>
+[234931.639220] usb 1-2: Product: Atreus
+[234931.639223] usb 1-2: Manufacturer: Technomancy
+[234931.640720] input: Technomancy Atreus as /devices/pci0000:00/0000:00:14.0/us<span style="color: #dc8cc3; background-color: #383838;">b1/1-2/1-2:1.0/0003:16C0:047C.0004/input/input12</span>
+[234931.640971] hid-generic 0003:16C0:047C.0004: input,hidraw0: USB HID v1.11 Ke<span style="color: #dc8cc3; background-color: #383838;">yboard [Technomancy Atr eus] on usb-0000:00:14.0-2/input0</span>
+</pre>
+</div>
+
+<p>
+And now your keyboard should be alive.
+</p>
+
+<p>
+<b>Note</b> The firmware installed here is the default one for Atreus.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Status</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Now typing using your keyboard should display things.
+For me, it worked the first time except for some keys:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-txt">w e d k x c , ENTER SUPER
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">First fix</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+Just trying to add some more iron on the switches not working fixed it for some:
+</p>
+<ul class="org-ul">
+<li>ENTER works
+</li>
+<li>w (stopped)
+</li>
+<li>x
+</li>
+<li>,
+</li>
+<li>k
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2">Not enough?</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+The remaining non-working part turned out to be a column of key (`sw:9` ; e d c SUPER).
+</p>
+
+<p>
+After multiple looks at my board, I did not see anything troubling.
+</p>
+
+<p>
+As I saw only one side of the board, this meant the problem lied on the other side&#x2026;
+</p>
+
+<p>
+Which meant unsoldering all switches.
+</p>
+
+<p>
+First, I tried to look at some pictures I took before soldering.
+As you can see, there are lots of iron. Not so much is necessary, I used 1.5mm diameter iron which is too much, 1mm is largely enough and result in less iron once melted.
+</p>
+
+
+<div class="figure">
+<p><img src="../img/atreus/02-diode+a-star-controller-ok-face-1.jpg" alt="02-diode+a-star-controller-ok-face-1.jpg" width="500px" />
+</p>
+</div>
+
+
+<div class="figure">
+<p><img src="../img/atreus/02-diode+a-star-controller-ok-face-2.jpg" alt="02-diode+a-star-controller-ok-face-2.jpg" width="500px" />
+</p>
+</div>
+
+<p>
+I did not see much on the pictures. I needed to see the real thing.
+</p>
+
+<p>
+I sent some questions to technomancy and he confirmed that either it was:
+</p>
+<ul class="org-ul">
+<li>some solder on the diode that went bad (checked as seen before in the previous paragraph)
+</li>
+<li>or I had to unsolder switches to access the other side.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3">Do and undo, it's still work</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+So, no way around it, I had to unsolder all switches&#x2026;
+</p>
+
+<p>
+And indeed, on the other side, some diodes were cluttered with too much iron. So I cleaned up.
+</p>
+
+<p>
+Still, this was not the reason.
+</p>
+
+<p>
+I guess more experienced user would have realised sooner that a non-working column meant an a-star pin was responsible.
+And technomancy suspected as much but I did not understand immediately because the problem moved along as I kept fixing columns.
+</p>
+
+<p>
+That is, after some clean up session, <b>sw:9</b> started working but then the <b>sw:10</b> column stopped ('w', 's', 'x', &#x2026;) and then <b>sw:10</b> worked but <b>sw:11</b> ('q', 'a', 'z', &#x2026;) no longer&#x2026;
+</p>
+
+<p>
+Somehow, I finally got it.
+</p>
+
+<p>
+Cleaning up the pins and adding just enough iron (1mm again :D) and everything finally worked!
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4">feedback loop</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+I should have searched for a simple way to ensure everything was ok before soldering the switches the first time around.
+After all 42 keycaps times 2 switches for each is kind of long to solder (and unsolder in case of errors, which could easily happen&#x2026; :D).
+</p>
+
+<p>
+I got it right the last time around though.
+Before soldering back, I ensured everything was ok.
+</p>
+
+<p>
+I simply took one wire and connected the switch pins of the same keycap.
+Indeed, if everything is ok, the keyboard must then send the appropriate signal and your current software should print something.
+If not, there is an issue.
+</p>
+
+<p>
+So, I did this to ensure every keycap was ok.
+And when all 42 keycaps did what they were supposed to, I soldered back!
+</p>
+
+
+<div class="figure">
+<p><img src="../img/atreus/03-almost-there.jpg" alt="03-almost-there.jpg" width="500px" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Conclusion</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+It works!
+</p>
+
+<p>
+Woohoo!
+</p>
+
+<p>
+Now on with the firmware adventure!
+</p>
+</div>
+</div>
