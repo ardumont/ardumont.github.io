@@ -11,10 +11,12 @@ pr:
 	hub pull-request -b ardumont.github.io:master
 
 install-deps:
-	nix-env -i ruby-bundler
+	nix-env -iA nixpkgs.bundler nixpkgs.ruby_2_1_1
 
-setup:
+prepare:
 	mkdir -p ~/.jekyll/ardumont.github.io/vendor
+
+setup: prepare
 	bundle install --path ~/.jekyll/ardumont.github.io/vendor/bundle
 
 pull:
