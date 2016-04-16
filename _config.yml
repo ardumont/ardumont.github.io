@@ -16,8 +16,6 @@ archivelimit: 5
 
 trace: false
 safe: true
-highlighter: pygments
 
 encoding: utf-8
-markdown: redcarpet
 permalink: /:title
