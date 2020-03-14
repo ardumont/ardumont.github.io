@@ -10,6 +10,8 @@ clean:
 pr:
 	hub pull-request -b ardumont.github.io:master
 
+update:
+	bundle update; bundle lock; bundix
 
 pull:
 	git fetch --all --prune
