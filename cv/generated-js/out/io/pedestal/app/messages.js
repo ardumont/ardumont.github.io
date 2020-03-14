@@ -28,8 +28,8 @@ io.pedestal.app.messages.app_model = "\uFDD0'io.pedestal.app.messages/app-model"
 /**
 * A namespace used as the namespace of message params.
 */
-io.pedestal.app.messages.param_ns = (function (){var dummy_kw__22980 = "\uFDD0'io.pedestal.app.messages/dummy";
-return [cljs.core.str(cljs.core.namespace.call(null,dummy_kw__22980)),cljs.core.str(".param")].join('');
+io.pedestal.app.messages.param_ns = (function (){var dummy_kw__12006 = "\uFDD0'io.pedestal.app.messages/dummy";
+return [cljs.core.str(cljs.core.namespace.call(null,dummy_kw__12006)),cljs.core.str(".param")].join('');
 })();
 /**
 * Return a keyword with name `kw` which can be used mark a missing
@@ -56,11 +56,11 @@ if(cljs.core.truth_(io.pedestal.app.messages.type.call(null,message)))
 * Return if a key is both a symbol and is namespaced with param-namespace.
 */
 io.pedestal.app.messages.param_keyword_present_QMARK_ = (function param_keyword_present_QMARK_(key){
-var and__3941__auto____22982 = cljs.core.keyword_QMARK_.call(null,key);
-if(and__3941__auto____22982)
+var and__4236__auto____12008 = cljs.core.keyword_QMARK_.call(null,key);
+if(and__4236__auto____12008)
 {return cljs.core._EQ_.call(null,io.pedestal.app.messages.param_ns,cljs.core.namespace.call(null,key));
 } else
-{return and__3941__auto____22982;
+{return and__4236__auto____12008;
 }
 });
 /**
@@ -73,32 +73,32 @@ return cljs.core.keyword.call(null,cljs.core.name.call(null,kw));
 * Assert every key of param-map is a param namespaced key.
 */
 io.pedestal.app.messages.assert_only_param_keys = (function assert_only_param_keys(param_map){
-var keys__22984 = cljs.core.keys.call(null,param_map);
+var keys__12010 = cljs.core.keys.call(null,param_map);
 if(cljs.core.every_QMARK_.call(null,(function (key){
 return io.pedestal.app.messages.param_keyword_present_QMARK_.call(null,key);
-}),keys__22984))
+}),keys__12010))
 {return null;
 } else
 {throw (new Error([cljs.core.str("Assert failed: "),cljs.core.str([cljs.core.str("Every key of param-map must be a namespaced param keyword (see io.pedestal.app.messages/param). These keys are invalid: "),cljs.core.str(cljs.core.into.call(null,cljs.core.PersistentVector.EMPTY,cljs.core.filter.call(null,(function (key){
 return cljs.core.not.call(null,io.pedestal.app.messages.param_keyword_present_QMARK_.call(null,key));
-}),keys__22984)))].join('')),cljs.core.str("\n"),cljs.core.str(cljs.core.pr_str.call(null,cljs.core.with_meta(cljs.core.list("\uFDD1'every?",cljs.core.with_meta(cljs.core.list("\uFDD1'fn",cljs.core.vec(["\uFDD1'key"]),cljs.core.with_meta(cljs.core.list("\uFDD1'param-keyword-present?","\uFDD1'key"),cljs.core.hash_map("\uFDD0'line",81,"\uFDD0'column",24))),cljs.core.hash_map("\uFDD0'line",81,"\uFDD0'column",14)),"\uFDD1'keys"),cljs.core.hash_map("\uFDD0'line",81,"\uFDD0'column",6))))].join('')));
+}),keys__12010)))].join('')),cljs.core.str("\n"),cljs.core.str(cljs.core.pr_str.call(null,cljs.core.with_meta(cljs.core.list("\uFDD1'every?",cljs.core.with_meta(cljs.core.list("\uFDD1'fn",cljs.core.vec(["\uFDD1'key"]),cljs.core.with_meta(cljs.core.list("\uFDD1'param-keyword-present?","\uFDD1'key"),cljs.core.hash_map("\uFDD0'line",81,"\uFDD0'column",24))),cljs.core.hash_map("\uFDD0'line",81,"\uFDD0'column",14)),"\uFDD1'keys"),cljs.core.hash_map("\uFDD0'line",81,"\uFDD0'column",6))))].join('')));
 }
 });
 /**
 * Replace parameter key-value pairs in a message with the appropriate values fromm param-map.
 */
 io.pedestal.app.messages.fill_params_msg = (function fill_params_msg(param_map,msg){
-return cljs.core.into.call(null,cljs.core.ObjMap.EMPTY,cljs.core.map.call(null,(function (p__22993){
-var vec__22994__22995 = p__22993;
-var k__22996 = cljs.core.nth.call(null,vec__22994__22995,0,null);
-var v__22997 = cljs.core.nth.call(null,vec__22994__22995,1,null);
-var original_pair__22998 = vec__22994__22995;
-var temp__4090__auto____22999 = k__22996.call(null,param_map);
-if(cljs.core.truth_(temp__4090__auto____22999))
-{var param_val__23000 = temp__4090__auto____22999;
-return cljs.core.PersistentVector.fromArray([io.pedestal.app.messages.strip_ns.call(null,k__22996),param_val__23000], true);
+return cljs.core.into.call(null,cljs.core.ObjMap.EMPTY,cljs.core.map.call(null,(function (p__12019){
+var vec__12020__12021 = p__12019;
+var k__12022 = cljs.core.nth.call(null,vec__12020__12021,0,null);
+var v__12023 = cljs.core.nth.call(null,vec__12020__12021,1,null);
+var original_pair__12024 = vec__12020__12021;
+var temp__4423__auto____12025 = k__12022.call(null,param_map);
+if(cljs.core.truth_(temp__4423__auto____12025))
+{var param_val__12026 = temp__4423__auto____12025;
+return cljs.core.PersistentVector.fromArray([io.pedestal.app.messages.strip_ns.call(null,k__12022),param_val__12026], true);
 } else
-{return original_pair__22998;
+{return original_pair__12024;
 }
 }),msg));
 });
@@ -124,30 +124,30 @@ return cljs.core.mapv.call(null,cljs.core.partial.call(null,io.pedestal.app.mess
 * ; -> ((msg/param :name) (msg/param :age))
 */
 io.pedestal.app.messages.message_params = (function message_params(msgs){
-return cljs.core.distinct.call(null,(function (){var iter__19251__auto____23066 = (function iter__23034(s__23035){
+return cljs.core.distinct.call(null,(function (){var iter__8277__auto____12092 = (function iter__12060(s__12061){
 return (new cljs.core.LazySeq(null,false,(function (){
-var s__23035__23052 = s__23035;
+var s__12061__12078 = s__12061;
 while(true){
-var temp__4092__auto____23053 = cljs.core.seq.call(null,s__23035__23052);
-if(temp__4092__auto____23053)
-{var xs__4579__auto____23054 = temp__4092__auto____23053;
-var msg__23055 = cljs.core.first.call(null,xs__4579__auto____23054);
-var iterys__19249__auto____23064 = ((function (s__23035__23052,msg__23055,xs__4579__auto____23054,temp__4092__auto____23053){
-return (function iter__23036(s__23037){
-return (new cljs.core.LazySeq(null,false,((function (s__23035__23052,msg__23055,xs__4579__auto____23054,temp__4092__auto____23053){
+var temp__4425__auto____12079 = cljs.core.seq.call(null,s__12061__12078);
+if(temp__4425__auto____12079)
+{var xs__4977__auto____12080 = temp__4425__auto____12079;
+var msg__12081 = cljs.core.first.call(null,xs__4977__auto____12080);
+var iterys__8275__auto____12090 = ((function (s__12061__12078,msg__12081,xs__4977__auto____12080,temp__4425__auto____12079){
+return (function iter__12062(s__12063){
+return (new cljs.core.LazySeq(null,false,((function (s__12061__12078,msg__12081,xs__4977__auto____12080,temp__4425__auto____12079){
 return (function (){
-var s__23037__23060 = s__23037;
+var s__12063__12086 = s__12063;
 while(true){
-var temp__4092__auto____23061 = cljs.core.seq.call(null,s__23037__23060);
-if(temp__4092__auto____23061)
-{var xs__4579__auto____23062 = temp__4092__auto____23061;
-var key__23063 = cljs.core.first.call(null,xs__4579__auto____23062);
-if(cljs.core.truth_(io.pedestal.app.messages.param_keyword_present_QMARK_.call(null,key__23063)))
-{return cljs.core.cons.call(null,key__23063,iter__23036.call(null,cljs.core.rest.call(null,s__23037__23060)));
+var temp__4425__auto____12087 = cljs.core.seq.call(null,s__12063__12086);
+if(temp__4425__auto____12087)
+{var xs__4977__auto____12088 = temp__4425__auto____12087;
+var key__12089 = cljs.core.first.call(null,xs__4977__auto____12088);
+if(cljs.core.truth_(io.pedestal.app.messages.param_keyword_present_QMARK_.call(null,key__12089)))
+{return cljs.core.cons.call(null,key__12089,iter__12062.call(null,cljs.core.rest.call(null,s__12063__12086)));
 } else
 {{
-var G__23067 = cljs.core.rest.call(null,s__23037__23060);
-s__23037__23060 = G__23067;
+var G__12093 = cljs.core.rest.call(null,s__12063__12086);
+s__12063__12086 = G__12093;
 continue;
 }
 }
@@ -156,17 +156,17 @@ continue;
 }
 break;
 }
-});})(s__23035__23052,msg__23055,xs__4579__auto____23054,temp__4092__auto____23053))
+});})(s__12061__12078,msg__12081,xs__4977__auto____12080,temp__4425__auto____12079))
 ,null));
-});})(s__23035__23052,msg__23055,xs__4579__auto____23054,temp__4092__auto____23053))
+});})(s__12061__12078,msg__12081,xs__4977__auto____12080,temp__4425__auto____12079))
 ;
-var fs__19250__auto____23065 = cljs.core.seq.call(null,iterys__19249__auto____23064.call(null,cljs.core.keys.call(null,msg__23055)));
-if(fs__19250__auto____23065)
-{return cljs.core.concat.call(null,fs__19250__auto____23065,iter__23034.call(null,cljs.core.rest.call(null,s__23035__23052)));
+var fs__8276__auto____12091 = cljs.core.seq.call(null,iterys__8275__auto____12090.call(null,cljs.core.keys.call(null,msg__12081)));
+if(fs__8276__auto____12091)
+{return cljs.core.concat.call(null,fs__8276__auto____12091,iter__12060.call(null,cljs.core.rest.call(null,s__12061__12078)));
 } else
 {{
-var G__23068 = cljs.core.rest.call(null,s__23035__23052);
-s__23035__23052 = G__23068;
+var G__12094 = cljs.core.rest.call(null,s__12061__12078);
+s__12061__12078 = G__12094;
 continue;
 }
 }
@@ -177,7 +177,7 @@ break;
 }
 }),null));
 });
-return iter__19251__auto____23066.call(null,msgs);
+return iter__8277__auto____12092.call(null,msgs);
 })());
 });
 /**
@@ -188,11 +188,11 @@ return iter__19251__auto____23066.call(null,msgs);
 * ; -> {(msg/param :age) 42, (msg/param :name) "John")
 */
 io.pedestal.app.messages.keys_to_param_keys = (function keys_to_param_keys(mp){
-return cljs.core.into.call(null,cljs.core.ObjMap.EMPTY,cljs.core.map.call(null,(function (p__23074){
-var vec__23075__23076 = p__23074;
-var k__23077 = cljs.core.nth.call(null,vec__23075__23076,0,null);
-var v__23078 = cljs.core.nth.call(null,vec__23075__23076,1,null);
-return cljs.core.PersistentVector.fromArray([io.pedestal.app.messages.param.call(null,k__23077),v__23078], true);
+return cljs.core.into.call(null,cljs.core.ObjMap.EMPTY,cljs.core.map.call(null,(function (p__12100){
+var vec__12101__12102 = p__12100;
+var k__12103 = cljs.core.nth.call(null,vec__12101__12102,0,null);
+var v__12104 = cljs.core.nth.call(null,vec__12101__12102,1,null);
+return cljs.core.PersistentVector.fromArray([io.pedestal.app.messages.param.call(null,k__12103),v__12104], true);
 }),mp));
 });
 /**
@@ -214,14 +214,14 @@ var fill__2 = (function (message_type,messages){
 return fill.call(null,message_type,messages,cljs.core.ObjMap.EMPTY);
 });
 var fill__3 = (function (message_type,messages,input_map){
-var missing_keys__23082 = cljs.core.set.call(null,cljs.core.map.call(null,cljs.core.keyword,cljs.core.map.call(null,cljs.core.name,io.pedestal.app.messages.message_params.call(null,messages))));
-var input_keys__23083 = cljs.core.set.call(null,cljs.core.map.call(null,cljs.core.keyword,cljs.core.keys.call(null,input_map)));
-if(cljs.core.empty_QMARK_.call(null,clojure.set.difference.call(null,missing_keys__23082,input_keys__23083)))
+var missing_keys__12108 = cljs.core.set.call(null,cljs.core.map.call(null,cljs.core.keyword,cljs.core.map.call(null,cljs.core.name,io.pedestal.app.messages.message_params.call(null,messages))));
+var input_keys__12109 = cljs.core.set.call(null,cljs.core.map.call(null,cljs.core.keyword,cljs.core.keys.call(null,input_map)));
+if(cljs.core.empty_QMARK_.call(null,clojure.set.difference.call(null,missing_keys__12108,input_keys__12109)))
 {} else
-{throw (new Error([cljs.core.str("Assert failed: "),cljs.core.str([cljs.core.str("Missing keys "),cljs.core.str(missing_keys__23082),cljs.core.str(" is not a subset of "),cljs.core.str(input_keys__23083),cljs.core.str(".")].join('')),cljs.core.str("\n"),cljs.core.str(cljs.core.pr_str.call(null,cljs.core.with_meta(cljs.core.list("\uFDD1'empty?",cljs.core.with_meta(cljs.core.list("\uFDD1'set/difference","\uFDD1'missing-keys","\uFDD1'input-keys"),cljs.core.hash_map("\uFDD0'line",145,"\uFDD0'column",24))),cljs.core.hash_map("\uFDD0'line",145,"\uFDD0'column",16))))].join('')));
+{throw (new Error([cljs.core.str("Assert failed: "),cljs.core.str([cljs.core.str("Missing keys "),cljs.core.str(missing_keys__12108),cljs.core.str(" is not a subset of "),cljs.core.str(input_keys__12109),cljs.core.str(".")].join('')),cljs.core.str("\n"),cljs.core.str(cljs.core.pr_str.call(null,cljs.core.with_meta(cljs.core.list("\uFDD1'empty?",cljs.core.with_meta(cljs.core.list("\uFDD1'set/difference","\uFDD1'missing-keys","\uFDD1'input-keys"),cljs.core.hash_map("\uFDD0'line",145,"\uFDD0'column",24))),cljs.core.hash_map("\uFDD0'line",145,"\uFDD0'column",16))))].join('')));
 }
-var messages__23084 = (cljs.core.truth_(message_type)?cljs.core.map.call(null,cljs.core.partial.call(null,io.pedestal.app.messages.add_message_type,message_type),messages):messages);
-return io.pedestal.app.messages.fill_params.call(null,io.pedestal.app.messages.keys_to_param_keys.call(null,input_map),messages__23084);
+var messages__12110 = (cljs.core.truth_(message_type)?cljs.core.map.call(null,cljs.core.partial.call(null,io.pedestal.app.messages.add_message_type,message_type),messages):messages);
+return io.pedestal.app.messages.fill_params.call(null,io.pedestal.app.messages.keys_to_param_keys.call(null,input_map),messages__12110);
 });
 fill = function(message_type,messages,input_map){
 switch(arguments.length){

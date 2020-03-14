@@ -1,14 +1,14 @@
 goog.provide('io.pedestal.app.util.platform');
 goog.require('cljs.core');
-goog.require('goog.net.Cookies');
 goog.require('cljs.reader');
+goog.require('goog.net.Cookies');
 io.pedestal.app.util.platform.safe_read_string = (function safe_read_string(s){
 return cljs.reader.read_string.call(null,s);
 });
 io.pedestal.app.util.platform.parse_int = (function parse_int(s){
-if((function (){var or__3943__auto____30565 = cljs.core.number_QMARK_.call(null,s);
-if(or__3943__auto____30565)
-{return or__3943__auto____30565;
+if((function (){var or__4238__auto____18849 = cljs.core.number_QMARK_.call(null,s);
+if(or__4238__auto____18849)
+{return or__4238__auto____18849;
 } else
 {return cljs.core.string_QMARK_.call(null,s);
 }
@@ -30,12 +30,12 @@ return window.clearTimeout(timeout);
 io.pedestal.app.util.platform.read_form_if_string = (function read_form_if_string(x){
 if(cljs.core.string_QMARK_.call(null,x))
 {try{return io.pedestal.app.util.platform.safe_read_string.call(null,x);
-}catch (e30568){if(cljs.core.instance_QMARK_.call(null,Error,e30568))
-{var ___30569 = e30568;
+}catch (e18852){if(cljs.core.instance_QMARK_.call(null,Error,e18852))
+{var ___18853 = e18852;
 return null;
 } else
 {if("\uFDD0'else")
-{throw e30568;
+{throw e18852;
 } else
 {return null;
 }
@@ -50,20 +50,20 @@ return (new goog.net.Cookies(document)).get(cookie);
 io.pedestal.app.util.platform.log_group = (function log_group(pre,post,coll){
 console.log("\n");
 console.log(pre);
-var G__30576__30577 = cljs.core.seq.call(null,coll);
-if(G__30576__30577)
-{var d__30578 = cljs.core.first.call(null,G__30576__30577);
-var G__30576__30579 = G__30576__30577;
+var G__18860__18861 = cljs.core.seq.call(null,coll);
+if(G__18860__18861)
+{var d__18862 = cljs.core.first.call(null,G__18860__18861);
+var G__18860__18863 = G__18860__18861;
 while(true){
-console.log(cljs.core.pr_str.call(null,d__30578));
-var temp__4092__auto____30580 = cljs.core.next.call(null,G__30576__30579);
-if(temp__4092__auto____30580)
-{var G__30576__30581 = temp__4092__auto____30580;
+console.log(cljs.core.pr_str.call(null,d__18862));
+var temp__4425__auto____18864 = cljs.core.next.call(null,G__18860__18863);
+if(temp__4425__auto____18864)
+{var G__18860__18865 = temp__4425__auto____18864;
 {
-var G__30582 = cljs.core.first.call(null,G__30576__30581);
-var G__30583 = G__30576__30581;
-d__30578 = G__30582;
-G__30576__30579 = G__30583;
+var G__18866 = cljs.core.first.call(null,G__18860__18865);
+var G__18867 = G__18860__18865;
+d__18862 = G__18866;
+G__18860__18863 = G__18867;
 continue;
 }
 } else

@@ -18,9 +18,9 @@ if (goog.isDef(var_args)) {
 return log__delegate.call(this, level, keyvals);
 };
 log.cljs$lang$maxFixedArity = 1;
-log.cljs$lang$applyTo = (function (arglist__30940){
-var level = cljs.core.first(arglist__30940);
-var keyvals = cljs.core.rest(arglist__30940);
+log.cljs$lang$applyTo = (function (arglist__18843){
+var level = cljs.core.first(arglist__18843);
+var keyvals = cljs.core.rest(arglist__18843);
 return log__delegate(level, keyvals);
 });
 log.cljs$lang$arity$variadic = log__delegate;
@@ -50,8 +50,8 @@ if (goog.isDef(var_args)) {
 return error__delegate.call(this, keyvals);
 };
 error.cljs$lang$maxFixedArity = 0;
-error.cljs$lang$applyTo = (function (arglist__30941){
-var keyvals = cljs.core.seq(arglist__30941);;
+error.cljs$lang$applyTo = (function (arglist__18844){
+var keyvals = cljs.core.seq(arglist__18844);;
 return error__delegate(keyvals);
 });
 error.cljs$lang$arity$variadic = error__delegate;
@@ -75,8 +75,8 @@ if (goog.isDef(var_args)) {
 return debug__delegate.call(this, keyvals);
 };
 debug.cljs$lang$maxFixedArity = 0;
-debug.cljs$lang$applyTo = (function (arglist__30942){
-var keyvals = cljs.core.seq(arglist__30942);;
+debug.cljs$lang$applyTo = (function (arglist__18845){
+var keyvals = cljs.core.seq(arglist__18845);;
 return debug__delegate(keyvals);
 });
 debug.cljs$lang$arity$variadic = debug__delegate;
@@ -100,8 +100,8 @@ if (goog.isDef(var_args)) {
 return info__delegate.call(this, keyvals);
 };
 info.cljs$lang$maxFixedArity = 0;
-info.cljs$lang$applyTo = (function (arglist__30943){
-var keyvals = cljs.core.seq(arglist__30943);;
+info.cljs$lang$applyTo = (function (arglist__18846){
+var keyvals = cljs.core.seq(arglist__18846);;
 return info__delegate(keyvals);
 });
 info.cljs$lang$arity$variadic = info__delegate;
@@ -124,8 +124,8 @@ if (goog.isDef(var_args)) {
 return warn__delegate.call(this, keyvals);
 };
 warn.cljs$lang$maxFixedArity = 0;
-warn.cljs$lang$applyTo = (function (arglist__30944){
-var keyvals = cljs.core.seq(arglist__30944);;
+warn.cljs$lang$applyTo = (function (arglist__18847){
+var keyvals = cljs.core.seq(arglist__18847);;
 return warn__delegate(keyvals);
 });
 warn.cljs$lang$arity$variadic = warn__delegate;
