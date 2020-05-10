@@ -10,12 +10,23 @@ url: "https://ardumont.github.io" # the base hostname & protocol for your site
 author: "@ardumont"
 author_name: "Antoine R. Dumont"
 twitter_username: ardumont
-github_username:  ardumont
+github_username: ardumont
 
-archivelimit: 5
-
-trace: false
 safe: true
+archivelimit: 5
 
 encoding: utf-8
 permalink: /:title
+timezone: Europe/Paris
+limit_posts: 10
+
+strict_front_matter: false
+profile: true
+incremental: true
+verbose: true
+unpublished: false
+
+# local configuration
+port: 5000
+host: localhost
+livereload: true
