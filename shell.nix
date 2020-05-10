@@ -12,6 +12,7 @@ let
 in stdenv.mkDerivation rec {
   name = package-name;
   buildInputs = with pkgs; [
+    libffi
     zlib
     ruby
     jekyll

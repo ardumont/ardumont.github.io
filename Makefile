@@ -20,3 +20,7 @@ pull:
 
 run-dev:
 	bundle exec jekyll serve --watch --trace
+
+clean-dev:
+	rm -rf ~/.gem/  # careful now
+	bundle exec jekyll clean --force
