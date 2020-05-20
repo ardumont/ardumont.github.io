@@ -1,0 +1,231 @@
+---
+date: 2015-09-06 12:59
+author: ardumont
+layout: post
+title: org-trello debug tools
+excerpt: org-trello debugging tools
+tags: 
+- tools
+- org-trello
+- debug
+categories: 
+- tools
+- org-trello
+- debug
+permalink: /debug/
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgaa0160a">1. Repl</a>
+<ul>
+<li><a href="#org61cb0e5">1.1. Improvment on debug</a></li>
+</ul>
+</li>
+<li><a href="#org5ef7192">2. Trace</a>
+<ul>
+<li><a href="#orgffb9b26">2.1. trace-functions</a></li>
+</ul>
+</li>
+<li><a href="#org7e2e891">3. Display the content of the board's global setup</a></li>
+</ul>
+</div>
+</div>
+<p>
+Here is a list of tools that helps me debugging/maintaining org-trello. This
+could help users when they have trouble.
+</p>
+
+<div id="outline-container-orgaa0160a" class="outline-2">
+<h2 id="orgaa0160a"><span class="section-number-2">1</span> Repl</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Using emacs-lisp's repl ielm:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs">M-x ielm &lt;RET&gt;
+</pre>
+</div>
+
+<p>
+Set the credentials for your account:
+</p>
+<div class="org-src-container">
+<pre class="src src-lisp">(<span style="color: #4f97d7; font-weight: bold;">let</span> ((org-trello--user-logged-in <span style="color: #2d9574;">"&lt;user&gt;"</span>))
+  (orgtrello-controller-load-keys))
+</pre>
+</div>
+<p>
+Note: Load in context the credentials from the file `~/.emacs.d/.trello/&lt;user&gt;.el`
+</p>
+
+<p>
+Now execute some request to check that the connection is good:
+</p>
+<div class="org-src-container">
+<pre class="src src-lisp">ELISP&gt; (orgtrello-query-http-trello (orgtrello-api-get-me) 'sync)
+#s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8 data
+              (<span style="color: #4f97d7;">:username</span> <span style="color: #2d9574;">"ardumont"</span> <span style="color: #4f97d7;">:url</span> <span style="color: #2d9574;">"https://trello.com/ardumont"</span>
+               <span style="color: #4f97d7;">:status</span> <span style="color: #2d9574;">"disconnected"</span> <span style="color: #4f97d7;">:full-name</span> <span style="color: #2d9574;">"Antoine R. Dumont"</span>
+               <span style="color: #4f97d7;">:id</span> <span style="color: #2d9574;">"aabbccddeeffgghhiijjkk"</span>))
+</pre>
+</div>
+
+<p>
+Note:
+You can have a pretty good idea of org-trello's api by reading the `org-trello-api.el` file.
+It's trello's api adapter.
+</p>
+
+<p>
+Simpler:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(<span style="color: #4f97d7; font-weight: bold;">let</span> ((org-trello--user-logged-in <span style="color: #2d9574;">"ardumont"</span>))
+  (orgtrello-controller-load-keys)
+  (orgtrello-query-http-trello (orgtrello-api-get-me) 'sync))
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(<span style="color: #4f97d7; font-weight: bold;">let</span> ((org-trello--user-logged-in <span style="color: #2d9574;">"ardumont"</span>))
+  (orgtrello-controller-load-keys)
+  (orgtrello-query-http-trello (orgtrello-api-get-board <span style="color: #2d9574;">"board-id"</span>) 'sync))
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org61cb0e5" class="outline-3">
+<h3 id="org61cb0e5"><span class="section-number-3">1.1</span> Improvment on debug</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Adapt according to your need, this will help loading the org-trello context:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(<span style="color: #4f97d7; font-weight: bold;">let</span> ((org-trello-file-to-debug <span style="color: #2d9574;">"/home/tony/board.org"</span>)
+      (orgtrello-log-level orgtrello-log-trace))
+  (with-temp-buffer
+    (insert-file-contents org-trello-file-to-debug)
+    (org-mode)
+    (org-trello-mode)
+    (orgtrello-controller-load-keys)
+    (-&gt; (orgtrello-buffer-board-id)
+        orgtrello-api-get-full-cards
+        (orgtrello-query-http-trello 'sync))))
+</pre>
+</div>
+
+<p>
+<b>Note</b>: This made me <a href="https://github.com/org-trello/org-trello/issues/288">realize that org-trello could spawn an adapter library
+`trello-core` or `trello-lib`</a>.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5ef7192" class="outline-2">
+<h2 id="org5ef7192"><span class="section-number-2">2</span> Trace</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Emacs comes with `trace-fn` function. This can help a lot.
+</p>
+
+<p>
+Identify some function you want to trace (display inputs, output), for example:
+</p>
+<div class="org-src-container">
+<pre class="src src-lisp">(trace-function 'orgtrello-data-parse-data)
+(untrace-function 'orgtrello-data-parse-data)
+</pre>
+</div>
+<p>
+Note: `orgtrello-data/parse-data` is the central function used to parse the
+json output of trello. So in case of output doubt, this can be a good starting
+point.
+</p>
+</div>
+
+<div id="outline-container-orgffb9b26" class="outline-3">
+<h3 id="orgffb9b26"><span class="section-number-3">2.1</span> trace-functions</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+It helps a lot and you can add more functions with the following ones.
+</p>
+
+<p>
+To trace mutliple ones:
+</p>
+<div class="org-src-container">
+<pre class="src src-lisp">#+begin_src lisp
+(<span style="color: #4f97d7; font-weight: bold;">defun</span> <span style="color: #bc6ec5; font-weight: bold;">trace-functions</span> (fns)
+  <span style="color: #9f8766;">"Trace functions FNS."</span>
+  (mapc 'trace-function fns))
+
+(<span style="color: #4f97d7; font-weight: bold;">defun</span> <span style="color: #bc6ec5; font-weight: bold;">untrace-functions</span> (fns)
+  <span style="color: #9f8766;">"Trace functions FNS."</span>
+  (mapc 'untrace-function fns))
+</pre>
+</div>
+
+<p>
+With sample:
+</p>
+<div class="org-src-container">
+<pre class="src src-lisp">(trace-functions '(orgtrello-data/parse-data))
+(untrace-functions '(orgtrello-data/parse-data))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7e2e891" class="outline-2">
+<h2 id="org7e2e891"><span class="section-number-2">3</span> Display the content of the board's global setup</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Inside the current org-trello buffer:
+</p>
+
+<p>
+M-: (orgtrello-setup-display-current-buffer-setup!)
+</p>
+
+<p>
+This will compute and return a list with the important settings.
+</p>
+
+<p>
+Something like:
+</p>
+<div class="org-src-container">
+<pre class="src src-lisp">(<span style="color: #4f97d7;">:users-id-name</span> #s(hash-table size 65 test equal rehash-size 1.5...
+  data (
+    <span style="color: #2d9574;">"user-id0"</span> <span style="color: #2d9574;">"orgtrello-user-antoineromaindumont"</span> <span style="color: #2d9574;">"user-id2"</span>
+    <span style="color: #2d9574;">"orgtrello-user-orgmode"</span> <span style="color: #2d9574;">"user-id3"</span> <span style="color: #2d9574;">"orgtrello-user-ardumont"</span>
+    <span style="color: #2d9574;">"ardumont"</span> <span style="color: #2d9574;">"orgtrello-user-me"</span> ...))
+ <span style="color: #4f97d7;">:users-name-id</span> #s(hash-table size 65 test equal rehash-size 1.5...
+  data (
+    <span style="color: #2d9574;">"orgtrello-user-antoineromaindumont"</span> <span style="color: #2d9574;">"user-id0"</span>
+    <span style="color: #2d9574;">"orgtrello-user-orgmode"</span> <span style="color: #2d9574;">"user-id3"</span> <span style="color: #2d9574;">"orgtrello-user-ardumont"</span>
+    <span style="color: #2d9574;">"user-id1"</span> <span style="color: #2d9574;">"orgtrello-user-me"</span> <span style="color: #2d9574;">"ardumont"</span> ...))
+ <span style="color: #4f97d7;">:user-logged-in</span> <span style="color: #2d9574;">"ardumont"</span>
+ <span style="color: #4f97d7;">:org-keyword-trello-list-names</span> (
+    <span style="color: #2d9574;">"TODO"</span> <span style="color: #2d9574;">"IN-PROGRESS"</span> <span style="color: #2d9574;">"DONE"</span> <span style="color: #2d9574;">"PENDING"</span> <span style="color: #2d9574;">"DELEGATED"</span> <span style="color: #2d9574;">"FAILED"</span> <span style="color: #2d9574;">"CANCELLED"</span>)
+ <span style="color: #4f97d7;">:org-keyword-id-name</span> #s(hash-table size 65 test equal rehash-size 1.5...
+  data (
+    <span style="color: #2d9574;">"todo-id"</span> <span style="color: #2d9574;">"TODO"</span> <span style="color: #2d9574;">"in-progress-id"</span> <span style="color: #2d9574;">"IN-PROGRESS"</span> <span style="color: #2d9574;">"done-id"</span> <span style="color: #2d9574;">"DONE"</span>
+    <span style="color: #2d9574;">"pending-id"</span> <span style="color: #2d9574;">"PENDING"</span> <span style="color: #2d9574;">"delegated-id"</span> <span style="color: #2d9574;">"DELEGATED"</span> <span style="color: #2d9574;">"failed-id"</span>
+    <span style="color: #2d9574;">"FAILED"</span> <span style="color: #2d9574;">"cancelled-id"</span> <span style="color: #2d9574;">"CANCELLED"</span> ...)))
+</pre>
+</div>
+
+<p>
+This can help to see if something is amiss or not.
+</p>
+</div>
+</div>

@@ -1,26 +1,46 @@
 ---
-date: 2013-07-12 21:45:00
-tags:
+date: 2013-07-12 21:45
+author: ardumont
+layout: post
+title: org-trello - 2-way sync org & trello
+excerpt: Synchronize your trello board from emacs
+categories: 
 - org-trello
 - org-mode
 - emacs
 - trello
 - tools
-author: ardumont
-blog: org
-layout: post
-title: org-trello - 2-way sync org & trello
-excerpt: Synchronize your trello board from emacs
-categories:
+tags: 
 - org-trello
 - org-mode
 - emacs
 - trello
 - tools
 ---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgc1f6553">1. Demo!</a>
+<ul>
+<li><a href="#orgb9d284f">1.1. Synchronize one entity</a></li>
+<li><a href="#org1129140">1.2. Setup org-mode file to work with one trello board</a></li>
+<li><a href="#org1ba4003">1.3. Synchronize one complete entity and move entity according to status</a></li>
+<li><a href="#orgfea2681">1.4. Synchronize from org-mode file to trello</a></li>
+<li><a href="#org203ee3c">1.5. Create board and sync</a></li>
+<li><a href="#org2b6eb8a">1.6. Synchronize from trello to org-mode file</a></li>
+<li><a href="#orgb70bf7e">1.7. Install org-trello</a></li>
+<li><a href="#org6026188">1.8. Setup key and token</a></li>
+</ul>
+</li>
+<li><a href="#org572cc47">2. Sources</a></li>
+<li><a href="#orgc4041c8">3. Releases</a></li>
+</ul>
+</div>
+</div>
 <p>
 For some time now, I wanted to learn <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/index.html">Emacs-lisp</a> some <a href="https://github.com/ardumont/emacs-live-packs">more than I already did</a>.
-As I dayly use emacs, I think it was the logical course of action.
+As I use emacs daily, I think it was a sane choice.
 </p>
 
 <p>
@@ -41,12 +61,12 @@ an <a href="https://orgmode.org/">org-mode</a> file (and vice versa).
 </p>
 
 <div id="outline-container-orgc1f6553" class="outline-2">
-<h2 id="orgc1f6553">Demo!</h2>
-<div class="outline-text-2" id="text-orgc1f6553">
+<h2 id="orgc1f6553"><span class="section-number-2">1</span> Demo!</h2>
+<div class="outline-text-2" id="text-1">
 </div>
 <div id="outline-container-orgb9d284f" class="outline-3">
-<h3 id="orgb9d284f">Synchronize one entity</h3>
-<div class="outline-text-3" id="text-orgb9d284f">
+<h3 id="orgb9d284f"><span class="section-number-3">1.1</span> Synchronize one entity</h3>
+<div class="outline-text-3" id="text-1-1">
 <p>
 <a href="http://youtu.be/ILPs74L5LFU">http://youtu.be/ILPs74L5LFU</a>
 </p>
@@ -54,8 +74,8 @@ an <a href="https://orgmode.org/">org-mode</a> file (and vice versa).
 </div>
 
 <div id="outline-container-org1129140" class="outline-3">
-<h3 id="org1129140">Setup org-mode file to work with one trello board</h3>
-<div class="outline-text-3" id="text-org1129140">
+<h3 id="org1129140"><span class="section-number-3">1.2</span> Setup org-mode file to work with one trello board</h3>
+<div class="outline-text-3" id="text-1-2">
 <p>
 <a href="http://youtu.be/2PT8K1HG-eY">http://youtu.be/2PT8K1HG-eY</a>
 </p>
@@ -63,8 +83,8 @@ an <a href="https://orgmode.org/">org-mode</a> file (and vice versa).
 </div>
 
 <div id="outline-container-org1ba4003" class="outline-3">
-<h3 id="org1ba4003">Synchronize one complete entity and move entity according to status</h3>
-<div class="outline-text-3" id="text-org1ba4003">
+<h3 id="org1ba4003"><span class="section-number-3">1.3</span> Synchronize one complete entity and move entity according to status</h3>
+<div class="outline-text-3" id="text-1-3">
 <p>
 <a href="http://youtu.be/H8DXm5BLaD0">http://youtu.be/H8DXm5BLaD0</a>
 </p>
@@ -72,8 +92,8 @@ an <a href="https://orgmode.org/">org-mode</a> file (and vice versa).
 </div>
 
 <div id="outline-container-orgfea2681" class="outline-3">
-<h3 id="orgfea2681">Synchronize from org-mode file to trello</h3>
-<div class="outline-text-3" id="text-orgfea2681">
+<h3 id="orgfea2681"><span class="section-number-3">1.4</span> Synchronize from org-mode file to trello</h3>
+<div class="outline-text-3" id="text-1-4">
 <p>
 <a href="http://youtu.be/d6SATWzhQhs">http://youtu.be/d6SATWzhQhs</a>
 </p>
@@ -81,16 +101,16 @@ an <a href="https://orgmode.org/">org-mode</a> file (and vice versa).
 </div>
 
 <div id="outline-container-org203ee3c" class="outline-3">
-<h3 id="org203ee3c">Create board and sync</h3>
-<div class="outline-text-3" id="text-org203ee3c">
+<h3 id="org203ee3c"><span class="section-number-3">1.5</span> Create board and sync</h3>
+<div class="outline-text-3" id="text-1-5">
 <p>
 <a href="http://youtu.be/6k4zRm6t8ZY">http://youtu.be/6k4zRm6t8ZY</a>
 </p>
 </div>
 </div>
 <div id="outline-container-org2b6eb8a" class="outline-3">
-<h3 id="org2b6eb8a">Synchronize from trello to org-mode file</h3>
-<div class="outline-text-3" id="text-org2b6eb8a">
+<h3 id="org2b6eb8a"><span class="section-number-3">1.6</span> Synchronize from trello to org-mode file</h3>
+<div class="outline-text-3" id="text-1-6">
 <p>
 <a href="http://youtu.be/-ldo8gvhaTY">http://youtu.be/-ldo8gvhaTY</a>
 </p>
@@ -98,8 +118,8 @@ an <a href="https://orgmode.org/">org-mode</a> file (and vice versa).
 </div>
 
 <div id="outline-container-orgb70bf7e" class="outline-3">
-<h3 id="orgb70bf7e">Install org-trello</h3>
-<div class="outline-text-3" id="text-orgb70bf7e">
+<h3 id="orgb70bf7e"><span class="section-number-3">1.7</span> Install org-trello</h3>
+<div class="outline-text-3" id="text-1-7">
 <p>
 <a href="http://youtu.be/e3NzllAHbHY">http://youtu.be/e3NzllAHbHY</a>
 </p>
@@ -107,8 +127,8 @@ an <a href="https://orgmode.org/">org-mode</a> file (and vice versa).
 </div>
 
 <div id="outline-container-org6026188" class="outline-3">
-<h3 id="org6026188">Setup key and token</h3>
-<div class="outline-text-3" id="text-org6026188">
+<h3 id="org6026188"><span class="section-number-3">1.8</span> Setup key and token</h3>
+<div class="outline-text-3" id="text-1-8">
 <p>
 <a href="http://youtu.be/ReUp1Wn5scc">http://youtu.be/ReUp1Wn5scc</a>
 </p>
@@ -117,8 +137,8 @@ an <a href="https://orgmode.org/">org-mode</a> file (and vice versa).
 </div>
 
 <div id="outline-container-org572cc47" class="outline-2">
-<h2 id="org572cc47">Sources</h2>
-<div class="outline-text-2" id="text-org572cc47">
+<h2 id="org572cc47"><span class="section-number-2">2</span> Sources</h2>
+<div class="outline-text-2" id="text-2">
 <p>
 <a href="https://github.com/ardumont/org-trello">source</a>
 </p>
@@ -126,8 +146,8 @@ an <a href="https://orgmode.org/">org-mode</a> file (and vice versa).
 </div>
 
 <div id="outline-container-orgc4041c8" class="outline-2">
-<h2 id="orgc4041c8">Releases</h2>
-<div class="outline-text-2" id="text-orgc4041c8">
+<h2 id="orgc4041c8"><span class="section-number-2">3</span> Releases</h2>
+<div class="outline-text-2" id="text-3">
 <p>
 Released on:
 </p>
