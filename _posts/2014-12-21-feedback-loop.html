@@ -1,0 +1,236 @@
+---
+date: 2014-12-21 19:03
+author: ardumont
+title: Feedback loop
+layout: post
+excerpt: Later is too late!
+categories: 
+- feedback
+- tools
+- stumpwm
+- xmonad
+- emacs
+- org-mode
+- tmux
+- firefox
+- keysnail
+- git
+- vagrant
+- virtualbox
+- docker
+- make
+- script
+tags: 
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org82a63a2">TL;DR</a></li>
+<li><a href="#org6333917">DISCLAIMER</a></li>
+<li><a href="#org04716ca">Introduction</a></li>
+<li><a href="#org5c1c978">Why?</a></li>
+<li><a href="#org9d913d3">How</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org82a63a2" class="outline-2">
+<h2 id="org82a63a2">TL;DR</h2>
+<div class="outline-text-2" id="text-org82a63a2">
+<p>
+Use the right tools for the job. They should:
+</p>
+<ul class="org-ul">
+<li>reply fast, success or failure</li>
+<li>be explicit when something is wrong</li>
+<li>not get in your way.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org6333917" class="outline-2">
+<h2 id="org6333917">DISCLAIMER</h2>
+<div class="outline-text-2" id="text-org6333917">
+<p>
+I present my set of tools.
+</p>
+
+<p>
+In no way do I claim these are the supreme tools. As always, your mileage may
+vary.
+</p>
+
+<p>
+The only claim I make is that they make me go faster.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org04716ca" class="outline-2">
+<h2 id="org04716ca">Introduction</h2>
+<div class="outline-text-2" id="text-org04716ca">
+<p>
+As I already explains time and time again (links to add), I'm feedback driven.
+</p>
+
+<p>
+I want to:
+</p>
+<ul class="org-ul">
+<li>have feedback immediately after I executed a command/function</li>
+<li>know if I'm wrong now, not later</li>
+<li>believe&#x2026; (oops, bad context)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5c1c978" class="outline-2">
+<h2 id="org5c1c978">Why?</h2>
+<div class="outline-text-2" id="text-org5c1c978">
+<p>
+Because ideas are as fast as poping out of nowhere as disappearing into
+nowhere&#x2026;
+</p>
+
+<p>
+Sometimes, it's right to think and think again and go implementing later&#x2026; And
+sometimes, it's better to go think and tinker along the way too&#x2026;
+</p>
+
+<p>
+I believe that this feedback loop is the very nature of mouvements like:
+</p>
+
+<ul class="org-ul">
+<li>agility (as in `small sprint to show rapidly to the users something that
+works`)</li>
+<li>devops (as in `reproducible environment as soon as possible to avoid later
+trouble`)</li>
+<li>tests culture (as in `testing the runtime now and not when the application
+will be deployed)</li>
+<li>etc&#x2026;</li>
+</ul>
+
+<p>
+I'd need to revisit this video but what at some point showed me I was hitting
+in the right direction was this particular video: <a href="http://vimeo.com/36579366">Bref Victor - Inventing on
+principles</a> and some consequences it had.
+</p>
+
+<p>
+As a result, <a href="https://twitter.com/ibdknox">Chris Granger</a> reacted immediately (it appeared as much to me) and
+came up the very next day with an equivalent demo in <a href="https://github.com/clojure/clojurescript">clojurescript</a>. Then some
+time after that, <a href="https://twitter.com/ibdknox">Chris Granger</a> came up with <a href="https://www.kickstarter.com/projects/ibdknox/light-table">LightTable</a>, to try and exercise
+what he thought was possible.
+</p>
+
+<p>
+And <a href="https://www.kickstarter.com/projects/ibdknox/light-table">Lighttable</a> showed a new <a href="https://en.wikipedia.org/wiki/REPL">REPL</a>, an instarepl - As you type along your
+clojure(script) expression, you have immediately the result. FEEDBACK!.
+</p>
+
+<p>
+It is an awesome idea which embraces further the notion of feedback.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9d913d3" class="outline-2">
+<h2 id="org9d913d3">How</h2>
+<div class="outline-text-2" id="text-org9d913d3">
+<p>
+Here is my non-exhaustive list of tools I use to:
+</p>
+
+<ul class="org-ul">
+<li><a href="https://www.gnu.org/gnu/linux-and-gnu.html">GNU/Linux</a> and now more specifically <a href="http://nixos.org/">NixOS</a></li>
+</ul>
+
+<p>
+Stable, user-friendly, extendable, reproducible&#x2026; These are unavoidable
+qualities.
+</p>
+
+<ul class="org-ul">
+<li><a href="https://www.gnu.org/software/emacs/">GNU/Emacs</a></li>
+</ul>
+
+<p>
+It's not an editor, it's an environment extremely extendable.
+</p>
+
+<ul class="org-ul">
+<li><a href="https://github.com/stumpwm/stumpwm">StumpWM</a></li>
+</ul>
+
+<p>
+The <b>emacs</b> like window manager!
+</p>
+
+<p>
+<b>Note</b> I switched to XMonad but I'd recommend anyone to give it a try.
+</p>
+
+<ul class="org-ul">
+<li><a href="http://xmonad.org/">XMonad</a></li>
+</ul>
+
+<p>
+In a graphical world, one has to display graphical software and what a pain it
+is to manually place windows. XMonad takes care of this for me. What a nice
+dude!
+</p>
+
+<p>
+Also I kept the way I called my applications from the stumpwm window manager
+(that is, I use a prefix key, `C-;` then another binding and this triggers the
+run or raise action for the particular application).
+</p>
+
+<ul class="org-ul">
+<li><a href="http://orgmode.org">Org-mode</a></li>
+</ul>
+
+<p>
+To do things, one has to organized
+</p>
+
+<ul class="org-ul">
+<li><a href="//Tmux.Sourceforge.Net/">Tmux</a></li>
+</ul>
+
+<p>
+The <b>emacs</b> terminal session manager!
+</p>
+
+<ul class="org-ul">
+<li><a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a> with <a href="https://github.com/mooz/keysnail">KeySnail</a></li>
+</ul>
+
+<p>
+Firefox, the emacs way!
+</p>
+
+<p>
+No mouse (as much as possible, unfortunately, some site use some shitty js/css
+thingy that force the user to use his/her mouse)
+</p>
+
+<ul class="org-ul">
+<li><a href="http://git-scm.com/">Git</a></li>
+</ul>
+
+<p>
+Versioning every bit of data!
+</p>
+
+<ul class="org-ul">
+<li><a href="https://www.vagrantup.com/">Vagrant</a> / <a href="https://www.virtualbox.org/">Virtualbox</a> / <a href="https://www.docker.com/">Docker</a></li>
+</ul>
+
+<p>
+Virtualize or test in sandbox environment!
+</p>
+</div>
+</div>
