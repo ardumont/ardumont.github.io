@@ -1,0 +1,214 @@
+---
+date: 2014-12-20 23:00
+author: Antoine R. Dumont
+title: org2jekyll - blog with org & jekyll
+layout: post
+categories: 
+- org-mode
+- jekyll
+- org2jekyll
+- emacs
+- blog
+- tools
+excerpt: org2jekyll the new kid in town
+tags: 
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org8ad0795">1. Rationale</a></li>
+<li><a href="#orgdca4c97">2. Setup</a></li>
+<li><a href="#orga8f092e">3. Example</a></li>
+<li><a href="#org0fd3e11">4. Install</a>
+<ul>
+<li><a href="#org97d67c2">4.1. Melpa-stable</a></li>
+<li><a href="#orga83d3cc">4.2. Marmalade</a></li>
+<li><a href="#org73e4fc4">4.3. github</a></li>
+</ul>
+</li>
+<li><a href="#orgf6d7932">5. Contribution/Issues</a></li>
+<li><a href="#org5306ba8">6. Inspiration</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org8ad0795" class="outline-2">
+<h2 id="org8ad0795"><span class="section-number-2">1</span> Rationale</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+After reading existing tutorials about org-mode and jekyll:
+</p>
+<ul class="org-ul">
+<li><a href="http://orgmode.org/worg/org-tutorials/org-jekyll.html">http://orgmode.org/worg/org-tutorials/org-jekyll.html</a></li>
+<li><a href="http://www.gorgnegre.com/linux/using-emacs-orgmode-to-blog-with-jekyll.html">http://www.gorgnegre.com/linux/using-emacs-orgmode-to-blog-with-jekyll.html</a></li>
+<li><a href="https://pavpanchekha.com/blog/org-mode-publish.html">https://pavpanchekha.com/blog/org-mode-publish.html</a></li>
+</ul>
+
+<p>
+And making them work&#x2026;
+</p>
+
+<p>
+I was not satisfied with the existing solution.
+</p>
+
+<p>
+Why? Because we need to adapt the org-mode file with specific jekyll yaml
+settings inside an org-mode html block code.
+</p>
+
+<p>
+But here is my thing, I don't want to adapt org with alien yaml or any other
+strange metadata. I'd like to have some standard org metadata, for example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-org"><span style="color: #da8b55;">#+LAYOUT: post</span>
+<span style="color: #da8b55;">#+AUTHOR:</span> <span style="color: #191970;">ardumont</span>
+<span style="color: #da8b55;">#+DATE:</span> <span style="color: #191970;">2014-12-19 Fri 23:49</span>
+<span style="color: #da8b55;">#+STARTUP: showall</span>
+<span style="color: #da8b55;">#+STARTUP: hidestars</span>
+<span style="color: #da8b55;">#+OPTIONS: H:2 num:nil tags:nil toc:1 timestamps:t</span>
+<span style="color: #da8b55;">#+TITLE:</span> <span style="color: #6c3163; font-size: 140%; font-weight: bold; text-decoration: underline;">hello</span>
+<span style="color: #da8b55;">#+DESCRIPTION: some description</span>
+<span style="color: #da8b55;">#+CATEGORIES: some-category</span>
+</pre>
+</div>
+
+<p>
+Then publish the blog post (<i>M-x org2jekyll/publish!</i>).
+</p>
+
+<p>
+Using some emacs-lisp incantation, we can make <i>org-publish</i> and <i>jekyll</i> work
+together.
+</p>
+
+<p>
+So, here comes <a href="https://github.com/ardumont/org2jekyll">https://github.com/ardumont/org2jekyll</a>&#x2026;
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdca4c97" class="outline-2">
+<h2 id="orgdca4c97"><span class="section-number-2">2</span> Setup</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+For this to work, you need to have this ready:
+</p>
+<ul class="org-ul">
+<li>jekyll</li>
+<li>org-publish (<i>ox-publish</i> since 24.4)</li>
+<li>org2jekyll</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga8f092e" class="outline-2">
+<h2 id="orga8f092e"><span class="section-number-2">3</span> Example</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Here is my working setup:
+</p>
+<ul class="org-ul">
+<li>blog: <a href="http://ardumont.github.io/">http://ardumont.github.io/</a></li>
+<li>source: <a href="https://github.com/ardumont/org2jekyll">https://github.com/ardumont/org2jekyll</a></li>
+<li>setup: <a href="https://gitlab.com/ardumont/home/-/blob/master/emacs/blog-pack.el">https://gitlab.com/ardumont/home/-/blob/master/emacs/blog-pack.el</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0fd3e11" class="outline-2">
+<h2 id="org0fd3e11"><span class="section-number-2">4</span> Install</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Ok, I'm sold!
+How do I install org2jekyll?
+</p>
+
+<p>
+Install from <a href="https://stable.melpa.org/">melpa-stable</a> or from <a href="https://github.com/ardumont/org2jekyll/releases">github releases</a>.
+</p>
+</div>
+
+<div id="outline-container-org97d67c2" class="outline-3">
+<h3 id="org97d67c2"><span class="section-number-3">4.1</span> Melpa-stable</h3>
+<div class="outline-text-3" id="text-4-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #3a81c3; font-weight: bold;">require</span> '<span style="color: #4e3163;">package</span>)
+(add-to-list 'package-archives '(<span style="color: #2d9574;">"melpa-stable"</span> . <span style="color: #2d9574;">"https://stable.melpa.org/packages/"</span>) t)
+(package-initialize)
+</pre>
+</div>
+
+<p>
+<i>M-x package-install RET org2jekyll RET</i>
+</p>
+
+<p>
+Note: You could also use the melpa version which follows more closely the
+repository's master branch. I do cut release as soon as possible so there
+should not be much advantage over melpa-stable.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga83d3cc" class="outline-3">
+<h3 id="orga83d3cc"><span class="section-number-3">4.2</span> Marmalade</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+I used to do the work of releasing there as well but I stopped around May 2020
+as melpa is way less work to maintain.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org73e4fc4" class="outline-3">
+<h3 id="org73e4fc4"><span class="section-number-3">4.3</span> github</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+I do use the github release mechanism so you can install from there:
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">wget https://github.com/ardumont/org2jekyll/releases/download/0.2.4/org2jekyll-0.2.4.tar
+</pre>
+</div>
+
+<p>
+<i>M-x package-install-file RET org2jekyll-0.2.4.tar</i>
+</p>
+
+<p>
+Or simply clone the <a href="https://github.com/ardumont/org2jekyll">repository</a> and load the org2jekyll.el file.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf6d7932" class="outline-2">
+<h2 id="orgf6d7932"><span class="section-number-2">5</span> Contribution/Issues</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+I intend to continue maintaining org2jekyll.
+</p>
+
+<p>
+As usual, feel free to <a href="https://github.com/ardumont/org2jekyll/issues">open issues on the tracker</a> or <a href="https://github.com/ardumont/org2jekyll/pulls">pull requests</a>.
+</p>
+
+<p>
+I will do my best to answer to issues but that could take some time.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5306ba8" class="outline-2">
+<h2 id="org5306ba8"><span class="section-number-2">6</span> Inspiration</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+I used a lot <a href="https://github.com/punchagan/org2blog.git">the great org2blog (org -&gt; wordpress bridge)</a> and was inspired by
+the name and the org headers approach.
+</p>
+</div>
+</div>
