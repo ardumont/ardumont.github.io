@@ -1,10 +1,8 @@
-with import <nixpkgs> {};
+{ pkgs, ... }:
 
 let
-  sources = import ./nix/sources.nix;
-  pkgs = import sources.nixpkgs { inherit system; };
   package-name = "ardumont.github.io";
-  jekyll-env = bundlerEnv {
+  jekyll-env = pkgs.bundlerEnv {
     name = package-name;
     inherit ruby;
     gemdir = ./.;
@@ -22,7 +20,7 @@ in stdenv.mkDerivation rec {
   ];
   src = null;
   # Add this for nix-shell to just run locally
-  # shellHook = ''
-  #     exec ${jekyll-env}/bin/jekyll serve --watch
-  # '';
+  shellHook = ''
+      exec ${jekyll-env}/bin/jekyll serve --watch
+  '';
 }

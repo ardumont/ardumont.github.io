@@ -1,3 +1,6 @@
+activate:
+	nix develop
+
 publish:
 	cask exec emacs -Q --batch \
 		-l ~/.prelude-packs/blog-pack/blog-pack.el \
